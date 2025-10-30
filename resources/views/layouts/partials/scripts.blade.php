@@ -1,0 +1,36 @@
+<!-- Core JS -->
+<script src="{{ asset('assets/vendor/libs/jquery/jquery.js') }}"></script>
+<script src="{{ asset('assets/vendor/libs/popper/popper.js') }}"></script>
+<script src="{{ asset('assets/vendor/js/bootstrap.js') }}"></script>
+<script src="{{ asset('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
+<script src="{{ asset('assets/vendor/libs/hammer/hammer.js') }}"></script>
+<script src="{{ asset('assets/vendor/libs/i18n/i18n.js') }}"></script>
+<script src="{{ asset('assets/vendor/libs/typeahead-js/typeahead.js') }}"></script>
+<script src="{{ asset('assets/vendor/js/menu.js') }}"></script>
+
+
+
+<!-- Vendors JS -->
+<script src="{{ asset('assets/vendor/libs/select2/select2.js') }}"></script>
+<script src="{{ asset('assets/js/forms-selects.js') }}"></script>
+<script src="https://cdn.datatables.net/2.3.4/js/dataTables.js"></script>
+<script src="https://cdn.datatables.net/2.3.4/js/dataTables.bootstrap5.js"></script>
+@stack('vendorjs')
+
+
+<!-- Main JS -->
+<script src="{{ asset('assets/js/main.js') }}"></script>
+<script src="{{ asset('assets/js/forms-extras.js') }}"></script>
+<script src="{{ asset('assets/js/custom.js') }}"></script>
+
+
+<!-- Page JS -->
+@stack('pagejs')
+@stack('scripts')
+
+<script>
+    new DataTable('.srkdataTable', {
+        searchable: true,
+        fixedHeight: true,
+    });
+</script>

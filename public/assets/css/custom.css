@@ -1,0 +1,9 @@
+.form-control,
+.form-select {
+    text-transform: uppercase;
+}
+
+/* disable uppercase only for email fields */
+.no-uppercase {
+    text-transform: none !important;
+}
