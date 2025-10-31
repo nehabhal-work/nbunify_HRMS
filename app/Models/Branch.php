@@ -5,25 +5,21 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Company extends Model
+class Branch extends Model
 {
     use SoftDeletes;
+
     protected $fillable = [
         'name',
-        'code',
-        'contact_person',
+        'address',
         'phone',
         'email',
-        'address',
-        'gst_number',
-        'pan_number',
-        'country_code',
+        'contact_person',
+        'country',
         'state',
         'city',
-        'postal_code',
-    ];
-
-    protected $casts = [
-        'est_date' => 'date',
+        'pincode',
+        'code',
+        'gumasta',
     ];
 }

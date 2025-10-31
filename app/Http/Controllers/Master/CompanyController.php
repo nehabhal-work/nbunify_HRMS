@@ -31,12 +31,12 @@ class CompanyController extends Controller
         return redirect()->route('master.companies.index');
     }
 
-    public function show(Company $company): View
-    {
-        return view('content.master.companies.show', [
-            'company' => $company
-        ]);
-    }
+    // public function show(Company $company): View
+    // {
+    //     return view('content.master.companies.show', [
+    //         'company' => $company
+    //     ]);
+    // }
 
     public function edit(Company $company): View
     {
