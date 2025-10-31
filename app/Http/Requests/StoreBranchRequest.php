@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreBranchRequest extends FormRequest
 {
@@ -11,7 +12,7 @@ class StoreBranchRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -21,20 +22,29 @@ class StoreBranchRequest extends FormRequest
      */
     public function rules(): array
     {
-        $branchId = $this->route('branch') ?? null;
-        
         return [
-            'name' => 'required|string|max:255',
-            'address' => 'required|string',
-            'phone' => 'nullable|string|max:20',
-            'email' => 'nullable|email|max:255',
-            'contact_person' => 'nullable|string|max:255',
-            'country' => 'nullable|string|max:255',
-            'state' => 'nullable|string|max:255',
-            'city' => 'nullable|string|max:255',
-            'pincode' => 'nullable|string|max:10',
-            'code' => 'required|string|max:50|unique:branches,code,' . $branchId,
-            'gumasta' => 'nullable|string|max:255',
+            'name' => ['required', 'string', 'max:255'],
+            'address' => ['required', 'string'],
+            'phone' => ['nullable', 'string', 'max:20'],
+            'email' => ['nullable', 'email', 'max:255'],
+            'contact_person' => ['nullable', 'string', 'max:255'],
+            'country' => ['nullable', 'string', 'max:255'],
+            'state' => ['nullable', 'string', 'max:255'],
+            'city' => ['nullable', 'string', 'max:255'],
+            'pincode' => ['nullable', 'string', 'max:10'],
+            'code' => ['required', 'string', 'max:50', Rule::unique('branches')->ignore($this->branch)],
+            'gumasta' => ['nullable', 'string', 'max:255'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'Branch name is required.',
+            'address.required' => 'Branch address is required.',
+            'code.required' => 'Branch code is required.',
+            'code.unique' => 'This branch code is already taken.',
+            'email.email' => 'Please provide a valid email address.',
         ];
     }
 }
