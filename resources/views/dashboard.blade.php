@@ -37,7 +37,17 @@
                     <!-- Content -->
 
                     <div class="container-xxl flex-grow-1 container-p-y">
-                        @yield('content')
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="card-title">Welcome to Dashboard</h4>
+                                        <p class="card-text">You are successfully logged in!</p>
+                                        <a href="{{ route('master.companies.index') }}" class="btn btn-primary">Manage Companies</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <!-- / Content -->
 

@@ -894,7 +894,7 @@
             </div>
 
             <!-- ✅ fixed form id and structure -->
-            <form id="loginForm" class="mb-3" action="#" method="post">
+            <form id="loginForm" class="mb-3" action="{{ route('login') }}" method="post">
                 @csrf
                 @method('post')
 
@@ -926,7 +926,7 @@
                 <span class="gentle-error" id="passwordError"></span>
 
                 <div style="color: #43964F; text-align:center;">
-                    <small>username:- admin@srk.com / password:- password</small>
+                    <small>username:- admin@els.com / password:- password</small>
                 </div>
                 @if ($errors->any())
                     <div class="alert alert-danger text-center mx-auto w-75 mt-3">
