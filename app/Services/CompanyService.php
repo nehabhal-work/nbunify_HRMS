@@ -10,12 +10,14 @@ class CompanyService
 {
     public function create(array $data): Company
     {
+        $data = $this->prepareCompanyData($data);
         $data = $this->handleFileUploads($data);
         return Company::create($data);
     }
 
     public function update(Company $company, array $data): Company
     {
+        $data = $this->prepareCompanyData($data, $company);
         $data = $this->handleFileUploads($data, $company);
         $company->update($data);
         return $company;
@@ -60,5 +62,27 @@ class CompanyService
                 Storage::disk('public')->delete($company->$field);
             }
         }
+    }
+
+    public function generateCompanyCode(string $companyName): string
+    {
+        $baseCode = strtoupper(substr(preg_replace('/[^A-Za-z0-9]/', '', $companyName), 0, 3));
+        $counter = 1;
+        
+        do {
+            $code = $baseCode . str_pad($counter, 3, '0', STR_PAD_LEFT);
+            $counter++;
+        } while (Company::where('code', $code)->exists());
+        
+        return $code;
+    }
+    
+    public function prepareCompanyData(array $data, ?Company $company = null): array
+    {
+        if (empty($data['code'])) {
+            $data['code'] = $this->generateCompanyCode($data['name']);
+        }
+        
+        return $data;
     }
 }
