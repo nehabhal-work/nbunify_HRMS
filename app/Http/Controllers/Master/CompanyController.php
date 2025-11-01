@@ -28,7 +28,7 @@ class CompanyController extends Controller
     public function store(CompanyRequest $request): RedirectResponse
     {
         $this->companyService->create($request->validated());
-        return redirect()->route('master.companies.index');
+        return redirect()->route('master.companies.index')->with('success', 'Company created successfully.');
     }
 
     // public function show(Company $company): View
@@ -48,12 +48,12 @@ class CompanyController extends Controller
     public function update(CompanyRequest $request, Company $company): RedirectResponse
     {
         $this->companyService->update($company, $request->validated());
-        return redirect()->route('master.companies.index');
+        return redirect()->route('master.companies.edit', $company->id)->with('success', 'Company updated successfully.');
     }
 
     public function destroy(Company $company): RedirectResponse
     {
         $this->companyService->delete($company);
-        return redirect()->route('master.companies.index');
+        return redirect()->route('master.companies.index')->with('success', 'Company deleted successfully.');
     }
 }

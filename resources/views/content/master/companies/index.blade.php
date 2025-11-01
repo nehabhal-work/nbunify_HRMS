@@ -3,11 +3,11 @@
 @section('content')
     <div>
         @if (session('success'))
-            <x-alert type="success" :message="session('success')" />
+            <x-alert-sweet type="success" :message="session('success')" />
         @endif
 
         @if (session('error'))
-            <x-alert type="danger" :message="session('error')" />
+            <x-alert-sweet type="danger" :message="session('error')" />
         @endif
 
 
@@ -25,7 +25,7 @@
 
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h4 class="fw-bold py-3 mb-4">
-            <span class="text-muted fw-light">Master /</span> Company
+            <span class="text-muted fw-light">Master /</span> <a href="{{ route('master.companies.create') }}">Company</a>
         </h4>
     </div>
 
@@ -36,8 +36,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Companies List</h5>
-                    <a class="btn btn-teal text-decoration-none" href="{{ route('master.companies.create') }}"
-                        role="button" style="background-color: teal; color: white;">Add New</a>
+                    <a class="btn btn-primary" href="{{ route('master.companies.create') }}" role="button">Add New</a>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive text-nowrap">
@@ -50,8 +49,6 @@
                                     <th>Number</th>
                                     <th>Email</th>
                                     <th>GST No</th>
-                                    <th>PAN No</th>
-                                    <th>Challan Prefix</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -61,12 +58,10 @@
                                     <tr>
                                         <td>{{ $d->id }}</td>
                                         <td>{{ $d->name }}</td>
-                                        <td>{{ $d->contact_person }}</td>
+                                        <td>{{ $d->contact_person_name }}</td>
                                         <td>{{ $d->phone }}</td>
                                         <td>{{ $d->email }}</td>
-                                        <td>{{ $d->gst_number }}</td>
-                                        <td>{{ $d->pan_number }}</td>
-                                        <td>{{ $d->code }}</td>
+                                        <td>{{ $d->gstin }}</td>
                                         <td>
                                             <div class="dropdown">
                                                 <button type="button" class="btn p-0 dropdown-toggle hide-arrow"

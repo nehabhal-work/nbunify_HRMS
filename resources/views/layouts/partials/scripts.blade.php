@@ -15,6 +15,8 @@
 <script src="{{ asset('assets/js/forms-selects.js') }}"></script>
 <script src="https://cdn.datatables.net/2.3.4/js/dataTables.js"></script>
 <script src="https://cdn.datatables.net/2.3.4/js/dataTables.bootstrap5.js"></script>
+<script src="{{ asset('assets/vendor/libs/sweetalert2/sweetalert2.js') }}"></script>
+<script src="{{ asset('assets/js/extended-ui-sweetalert2.js') }}"></script>
 @stack('vendorjs')
 
 
