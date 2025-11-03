@@ -864,14 +864,13 @@
         }
 
         .alert-danger {
-    color: #cd0101;
-    text-align: center;
-    align-items: center;
-    margin: 5px 0px;
-    font-size: 14px;
-    font-weight: 500;
-    }
-
+            color: #cd0101;
+            text-align: center;
+            align-items: center;
+            margin: 5px 0px;
+            font-size: 14px;
+            font-weight: 500;
+        }
     </style>
 </head>
 
@@ -888,7 +887,7 @@
             <div class="organic-border"></div>
             <div class="mindful-header">
                 <div class="zen-logo">
-                    <img src="{{ asset('assets/img/branding/srk-logo.jpeg') }}" alt="SRK Logo" width="100"
+                    <img src="{{ asset('assets/img/branding/logo.png') }}" alt="SRK Logo" width="200"
                         height="100" />
                 </div>
             </div>

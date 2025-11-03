@@ -27,14 +27,21 @@
                      </a>
                  </li>
 
-                 {{-- <li class="menu-item {{ request()->routeIs('master.branches.*') ? 'active' : '' }}">
+                 <li class="menu-item {{ request()->routeIs('master.branches.*') ? 'active' : '' }}">
                      <a href="{{ route('master.branches.index') }}" class="menu-link">
                          <i class="menu-icon bx bx-git-branch"></i>
                          <div class="text-truncate">Branches</div>
                      </a>
                  </li>
 
-                 <li class="menu-item {{ request()->routeIs('master.cp.*') ? 'active' : '' }}">
+                 <li class="menu-item {{ request()->routeIs('master.head-offices.*') ? 'active' : '' }}">
+                     <a href="{{ route('master.head-offices.index') }}" class="menu-link">
+                         <i class="menu-icon bx bx-building"></i>
+                         <div class="text-truncate">Head Offices</div>
+                     </a>
+                 </li>
+
+                 {{--  <li class="menu-item {{ request()->routeIs('master.cp.*') ? 'active' : '' }}">
                      <a href="{{ route('master.cp.index') }}" class="menu-link">
                          <i class="menu-icon bx bx-id-card"></i>
                          <div class="text-truncate">CP</div>
@@ -55,12 +62,7 @@
                      </a>
                  </li>
 
-                 <li class="menu-item {{ request()->routeIs('master.head-offices.*') ? 'active' : '' }}">
-                     <a href="{{ route('master.head-offices.index') }}" class="menu-link">
-                         <i class="menu-icon bx bx-building"></i>
-                         <div class="text-truncate">Head Offices</div>
-                     </a>
-                 </li>
+                 
 
                  <li class="menu-item {{ request()->routeIs('master.references.*') ? 'active' : '' }}">
                      <a href="{{ route('master.references.index') }}" class="menu-link">

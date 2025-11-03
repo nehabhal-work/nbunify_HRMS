@@ -28,7 +28,7 @@ class HeadOfficeController extends Controller
     public function store(StoreHeadOfficeRequest $request): RedirectResponse
     {
         $this->headOfficeService->createHeadOffice($request->validated());
-        return redirect()->route('master.head-offices.index');
+        return redirect()->route('master.head-offices.index')->with('success', 'Head office created successfully.');
     }
 
     public function edit(HeadOffice $headOffice): View
@@ -41,13 +41,12 @@ class HeadOfficeController extends Controller
     public function update(StoreHeadOfficeRequest $request, HeadOffice $headOffice): RedirectResponse
     {
         $this->headOfficeService->updateHeadOffice($headOffice->id, $request->validated());
-        return redirect()->route('master.head-offices.index');
+        return redirect()->route('master.head-offices.edit', $headOffice->id)->with('success', 'Head office updated successfully.');
     }
 
     public function destroy(HeadOffice $headOffice): RedirectResponse
     {
         $this->headOfficeService->deleteHeadOffice($headOffice->id);
-        return redirect()->route('master.head-offices.index');
+        return redirect()->route('master.head-offices.index')->with('success', 'Head office deleted successfully.');
     }
-
 }
