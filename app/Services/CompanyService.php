@@ -11,7 +11,7 @@ class CompanyService
 
     public function getAll()
     {
-        return Company::with('bankDetails')->all();
+        return Company::all();
     }
 
     public function getById($id)
