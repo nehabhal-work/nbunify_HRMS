@@ -4,56 +4,72 @@ namespace App\Http\Controllers\Master;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CompanyRequest;
-use App\Models\Company;
 use App\Services\CompanyService;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\View\View;
+use App\Services\CompanyBankDetailService;
 
 class CompanyController extends Controller
 {
-    public function __construct(private CompanyService $companyService) {}
+     protected $companyService;
+    protected $companyBankDetailService;
 
-    public function index(): View
+    public function __construct(CompanyService $companyService, CompanyBankDetailService $companyBankDetailService)
     {
-        return view('content.master.companies.index', [
-            'companies' => Company::all()
-        ]);
+        $this->companyService = $companyService;
+        $this->companyBankDetailService = $companyBankDetailService;
     }
 
-    public function create(): View
+    public function index()
     {
-        return view('content.master.companies.create');
+        $companies = $this->companyService->getAll();
+        return view('content.master.companies.index', compact('companies'));
     }
 
-    public function store(CompanyRequest $request): RedirectResponse
+    public function store(CompanyRequest $request)
     {
-        $this->companyService->create($request->validated());
-        return redirect()->route('master.companies.index')->with('success', 'Company created successfully.');
+        try {
+            $company = $this->companyService->create($request->validated());
+
+            if ($request->has('banks')) {
+                foreach ($request->banks as $bank) {
+                    $this->companyBankDetailService->create($company->id,$bank);
+                }
+            }
+            return redirect()->route('master.companies.index')->with('success', 'Company created successfully.');
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => $e->getMessage()])->withInput();
+        }
     }
 
-    // public function show(Company $company): View
-    // {
-    //     return view('content.master.companies.show', [
-    //         'company' => $company
-    //     ]);
-    // }
-
-    public function edit(Company $company): View
+    public function edit($id)
     {
-        return view('content.master.companies.edit', [
-            'company' => $company
-        ]);
+        $company = $this->companyService->getById($id);
+        $bankDetails = $company->bankDetails ?? collect();
+        return view('content.master.companies.edit', compact('company', 'bankDetails'));
     }
 
-    public function update(CompanyRequest $request, Company $company): RedirectResponse
+    public function update(CompanyRequest $request, $id)
     {
-        $this->companyService->update($company, $request->validated());
-        return redirect()->route('master.companies.edit', $company->id)->with('success', 'Company updated successfully.');
+        try {
+            $this->companyService->update($id, $request->validated());
+            $this->companyBankDetailService->deleteByCompanyId($id);
+            if ($request->has('banks')) {
+                foreach ($request->banks as $bank) {
+                    $this->companyBankDetailService->create($id,$bank);
+                }
+            }
+            return redirect()->route('master.companies.index')->with('success', 'Company updated successfully.');
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => $e->getMessage()])->withInput();
+        }
     }
 
-    public function destroy(Company $company): RedirectResponse
+    public function destroy($id)
     {
-        $this->companyService->delete($company);
-        return redirect()->route('master.companies.index')->with('success', 'Company deleted successfully.');
+        try {
+            $this->companyService->delete($id);
+            return redirect()->route('master.companies.index')->with('success', 'Company deleted successfully.');
+        } catch (\Exception $e) {
+            return back()->withErrors(['error' => $e->getMessage()]);
+        }
     }
 }
