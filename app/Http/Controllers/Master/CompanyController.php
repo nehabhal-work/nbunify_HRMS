@@ -24,6 +24,10 @@ class CompanyController extends Controller
         return view('content.master.companies.index', compact('companies'));
     }
 
+    public function create() {
+        return view('content.master.companies.create');
+    }
+
     public function store(CompanyRequest $request)
     {
         try {
