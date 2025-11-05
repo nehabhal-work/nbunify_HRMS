@@ -1,4 +1,4 @@
- <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+ <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme" style="background-color: rgb(229, 206, 242)!important;">
      <div class="app-brand demo" style="height: 100px;">
          <a href="index.html" class="app-brand-link">
              <span class="app-brand-logo demo">
