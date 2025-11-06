@@ -23,7 +23,7 @@
 
                  <li class="menu-item {{ request()->routeIs('master.companies.*') ? 'active' : '' }}">
                      <a href="{{ route('master.companies.index') }}" class="menu-link">
-                         <i class="menu-icon bx bx-building-house"></i>
+                         <i class="menu-icon bx bx-buildings"></i>
                          <div class="text-truncate">Companies</div>
                      </a>
                  </li>
@@ -37,10 +37,33 @@
 
                  <li class="menu-item {{ request()->routeIs('master.head-offices.*') ? 'active' : '' }}">
                      <a href="{{ route('master.head-offices.index') }}" class="menu-link">
-                         <i class="menu-icon bx bx-building"></i>
+                         <i class="menu-icon bx bx-building-house"></i>
                          <div class="text-truncate">Head Offices</div>
                      </a>
                  </li>
+
+                 <li class="menu-item {{ request()->routeIs('master.departments.*') ? 'active' : '' }}">
+                     <a href="{{ route('master.departments.index') }}" class="menu-link">
+                         <i class="menu-icon bx bx-network-chart"></i>
+                         <div class="text-truncate">Departments</div>
+                     </a>
+                 </li>
+
+                 <li class="menu-item {{ request()->routeIs('master.designations.*') ? 'active' : '' }}">
+                     <a href="{{ route('master.designations.index') }}" class="menu-link">
+                         <i class="menu-icon bx bx-id-card"></i>
+                         <div class="text-truncate">Designations</div>
+                     </a>
+                 </li>
+
+
+
+                 {{-- <li class="menu-item {{ request()->routeIs('master.employees.*') ? 'active' : '' }}">
+                     <a href="{{ route('master.employees.index') }}" class="menu-link">
+                         <i class="menu-icon bx bx-group"></i>
+                         <div class="text-truncate">Employees</div>
+                     </a>
+                 </li> --}}
 
                  {{--  <li class="menu-item {{ request()->routeIs('master.cp.*') ? 'active' : '' }}">
                      <a href="{{ route('master.cp.index') }}" class="menu-link">
@@ -56,12 +79,7 @@
                      </a>
                  </li>
 
-                 <li class="menu-item {{ request()->routeIs('master.employees.*') ? 'active' : '' }}">
-                     <a href="{{ route('master.employees.index') }}" class="menu-link">
-                         <i class="menu-icon bx bx-group"></i>
-                         <div class="text-truncate">Employees</div>
-                     </a>
-                 </li>
+                
 
                  
 
