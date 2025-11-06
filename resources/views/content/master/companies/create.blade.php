@@ -262,7 +262,6 @@
 
 
 
-
             <div class="col-md-6 d-flex">
                 <div class="card mb-4">
                     <div class="card-header d-flex justify-content-between align-items-center">
@@ -542,7 +541,85 @@
                 </div>
             </div>
 
+
+
+            {{-- Bank details --}}
+            <div class="col-12">
+                <div class="card mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Bank details</h5>
+                        <small class="text-muted float-end">BankInformation</small>
+                    </div>
+                    <div class="card-body">
+                        <div class="col-12 ">
+
+                            <div id="bankDetailsWrapper">
+
+                                <div class="bank-details-row row g-3 mb-3 bg-light position-relative">
+                                    <div class="col-md-2">
+                                        <label class="form-label">IFSC Code</label>
+                                        <input type="text" name="banks[0][ifsc_code]" class="form-control ifsc_code"
+                                            placeholder="Enter IFSC Code">
+                                        <span class="invalid-feedback errmsg"></span>
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <label class="form-label">Account No</label>
+                                        <input type="text" name="banks[0][account_number]"
+                                            class="form-control account_number" placeholder="Enter Account Number">
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label class="form-label">Bank Name</label>
+                                        <input type="text" name="banks[0][bank_name]"
+                                            class="form-control bank_name bg-secondary-subtle bg-gradient" readonly>
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <label class="form-label">Branch Name</label>
+                                        <input type="text" name="banks[0][branch_name]"
+                                            class="form-control branch_name bg-secondary-subtle bg-gradient" readonly>
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <label class="form-label">Bank Code</label>
+                                        <input type="text" name="banks[0][bank_code]"
+                                            class="form-control bank_code bg-secondary-subtle bg-gradient" readonly>
+                                    </div>
+
+                                    <div class="col-md-1">
+                                        <label class="form-label d-block">Primary</label>
+                                        <input type="hidden" name="banks[0][is_primary]" value="0">
+                                        <input type="checkbox" name="banks[0][is_primary]" value="1"
+                                            class="form-check-input setPrimary">
+                                    </div>
+
+                                    <div class="col-md-1 d-flex align-items-end">
+                                        <button type="button" class="btn btn-danger btn-sm removeBankRow d-none">
+                                            <i class="bx bx-minus"></i> Remove
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Add More Button -->
+                            <div class="mt-2">
+                                <button type="button" id="addMoreBank" class="btn btn-primary">
+                                    <i class="bx bx-plus"></i> Add More Bank
+                                </button>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+
         </div>
+
+
+
         <!-- Submit -->
         <div class="text-end mt-3">
             <button type="submit" class="btn btn-primary px-4">Save</button>

@@ -22,14 +22,14 @@ class SubDesignationController extends Controller
     {
         $subDesignations = $this->subDesignationService->getAll();
         $designations = $this->designationService->getAll();
-        return view('content.master.sub-designations.index', compact('subDesignations', 'designations'));
+        return back()->with('success', 'Sub-designations retrieved successfully.');
     }
 
     public function store(SubDesignationRequest $request)
     {
         try {
             $this->subDesignationService->create($request->validated());
-            return redirect()->route('master.sub-designations.index')->with('success', 'Sub-designation created successfully.');
+            return back()->with('success', 'Sub-designation created successfully.');
         } catch (\Exception $e) {
             return back()->withErrors(['error' => $e->getMessage()])->withInput();
         }
@@ -56,7 +56,7 @@ class SubDesignationController extends Controller
     {
         try {
             $this->subDesignationService->delete($id);
-            return redirect()->route('master.sub-designations.index')->with('success', 'Sub-designation deleted successfully.');
+            return back() > with('success', 'Sub-designation deleted successfully.');
         } catch (\Exception $e) {
             return back()->withErrors(['error' => $e->getMessage()]);
         }

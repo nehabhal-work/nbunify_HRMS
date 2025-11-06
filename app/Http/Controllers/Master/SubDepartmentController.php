@@ -22,7 +22,7 @@ class SubDepartmentController extends Controller
     {
         $subDepartments = $this->subDepartmentService->getAll();
         $departments = $this->departmentService->getAll();
-        return view('content.master.sub-departments.index', compact('subDepartments', 'departments'));
+        return  back()->with('success', 'Sub-department created successfully.');
     }
 
     public function store(SubDepartmentRequest $request)
@@ -46,7 +46,7 @@ class SubDepartmentController extends Controller
     {
         try {
             $this->subDepartmentService->update($id, $request->validated());
-            return redirect()->route('master.sub-departments.index')->with('success', 'Sub-department updated successfully.');
+            return back()->with('success', 'Sub-department updated successfully.');
         } catch (\Exception $e) {
             return back()->withErrors(['error' => $e->getMessage()])->withInput();
         }
@@ -56,7 +56,7 @@ class SubDepartmentController extends Controller
     {
         try {
             $this->subDepartmentService->delete($id);
-            return redirect()->route('master.sub-departments.index')->with('success', 'Sub-department deleted successfully.');
+            return back()->with('success', 'Sub-department deleted successfully.');
         } catch (\Exception $e) {
             return back()->withErrors(['error' => $e->getMessage()]);
         }
