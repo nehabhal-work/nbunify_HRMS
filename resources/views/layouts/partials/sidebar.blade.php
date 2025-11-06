@@ -100,12 +100,12 @@
                  <div class="text-truncate">Employees</div>
              </a>
          </li> --}}
-         <li class="menu-item {{ request()->routeIs('content.master.employees.*') ? 'active' : '' }}">
-            <a href="{{ route('content.master.employees.index') }}" class="menu-link">
-
-                 <div data-i18n="Analytics">Employee Module</div>
+         <li class="menu-item {{ request()->routeIs('master.content.employees.*') ? 'active' : '' }}">
+             <a href="{{ route('content.master.employees.index') }}" class="menu-link">
+                 <div>Employee Module</div>
              </a>
          </li>
+
 
      </ul>
 

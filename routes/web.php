@@ -23,9 +23,14 @@ Route::get('/dashboard', function () {
 //     return view('master/employees/index');
 // })->name('employees');
 // web.php
-Route::get('/employees', function () {
-    return view('content.master.employees.index');
-})->name('content.master.employees.index');
+// Route::get('/employees', function () {
+//     return view('master.content.employees.index');
+// })->name('content.master.employees.index');
+
+
+// Route::get('/employees', function () {
+//     return view('master.content.employees.index');
+// })->name('content.master.employees.index');
 
 
 
