@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Master\DepartmentController;
 use App\Http\Controllers\Master\DesignationController;
+use App\Http\Controllers\Master\EmployeeController;
 use App\Http\Controllers\Master\SubDepartmentController;
 use App\Http\Controllers\Master\SubDesignationController;
 use Illuminate\Support\Facades\Route;
@@ -42,6 +43,7 @@ Route::middleware(['auth', 'verified'])->prefix('master')->name('master.')->grou
     Route::resource('sub-departments', SubDepartmentController::class);
     Route::resource('designations', DesignationController::class);
     Route::resource('sub-designations', SubDesignationController::class);
+    Route::resource('employees', EmployeeController::class);
 });
 
 require __DIR__ . '/settings.php';
