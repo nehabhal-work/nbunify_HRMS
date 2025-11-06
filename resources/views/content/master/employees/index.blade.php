@@ -75,9 +75,11 @@
                                     <!-- Department -->
                                     <div class="col-md-3">
                                         <label class="form-label">Department</label>
-                                        <select name="deptment_id" class="form-select @error('deptment_id') is-invalid @enderror">
+                                        <select name="deptment_id"
+                                            class="form-select @error('deptment_id') is-invalid @enderror">
                                             <option value="">Select Department</option>
-                                            <option value="1" {{ old('deptment_id') == 1 ? 'selected' : '' }}>HR</option>
+                                            <option value="1" {{ old('deptment_id') == 1 ? 'selected' : '' }}>HR
+                                            </option>
                                             <option value="2" {{ old('deptment_id') == 2 ? 'selected' : '' }}>Finance
                                             </option>
                                         </select>
@@ -231,7 +233,7 @@
                                                 value="contract"
                                                 {{ old('status', 'contract') == 'contract' ? 'checked' : '' }}>
                                             <label class="btn btn-outline-primary" for="contract">Contract</label>
-                                            
+
 
                                             <input type="radio" class="btn-check" name="status" id="permanent"
                                                 value="permanent" {{ old('status') == 'permanent' ? 'checked' : '' }}>
@@ -265,51 +267,71 @@
 
 
                         </div>
+
+                        {{-- Bank details --}}
                         <div class="card my-4">
                             <div class="card-header">
                                 <strong class="text-uppercase">Bank Details</strong>
                             </div>
                             <div class="card-body">
-                                <div class="row g-3 my-3">
-                                    <div class="col-3">
-                                        <label for="bank_name" class="form-label">Bank Name</label>
-                                        <input type="text" name="bank_name" class="form-control" id="bank_name">
-                                    </div>
-                                    <div class="col-3">
-                                        <label for="account_number" class="form-label">Account Number</label>
-                                        <input type="text" name="account_number" class="form-control"
-                                            id="account_number">
-                                    </div>
-                                    <div class="col-3">
-                                        <label class="form-label">Account type</label>
-                                        <select class="form-select @error('acctype') is-invalid @enderror" id="acctype"
-                                            name="acctype[]" aria-label="Default select example">
-                                            <option value="">Select option</option>
-                                            <option value="">SAVING</option>
-                                            <option value="">CURRENT</option>
+                                <div class="col-12">
+                                    <div id="bankDetailsWrapper">
+                                        <div class="bank-details-row row g-3 mb-3 bg-light position-relative">
+                                            <div class="col-md-2">
+                                                <label class="form-label">IFSC Code</label>
+                                                <input type="text" name="banks[0][ifsc_code]"
+                                                    class="form-control ifsc_code" placeholder="Enter IFSC Code">
+                                                <span class="invalid-feedback errmsg"></span>
+                                            </div>
 
-                                        </select>
-                                    </div>
-                                    <div class="col-3">
-                                        <label for="ifsc" class="form-label">IFSC Code</label>
-                                        <input type="text" name="ifsc" class="form-control" id="ifsc">
-                                    </div>
-                                    <div class="col-3">
-                                        <label for="branch_name" class="form-label">Branch Name</label>
-                                        <input type="text" name="branch_name" class="form-control" id="branch_name">
-                                    </div>
-                                    <div class="col-3">
-                                        <label class="form-label d-block">TDS</label>
-                                        <div class="form-check form-switch">
-                                            <input class="form-check-input me-4 scale-up" type="checkbox" id="tdsSwitch"
-                                                name="tds" value="Yes">
-                                            <label class="form-check-label " for="tdsSwitch">Yes</label>
+                                            <div class="col-md-2">
+                                                <label class="form-label">Account No</label>
+                                                <input type="text" name="banks[0][account_number]"
+                                                    class="form-control account_number"
+                                                    placeholder="Enter Account Number">
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <label class="form-label">Bank Name</label>
+                                                <input type="text" name="banks[0][bank_name]"
+                                                    class="form-control bank_name bg-secondary-subtle bg-gradient"
+                                                    readonly>
+                                            </div>
+
+                                            <div class="col-md-2">
+                                                <label class="form-label">Branch Name</label>
+                                                <input type="text" name="banks[0][branch_name]"
+                                                    class="form-control branch_name bg-secondary-subtle bg-gradient"
+                                                    readonly>
+                                            </div>
+
+                                            <div class="col-md-2">
+                                                <label class="form-label">Bank Code</label>
+                                                <input type="text" name="banks[0][bank_code]"
+                                                    class="form-control bank_code bg-secondary-subtle bg-gradient"
+                                                    readonly>
+                                            </div>
+
+                                            <div class="col-md-1">
+                                                <label class="form-label d-block">Primary</label>
+                                                <input type="hidden" name="banks[0][is_primary]" value="0">
+                                                <input type="checkbox" name="banks[0][is_primary]" value="1"
+                                                    class="form-check-input setPrimary">
+                                            </div>
+
+                                            <div class="col-md-1 d-flex align-items-end">
+                                                <button type="button" class="btn btn-danger btn-sm removeBankRow d-none">
+                                                    <i class="bx bx-minus"></i> Remove
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>
+
+
+                        {{-- Salary details --}}
                         <div class="card my-4">
                             <div class="card-header">
                                 <strong class="text-uppercase"> salary Details </strong>
