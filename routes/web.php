@@ -17,6 +17,18 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+
+// web.php
+// Route::get('/employees', function () {
+//     return view('master/employees/index');
+// })->name('employees');
+// web.php
+Route::get('/employees', function () {
+    return view('content.master.employees.index');
+})->name('content.master.employees.index');
+
+
+
 Route::middleware(['auth', 'verified'])->prefix('master')->name('master.')->group(function () {
     Route::resource('companies', CompanyController::class);
     Route::resource('head-offices', HeadOfficeController::class);
