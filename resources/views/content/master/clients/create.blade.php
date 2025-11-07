@@ -1,5 +1,4 @@
 @extends('layouts.master-layout')
-@section('title', 'Client prfoile Create')
 
 @section('content')
     <div>
@@ -29,943 +28,712 @@
     </h4>
 
 
-    <div class="container-xxl flex-grow-1 container-p-y">
-        <h4 class="py-3 mb-4"><span class="text-muted fw-light">Form Wizard/</span> Numbered</h4>
+    <form action="{{ route('master.companies.store') }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        @method('post')
+        <div class="row align-items-stretch">
+            <div class="col-md-12">
+                <div class="card mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Primary Information</h5>
+                        <small class="text-muted float-end">client Basic Details</small>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
 
-        <!-- Default -->
-        <div class="row">
+
+
+                            {{-- Full Name --}}
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label" for="name">Full Name</label>
+                                <input type="text" class="form-control @error('name') is-invalid @enderror"
+                                    id="name" name="name" maxlength="50" value="{{ old('name') }}" required>
+                                @error('name')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            {{-- Gender --}}
+                            <div class="col-md-2 mb-3">
+                                <label class="form-label" for="gender">Gender</label>
+                                <select class="form-select @error('gender') is-invalid @enderror" id="gender"
+                                    name="gender">
+                                    <option value="">Select</option>
+                                    <option value="male" {{ old('gender') == 'male' ? 'selected' : '' }}>Male</option>
+                                    <option value="female" {{ old('gender') == 'female' ? 'selected' : '' }}>Female</option>
+                                    <option value="other" {{ old('gender') == 'other' ? 'selected' : '' }}>Other</option>
+                                </select>
+                                @error('gender')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+
+                            {{-- Date of Birth --}}
+                            <div class="col-md-2 mb-3">
+                                <label class="form-label" for="dob">Date of Birth</label>
+                                <input type="date" class="form-control @error('dob') is-invalid @enderror" id="dob"
+                                    name="dob" value="{{ old('dob') }}">
+                                @error('dob')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+
+                            {{-- Live Status --}}
+                            <div class="col-md-2 mb-3">
+                                <label class="form-label" for="live_status">Live Status</label>
+                                <select class="form-select @error('live_status') is-invalid @enderror" id="live_status"
+                                    name="live_status">
+                                    <option value="1" {{ old('live_status', '1') == '1' ? 'selected' : '' }}>Live
+                                    </option>
+                                    <option value="0" {{ old('live_status') == '0' ? 'selected' : '' }}>Deceased
+                                    </option>
+                                </select>
+                                @error('live_status')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+
+
+                            {{-- Date of Death --}}
+                            <div class="col-md-2 mb-3 d-none">
+                                <label for="dod" class="form-label">Date of Death</label>
+                                <input type="date" name="dod" id="dod" class="form-control"
+                                    value="{{ old('dod') }}">
+                                @error('dod')
+                                    <div class="text-danger small">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+
+                            {{-- Marital Status --}}
+                            <div class="col-md-2 mb-3">
+                                <label class="form-label" for="marital_status">Marital Status</label>
+                                <select class="form-select @error('marital_status') is-invalid @enderror"
+                                    id="marital_status" name="marital_status">
+                                    <option value="">Select</option>
+                                    <option value="single" {{ old('marital_status') == 'single' ? 'selected' : '' }}>Single
+                                    </option>
+                                    <option value="married" {{ old('marital_status') == 'married' ? 'selected' : '' }}>
+                                        Married</option>
+                                    <option value="divorcee" {{ old('marital_status') == 'divorcee' ? 'selected' : '' }}>
+                                        Divorcee</option>
+                                    <option value="widow" {{ old('marital_status') == 'widow' ? 'selected' : '' }}>Widow
+                                    </option>
+                                    <option value="other" {{ old('marital_status') == 'other' ? 'selected' : '' }}>Other
+                                    </option>
+                                </select>
+                                @error('marital_status')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+
+                            {{-- Nationality --}}
+                            <div class="col-md-2 mb-3">
+                                <label class="form-label" for="nationality">Nationality</label>
+                                <select class="form-select @error('nationality') is-invalid @enderror" id="nationality"
+                                    name="nationality">
+                                    <option value="">Select</option>
+                                    <option value="resident" {{ old('nationality') == 'resident' ? 'selected' : '' }}>
+                                        Residential Individual</option>
+                                    <option value="nro" {{ old('nationality') == 'nro' ? 'selected' : '' }}>NRO</option>
+                                    <option value="nre" {{ old('nationality') == 'nre' ? 'selected' : '' }}>NRE</option>
+                                    <option value="oci_pio" {{ old('nationality') == 'oci_pio' ? 'selected' : '' }}>OCI/PIO
+                                    </option>
+                                    <option value="green_card_holder"
+                                        {{ old('nationality') == 'green_card_holder' ? 'selected' : '' }}>Green Card Holder
+                                    </option>
+                                    <option value="tax_resident"
+                                        {{ old('nationality') == 'tax_resident' ? 'selected' : '' }}>Tax Resident in Other
+                                        Country</option>
+                                    <option value="foreign_nation"
+                                        {{ old('nationality') == 'foreign_nation' ? 'selected' : '' }}>Foreign National
+                                    </option>
+                                    <option value="other" {{ old('nationality') == 'other' ? 'selected' : '' }}>Other
+                                    </option>
+                                </select>
+                                @error('nationality')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+
+                            {{-- Occupation --}}
+                            <div class="col-md-2 mb-3">
+                                <label class="form-label" for="occupation">Occupation</label>
+                                <select class="form-select @error('occupation') is-invalid @enderror" id="occupation"
+                                    name="occupation">
+                                    <option value="">Select</option>
+                                    <option value="private_service"
+                                        {{ old('occupation') == 'private_service' ? 'selected' : '' }}>Private Sector
+                                    </option>
+                                    <option value="public_service"
+                                        {{ old('occupation') == 'public_service' ? 'selected' : '' }}>Public Sector
+                                    </option>
+                                    <option value="government_service"
+                                        {{ old('occupation') == 'government_service' ? 'selected' : '' }}>Government
+                                        Service</option>
+                                    <option value="business" {{ old('occupation') == 'business' ? 'selected' : '' }}>
+                                        Business</option>
+                                    <option value="professional"
+                                        {{ old('occupation') == 'professional' ? 'selected' : '' }}>Professional</option>
+                                    <option value="agriculture"
+                                        {{ old('occupation') == 'agriculture' ? 'selected' : '' }}>
+                                        Agriculture</option>
+                                    <option value="retired" {{ old('occupation') == 'retired' ? 'selected' : '' }}>Retired
+                                    </option>
+                                    <option value="housewife" {{ old('occupation') == 'housewife' ? 'selected' : '' }}>
+                                        Housewife</option>
+                                    <option value="student" {{ old('occupation') == 'student' ? 'selected' : '' }}>Student
+                                    </option>
+                                    <option value="doctor" {{ old('occupation') == 'doctor' ? 'selected' : '' }}>Doctor
+                                    </option>
+                                    <option value="education" {{ old('occupation') == 'education' ? 'selected' : '' }}>
+                                        Education</option>
+                                    <option value="other" {{ old('occupation') == 'other' ? 'selected' : '' }}>Other
+                                    </option>
+                                </select>
+                                @error('occupation')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+
+                            {{-- PAN No. --}}
+                            <div class="col-md-2 mb-3">
+                                <label class="form-label" for="pan_no">PAN No.</label>
+                                <input type="text" class="form-control @error('pan_no') is-invalid @enderror"
+                                    id="pan_no" name="pan_no" maxlength="10" value="{{ old('pan_no') }}"
+                                    oninput="this.value = this.value.toUpperCase()"
+                                    onblur="validatePAN(this.value,'errpancardno')">
+                                @error('pan_no')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+
+                            {{-- Aadhaar No. --}}
+                            <div class="col-md-2 mb-3">
+                                <label class="form-label" for="aadhar_no">Aadhaar No.</label>
+                                <input type="text" class="form-control @error('aadhar_no') is-invalid @enderror"
+                                    id="aadhar_no" name="aadhar_no" maxlength="12" value="{{ old('aadhar_no') }}">
+                                @error('aadhar_no')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+
+                            {{-- CKYC No --}}
+                            <div class="col-md-2 mb-3">
+                                <label class="form-label" for="ckyc_no">CKYC No.</label>
+                                <input type="text" class="form-control @error('ckyc_no') is-invalid @enderror"
+                                    id="ckyc_no" name="ckyc_no" maxlength="20" value="{{ old('ckyc_no') }}">
+                                @error('ckyc_no')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+
+
+                            {{-- Mobile Number --}}
+                            <div class="col-md-2 mb-3">
+                                <label class="form-label" for="mobile_no">Mobile Number</label>
+                                <input type="text"
+                                    class="form-control onlyphone @error('mobile_no') is-invalid @enderror"
+                                    id="mobile_no" name="mobile_no" maxlength="15" value="{{ old('mobile_no') }}">
+                                @error('mobile_no')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+
+                            {{-- WhatsApp Number --}}
+                            <div class="col-md-2 mb-3">
+                                <label class="form-label" for="whatsapp_no">WhatsApp Number</label>
+                                <input type="text"
+                                    class="form-control onlyphone @error('whatsapp_no') is-invalid @enderror"
+                                    id="whatsapp_no" name="whatsapp_no" maxlength="15"
+                                    value="{{ old('whatsapp_no') }}">
+                                @error('whatsapp_no')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+
+                            {{-- Landline No --}}
+                            <div class="col-md-2 mb-3">
+                                <label class="form-label" for="landline_no">Landline No.</label>
+                                <input type="text" class="form-control @error('landline_no') is-invalid @enderror"
+                                    id="landline_no" name="landline_no" maxlength="15"
+                                    value="{{ old('landline_no') }}">
+                                @error('landline_no')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+
+                            {{-- Email --}}
+                            <div class="col-md-3 mb-3">
+                                <label class="form-label" for="email">Email</label>
+                                <input type="email" class="form-control @error('email') is-invalid @enderror"
+                                    id="email" name="email" value="{{ old('email') }}">
+                                @error('email')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+
+
+                            {{-- Relation Manager --}}
+                            <div class="col-md-3 mb-3">
+                                <label for="relation_manager" class="form-label">Relation Manager</label>
+                                <select name="relation_manager_id" id="relation_manager" class="form-select">
+                                    <option value="">Select Relation Manager</option>
+                                    {{-- @foreach ($relationManagers as $manager)
+                                        <option value="{{ $manager->id }}"
+                                            {{ old('relation_manager_id') == $manager->id ? 'selected' : '' }}>
+                                            {{ $manager->name }}
+                                        </option>
+                                    @endforeach --}}
+                                </select>
+                                @error('relation_manager_id')
+                                    <div class="text-danger small">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+
+                            {{-- Remarks / Note --}}
+                            <div class="col-md-5 mb-3">
+                                <label class="form-label" for="remarks">Remarks / Note</label>
+                                <input type="text" class="form-control @error('remarks') is-invalid @enderror"
+                                    id="remarks" name="remarks" maxlength="100" value="{{ old('remarks') }}">
+                                @error('remarks')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+
+
+
+
+
+                            <!-- Residential Address -->
+                            <hr>
+                            <h6 class="mb-3">Residential Address</h6>
+                            <div class="col-6 mb-3">
+                                <label class="form-label">Address</label>
+                                <input type="text" name="registered_address" id="registered_address"
+                                    class="form-control @error('registered_address') is-invalid @enderror"
+                                    value="{{ old('registered_address') }}">
+                                @error('registered_address')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+
+                            {{-- State --}}
+                            <div class="col-md-2 mb-3">
+                                <label class="form-label">State</label>
+                                <input type="text" name="registered_state" id="registered_state"
+                                    class="form-control @error('registered_state') is-invalid @enderror"
+                                    value="{{ old('registered_state') }}">
+                                @error('registered_state')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+
+                            {{-- City --}}
+                            <div class="col-md-2 mb-3">
+                                <label class="form-label">City</label>
+                                <input type="text" name="registered_city" id="registered_city"
+                                    class="form-control @error('registered_city') is-invalid @enderror"
+                                    value="{{ old('registered_city') }}">
+                                @error('registered_city')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+
+                            {{-- Postal Code --}}
+                            <div class="col-md-2 mb-3">
+                                <label class="form-label">Postal Code</label>
+                                <input type="text" name="registered_pincode" id="registered_pincode"
+                                    class="form-control onlydigit @error('registered_pincode') is-invalid @enderror"
+                                    value="{{ old('registered_pincode') }}" maxlength="6">
+                                @error('registered_pincode')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+
+
+                            <!-- Additional Address -->
+                            <hr>
+                            <h6 class="mb-3">Office Address</h6>
+                            <div class="col-6 mb-3">
+                                <label class="form-label">Address</label>
+                                <input type="text" name="additional_address" id="additional_address"
+                                    class="form-control @error('additional_address') is-invalid @enderror"
+                                    value="{{ old('additional_address') }}">
+                                @error('additional_address')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+
+
+                            <div class="col-md-2 mb-3">
+                                <label class="form-label">State</label>
+                                <input type="text" name="additional_state" id="additional_state"
+                                    class="form-control @error('additional_state') is-invalid @enderror"
+                                    value="{{ old('additional_state') }}">
+                                @error('additional_state')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-2 mb-3">
+                                <label class="form-label">City</label>
+                                <input type="text" name="additional_city" id="additional_city"
+                                    class="form-control @error('additional_city') is-invalid @enderror"
+                                    value="{{ old('additional_city') }}">
+                                @error('additional_city')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-2 mb-3">
+                                <label class="form-label">Pincode</label>
+                                <input type="text" name="additional_pincode" id="additional_pincode"
+                                    class="form-control onlydigit @error('additional_pincode') is-invalid @enderror"
+                                    value="{{ old('additional_pincode') }}" maxlength="6">
+                                @error('additional_pincode')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            {{-- Family details --}}
             <div class="col-12">
-                <h5>Default</h5>
-            </div>
-
-            <!-- Default Wizard -->
-            <div class="col-12 mb-4">
-                <small class="text-light fw-medium">Basic</small>
-                <div class="bs-stepper wizard-numbered mt-2">
-                    <div class="bs-stepper-header">
-                        <div class="step" data-target="#account-details">
-                            <button type="button" class="step-trigger">
-                                <span class="bs-stepper-circle">1</span>
-                                <span class="bs-stepper-label mt-1">
-                                    <span class="bs-stepper-title">Account Details</span>
-                                    <span class="bs-stepper-subtitle">Setup Account Details</span>
-                                </span>
-                            </button>
-                        </div>
-                        <div class="line">
-                            <i class="bx bx-chevron-right"></i>
-                        </div>
-                        <div class="step" data-target="#personal-info">
-                            <button type="button" class="step-trigger">
-                                <span class="bs-stepper-circle">2</span>
-                                <span class="bs-stepper-label mt-1">
-                                    <span class="bs-stepper-title">Personal Info</span>
-                                    <span class="bs-stepper-subtitle">Add personal info</span>
-                                </span>
-                            </button>
-                        </div>
-                        <div class="line">
-                            <i class="bx bx-chevron-right"></i>
-                        </div>
-                        <div class="step" data-target="#social-links">
-                            <button type="button" class="step-trigger">
-                                <span class="bs-stepper-circle">3</span>
-                                <span class="bs-stepper-label mt-1">
-                                    <span class="bs-stepper-title">Social Links</span>
-                                    <span class="bs-stepper-subtitle">Add social links</span>
-                                </span>
-                            </button>
-                        </div>
+                <div class="card mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Family details</h5>
+                        <small class="text-muted float-end">Family Information</small>
                     </div>
-                    <div class="bs-stepper-content">
-                        <form onSubmit="return false">
-                            <!-- Account Details -->
-                            <div id="account-details" class="content">
-                                <div class="content-header mb-3">
-                                    <h6 class="mb-0">Account Details</h6>
-                                    <small>Enter Your Account Details.</small>
-                                </div>
-                                <div class="row g-3">
-                                    <div class="col-sm-6">
-                                        <label class="form-label" for="username">Username</label>
-                                        <input type="text" id="username" class="form-control" placeholder="johndoe" />
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label class="form-label" for="email">Email</label>
-                                        <input type="email" id="email" class="form-control"
-                                            placeholder="john.doe@email.com" aria-label="john.doe" />
-                                    </div>
-                                    <div class="col-sm-6 form-password-toggle">
-                                        <label class="form-label" for="password">Password</label>
-                                        <div class="input-group input-group-merge">
-                                            <input type="password" id="password" class="form-control"
-                                                placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                                                aria-describedby="password2" />
-                                            <span class="input-group-text cursor-pointer" id="password2"><i
-                                                    class="bx bx-hide"></i></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6 form-password-toggle">
-                                        <label class="form-label" for="confirm-password">Confirm Password</label>
-                                        <div class="input-group input-group-merge">
-                                            <input type="password" id="confirm-password" class="form-control"
-                                                placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                                                aria-describedby="confirm-password2" />
-                                            <span class="input-group-text cursor-pointer" id="confirm-password2"><i
-                                                    class="bx bx-hide"></i></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-12 d-flex justify-content-between">
-                                        <button class="btn btn-label-secondary btn-prev" disabled>
-                                            <i class="bx bx-chevron-left bx-sm ms-sm-n2"></i>
-                                            <span class="align-middle d-sm-inline-block d-none">Previous</span>
-                                        </button>
-                                        <button class="btn btn-primary btn-next">
-                                            <span class="align-middle d-sm-inline-block d-none me-sm-1">Next</span>
-                                            <i class="bx bx-chevron-right bx-sm me-sm-n2"></i>
-                                        </button>
-                                    </div>
-                                </div>
+                    <div class="card-body">
+                        <div class="col-12 ">
+                            <div class="alert alert-info mt-3">
+                                <i class="bx bx-info-circle me-1"></i>
+                                <strong>Note:</strong>
+                                If the family is already registered, please select it from the dropdown.
+                                If not, save this record first, then go to the <strong>Family</strong> menu to add a new
+                                family member for this profile.
+
+
                             </div>
-                            <!-- Personal Info -->
-                            <div id="personal-info" class="content">
-                                <div class="content-header mb-3">
-                                    <h6 class="mb-0">Personal Info</h6>
-                                    <small>Enter Your Personal Info.</small>
-                                </div>
-                                <div class="row g-3">
-                                    <div class="col-sm-6">
-                                        <label class="form-label" for="first-name">First Name</label>
-                                        <input type="text" id="first-name" class="form-control" placeholder="John" />
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label class="form-label" for="last-name">Last Name</label>
-                                        <input type="text" id="last-name" class="form-control" placeholder="Doe" />
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label class="form-label" for="country">Country</label>
-                                        <select class="select2" id="country">
-                                            <option label=" "></option>
-                                            <option>UK</option>
-                                            <option>USA</option>
-                                            <option>Spain</option>
-                                            <option>France</option>
-                                            <option>Italy</option>
-                                            <option>Australia</option>
+                            <div id="bankDetailsWrapper">
+
+                                <div class="bank-details-row row g-3 mb-3 bg-light position-relative">
+
+                                    {{-- Relation Manager --}}
+                                    <div class="col-md-3 mb-3">
+                                        <label for="relation_manager" class="form-label">Family from profile</label>
+                                        <select name="relation_manager_id" id="relation_manager" class="form-select">
+                                            <option value="">Select Relation Manager</option>
+                                            {{-- @foreach ($relationManagers as $manager)
+                                        <option value="{{ $manager->id }}"
+                                            {{ old('relation_manager_id') == $manager->id ? 'selected' : '' }}>
+                                            {{ $manager->name }}
+                                        </option>
+                                    @endforeach --}}
                                         </select>
+                                        @error('relation_manager_id')
+                                            <div class="text-danger small">{{ $message }}</div>
+                                        @enderror
                                     </div>
-                                    <div class="col-sm-6">
-                                        <label class="form-label" for="language">Language</label>
-                                        <select class="selectpicker w-auto" id="language" data-style="btn-transparent"
-                                            data-icon-base="bx" data-tick-icon="bx-check text-white" multiple>
-                                            <option>English</option>
-                                            <option>French</option>
-                                            <option>Spanish</option>
+
+
+
+                                    {{-- Relation Manager --}}
+                                    <div class="col-md-3 mb-3">
+                                        <label for="relation_manager" class="form-label">Relation Manager</label>
+                                        <select name="relation_manager_id" id="relation_manager" class="form-select">
+                                            <option value="">Select Relation Manager</option>
+                                            {{-- @foreach ($relationManagers as $manager)
+                                        <option value="{{ $manager->id }}"
+                                            {{ old('relation_manager_id') == $manager->id ? 'selected' : '' }}>
+                                            {{ $manager->name }}
+                                        </option>
+                                    @endforeach --}}
                                         </select>
+                                        @error('relation_manager_id')
+                                            <div class="text-danger small">{{ $message }}</div>
+                                        @enderror
                                     </div>
-                                    <div class="col-12 d-flex justify-content-between">
-                                        <button class="btn btn-primary btn-prev">
-                                            <i class="bx bx-chevron-left bx-sm ms-sm-n2"></i>
-                                            <span class="align-middle d-sm-inline-block d-none">Previous</span>
-                                        </button>
-                                        <button class="btn btn-primary btn-next">
-                                            <span class="align-middle d-sm-inline-block d-none me-sm-1">Next</span>
-                                            <i class="bx bx-chevron-right bx-sm me-sm-n2"></i>
+
+
+
+                                    <div class="col-md-6 d-flex align-items-end">
+                                        <button type="button" class="btn btn-danger btn-sm removeBankRow d-none">
+                                            <i class="bx bx-minus"></i> Remove
                                         </button>
                                     </div>
                                 </div>
                             </div>
-                            <!-- Social Links -->
-                            <div id="social-links" class="content">
-                                <div class="content-header mb-3">
-                                    <h6 class="mb-0">Social Links</h6>
-                                    <small>Enter Your Social Links.</small>
-                                </div>
-                                <div class="row g-3">
-                                    <div class="col-sm-6">
-                                        <label class="form-label" for="twitter">Twitter</label>
-                                        <input type="text" id="twitter" class="form-control"
-                                            placeholder="https://twitter.com/abc" />
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label class="form-label" for="facebook">Facebook</label>
-                                        <input type="text" id="facebook" class="form-control"
-                                            placeholder="https://facebook.com/abc" />
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label class="form-label" for="google">Google+</label>
-                                        <input type="text" id="google" class="form-control"
-                                            placeholder="https://plus.google.com/abc" />
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label class="form-label" for="linkedin">LinkedIn</label>
-                                        <input type="text" id="linkedin" class="form-control"
-                                            placeholder="https://linkedin.com/abc" />
-                                    </div>
-                                    <div class="col-12 d-flex justify-content-between">
-                                        <button class="btn btn-primary btn-prev">
-                                            <i class="bx bx-chevron-left bx-sm ms-sm-n2"></i>
-                                            <span class="align-middle d-sm-inline-block d-none">Previous</span>
-                                        </button>
-                                        <button class="btn btn-success btn-submit">Submit</button>
-                                    </div>
-                                </div>
+
+                            <!-- Add More Button -->
+                            <div class="mt-2">
+                                <button type="button" id="addMoreBank" class="btn btn-primary">
+                                    <i class="bx bx-plus"></i> Add More Family member
+                                </button>
                             </div>
-                        </form>
+                        </div>
+
+
                     </div>
                 </div>
             </div>
-            <!-- /Default Wizard -->
 
-            <!-- Validation Wizard -->
-            <div class="col-12 mb-4">
-                <small class="text-light fw-medium">Validation</small>
-                <div id="wizard-validation" class="bs-stepper mt-2">
-                    <div class="bs-stepper-header">
-                        <div class="step" data-target="#account-details-validation">
-                            <button type="button" class="step-trigger">
-                                <span class="bs-stepper-circle">1</span>
-                                <span class="bs-stepper-label mt-1">
-                                    <span class="bs-stepper-title">Account Details</span>
-                                    <span class="bs-stepper-subtitle">Setup Account Details</span>
-                                </span>
-                            </button>
-                        </div>
-                        <div class="line">
-                            <i class="bx bx-chevron-right"></i>
-                        </div>
-                        <div class="step" data-target="#personal-info-validation">
-                            <button type="button" class="step-trigger">
-                                <span class="bs-stepper-circle">2</span>
-                                <span class="bs-stepper-label mt-1">
-                                    <span class="bs-stepper-title">Personal Info</span>
-                                    <span class="bs-stepper-subtitle">Add personal info</span>
-                                </span>
-                            </button>
-                        </div>
-                        <div class="line">
-                            <i class="bx bx-chevron-right"></i>
-                        </div>
-                        <div class="step" data-target="#social-links-validation">
-                            <button type="button" class="step-trigger">
-                                <span class="bs-stepper-circle">3</span>
-                                <span class="bs-stepper-label mt-1">
-                                    <span class="bs-stepper-title">Social Links</span>
-                                    <span class="bs-stepper-subtitle">Add social links</span>
-                                </span>
-                            </button>
-                        </div>
+
+
+
+            {{-- Bank details --}}
+            <div class="col-md-6 d-flex">
+                <div class="card mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Bank details</h5>
+                        <small class="text-muted float-end">Bank Information</small>
                     </div>
-                    <div class="bs-stepper-content">
-                        <form id="wizard-validation-form" onSubmit="return false">
-                            <!-- Account Details -->
-                            <div id="account-details-validation" class="content">
-                                <div class="content-header mb-3">
-                                    <h6 class="mb-0">Account Details</h6>
-                                    <small>Enter Your Account Details.</small>
-                                </div>
-                                <div class="row g-3">
-                                    <div class="col-sm-6">
-                                        <label class="form-label" for="formValidationUsername">Username</label>
-                                        <input type="text" name="formValidationUsername" id="formValidationUsername"
-                                            class="form-control" placeholder="johndoe" />
+                    <div class="card-body">
+                        <div class="col-12 ">
+
+                            <div id="bankDetailsWrapper">
+
+                                <div class="bank-details-row row g-3 mb-3 bg-light position-relative">
+                                    <div class="col-md-6">
+                                        <label class="form-label">IFSC Code</label>
+                                        <input type="text" name="banks[0][ifsc_code]" class="form-control ifsc_code"
+                                            placeholder="Enter IFSC Code">
+                                        <span class="invalid-feedback errmsg"></span>
                                     </div>
-                                    <div class="col-sm-6">
-                                        <label class="form-label" for="formValidationEmail">Email</label>
-                                        <input type="email" name="formValidationEmail" id="formValidationEmail"
-                                            class="form-control" placeholder="john.doe@email.com"
-                                            aria-label="john.doe" />
+
+                                    <div class="col-md-6">
+                                        <label class="form-label">Account No</label>
+                                        <input type="text" name="banks[0][account_number]"
+                                            class="form-control account_number" placeholder="Enter Account Number">
                                     </div>
-                                    <div class="col-sm-6 form-password-toggle">
-                                        <label class="form-label" for="formValidationPass">Password</label>
-                                        <div class="input-group input-group-merge">
-                                            <input type="password" id="formValidationPass" name="formValidationPass"
-                                                class="form-control"
-                                                placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                                                aria-describedby="formValidationPass2" />
-                                            <span class="input-group-text cursor-pointer" id="formValidationPass2"><i
-                                                    class="bx bx-hide"></i></span>
-                                        </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label">Bank Name</label>
+                                        <input type="text" name="banks[0][bank_name]"
+                                            class="form-control bank_name bg-secondary-subtle bg-gradient" readonly>
                                     </div>
-                                    <div class="col-sm-6 form-password-toggle">
-                                        <label class="form-label" for="formValidationConfirmPass">Confirm Password</label>
-                                        <div class="input-group input-group-merge">
-                                            <input type="password" id="formValidationConfirmPass"
-                                                name="formValidationConfirmPass" class="form-control"
-                                                placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                                                aria-describedby="formValidationConfirmPass2" />
-                                            <span class="input-group-text cursor-pointer"
-                                                id="formValidationConfirmPass2"><i class="bx bx-hide"></i></span>
-                                        </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label">Branch Name</label>
+                                        <input type="text" name="banks[0][branch_name]"
+                                            class="form-control branch_name bg-secondary-subtle bg-gradient" readonly>
                                     </div>
-                                    <div class="col-12 d-flex justify-content-between">
-                                        <button class="btn btn-label-secondary btn-prev" disabled>
-                                            <i class="bx bx-chevron-left bx-sm ms-sm-n2"></i>
-                                            <span class="align-middle d-sm-inline-block d-none">Previous</span>
-                                        </button>
-                                        <button class="btn btn-primary btn-next">
-                                            <span class="align-middle d-sm-inline-block d-none me-sm-1">Next</span>
-                                            <i class="bx bx-chevron-right bx-sm me-sm-n2"></i>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label">Bank Code</label>
+                                        <input type="text" name="banks[0][bank_code]"
+                                            class="form-control bank_code bg-secondary-subtle bg-gradient" readonly>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label class="form-label d-block">Primary a/c</label>
+                                        <input type="hidden" name="banks[0][is_primary]" value="0">
+                                        <input type="checkbox" name="banks[0][is_primary]" value="1"
+                                            class="form-check-input setPrimary">
+                                    </div>
+
+                                    <div class="col-md-6 d-flex align-items-end">
+                                        <button type="button" class="btn btn-danger btn-sm removeBankRow d-none">
+                                            <i class="bx bx-minus"></i> Remove
                                         </button>
                                     </div>
                                 </div>
                             </div>
-                            <!-- Personal Info -->
-                            <div id="personal-info-validation" class="content">
-                                <div class="content-header mb-3">
-                                    <h6 class="mb-0">Personal Info</h6>
-                                    <small>Enter Your Personal Info.</small>
-                                </div>
-                                <div class="row g-3">
-                                    <div class="col-sm-6">
-                                        <label class="form-label" for="formValidationFirstName">First Name</label>
-                                        <input type="text" id="formValidationFirstName" name="formValidationFirstName"
-                                            class="form-control" placeholder="John" />
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label class="form-label" for="formValidationLastName">Last Name</label>
-                                        <input type="text" id="formValidationLastName" name="formValidationLastName"
-                                            class="form-control" placeholder="Doe" />
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label class="form-label" for="formValidationCountry">Country</label>
-                                        <select class="select2" id="formValidationCountry" name="formValidationCountry">
-                                            <option label=" "></option>
-                                            <option>UK</option>
-                                            <option>USA</option>
-                                            <option>Spain</option>
-                                            <option>France</option>
-                                            <option>Italy</option>
-                                            <option>Australia</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label class="form-label" for="formValidationLanguage">Language</label>
-                                        <select class="selectpicker w-auto" id="formValidationLanguage"
-                                            data-style="btn-transparent" data-icon-base="bx"
-                                            data-tick-icon="bx-check text-white" name="formValidationLanguage" multiple>
-                                            <option>English</option>
-                                            <option>French</option>
-                                            <option>Spanish</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-12 d-flex justify-content-between">
-                                        <button class="btn btn-primary btn-prev">
-                                            <i class="bx bx-chevron-left bx-sm ms-sm-n2"></i>
-                                            <span class="align-middle d-sm-inline-block d-none">Previous</span>
-                                        </button>
-                                        <button class="btn btn-primary btn-next">
-                                            <span class="align-middle d-sm-inline-block d-none me-sm-1">Next</span>
-                                            <i class="bx bx-chevron-right bx-sm me-sm-n2"></i>
-                                        </button>
-                                    </div>
-                                </div>
+
+                            <!-- Add More Button -->
+                            <div class="mt-2">
+                                <button type="button" id="addMoreBank" class="btn btn-primary">
+                                    <i class="bx bx-plus"></i> Add More Bank
+                                </button>
                             </div>
-                            <!-- Social Links -->
-                            <div id="social-links-validation" class="content">
-                                <div class="content-header mb-3">
-                                    <h6 class="mb-0">Social Links</h6>
-                                    <small>Enter Your Social Links.</small>
-                                </div>
-                                <div class="row g-3">
-                                    <div class="col-sm-6">
-                                        <label class="form-label" for="formValidationTwitter">Twitter</label>
-                                        <input type="text" name="formValidationTwitter" id="formValidationTwitter"
-                                            class="form-control" placeholder="https://twitter.com/abc" />
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label class="form-label" for="formValidationFacebook">Facebook</label>
-                                        <input type="text" name="formValidationFacebook" id="formValidationFacebook"
-                                            class="form-control" placeholder="https://facebook.com/abc" />
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label class="form-label" for="formValidationGoogle">Google+</label>
-                                        <input type="text" name="formValidationGoogle" id="formValidationGoogle"
-                                            class="form-control" placeholder="https://plus.google.com/abc" />
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label class="form-label" for="formValidationLinkedIn">LinkedIn</label>
-                                        <input type="text" name="formValidationLinkedIn" id="formValidationLinkedIn"
-                                            class="form-control" placeholder="https://linkedin.com/abc" />
-                                    </div>
-                                    <div class="col-12 d-flex justify-content-between">
-                                        <button class="btn btn-primary btn-prev">
-                                            <i class="bx bx-chevron-left bx-sm ms-sm-n2"></i>
-                                            <span class="align-middle d-sm-inline-block d-none">Previous</span>
-                                        </button>
-                                        <button class="btn btn-success btn-next btn-submit">Submit</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
+                        </div>
+
+
                     </div>
                 </div>
             </div>
-            <!-- /Validation Wizard -->
 
-            <!-- Vertical Wizard -->
-            <div class="col-12 mb-4">
-                <small class="text-light fw-medium">Vertical</small>
-                <div class="bs-stepper wizard-vertical vertical mt-2">
-                    <div class="bs-stepper-header">
-                        <div class="step" data-target="#account-details-1">
-                            <button type="button" class="step-trigger">
-                                <span class="bs-stepper-circle">1</span>
-                                <span class="bs-stepper-label mt-1">
-                                    <span class="bs-stepper-title">Account Details</span>
-                                    <span class="bs-stepper-subtitle">Setup Account Details</span>
-                                </span>
-                            </button>
-                        </div>
-                        <div class="line"></div>
-                        <div class="step" data-target="#personal-info-1">
-                            <button type="button" class="step-trigger">
-                                <span class="bs-stepper-circle">2</span>
-                                <span class="bs-stepper-label mt-1">
-                                    <span class="bs-stepper-title">Personal Info</span>
-                                    <span class="bs-stepper-subtitle">Add personal info</span>
-                                </span>
-                            </button>
-                        </div>
-                        <div class="line"></div>
-                        <div class="step" data-target="#social-links-1">
-                            <button type="button" class="step-trigger">
-                                <span class="bs-stepper-circle">3</span>
-                                <span class="bs-stepper-label mt-1">
-                                    <span class="bs-stepper-title">Social Links</span>
-                                    <span class="bs-stepper-subtitle">Add social links</span>
-                                </span>
-                            </button>
-                        </div>
+
+
+            {{-- Image Section --}}
+            <div class="col-md-6 d-flex">
+                <div class="card mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Image Section</h5>
+                        <small class="text-muted float-end">Image Information</small>
                     </div>
-                    <div class="bs-stepper-content">
-                        <form onSubmit="return false">
-                            <!-- Account Details -->
-                            <div id="account-details-1" class="content">
-                                <div class="content-header mb-3">
-                                    <h6 class="mb-0">Account Details</h6>
-                                    <small>Enter Your Account Details.</small>
+                    <div class="card-body">
+                        <div class="row">
+                            <!-- Profile Photo -->
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Client Photo</label>
+                                <div class="input-group">
+                                    <input type="file"
+                                        class="form-control @error('attachment_client_photo') is-invalid @enderror"
+                                        id="attachment_client_photo" name="attachment_client_photo"
+                                        accept=".jpg,.jpeg,.png">
+                                    <button class="btn btn-outline-danger" type="button"
+                                        onclick="document.getElementById('attachment_client_photo').value = ''">✕</button>
                                 </div>
-                                <div class="row g-3">
-                                    <div class="col-sm-6">
-                                        <label class="form-label" for="username-vertical">Username</label>
-                                        <input type="text" id="username-vertical" class="form-control"
-                                            placeholder="johndoe" />
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label class="form-label" for="email-vertical">Email</label>
-                                        <input type="email" id="email-vertical" class="form-control"
-                                            placeholder="john.doe@email.com" aria-label="john.doe" />
-                                    </div>
-                                    <div class="col-sm-6 form-password-toggle">
-                                        <label class="form-label" for="password-vertical">Password</label>
-                                        <div class="input-group input-group-merge">
-                                            <input type="password" id="password-vertical" class="form-control"
-                                                placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                                                aria-describedby="password2-vertical" />
-                                            <span class="input-group-text cursor-pointer" id="password2-vertical"><i
-                                                    class="bx bx-hide"></i></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6 form-password-toggle">
-                                        <label class="form-label" for="confirm-password-vertical">Confirm Password</label>
-                                        <div class="input-group input-group-merge">
-                                            <input type="password" id="confirm-password-vertical" class="form-control"
-                                                placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                                                aria-describedby="confirm-password-vertical2" />
-                                            <span class="input-group-text cursor-pointer"
-                                                id="confirm-password-vertical2"><i class="bx bx-hide"></i></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-12 d-flex justify-content-between">
-                                        <button class="btn btn-label-secondary btn-prev" disabled>
-                                            <i class="bx bx-chevron-left bx-sm ms-sm-n2"></i>
-                                            <span class="align-middle d-sm-inline-block d-none">Previous</span>
-                                        </button>
-                                        <button class="btn btn-primary btn-next">
-                                            <span class="align-middle d-sm-inline-block d-none me-sm-1">Next</span>
-                                            <i class="bx bx-chevron-right bx-sm me-sm-n2"></i>
-                                        </button>
-                                    </div>
-                                </div>
+                                @error('attachment_client_photo')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
-                            <!-- Personal Info -->
-                            <div id="personal-info-1" class="content">
-                                <div class="content-header mb-3">
-                                    <h6 class="mb-0">Personal Info</h6>
-                                    <small>Enter Your Personal Info.</small>
+
+
+                            <!-- Aadhar Card -->
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">pan Card</label>
+                                <div class="input-group">
+                                    <input type="file"
+                                        class="form-control @error('attachment_pan') is-invalid @enderror"
+                                        id="attachment_pan" name="attachment_pan" accept=".pdf,.jpg,.jpeg,.png">
+                                    <button class="btn btn-outline-danger" type="button"
+                                        onclick="document.getElementById('attachment_pan').value = ''">✕</button>
                                 </div>
-                                <div class="row g-3">
-                                    <div class="col-sm-6">
-                                        <label class="form-label" for="first-name-vertical">First Name</label>
-                                        <input type="text" id="first-name-vertical" class="form-control"
-                                            placeholder="John" />
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label class="form-label" for="last-name-vertical">Last Name</label>
-                                        <input type="text" id="last-name-vertical" class="form-control"
-                                            placeholder="Doe" />
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label class="form-label" for="country-vertical">Country</label>
-                                        <select class="select2" id="country-vertical">
-                                            <option label=" "></option>
-                                            <option>UK</option>
-                                            <option>USA</option>
-                                            <option>Spain</option>
-                                            <option>France</option>
-                                            <option>Italy</option>
-                                            <option>Australia</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label class="form-label" for="language-vertical">Language</label>
-                                        <select class="selectpicker w-auto" id="language-vertical"
-                                            data-style="btn-transparent" data-icon-base="bx"
-                                            data-tick-icon="bx-check text-white" multiple>
-                                            <option>English</option>
-                                            <option>French</option>
-                                            <option>Spanish</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-12 d-flex justify-content-between">
-                                        <button class="btn btn-primary btn-prev">
-                                            <i class="bx bx-chevron-left bx-sm ms-sm-n2"></i>
-                                            <span class="align-middle d-sm-inline-block d-none">Previous</span>
-                                        </button>
-                                        <button class="btn btn-primary btn-next">
-                                            <span class="align-middle d-sm-inline-block d-none me-sm-1">Next</span>
-                                            <i class="bx bx-chevron-right bx-sm me-sm-n2"></i>
-                                        </button>
-                                    </div>
-                                </div>
+                                @error('attachment_pan')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
-                            <!-- Social Links -->
-                            <div id="social-links-1" class="content">
-                                <div class="content-header mb-3">
-                                    <h6 class="mb-0">Social Links</h6>
-                                    <small>Enter Your Social Links.</small>
+
+
+                            <!-- aadhar Card front-->
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">aadhar Card front</label>
+                                <div class="input-group">
+                                    <input type="file"
+                                        class="form-control @error('attachment_aadhar_front') is-invalid @enderror"
+                                        id="attachment_aadhar_front" name="attachment_aadhar_front"
+                                        accept=".pdf,.jpg,.jpeg,.png">
+                                    <button class="btn btn-outline-danger" type="button"
+                                        onclick="document.getElementById('attachment_aadhar_front').value = ''">✕</button>
                                 </div>
-                                <div class="row g-3">
-                                    <div class="col-sm-6">
-                                        <label class="form-label" for="twitter-vertical">Twitter</label>
-                                        <input type="text" id="twitter-vertical" class="form-control"
-                                            placeholder="https://twitter.com/abc" />
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label class="form-label" for="facebook-vertical">Facebook</label>
-                                        <input type="text" id="facebook-vertical" class="form-control"
-                                            placeholder="https://facebook.com/abc" />
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label class="form-label" for="google-vertical">Google+</label>
-                                        <input type="text" id="google-vertical" class="form-control"
-                                            placeholder="https://plus.google.com/abc" />
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label class="form-label" for="linkedin-vertical">LinkedIn</label>
-                                        <input type="text" id="linkedin-vertical" class="form-control"
-                                            placeholder="https://linkedin.com/abc" />
-                                    </div>
-                                    <div class="col-12 d-flex justify-content-between">
-                                        <button class="btn btn-primary btn-prev">
-                                            <i class="bx bx-chevron-left bx-sm ms-sm-n2"></i>
-                                            <span class="align-middle d-sm-inline-block d-none">Previous</span>
-                                        </button>
-                                        <button class="btn btn-success btn-submit">Submit</button>
-                                    </div>
-                                </div>
+                                @error('attachment_aadhar_front')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
-                        </form>
+
+
+                            <!-- aadhar Card back -->
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">aadhar Card Back</label>
+                                <div class="input-group">
+                                    <input type="file"
+                                        class="form-control @error('attachment_aadhar_back') is-invalid @enderror"
+                                        id="attachment_aadhar_back" name="attachment_aadhar_back"
+                                        accept=".pdf,.jpg,.jpeg,.png">
+                                    <button class="btn btn-outline-danger" type="button"
+                                        onclick="document.getElementById('attachment_aadhar_back').value = ''">✕</button>
+                                </div>
+                                @error('attachment_aadhar_back')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+
+
+                            <!-- Signature -->
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Signature</label>
+                                <div class="input-group">
+                                    <input type="file"
+                                        class="form-control @error('attachment_signature') is-invalid @enderror"
+                                        id="attachment_signature" name="attachment_signature"
+                                        accept=".pdf,.jpg,.jpeg,.png">
+                                    <button class="btn btn-outline-danger" type="button"
+                                        onclick="document.getElementById('attachment_signature').value = ''">✕</button>
+                                </div>
+                                @error('attachment_signature')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- Resume -->
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">ckyc</label>
+                                <div class="input-group">
+                                    <input type="file"
+                                        class="form-control @error('attachment_ckyc') is-invalid @enderror"
+                                        id="attachment_ckyc" name="attachment_ckyc" accept=".pdf,.doc,.docx">
+                                    <button class="btn btn-outline-danger" type="button"
+                                        onclick="document.getElementById('attachment_ckyc').value = ''">✕</button>
+                                </div>
+                                @error('attachment_ckyc')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- Other Supporting Documents -->
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Other Documents (Optional)</label>
+                                <div class="input-group">
+                                    <input type="file"
+                                        class="form-control @error('attachment_other_documents') is-invalid @enderror"
+                                        id="attachment_other_documents" name="attachment_other_documents[]"
+                                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" multiple>
+                                    <button class="btn btn-outline-danger" type="button"
+                                        onclick="document.getElementById('attachment_other_documents').value = ''">✕</button>
+                                </div>
+                                @error('attachment_other_documents')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                        </div>
+
+
+
                     </div>
                 </div>
             </div>
-            <!-- /Vertical Wizard -->
+
+
+
+
+
+
         </div>
-        <hr class="container-m-nx mb-5" />
 
-        <!-- Modern -->
-        <div class="row">
-            <div class="col-12">
-                <h5>Modern</h5>
-            </div>
 
-            <!-- Modern Wizard -->
-            <div class="col-12 mb-4">
-                <small class="text-light fw-medium mt-2">Basic</small>
-                <div class="bs-stepper wizard-modern wizard-modern-example mt-2">
-                    <div class="bs-stepper-header">
-                        <div class="step" data-target="#account-details-modern">
-                            <button type="button" class="step-trigger">
-                                <span class="bs-stepper-circle">1</span>
-                                <span class="bs-stepper-label mt-1">
-                                    <span class="bs-stepper-title">Account Details</span>
-                                    <span class="bs-stepper-subtitle">Setup Account Details</span>
-                                </span>
-                            </button>
-                        </div>
-                        <div class="line">
-                            <i class="bx bx-chevron-right"></i>
-                        </div>
-                        <div class="step" data-target="#personal-info-modern">
-                            <button type="button" class="step-trigger">
-                                <span class="bs-stepper-circle">2</span>
-                                <span class="bs-stepper-label mt-1">
-                                    <span class="bs-stepper-title">Personal Info</span>
-                                    <span class="bs-stepper-subtitle">Add personal info</span>
-                                </span>
-                            </button>
-                        </div>
-                        <div class="line">
-                            <i class="bx bx-chevron-right"></i>
-                        </div>
-                        <div class="step" data-target="#social-links-modern">
-                            <button type="button" class="step-trigger">
-                                <span class="bs-stepper-circle">3</span>
-                                <span class="bs-stepper-label mt-1">
-                                    <span class="bs-stepper-title">Social Links</span>
-                                    <span class="bs-stepper-subtitle">Add social links</span>
-                                </span>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="bs-stepper-content">
-                        <form onSubmit="return false">
-                            <!-- Account Details -->
-                            <div id="account-details-modern" class="content">
-                                <div class="content-header mb-3">
-                                    <h6 class="mb-0">Account Details</h6>
-                                    <small>Enter Your Account Details.</small>
-                                </div>
-                                <div class="row g-3">
-                                    <div class="col-sm-6">
-                                        <label class="form-label" for="username-modern">Username</label>
-                                        <input type="text" id="username-modern" class="form-control"
-                                            placeholder="johndoe" />
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label class="form-label" for="email-modern">Email</label>
-                                        <input type="email" id="email-modern" class="form-control"
-                                            placeholder="john.doe@email.com" aria-label="john.doe" />
-                                    </div>
-                                    <div class="col-sm-6 form-password-toggle">
-                                        <label class="form-label" for="password-modern">Password</label>
-                                        <div class="input-group input-group-merge">
-                                            <input type="password" id="password-modern" class="form-control"
-                                                placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                                                aria-describedby="password2-modern" />
-                                            <span class="input-group-text cursor-pointer" id="password2-modern"><i
-                                                    class="bx bx-hide"></i></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6 form-password-toggle">
-                                        <label class="form-label" for="confirm-password-modern">Confirm Password</label>
-                                        <div class="input-group input-group-merge">
-                                            <input type="password" id="confirm-password-modern" class="form-control"
-                                                placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                                                aria-describedby="confirm-password-modern2" />
-                                            <span class="input-group-text cursor-pointer" id="confirm-password-modern2"><i
-                                                    class="bx bx-hide"></i></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-12 d-flex justify-content-between">
-                                        <button class="btn btn-label-secondary btn-prev" disabled>
-                                            <i class="bx bx-chevron-left bx-sm ms-sm-n2"></i>
-                                            <span class="align-middle d-sm-inline-block d-none">Previous</span>
-                                        </button>
-                                        <button class="btn btn-primary btn-next">
-                                            <span class="align-middle d-sm-inline-block d-none me-sm-1">Next</span>
-                                            <i class="bx bx-chevron-right bx-sm me-sm-n2"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Personal Info -->
-                            <div id="personal-info-modern" class="content">
-                                <div class="content-header mb-3">
-                                    <h6 class="mb-0">Personal Info</h6>
-                                    <small>Enter Your Personal Info.</small>
-                                </div>
-                                <div class="row g-3">
-                                    <div class="col-sm-6">
-                                        <label class="form-label" for="first-name-modern">First Name</label>
-                                        <input type="text" id="first-name-modern" class="form-control"
-                                            placeholder="John" />
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label class="form-label" for="last-name-modern">Last Name</label>
-                                        <input type="text" id="last-name-modern" class="form-control"
-                                            placeholder="Doe" />
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label class="form-label" for="country-modern">Country</label>
-                                        <select class="select2" id="country-modern">
-                                            <option label=" "></option>
-                                            <option>UK</option>
-                                            <option>USA</option>
-                                            <option>Spain</option>
-                                            <option>France</option>
-                                            <option>Italy</option>
-                                            <option>Australia</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label class="form-label" for="language-modern">Language</label>
-                                        <select class="selectpicker w-auto" id="language-modern"
-                                            data-style="btn-transparent" data-icon-base="bx"
-                                            data-tick-icon="bx-check text-white" multiple>
-                                            <option>English</option>
-                                            <option>French</option>
-                                            <option>Spanish</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-12 d-flex justify-content-between">
-                                        <button class="btn btn-primary btn-prev">
-                                            <i class="bx bx-chevron-left bx-sm ms-sm-n2"></i>
-                                            <span class="align-middle d-sm-inline-block d-none">Previous</span>
-                                        </button>
-                                        <button class="btn btn-primary btn-next">
-                                            <span class="align-middle d-sm-inline-block d-none me-sm-1">Next</span>
-                                            <i class="bx bx-chevron-right bx-sm me-sm-n2"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Social Links -->
-                            <div id="social-links-modern" class="content">
-                                <div class="content-header mb-3">
-                                    <h6 class="mb-0">Social Links</h6>
-                                    <small>Enter Your Social Links.</small>
-                                </div>
-                                <div class="row g-3">
-                                    <div class="col-sm-6">
-                                        <label class="form-label" for="twitter-modern">Twitter</label>
-                                        <input type="text" id="twitter-modern" class="form-control"
-                                            placeholder="https://twitter.com/abc" />
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label class="form-label" for="facebook-modern">Facebook</label>
-                                        <input type="text" id="facebook-modern" class="form-control"
-                                            placeholder="https://facebook.com/abc" />
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label class="form-label" for="google-modern">Google+</label>
-                                        <input type="text" id="google-modern" class="form-control"
-                                            placeholder="https://plus.google.com/abc" />
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label class="form-label" for="linkedin-modern">LinkedIn</label>
-                                        <input type="text" id="linkedin-modern" class="form-control"
-                                            placeholder="https://linkedin.com/abc" />
-                                    </div>
-                                    <div class="col-12 d-flex justify-content-between">
-                                        <button class="btn btn-primary btn-prev">
-                                            <i class="bx bx-chevron-left bx-sm ms-sm-n2"></i>
-                                            <span class="align-middle d-sm-inline-block d-none">Previous</span>
-                                        </button>
-                                        <button class="btn btn-success btn-submit">Submit</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <!-- /Modern Wizard -->
 
-            <!-- Modern Vertical Wizard -->
-            <div class="col-12">
-                <small class="text-light fw-medium">Vertical</small>
-                <div class="bs-stepper vertical wizard-modern wizard-modern-vertical mt-2">
-                    <div class="bs-stepper-header">
-                        <div class="step" data-target="#account-details-modern-vertical">
-                            <button type="button" class="step-trigger">
-                                <span class="bs-stepper-circle">1</span>
-                                <span class="bs-stepper-label mt-1">
-                                    <span class="bs-stepper-title">Account Details</span>
-                                    <span class="bs-stepper-subtitle">Setup Account Details</span>
-                                </span>
-                            </button>
-                        </div>
-                        <div class="line"></div>
-                        <div class="step" data-target="#personal-info-modern-vertical">
-                            <button type="button" class="step-trigger">
-                                <span class="bs-stepper-circle">2</span>
-                                <span class="bs-stepper-label mt-1">
-                                    <span class="bs-stepper-title">Personal Info</span>
-                                    <span class="bs-stepper-subtitle">Add personal info</span>
-                                </span>
-                            </button>
-                        </div>
-                        <div class="line"></div>
-                        <div class="step" data-target="#social-links-modern-vertical">
-                            <button type="button" class="step-trigger">
-                                <span class="bs-stepper-circle">3</span>
-                                <span class="bs-stepper-label mt-1">
-                                    <span class="bs-stepper-title">Social Links</span>
-                                    <span class="bs-stepper-subtitle">Add social links</span>
-                                </span>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="bs-stepper-content">
-                        <form onSubmit="return false">
-                            <!-- Account Details -->
-                            <div id="account-details-modern-vertical" class="content">
-                                <div class="content-header mb-3">
-                                    <h6 class="mb-0">Account Details</h6>
-                                    <small>Enter Your Account Details.</small>
-                                </div>
-                                <div class="row g-3">
-                                    <div class="col-sm-6">
-                                        <label class="form-label" for="username-modern-vertical">Username</label>
-                                        <input type="text" id="username-modern-vertical" class="form-control"
-                                            placeholder="johndoe" />
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label class="form-label" for="email-modern-vertical">Email</label>
-                                        <input type="email" id="email-modern-vertical" class="form-control"
-                                            placeholder="john.doe@email.com" aria-label="john.doe" />
-                                    </div>
-                                    <div class="col-sm-6 form-password-toggle">
-                                        <label class="form-label" for="password-modern-vertical">Password</label>
-                                        <div class="input-group input-group-merge">
-                                            <input type="password" id="password-modern-vertical" class="form-control"
-                                                placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                                                aria-describedby="password2-modern-vertical" />
-                                            <span class="input-group-text cursor-pointer"
-                                                id="password2-modern-vertical"><i class="bx bx-hide"></i></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6 form-password-toggle">
-                                        <label class="form-label" for="confirm-password-modern-vertical">Confirm
-                                            Password</label>
-                                        <div class="input-group input-group-merge">
-                                            <input type="password" id="confirm-password-modern-vertical"
-                                                class="form-control"
-                                                placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                                                aria-describedby="confirm-password-modern-vertical2" />
-                                            <span class="input-group-text cursor-pointer"
-                                                id="confirm-password-modern-vertical2"><i class="bx bx-hide"></i></span>
-                                        </div>
-                                    </div>
-                                    <div class="col-12 d-flex justify-content-between">
-                                        <button class="btn btn-label-secondary btn-prev" disabled>
-                                            <i class="bx bx-chevron-left bx-sm ms-sm-n2"></i>
-                                            <span class="align-middle d-sm-inline-block d-none">Previous</span>
-                                        </button>
-                                        <button class="btn btn-primary btn-next">
-                                            <span class="align-middle d-sm-inline-block d-none me-sm-1">Next</span>
-                                            <i class="bx bx-chevron-right bx-sm me-sm-n2"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Personal Info -->
-                            <div id="personal-info-modern-vertical" class="content">
-                                <div class="content-header mb-3">
-                                    <h6 class="mb-0">Personal Info</h6>
-                                    <small>Enter Your Personal Info.</small>
-                                </div>
-                                <div class="row g-3">
-                                    <div class="col-sm-6">
-                                        <label class="form-label" for="first-name-modern-vertical">First Name</label>
-                                        <input type="text" id="first-name-modern-vertical" class="form-control"
-                                            placeholder="John" />
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label class="form-label" for="last-name-modern-vertical">Last Name</label>
-                                        <input type="text" id="last-name-modern-vertical" class="form-control"
-                                            placeholder="Doe" />
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label class="form-label" for="country-modern-vertical">Country</label>
-                                        <select class="select2" id="country-modern-vertical">
-                                            <option label=" "></option>
-                                            <option>UK</option>
-                                            <option>USA</option>
-                                            <option>Spain</option>
-                                            <option>France</option>
-                                            <option>Italy</option>
-                                            <option>Australia</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label class="form-label" for="language-modern-vertical">Language</label>
-                                        <select class="selectpicker w-auto" id="language-modern-vertical"
-                                            data-style="btn-transparent" data-icon-base="bx"
-                                            data-tick-icon="bx-check text-white" multiple>
-                                            <option>English</option>
-                                            <option>French</option>
-                                            <option>Spanish</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-12 d-flex justify-content-between">
-                                        <button class="btn btn-primary btn-prev">
-                                            <i class="bx bx-chevron-left bx-sm ms-sm-n2"></i>
-                                            <span class="align-middle d-sm-inline-block d-none">Previous</span>
-                                        </button>
-                                        <button class="btn btn-primary btn-next">
-                                            <span class="align-middle d-sm-inline-block d-none me-sm-1">Next</span>
-                                            <i class="bx bx-chevron-right bx-sm me-sm-n2"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Social Links -->
-                            <div id="social-links-modern-vertical" class="content">
-                                <div class="content-header mb-3">
-                                    <h6 class="mb-0">Social Links</h6>
-                                    <small>Enter Your Social Links.</small>
-                                </div>
-                                <div class="row g-3">
-                                    <div class="col-sm-6">
-                                        <label class="form-label" for="twitter-modern-vertical">Twitter</label>
-                                        <input type="text" id="twitter-modern-vertical" class="form-control"
-                                            placeholder="https://twitter.com/abc" />
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label class="form-label" for="facebook-modern-vertical">Facebook</label>
-                                        <input type="text" id="facebook-modern-vertical" class="form-control"
-                                            placeholder="https://facebook.com/abc" />
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label class="form-label" for="google-modern-vertical">Google+</label>
-                                        <input type="text" id="google-modern-vertical" class="form-control"
-                                            placeholder="https://plus.google.com/abc" />
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <label class="form-label" for="linkedin-modern-vertical">LinkedIn</label>
-                                        <input type="text" id="linkedin-modern-vertical" class="form-control"
-                                            placeholder="https://linkedin.com/abc" />
-                                    </div>
-                                    <div class="col-12 d-flex justify-content-between">
-                                        <button class="btn btn-primary btn-prev">
-                                            <i class="bx bx-chevron-left bx-sm ms-sm-n2"></i>
-                                            <span class="align-middle d-sm-inline-block d-none">Previous</span>
-                                        </button>
-                                        <button class="btn btn-success btn-submit">Submit</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <!-- /Modern Vertical Wizard -->
+        <!-- Submit -->
+        <!-- Info / Note -->
+
+
+        <div class="text-end mt-3">
+            <button type="submit" class="btn btn-primary px-4">Save</button>
+            <a href="" class="btn btn-secondary px-4">Cancel</a>
         </div>
-    </div>
+    </form>
+
 
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('assets/js/form-wizard-numbered.js') }}"></script>
-    <script src="{{ asset('assets/js/form-wizard-validation.js') }}"></script>
-    <script src="{{ asset('assets/vendor/libs/bs-stepper/bs-stepper.js') }}"></script>
-    <script src="{{ asset('assets/vendor/libs/@form-validation/bootstrap5.js') }}"></script>
-@endpush
-
-@push('pageStyles')
-    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/bs-stepper/bs-stepper.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/@form-validation/form-validation.css') }}">
 @endpush

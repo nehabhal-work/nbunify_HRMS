@@ -29,9 +29,9 @@ Route::get('/dashboard', function () {
 // })->name('content.master.employees.index');
 
 
-// Route::get('/employees', function () {
-//     return view('master.content.employees.index');
-// })->name('content.master.employees.index');
+Route::get('/client', function () {
+    return view('content.master.clients.create');
+});
 
 
 

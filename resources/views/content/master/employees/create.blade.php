@@ -121,8 +121,7 @@
                             </div>
 
                             <!-- Local Address -->
-                            <hr>
-                            <h6 class="mb-3">Local Address</h6>
+                            <h6 class="my-3">Local Address:</h6>
                             <div class="col-6 mb-3">
                                 <label class="form-label">Address</label>
                                 <input type="text" name="registered_address" id="registered_address"
@@ -165,8 +164,7 @@
                             </div>
 
                             <!-- Corporate Address -->
-                            <hr>
-                            <h6 class="mb-3">Permanant Address</h6>
+                            <h6 class="my-3">Permanant Address:</h6>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Address</label>
                                 <input type="text" name="corporate_address" id="corporate_address"
@@ -320,6 +318,30 @@
                                 @enderror
                             </div>
 
+
+                            <!-- Reporting manager -->
+                            <div class="col-md-2 mb-3">
+                                <label for="status" class="form-label">Reporting manager</label>
+                                <select name="reporting_manager" id="reporting_manager" class="form-select">
+                                    <option value=""></option>
+                                </select>
+                                @error('reporting_manager')
+                                    <div class="text-danger small">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+
+                            <!-- role -->
+                            <div class="col-md-2 mb-3">
+                                <label for="status" class="form-label">Role</label>
+                                <select name="role" id="role" class="form-select">
+                                    <option value=""></option>
+                                </select>
+                                @error('role')
+                                    <div class="text-danger small">{{ $message }}</div>
+                                @enderror
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -327,6 +349,7 @@
 
 
 
+            {{-- Salary details --}}
             <div class="col-md-6 d-flex">
                 <div class="card mb-4">
                     <div class="card-header d-flex justify-content-between align-items-center">
@@ -434,6 +457,7 @@
 
 
 
+            {{-- Image Section --}}
             <div class="col-md-6 d-flex">
                 <div class="card mb-4">
                     <div class="card-header d-flex justify-content-between align-items-center">
