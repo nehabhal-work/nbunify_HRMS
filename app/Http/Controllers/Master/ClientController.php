@@ -8,31 +8,31 @@ class ClientController extends Controller
 {
     public function index()
     {
-        return view('content.master.clients.index');
+        return view('content.clients.index');
     }
 
     public function create()
     {
-        return view('content.master.clients.create');
+        return view('content.clients.create');
     }
 
     public function store()
     {
-        return redirect()->route('master.clients.index');
+        return redirect()->route('clients.index');
     }
 
     public function edit($id)
     {
-        return view('content.master.clients.edit');
+        return view('content.clients.edit');
     }
 
     public function update($id)
     {
-        return redirect()->route('master.clients.index');
+        return redirect()->route('clients.index');
     }
 
     public function destroy($id)
     {
-        return redirect()->route('master.clients.index');
+        return redirect()->route('clients.index');
     }
 }

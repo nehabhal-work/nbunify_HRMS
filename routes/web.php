@@ -20,21 +20,6 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 
-// web.php
-// Route::get('/employees', function () {
-//     return view('master/employees/index');
-// })->name('employees');
-// web.php
-// Route::get('/employees', function () {
-//     return view('master.content.employees.index');
-// })->name('content.master.employees.index');
-
-
-Route::get('/client', function () {
-    return view('content.master.clients.create');
-});
-
-
 
 Route::middleware(['auth', 'verified'])->prefix('master')->name('master.')->group(function () {
     Route::resource('companies', CompanyController::class);
@@ -45,6 +30,10 @@ Route::middleware(['auth', 'verified'])->prefix('master')->name('master.')->grou
     Route::resource('designations', DesignationController::class);
     Route::resource('sub-designations', SubDesignationController::class);
     Route::resource('employees', EmployeeController::class);
+    Route::resource('clients', ClientController::class);
+});
+
+Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('clients', ClientController::class);
 });
 
