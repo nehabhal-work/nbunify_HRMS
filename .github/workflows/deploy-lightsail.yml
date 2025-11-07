@@ -36,5 +36,7 @@ jobs:
           $PHP_BIN artisan route:cache
           $PHP_BIN artisan view:cache
           $PHP_BIN artisan cache:clear
+          $PHP_BIN artisan optimize:clear
+          $PHP_BIN artisan optimize
 
           echo "Deployment completed!"
