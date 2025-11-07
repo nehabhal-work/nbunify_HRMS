@@ -9,6 +9,7 @@ class BankController extends Controller
 {
     public function validateIfsc(Request $request)
     {
+        // Check server
         $request->validate([
             'ifsc' => 'required|string|size:11'
         ]);
