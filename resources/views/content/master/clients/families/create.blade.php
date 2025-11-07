@@ -24,7 +24,7 @@
     @endif
 
     <h4 class="fw-bold py-3 mb-4">
-        <span class="text-muted fw-light">Master /</span> <a href="{{ route('master.companies.index') }}">Client</a>
+        <span class="text-muted fw-light">Master /</span> <a href="{{ route('master.companies.index') }}">Family</a>
     </h4>
 
 
@@ -36,7 +36,7 @@
                 <div class="card mb-4">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="mb-0">Primary Information</h5>
-                        <small class="text-muted float-end">client Basic Details</small>
+                        <small class="text-muted float-end">Family Basic Details</small>
                     </div>
                     <div class="card-body">
                         <div class="row">
@@ -290,9 +290,9 @@
 
 
 
-                            {{-- Relation Manager --}}
+                            {{-- Relation with client --}}
                             <div class="col-md-3 mb-3">
-                                <label for="relation_manager" class="form-label">Relation /account Manager</label>
+                                <label for="relation_manager" class="form-label">Relation with client</label>
                                 <select name="relation_manager_id" id="relation_manager" class="form-select">
                                     <option value="">Select Relation Manager</option>
                                     {{-- @foreach ($relationManagers as $manager)
@@ -477,219 +477,6 @@
                     </div>
                 </div>
             </div>
-
-
-
-
-
-            {{-- Bank details --}}
-            <div class="col-md-6 d-flex">
-                <div class="card mb-4">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Bank details</h5>
-                        <small class="text-muted float-end">Bank Information</small>
-                    </div>
-                    <div class="card-body">
-                        <div class="col-12 ">
-
-                            <div id="bankDetailsWrapper">
-
-                                <div class="bank-details-row row g-3 mb-3 bg-light position-relative">
-                                    <div class="col-md-6">
-                                        <label class="form-label">IFSC Code</label>
-                                        <input type="text" name="banks[0][ifsc_code]" class="form-control ifsc_code"
-                                            placeholder="Enter IFSC Code">
-                                        <span class="invalid-feedback errmsg"></span>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <label class="form-label">Account No</label>
-                                        <input type="text" name="banks[0][account_number]"
-                                            class="form-control account_number" placeholder="Enter Account Number">
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <label class="form-label">Bank Name</label>
-                                        <input type="text" name="banks[0][bank_name]"
-                                            class="form-control bank_name bg-secondary-subtle bg-gradient" readonly>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <label class="form-label">Branch Name</label>
-                                        <input type="text" name="banks[0][branch_name]"
-                                            class="form-control branch_name bg-secondary-subtle bg-gradient" readonly>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <label class="form-label">Bank Code</label>
-                                        <input type="text" name="banks[0][bank_code]"
-                                            class="form-control bank_code bg-secondary-subtle bg-gradient" readonly>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <label class="form-label d-block">Primary a/c</label>
-                                        <input type="hidden" name="banks[0][is_primary]" value="0">
-                                        <input type="checkbox" name="banks[0][is_primary]" value="1"
-                                            class="form-check-input setPrimary">
-                                    </div>
-
-                                    <div class="col-md-6 d-flex align-items-end">
-                                        <button type="button" class="btn btn-danger btn-sm removeBankRow d-none">
-                                            <i class="bx bx-minus"></i> Remove
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Add More Button -->
-                            <div class="mt-2">
-                                <button type="button" id="addMoreBank" class="btn btn-primary">
-                                    <i class="bx bx-plus"></i> Add More Bank
-                                </button>
-                            </div>
-                        </div>
-
-
-                    </div>
-                </div>
-            </div>
-
-
-
-            {{-- Image Section --}}
-            <div class="col-md-6 d-flex">
-                <div class="card mb-4">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Image Section</h5>
-                        <small class="text-muted float-end">Image Information</small>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <!-- Profile Photo -->
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Client Photo</label>
-                                <div class="input-group">
-                                    <input type="file"
-                                        class="form-control @error('attachment_client_photo') is-invalid @enderror"
-                                        id="attachment_client_photo" name="attachment_client_photo"
-                                        accept=".jpg,.jpeg,.png">
-                                    <button class="btn btn-outline-danger" type="button"
-                                        onclick="document.getElementById('attachment_client_photo').value = ''">✕</button>
-                                </div>
-                                @error('attachment_client_photo')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-
-                            <!-- Aadhar Card -->
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">pan Card</label>
-                                <div class="input-group">
-                                    <input type="file"
-                                        class="form-control @error('attachment_pan') is-invalid @enderror"
-                                        id="attachment_pan" name="attachment_pan" accept=".pdf,.jpg,.jpeg,.png">
-                                    <button class="btn btn-outline-danger" type="button"
-                                        onclick="document.getElementById('attachment_pan').value = ''">✕</button>
-                                </div>
-                                @error('attachment_pan')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-
-                            <!-- aadhar Card front-->
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">aadhar Card front</label>
-                                <div class="input-group">
-                                    <input type="file"
-                                        class="form-control @error('attachment_aadhar_front') is-invalid @enderror"
-                                        id="attachment_aadhar_front" name="attachment_aadhar_front"
-                                        accept=".pdf,.jpg,.jpeg,.png">
-                                    <button class="btn btn-outline-danger" type="button"
-                                        onclick="document.getElementById('attachment_aadhar_front').value = ''">✕</button>
-                                </div>
-                                @error('attachment_aadhar_front')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-
-                            <!-- aadhar Card back -->
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">aadhar Card Back</label>
-                                <div class="input-group">
-                                    <input type="file"
-                                        class="form-control @error('attachment_aadhar_back') is-invalid @enderror"
-                                        id="attachment_aadhar_back" name="attachment_aadhar_back"
-                                        accept=".pdf,.jpg,.jpeg,.png">
-                                    <button class="btn btn-outline-danger" type="button"
-                                        onclick="document.getElementById('attachment_aadhar_back').value = ''">✕</button>
-                                </div>
-                                @error('attachment_aadhar_back')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-
-
-                            <!-- Signature -->
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Signature</label>
-                                <div class="input-group">
-                                    <input type="file"
-                                        class="form-control @error('attachment_signature') is-invalid @enderror"
-                                        id="attachment_signature" name="attachment_signature"
-                                        accept=".pdf,.jpg,.jpeg,.png">
-                                    <button class="btn btn-outline-danger" type="button"
-                                        onclick="document.getElementById('attachment_signature').value = ''">✕</button>
-                                </div>
-                                @error('attachment_signature')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <!-- Resume -->
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">ckyc</label>
-                                <div class="input-group">
-                                    <input type="file"
-                                        class="form-control @error('attachment_ckyc') is-invalid @enderror"
-                                        id="attachment_ckyc" name="attachment_ckyc" accept=".pdf,.doc,.docx">
-                                    <button class="btn btn-outline-danger" type="button"
-                                        onclick="document.getElementById('attachment_ckyc').value = ''">✕</button>
-                                </div>
-                                @error('attachment_ckyc')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <!-- Other Supporting Documents -->
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Other Documents (Optional)</label>
-                                <div class="input-group">
-                                    <input type="file"
-                                        class="form-control @error('attachment_other_documents') is-invalid @enderror"
-                                        id="attachment_other_documents" name="attachment_other_documents[]"
-                                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" multiple>
-                                    <button class="btn btn-outline-danger" type="button"
-                                        onclick="document.getElementById('attachment_other_documents').value = ''">✕</button>
-                                </div>
-                                @error('attachment_other_documents')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                        </div>
-
-
-
-                    </div>
-                </div>
-            </div>
-
-
-
-
 
 
         </div>

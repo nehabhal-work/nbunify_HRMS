@@ -32,7 +32,7 @@ $(".onlyphone").on("keypress", function (e) {
 });
 
 
-$(".alpha-only").on("keydown", function (event) {
+$(".onlyalpha").on("keydown", function (event) {
     // Allow controls such as backspace, tab etc.
     var arr = [8, 9, 16, 17, 20, 32, 35, 36, 37, 38, 39, 40, 45, 46];
     // Allow letters
