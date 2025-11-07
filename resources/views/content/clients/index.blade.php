@@ -25,7 +25,7 @@
 
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h4 class="fw-bold py-3 mb-4">
-            <span class="text-muted fw-light">Master /</span> <a href="{{ route('master.companies.create') }}">Company</a>
+            <span class="text-muted fw-light">Master /</span> <a href="{{ route('clients.create') }}">Client</a>
         </h4>
     </div>
 
@@ -35,8 +35,8 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <h5 class="mb-0">Companies List</h5>
-                    <a class="btn btn-primary" href="{{ route('master.companies.create') }}" role="button">Add New</a>
+                    <h5 class="mb-0">Client List</h5>
+                    <a class="btn btn-primary" href="{{ route('clients.create') }}" role="button">Add New</a>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive text-nowrap">
@@ -44,7 +44,7 @@
                             <thead class="table-light">
                                 <tr>
                                     <th>#</th>
-                                    <th>Company</th>
+                                    <th>Client</th>
                                     <th>Contact Person</th>
                                     <th>Number</th>
                                     <th>Email</th>

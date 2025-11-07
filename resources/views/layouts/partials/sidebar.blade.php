@@ -68,32 +68,14 @@
 
              </ul>
          </li>
-
-         <li class="menu-item {{ request()->is('client/*') ? 'active open' : '' }}">
-             <a href="javascript:void(0);" class="menu-link menu-toggle">
-                 <i class="menu-icon tf-icons bx bx-user-circle"></i>
-                 <div class="text-truncate" data-i18n="Profile">Profile</div>
+         <li class="menu-item {{ request()->routeIs('clients/*') ? 'active' : '' }}">
+             <a href="{{ route('clients.index') }}" class="menu-link">
+                 <i class="menu-icon bx bx-id-card"></i>
+                 <div class="text-truncate">Client</div>
              </a>
-             <ul class="menu-sub">
-
-                 {{-- Client --}}
-                 <li class="menu-item {{ request()->routeIs('master.companies.*') ? 'active' : '' }}">
-                     <a href="{{ route('master.companies.index') }}" class="menu-link">
-                         <i class="menu-icon bx bx-id-card"></i>
-                         <div class="text-truncate">Client</div>
-                     </a>
-                 </li>
-
-                 {{-- Family --}}
-                 <li class="menu-item {{ request()->routeIs('master.branches.*') ? 'active' : '' }}">
-                     <a href="{{ route('master.branches.index') }}" class="menu-link">
-                         <i class="menu-icon bx bx-group"></i>
-                         <div class="text-truncate">Family</div>
-                     </a>
-                 </li>
-
-             </ul>
          </li>
+
+
 
      </ul>
 
