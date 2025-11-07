@@ -24,11 +24,11 @@
     @endif
 
     <h4 class="fw-bold py-3 mb-4">
-        <span class="text-muted fw-light">Master /</span> <a href="{{ route('master.companies.index') }}">Client</a>
+        <span class="text-muted fw-light">Master /</span> <a href="{{ route('master.clients.index') }}">Client</a>
     </h4>
 
 
-    <form action="{{ route('master.companies.store') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('master.clients.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('post')
         <div class="row align-items-stretch">
@@ -702,7 +702,7 @@
 
         <div class="text-end mt-3">
             <button type="submit" class="btn btn-primary px-4">Save</button>
-            <a href="" class="btn btn-secondary px-4">Cancel</a>
+            <a href="{{ route('master.clients.index') }}" class="btn btn-secondary px-4">Cancel</a>
         </div>
     </form>
 

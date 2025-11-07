@@ -24,11 +24,11 @@
     @endif
 
     <h4 class="fw-bold py-3 mb-4">
-        <span class="text-muted fw-light">Master /</span> <a href="{{ route('master.companies.index') }}">Company</a>
+        <span class="text-muted fw-light">Master /</span> <a href="{{ route('master.clients.index') }}">Client</a>
     </h4>
 
 
-    <form action="{{ route('master.companies.update', $company->id) }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('master.clients.update', $client->id ?? 1) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
         <div class="row align-items-stretch">
@@ -36,7 +36,7 @@
                 <div class="card mb-4">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="mb-0">Primary Information</h5>
-                        <small class="text-muted float-end">Company Basic Details</small>
+                        <small class="text-muted float-end">Client Basic Details</small>
                     </div>
                     <div class="card-body">
                         <div class="row">
@@ -550,7 +550,7 @@
         <!-- Submit -->
         <div class="text-end mt-3">
             <button type="submit" class="btn btn-primary px-4">Update</button>
-            <a href="{{ route('master.companies.index') }}" class="btn btn-secondary px-4">Cancel</a>
+            <a href="{{ route('master.clients.index') }}" class="btn btn-secondary px-4">Cancel</a>
         </div>
     </form>
 

@@ -25,6 +25,9 @@ jobs:
 
           cd $APP_DIR
 
+          # Clear All
+          $PHP_BIN artisan optimize:clear
+
           # Pull latest code
           git pull origin main
 
@@ -32,11 +35,6 @@ jobs:
           $PHP_BIN artisan migrate --force
 
           # Optimize for production
-          $PHP_BIN artisan config:cache
-          $PHP_BIN artisan route:cache
-          $PHP_BIN artisan view:cache
-          $PHP_BIN artisan cache:clear
-          $PHP_BIN artisan optimize:clear
           $PHP_BIN artisan optimize
 
           echo "Deployment completed!"
