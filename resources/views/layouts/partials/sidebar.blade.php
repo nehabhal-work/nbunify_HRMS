@@ -55,17 +55,17 @@
                          <div class="text-truncate">Designations</div>
                      </a>
                  </li>
-
-
-
-                 {{-- <li class="menu-item {{ request()->routeIs('master.employees.*') ? 'active' : '' }}">
+                 <li class="menu-item {{ request()->routeIs('content.master.employees.*') ? 'active' : '' }}">
                      <a href="{{ route('master.employees.index') }}" class="menu-link">
                          <i class="menu-icon bx bx-group"></i>
                          <div class="text-truncate">Employees</div>
                      </a>
-                 </li> --}}
+                 </li>
 
-                 {{--  <li class="menu-item {{ request()->routeIs('master.cp.*') ? 'active' : '' }}">
+
+
+                 {{--  
+                 <li class="menu-item {{ request()->routeIs('master.cp.*') ? 'active' : '' }}">
                      <a href="{{ route('master.cp.index') }}" class="menu-link">
                          <i class="menu-icon bx bx-id-card"></i>
                          <div class="text-truncate">CP</div>
@@ -79,35 +79,18 @@
                      </a>
                  </li>
 
-                
-
-                 
-
                  <li class="menu-item {{ request()->routeIs('master.references.*') ? 'active' : '' }}">
                      <a href="{{ route('master.references.index') }}" class="menu-link">
                          <i class="menu-icon bx bx-bookmark"></i>
                          <div class="text-truncate">References</div>
                      </a>
-                 </li> --}}
+                 </li> 
+                 --}}
 
              </ul>
          </li>
      </ul>
-     <ul class="menu-inner py-1">
-         {{-- <li class="menu-item {{ request()->routeIs('content.master.employees.*') ? 'active' : '' }}">
-             <a href="{{ route('content.master.employees.index') }}" class="menu-link">
-                 <i class="menu-icon bx bx-group"></i>
-                 <div class="text-truncate">Employees</div>
-             </a>
-         </li> --}}
-         <li class="menu-item {{ request()->routeIs('master.content.employees.*') ? 'active' : '' }}">
-             <a href="{{ route('content.master.employees.index') }}" class="menu-link">
-                 <div>Employee Module</div>
-             </a>
-         </li>
 
-
-     </ul>
 
 
  </aside>

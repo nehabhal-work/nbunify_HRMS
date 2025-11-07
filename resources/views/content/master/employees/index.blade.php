@@ -36,7 +36,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Employees List</h5>
-                    <a class="btn btn-primary" href="{{ route('master.content.employees.create') }}" role="button">Add New</a>
+                    <a class="btn btn-primary" href="{{ route('master.employees.create') }}" role="button">Add New</a>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive text-nowrap">
@@ -52,7 +52,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                               
+
                             </tbody>
                         </table>
                     </div>
