@@ -64,31 +64,37 @@
 
 
 
-                 {{--  
-                 <li class="menu-item {{ request()->routeIs('master.cp.*') ? 'active' : '' }}">
-                     <a href="{{ route('master.cp.index') }}" class="menu-link">
-                         <i class="menu-icon bx bx-id-card"></i>
-                         <div class="text-truncate">CP</div>
-                     </a>
-                 </li>
 
-                 <li class="menu-item {{ request()->routeIs('master.customers.*') ? 'active' : '' }}">
-                     <a href="{{ route('master.customers.index') }}" class="menu-link">
-                         <i class="menu-icon bx bx-user"></i>
-                         <div class="text-truncate">Customers</div>
-                     </a>
-                 </li>
-
-                 <li class="menu-item {{ request()->routeIs('master.references.*') ? 'active' : '' }}">
-                     <a href="{{ route('master.references.index') }}" class="menu-link">
-                         <i class="menu-icon bx bx-bookmark"></i>
-                         <div class="text-truncate">References</div>
-                     </a>
-                 </li> 
-                 --}}
 
              </ul>
          </li>
+
+         <li class="menu-item {{ request()->is('client/*') ? 'active open' : '' }}">
+             <a href="javascript:void(0);" class="menu-link menu-toggle">
+                 <i class="menu-icon tf-icons bx bx-user-circle"></i>
+                 <div class="text-truncate" data-i18n="Profile">Profile</div>
+             </a>
+             <ul class="menu-sub">
+
+                 {{-- Client --}}
+                 <li class="menu-item {{ request()->routeIs('master.companies.*') ? 'active' : '' }}">
+                     <a href="{{ route('master.companies.index') }}" class="menu-link">
+                         <i class="menu-icon bx bx-id-card"></i>
+                         <div class="text-truncate">Client</div>
+                     </a>
+                 </li>
+
+                 {{-- Family --}}
+                 <li class="menu-item {{ request()->routeIs('master.branches.*') ? 'active' : '' }}">
+                     <a href="{{ route('master.branches.index') }}" class="menu-link">
+                         <i class="menu-icon bx bx-group"></i>
+                         <div class="text-truncate">Family</div>
+                     </a>
+                 </li>
+
+             </ul>
+         </li>
+
      </ul>
 
 
