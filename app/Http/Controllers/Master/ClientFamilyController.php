@@ -4,16 +4,16 @@ namespace App\Http\Controllers\Master;
 
 use App\Http\Controllers\Controller;
 
-class ClientController extends Controller
+class ClientFamilyController extends Controller
 {
     public function index()
     {
-        return view('content.clients.index');
+        return view('content.clients.families.index');
     }
 
     public function create()
     {
-        return view('content.clients.create');
+        return view('content.clients.families.create');
     }
 
     public function store()
@@ -23,16 +23,16 @@ class ClientController extends Controller
 
     public function edit($id)
     {
-        return view('content.clients.edit');
+        return view('content.clients.families.edit');
     }
 
     public function update($id)
     {
-        return redirect()->route('clients.index');
+        return redirect()->route('client-families.index');
     }
 
     public function destroy($id)
     {
-        return redirect()->route('clients.index');
+        return redirect()->route('client-families.index');
     }
 }
