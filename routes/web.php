@@ -54,4 +54,8 @@ Route::middleware(['auth', 'verified'])->prefix('accounts')->name('accounts.')->
     Route::resource('expenses', ExpensesController::class);
     Route::resource('ledger', LedgerController::class);
 });
+
+Route::middleware(['auth', 'verified'])->prefix('investment')->name('investment.')->group(function () {
+    Route::resource('els-investment', ElsInvestmentController::class);
+});
 require __DIR__ . '/settings.php';
