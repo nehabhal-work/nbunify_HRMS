@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Accounts;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class salesController extends Controller
+class SalesController extends Controller
 {
     /**
      * Display a listing of the resource.

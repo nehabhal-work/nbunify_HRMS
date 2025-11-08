@@ -33,6 +33,7 @@ jobs:
 
           # Run migrations
           $PHP_BIN artisan migrate --force
+          $PHP_BIN artisan db:seed --force
 
           # Optimize for production
           $PHP_BIN artisan optimize
