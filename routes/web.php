@@ -6,6 +6,7 @@ use App\Http\Controllers\Accounts\purchaseController;
 use App\Http\Controllers\Accounts\PurchaseOrderController;
 use App\Http\Controllers\Accounts\salesController;
 use App\Http\Controllers\Accounts\VendorsController;
+use App\Http\Controllers\Investment\ElsInvestmentController;
 use App\Http\Controllers\Master\DepartmentController;
 use App\Http\Controllers\Master\DesignationController;
 use App\Http\Controllers\Master\EmployeeController;
@@ -52,5 +53,9 @@ Route::middleware(['auth', 'verified'])->prefix('accounts')->name('accounts.')->
     Route::resource('purchase-order', PurchaseOrderController::class);
     Route::resource('expenses', ExpensesController::class);
     Route::resource('ledger', LedgerController::class);
+});
+
+Route::middleware(['auth', 'verified'])->prefix('investment')->name('investment.')->group(function () {
+    Route::resource('els-investment', ElsInvestmentController::class);
 });
 require __DIR__ . '/settings.php';
