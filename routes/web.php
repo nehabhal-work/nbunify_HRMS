@@ -1,5 +1,11 @@
 <?php
 
+use App\Http\Controllers\Accounts\ExpensesController;
+use App\Http\Controllers\Accounts\LedgerController;
+use App\Http\Controllers\Accounts\purchaseController;
+use App\Http\Controllers\Accounts\PurchaseOrderController;
+use App\Http\Controllers\Accounts\salesController;
+use App\Http\Controllers\Accounts\VendorsController;
 use App\Http\Controllers\Master\DepartmentController;
 use App\Http\Controllers\Master\DesignationController;
 use App\Http\Controllers\Master\EmployeeController;
@@ -39,4 +45,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('client-families', ClientFamilyController::class);
 });
 
+Route::middleware(['auth', 'verified'])->prefix('accounts')->name('accounts.')->group(function () {
+    Route::resource('vendors', VendorsController::class);
+    Route::resource('purchase', PurchaseController::class);
+    Route::resource('sales', salesController::class);
+    Route::resource('purchase-order', PurchaseOrderController::class);
+    Route::resource('expenses', ExpensesController::class);
+    Route::resource('ledger', LedgerController::class);
+});
 require __DIR__ . '/settings.php';

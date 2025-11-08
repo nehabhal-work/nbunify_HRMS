@@ -68,12 +68,73 @@
 
              </ul>
          </li>
+
          <li class="menu-item {{ request()->routeIs('clients/*') ? 'active' : '' }}">
              <a href="{{ route('clients.index') }}" class="menu-link">
                  <i class="menu-icon bx bx-id-card"></i>
                  <div class="text-truncate">Client</div>
              </a>
          </li>
+
+
+         {{-- accounts --}}
+         <li class="menu-item {{ request()->is('accounts/*') ? 'active open' : '' }}">
+             <a href="javascript:void(0);" class="menu-link menu-toggle">
+                 <i class="menu-icon tf-icons bx bx-wallet"></i>
+                 <div class="text-truncate" data-i18n="Account">Account</div>
+             </a>
+
+             <ul class="menu-sub">
+                 <!-- Vendors -->
+                 <li class="menu-item {{ request()->routeIs('account.vendor.*') ? 'active' : '' }}">
+                     <a href="{{ route('accounts.vendors.index') }}" class="menu-link">
+                         <i class="menu-icon bx bx-store-alt"></i>
+                         <div class="text-truncate">Vendors</div>
+                     </a>
+                 </li>
+
+                 <!-- Purchase -->
+                 <li class="menu-item {{ request()->routeIs('accounts.purchase.*') ? 'active' : '' }}">
+                     <a href="{{ route('accounts.purchase.index') }}" class="menu-link">
+                         <i class="menu-icon bx bx-cart"></i>
+                         <div class="text-truncate">Purchase</div>
+                     </a>
+                 </li>
+
+                 <!-- Sales -->
+                 <li class="menu-item {{ request()->routeIs('accounts.sales.*') ? 'active' : '' }}">
+                     <a href="{{ route('accounts.sales.index') }}" class="menu-link">
+                         <i class="menu-icon bx bx-trending-up"></i>
+                         <div class="text-truncate">Sales</div>
+                     </a>
+                 </li>
+
+                 <!-- Purchase Order -->
+                 <li class="menu-item {{ request()->routeIs('accounts.purchase-orders.*') ? 'active' : '' }}">
+                     <a href="{{ route('accounts.purchase-order.index') }}" class="menu-link">
+                         <i class="menu-icon bx bx-receipt"></i>
+                         <div class="text-truncate">Purchase Order</div>
+                     </a>
+                 </li>
+
+                 <!-- Expense Voucher -->
+                 <li class="menu-item {{ request()->routeIs('accounts.expenses.*') ? 'active' : '' }}">
+                     <a href="{{ route('accounts.expenses.index') }}" class="menu-link">
+                         <i class="menu-icon bx bx-money"></i>
+                         <div class="text-truncate">Expense Voucher</div>
+                     </a>
+                 </li>
+
+                 <!-- Ledger -->
+                 <li class="menu-item {{ request()->routeIs('accounts.ledger.*') ? 'active' : '' }}">
+                     <a href="{{ route('accounts.ledger.index') }}" class="menu-link">
+                         <i class="menu-icon bx bx-book-content"></i>
+                         <div class="text-truncate">Ledger</div>
+                     </a>
+                 </li>
+             </ul>
+         </li>
+
 
 
 

@@ -44,51 +44,61 @@
                             <thead class="table-light">
                                 <tr>
                                     <th>#</th>
-                                    <th>Client</th>
-                                    <th>Contact Person</th>
-                                    <th>Number</th>
+                                    <th>Client name</th>
+                                    <th>pan no</th>
+                                    <th>addhar no</th>
+                                    <th>phone</th>
                                     <th>Email</th>
-                                    <th>GST No</th>
-                                    <th>Actions</th>
+                                    <th>address</th>
+                                    <th>Family info</th>
+                                    <th>bank info</th>
+                                    <th>action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                {{-- Example static row (replace with @foreach later) --}}
-                                {{-- @foreach ($companies as $d)
-                                    <tr>
-                                        <td>{{ $d->id }}</td>
-                                        <td>{{ $d->name }}</td>
-                                        <td>{{ $d->contact_person_name }}</td>
-                                        <td>{{ $d->phone }}</td>
-                                        <td>{{ $d->email }}</td>
-                                        <td>{{ $d->gstin }}</td>
-                                        <td>
-                                            <div class="dropdown">
-                                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                                    data-bs-toggle="dropdown">
-                                                    <i class="bx bx-dots-vertical-rounded"></i>
-                                                </button>
-                                                <div class="dropdown-menu">
-                                                    <a class="dropdown-item"
-                                                        href="{{ route('master.companies.edit', $d->id) }}"><i
-                                                            class="bx bx-edit-alt me-1"></i> Edit</a>
-                                                    <form action="{{ route('master.companies.destroy', $d->id) }}"
-                                                        method="post" onsubmit="return confirmDelete()">
+                                <tr>
+                                    <td>KNK-0001 </td>
+                                    <td>BHALCHANDRA </td>
+                                    <td>ABCD8778789A </td>
+                                    <td>2000937300009 </td>
+                                    <td>8787889798 </td>
+                                    <td>bhalchandra@test.com</td>
+                                    <td>kalwa thane </td>
+                                    <td>
+                                        <button type="button" class="btn btn-sm btn-info">
+                                            View Family Info
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-sm btn-secondary">
+                                            View Bank Info
+                                        </button>
+                                    </td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
+                                                data-bs-toggle="dropdown">
+                                                <i class="bx bx-dots-vertical-rounded"></i>
+                                            </button>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item" href=""><i class="bx bx-edit-alt me-1"></i>
+                                                    Edit</a>
+                                                <form action="" method="post" onsubmit="return confirmDelete()">
 
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="dropdown-item text-danger delete-btn"
-                                                            data-id="{{ $d->id }}">
-                                                            <i class="bx bx-trash me-1"></i> Delete
-                                                        </button>
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="dropdown-item text-danger delete-btn"
+                                                        data-id="">
+                                                        <i class="bx bx-trash me-1"></i> Delete
+                                                    </button>
 
-                                                    </form>
+                                                </form>
 
-                                                </div>
                                             </div>
-                                        </td>
-                                    </tr>
-                                @endforeach --}}
+                                        </div>
+                                    </td>
+                                </tr>
+
                             </tbody>
                         </table>
                     </div>
