@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\Accounts;
+namespace App\Http\Controllers\Investment;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class SalesController extends Controller
+class ElsInvestmentController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-         return view('content.accounts.sales.index');
+        return view('content.investment.index');
     }
 
     /**
@@ -20,7 +20,7 @@ class SalesController extends Controller
      */
     public function create()
     {
-         return view('content.accounts.sales.create');
+        return view('content.investment.create');
     }
 
     /**

@@ -1,0 +1,72 @@
+<?php
+
+namespace App\Services;
+
+use App\Models\Client;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Storage;
+
+class ClientService
+{
+    public function create(array $data): Client
+    {
+        $data = $this->handleFileUploads($data);
+        return Client::create($data);
+    }
+
+    public function update(Client $client, array $data): Client
+    {
+        $data = $this->handleFileUploads($data, $client);
+        $client->update($data);
+        return $client->fresh();
+    }
+
+    public function delete(Client $client): bool
+    {
+        $this->deleteFiles($client);
+        return $client->delete();
+    }
+
+    private function handleFileUploads(array $data, ?Client $client = null): array
+    {
+        $fileFields = [
+            'attachment_client_photo',
+            'attachment_pan',
+            'attachment_aadhar_front',
+            'attachment_aadhar_back',
+            'attachment_signature',
+            'attachment_ckyc',
+            'attachment_other_documents'
+        ];
+
+        foreach ($fileFields as $field) {
+            if (isset($data[$field]) && $data[$field] instanceof UploadedFile) {
+                if ($client && $client->$field) {
+                    Storage::delete($client->$field);
+                }
+                $data[$field] = $data[$field]->store('clients');
+            }
+        }
+
+        return $data;
+    }
+
+    private function deleteFiles(Client $client): void
+    {
+        $fileFields = [
+            'attachment_client_photo',
+            'attachment_pan',
+            'attachment_aadhar_front',
+            'attachment_aadhar_back',
+            'attachment_signature',
+            'attachment_ckyc',
+            'attachment_other_documents'
+        ];
+
+        foreach ($fileFields as $field) {
+            if ($client->$field) {
+                Storage::delete($client->$field);
+            }
+        }
+    }
+}
