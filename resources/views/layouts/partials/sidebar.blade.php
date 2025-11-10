@@ -86,7 +86,7 @@
 
              <ul class="menu-sub">
                  <!-- Vendors -->
-                 <li class="menu-item {{ request()->routeIs('account.vendor.*') ? 'active' : '' }}">
+                 <li class="menu-item {{ request()->routeIs('accounts.vendors.*') ? 'active' : '' }}">
                      <a href="{{ route('accounts.vendors.index') }}" class="menu-link">
                          <i class="menu-icon bx bx-store-alt"></i>
                          <div class="text-truncate">Vendors</div>
@@ -94,8 +94,8 @@
                  </li>
 
                  <!-- Purchase -->
-                 <li class="menu-item {{ request()->routeIs('accounts.purchase.*') ? 'active' : '' }}">
-                     <a href="{{ route('accounts.purchase.index') }}" class="menu-link">
+                 <li class="menu-item {{ request()->routeIs('accounts.purchases.*') ? 'active' : '' }}">
+                     <a href="{{ route('accounts.purchases.index') }}" class="menu-link">
                          <i class="menu-icon bx bx-cart"></i>
                          <div class="text-truncate">Purchase</div>
                      </a>
@@ -111,7 +111,7 @@
 
                  <!-- Purchase Order -->
                  <li class="menu-item {{ request()->routeIs('accounts.purchase-orders.*') ? 'active' : '' }}">
-                     <a href="{{ route('accounts.purchase-order.index') }}" class="menu-link">
+                     <a href="{{ route('accounts.purchase-orders.index') }}" class="menu-link">
                          <i class="menu-icon bx bx-receipt"></i>
                          <div class="text-truncate">Purchase Order</div>
                      </a>
