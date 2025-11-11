@@ -48,9 +48,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 Route::middleware(['auth', 'verified'])->prefix('accounts')->name('accounts.')->group(function () {
     Route::resource('vendors', VendorsController::class);
-    Route::resource('purchase', PurchaseController::class);
+    Route::resource('purchases', PurchaseController::class);
     Route::resource('sales', salesController::class);
-    Route::resource('purchase-order', PurchaseOrderController::class);
+    Route::resource('purchase-orders', PurchaseOrderController::class);
     Route::resource('expenses', ExpensesController::class);
     Route::resource('ledger', LedgerController::class);
 });
