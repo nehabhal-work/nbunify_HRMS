@@ -67,9 +67,9 @@
                                         <td>{{ $d->res_address }}</td>
 
                                         <td>
-                                            <button type="button" class="btn btn-sm btn-info">
+                                            <a href="{{ route('client-families.index') }}" class="btn btn-sm btn-info">
                                                 View Family Info
-                                            </button>
+                                            </a>
                                         </td>
                                         <td>
                                             <button type="button" class="btn btn-sm btn-secondary">
@@ -83,12 +83,11 @@
                                                     <i class="bx bx-dots-vertical-rounded"></i>
                                                 </button>
                                                 <div class="dropdown-menu">
-                                                    <a class="dropdown-item"
-                                                        href="{{ route('clients.edit', $d->id) }}"><i
+                                                    <a class="dropdown-item" href="{{ route('clients.edit', $d->id) }}"><i
                                                             class="bx bx-edit-alt me-1"></i> Edit</a>
 
-                                                    <form action="{{ route('clients.destroy', $d->id) }}"
-                                                        method="post" onsubmit="return confirmDelete()">
+                                                    <form action="{{ route('clients.destroy', $d->id) }}" method="post"
+                                                        onsubmit="return confirmDelete()">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="dropdown-item text-danger delete-btn"

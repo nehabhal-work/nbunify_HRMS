@@ -36,7 +36,8 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Family List</h5>
-                    <a class="btn btn-primary" href="{{ route('client-families.create') }}" role="button">Add New</a>
+                    <a class="btn btn-primary" href="{{ route('client-families.create') }}" role="button">Add Family
+                        Menber</a>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive text-nowrap">

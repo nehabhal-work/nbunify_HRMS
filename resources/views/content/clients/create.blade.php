@@ -166,14 +166,14 @@
                                 <select class="form-select @error('occupation') is-invalid @enderror" id="occupation"
                                     name="occupation">
                                     <option value="">Select</option>
-                                    <option value="private_service"
-                                        {{ old('occupation') == 'private_service' ? 'selected' : '' }}>Private Sector
+                                    <option value="private_sector"
+                                        {{ old('occupation') == 'private_sector' ? 'selected' : '' }}>Private Sector
                                     </option>
-                                    <option value="public_service"
-                                        {{ old('occupation') == 'public_service' ? 'selected' : '' }}>Public Sector
+                                    <option value="public_sector"
+                                        {{ old('occupation') == 'public_sector' ? 'selected' : '' }}>Public Sector
                                     </option>
-                                    <option value="government_service"
-                                        {{ old('occupation') == 'government_service' ? 'selected' : '' }}>Government
+                                    <option value="government" {{ old('occupation') == 'government' ? 'selected' : '' }}>
+                                        Government
                                         Service</option>
                                     <option value="business" {{ old('occupation') == 'business' ? 'selected' : '' }}>
                                         Business</option>
