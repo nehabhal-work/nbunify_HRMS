@@ -44,7 +44,8 @@
                                         <h4 class="card-title">Welcome to Dashboard by nehaa!!</h4>
                                         <h2>again bhal </h2>
                                         <h3>aata neha ragavali</h3>
-
+                                        <h5>new line insertion by bhal</h5>
+                                        <h6>mujeh healthy khana khana hai......</h6>
                                         <p class="card-text">You are successfully logged in!</p>
                                         <p>line add by bhal</p>
                                         <a href="{{ route('master.companies.index') }}" class="btn btn-primary">Manage
