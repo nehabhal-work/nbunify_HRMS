@@ -56,49 +56,53 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>KNK-0001 </td>
-                                    <td>BHALCHANDRA </td>
-                                    <td>ABCD8778789A </td>
-                                    <td>2000937300009 </td>
-                                    <td>8787889798 </td>
-                                    <td>bhalchandra@test.com</td>
-                                    <td>kalwa thane </td>
-                                    <td>
-                                        <button type="button" class="btn btn-sm btn-info">
-                                            View Family Info
-                                        </button>
-                                    </td>
-                                    <td>
-                                        <button type="button" class="btn btn-sm btn-secondary">
-                                            View Bank Info
-                                        </button>
-                                    </td>
-                                    <td>
-                                        <div class="dropdown">
-                                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                                data-bs-toggle="dropdown">
-                                                <i class="bx bx-dots-vertical-rounded"></i>
+                                @foreach ($clients as $d)
+                                    <tr>
+                                        <td>{{ $d->id }}</td>
+                                        <td>{{ $d->name }}</td>
+                                        <td>{{ $d->pan_no }}</td>
+                                        <td>{{ $d->aadhar_no }}</td>
+                                        <td>{{ $d->mobile_no }}</td>
+                                        <td>{{ $d->email }}</td>
+                                        <td>{{ $d->res_address }}</td>
+
+                                        <td>
+                                            <button type="button" class="btn btn-sm btn-info">
+                                                View Family Info
                                             </button>
-                                            <div class="dropdown-menu">
-                                                <a class="dropdown-item" href=""><i class="bx bx-edit-alt me-1"></i>
-                                                    Edit</a>
-                                                <form action="" method="post" onsubmit="return confirmDelete()">
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-sm btn-secondary">
+                                                View Bank Info
+                                            </button>
+                                        </td>
+                                        <td>
+                                            <div class="dropdown">
+                                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
+                                                    data-bs-toggle="dropdown">
+                                                    <i class="bx bx-dots-vertical-rounded"></i>
+                                                </button>
+                                                <div class="dropdown-menu">
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('clients.edit', $d->id) }}"><i
+                                                            class="bx bx-edit-alt me-1"></i> Edit</a>
 
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="dropdown-item text-danger delete-btn"
-                                                        data-id="">
-                                                        <i class="bx bx-trash me-1"></i> Delete
-                                                    </button>
+                                                    <form action="{{ route('clients.destroy', $d->id) }}"
+                                                        method="post" onsubmit="return confirmDelete()">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="dropdown-item text-danger delete-btn"
+                                                            data-id="">
+                                                            <i class="bx bx-trash me-1"></i> Delete
+                                                        </button>
 
-                                                </form>
+                                                    </form>
 
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                </tr>
-
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
