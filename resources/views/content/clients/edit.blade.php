@@ -77,8 +77,10 @@
                             <div class="col-md-2 mb-3">
                                 <label class="form-label" for="dob">Date of Birth</label>
                                 <input type="date" class="form-control @error('dob') is-invalid @enderror" id="dob"
-                                    name="dob" value="{{ old('dob', $client->dob ?? '') }}"
+                                    name="dob"
+                                    value="{{ old('dob', isset($client->dob) ? \Carbon\Carbon::parse($client->dob)->format('Y-m-d') : '') }}"
                                     max="{{ now()->toDateString() }}">
+
                                 @error('dob')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -198,14 +200,14 @@
                                 <select class="form-select @error('occupation') is-invalid @enderror" id="occupation"
                                     name="occupation">
                                     <option value="">Select</option>
-                                    <option value="private_service"
-                                        {{ old('occupation', $client->occupation ?? '') == 'private_service' ? 'selected' : '' }}>
+                                    <option value="private_sector"
+                                        {{ old('occupation', $client->occupation ?? '') == 'private_sector' ? 'selected' : '' }}>
                                         Private Sector</option>
-                                    <option value="public_service"
-                                        {{ old('occupation', $client->occupation ?? '') == 'public_service' ? 'selected' : '' }}>
+                                    <option value="public_sector"
+                                        {{ old('occupation', $client->occupation ?? '') == 'public_sector' ? 'selected' : '' }}>
                                         Public Sector</option>
-                                    <option value="government_service"
-                                        {{ old('occupation', $client->occupation ?? '') == 'government_service' ? 'selected' : '' }}>
+                                    <option value="government"
+                                        {{ old('occupation', $client->occupation ?? '') == 'government' ? 'selected' : '' }}>
                                         Government Service</option>
                                     <option value="business"
                                         {{ old('occupation', $client->occupation ?? '') == 'business' ? 'selected' : '' }}>
@@ -352,11 +354,6 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-
-
-
-
-
 
                             <!-- Residential Address -->
                             <h6 class="my-3">Residential Address</h6>
@@ -522,17 +519,10 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-
-
-
                         </div>
                     </div>
                 </div>
             </div>
-
-
-
-
 
             {{-- Bank details --}}
             <div class="col-md-6 d-flex">
@@ -545,120 +535,57 @@
                         <div class="col-12 ">
 
                             <div id="bankDetailsWrapper">
-                                @forelse ($client ?? [] as $index => $bank)
-                                    <div class="bank-details-row row g-3 mb-3 bg-light position-relative">
-                                        <!-- IFSC Code -->
-                                        <div class="col-md-6">
-                                            <label class="form-label">IFSC Code</label>
-                                            <input type="text" name="banks[{{ $index }}][ifsc_code]"
-                                                class="form-control ifsc_code"
-                                                value="{{ old('banks.' . $index . '.ifsc_code', $bank->ifsc_code) }}"
-                                                placeholder="Enter IFSC Code">
-                                            <span class="invalid-feedback errmsg"></span>
+                                @if ($client->banks && $client->banks->count() > 0)
+                                    @foreach ($client->banks as $bank)
+                                        <div class="bank-details-row row g-3 mb-3 bg-light position-relative">
+                                            <div class="col-md-6">
+                                                <label class="form-label">IFSC Code</label>
+                                                <input type="text" name="banks[{{ $loop->index }}][ifsc_code]"
+                                                    value="{{ old('banks.' . $loop->index . '.ifsc_code', $bank->ifsc_code ?? '') }}"
+                                                    class="form-control ifsc_code" placeholder="Enter IFSC Code">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">Account No</label>
+                                                <input type="text" name="banks[{{ $loop->index }}][account_number]"
+                                                    value="{{ old('banks.' . $loop->index . '.account_number', $bank->account_number ?? '') }}"
+                                                    class="form-control account_number" maxlength="18"
+                                                    placeholder="Enter Account Number">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">Bank Name</label>
+                                                <input type="text" name="banks[{{ $loop->index }}][bank_name]"
+                                                    value="{{ old('banks.' . $loop->index . '.bank_name', $bank->bank_name ?? '') }}"
+                                                    class="form-control bank_name bg-secondary-subtle bg-gradient"
+                                                    readonly>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">Branch Name</label>
+                                                <input type="text" name="banks[{{ $loop->index }}][branch_name]"
+                                                    value="{{ old('banks.' . $loop->index . '.branch_name', $bank->branch_name ?? '') }}"
+                                                    class="form-control branch_name bg-secondary-subtle bg-gradient"
+                                                    readonly>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label">Bank Code</label>
+                                                <input type="text" name="banks[{{ $loop->index }}][bank_code]"
+                                                    value="{{ old('banks.' . $loop->index . '.bank_code', $bank->bank_code ?? '') }}"
+                                                    class="form-control bank_code bg-secondary-subtle bg-gradient"
+                                                    readonly>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <label class="form-label d-block">Primary a/c</label>
+                                                <input type="hidden" name="banks[{{ $loop->index }}][is_primary]"
+                                                    value="0">
+                                                <input type="checkbox" name="banks[{{ $loop->index }}][is_primary]"
+                                                    value="1" class="form-check-input setPrimary"
+                                                    {{ old('banks.' . $loop->index . '.is_primary', $bank->is_primary ?? false) ? 'checked' : '' }}>
+                                            </div>
                                         </div>
+                                    @endforeach
+                                @else
+                                    <p class="text-muted">No bank details available.</p>
+                                @endif
 
-                                        <!-- Account Number -->
-                                        <div class="col-md-6">
-                                            <label class="form-label">Account No</label>
-                                            <input type="text" name="banks[{{ $index }}][account_number]"
-                                                class="form-control account_number onlydigit"
-                                                value="{{ old('banks.' . $index . '.account_number', $bank->account_number) }}"
-                                                placeholder="Enter Account Number">
-                                        </div>
-
-                                        <!-- Bank Name -->
-                                        <div class="col-md-6">
-                                            <label class="form-label">Bank Name</label>
-                                            <input type="text" name="banks[{{ $index }}][bank_name]"
-                                                class="form-control bank_name bg-secondary-subtle bg-gradient"
-                                                value="{{ old('banks.' . $index . '.bank_name', $bank->bank_name) }}"
-                                                readonly>
-                                        </div>
-
-                                        <!-- Branch Name -->
-                                        <div class="col-md-6">
-                                            <label class="form-label">Branch Name</label>
-                                            <input type="text" name="banks[{{ $index }}][branch_name]"
-                                                class="form-control branch_name bg-secondary-subtle bg-gradient"
-                                                value="{{ old('banks.' . $index . '.branch_name', $bank->branch_name) }}"
-                                                readonly>
-                                        </div>
-
-                                        <!-- Bank Code -->
-                                        <div class="col-md-6">
-                                            <label class="form-label">Bank Code</label>
-                                            <input type="text" name="banks[{{ $index }}][bank_code]"
-                                                class="form-control bank_code bg-secondary-subtle bg-gradient"
-                                                value="{{ old('banks.' . $index . '.bank_code', $bank->bank_code) }}"
-                                                readonly>
-                                        </div>
-
-                                        <!-- Primary Checkbox -->
-                                        <div class="col-md-6">
-                                            <label class="form-label d-block">Primary</label>
-                                            <input type="hidden" name="banks[{{ $index }}][is_primary]"
-                                                value="0">
-                                            <input type="checkbox" name="banks[{{ $index }}][is_primary]"
-                                                value="1" class="form-check-input setPrimary"
-                                                {{ old('banks.' . $index . '.is_primary', $bank->is_primary) ? 'checked' : '' }}>
-                                        </div>
-
-                                        <!-- Remove -->
-                                        <div class="col-md-1 d-flex align-items-end">
-                                            <button type="button" class="btn btn-danger btn-sm removeBankRow">
-                                                {{-- class="btn btn-danger btn-sm removeBankRow {{ $loop->first ? 'd-none' : '' }}"> --}}
-                                                <i class="bx bx-minus"></i> Remove
-                                            </button>
-                                        </div>
-                                    </div>
-                                @empty
-                                    {{-- Default row when no banks --}}
-                                    <div class="bank-details-row row g-3 mb-3 bg-light position-relative">
-                                        <div class="col-md-6">
-                                            <label class="form-label">IFSC Code</label>
-                                            <input type="text" name="banks[0][ifsc_code]"
-                                                class="form-control ifsc_code" placeholder="Enter IFSC Code">
-                                            <span class="invalid-feedback errmsg"></span>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <label class="form-label">Account No</label>
-                                            <input type="text" name="banks[0][account_number]"
-                                                class="form-control account_number" placeholder="Enter Account Number">
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <label class="form-label">Bank Name</label>
-                                            <input type="text" name="banks[0][bank_name]"
-                                                class="form-control bank_name bg-secondary-subtle bg-gradient" readonly>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <label class="form-label">Branch Name</label>
-                                            <input type="text" name="banks[0][branch_name]"
-                                                class="form-control branch_name bg-secondary-subtle bg-gradient" readonly>
-                                        </div>
-
-                                        <div class="col-md-6">
-                                            <label class="form-label">Bank Code</label>
-                                            <input type="text" name="banks[0][bank_code]"
-                                                class="form-control bank_code bg-secondary-subtle bg-gradient" readonly>
-                                        </div>
-
-                                        <div class="col-md-1">
-                                            <label class="form-label d-block">Primary</label>
-                                            <input type="hidden" name="banks[0][is_primary]" value="0">
-                                            <input type="checkbox" name="banks[0][is_primary]" value="1"
-                                                class="form-check-input setPrimary">
-                                        </div>
-
-                                        <div class="col-md-1 d-flex align-items-end">
-                                            <button type="button" class="btn btn-danger btn-sm removeBankRow d-none1">
-                                                <i class="bx bx-minus"></i> Remove
-                                            </button>
-                                        </div>
-                                    </div>
-                                @endforelse
                             </div>
 
                             <!-- Add More Button -->
@@ -674,8 +601,6 @@
                 </div>
             </div>
 
-
-
             {{-- Image Section --}}
             <div class="col-md-6 d-flex">
                 <div class="card mb-4">
@@ -688,6 +613,12 @@
                             <!-- Profile Photo -->
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Client Photo</label>
+                                @if (!empty($client->attachment_client_photo))
+                                    <div class="mb-2">
+                                        <img src="{{ asset('storage/' . $client->attachment_client_photo) }}"
+                                            alt="Client Photo" class="img-fluid rounded" style="max-height: 150px;">
+                                    </div>
+                                @endif
                                 <div class="input-group">
                                     <input type="file"
                                         class="form-control @error('attachment_client_photo') is-invalid @enderror"
@@ -701,10 +632,15 @@
                                 @enderror
                             </div>
 
-
-                            <!-- Aadhar Card -->
+                            <!-- PAN Card -->
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">pan Card</label>
+                                <label class="form-label">PAN Card</label>
+                                @if (!empty($client->attachment_pan))
+                                    <div class="mb-2">
+                                        <img src="{{ asset('storage/' . $client->attachment_pan) }}" alt="PAN Card"
+                                            class="img-fluid rounded" style="max-height: 150px;">
+                                    </div>
+                                @endif
                                 <div class="input-group">
                                     <input type="file"
                                         class="form-control @error('attachment_pan') is-invalid @enderror"
@@ -717,10 +653,15 @@
                                 @enderror
                             </div>
 
-
-                            <!-- aadhar Card front-->
+                            <!-- Aadhar Front -->
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">aadhar Card front</label>
+                                <label class="form-label">Aadhar Card Front</label>
+                                @if (!empty($client->attachment_aadhar_front))
+                                    <div class="mb-2">
+                                        <img src="{{ asset('storage/' . $client->attachment_aadhar_front) }}"
+                                            alt="Aadhar Front" class="img-fluid rounded" style="max-height: 150px;">
+                                    </div>
+                                @endif
                                 <div class="input-group">
                                     <input type="file"
                                         class="form-control @error('attachment_aadhar_front') is-invalid @enderror"
@@ -734,10 +675,15 @@
                                 @enderror
                             </div>
 
-
-                            <!-- aadhar Card back -->
+                            <!-- Aadhar Back -->
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">aadhar Card Back</label>
+                                <label class="form-label">Aadhar Card Back</label>
+                                @if (!empty($client->attachment_aadhar_back))
+                                    <div class="mb-2">
+                                        <img src="{{ asset('storage/' . $client->attachment_aadhar_back) }}"
+                                            alt="Aadhar Back" class="img-fluid rounded" style="max-height: 150px;">
+                                    </div>
+                                @endif
                                 <div class="input-group">
                                     <input type="file"
                                         class="form-control @error('attachment_aadhar_back') is-invalid @enderror"
@@ -751,11 +697,15 @@
                                 @enderror
                             </div>
 
-
-
                             <!-- Signature -->
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Signature</label>
+                                @if (!empty($client->attachment_signature))
+                                    <div class="mb-2">
+                                        <img src="{{ asset('storage/' . $client->attachment_signature) }}" alt="Signature"
+                                            class="img-fluid rounded" style="max-height: 150px;">
+                                    </div>
+                                @endif
                                 <div class="input-group">
                                     <input type="file"
                                         class="form-control @error('attachment_signature') is-invalid @enderror"
@@ -769,9 +719,15 @@
                                 @enderror
                             </div>
 
-                            <!-- Resume -->
+                            <!-- CKYC -->
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">ckyc</label>
+                                <label class="form-label">CKYC</label>
+                                @if (!empty($client->attachment_ckyc))
+                                    <div class="mb-2">
+                                        <img src="{{ asset('storage/' . $client->attachment_ckyc) }}" alt="CKYC Document"
+                                            class="img-fluid rounded" style="max-height: 150px;">
+                                    </div>
+                                @endif
                                 <div class="input-group">
                                     <input type="file"
                                         class="form-control @error('attachment_ckyc') is-invalid @enderror"
@@ -784,9 +740,15 @@
                                 @enderror
                             </div>
 
-                            <!-- Other Supporting Documents -->
+                            <!-- Other Documents -->
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Other Documents (Optional)</label>
+                                @if (!empty($client->attachment_other_documents))
+                                    <div class="mb-2">
+                                        <img src="{{ asset('storage/' . $client->attachment_other_documents) }}"
+                                            alt="Other Documents" class="img-fluid rounded" style="max-height: 150px;">
+                                    </div>
+                                @endif
                                 <div class="input-group">
                                     <input type="file"
                                         class="form-control @error('attachment_other_documents') is-invalid @enderror"
@@ -800,6 +762,7 @@
                                 @enderror
                             </div>
                         </div>
+
 
 
 
