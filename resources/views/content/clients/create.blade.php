@@ -242,7 +242,7 @@
                                 <label class="form-label" for="mobile_no">Mobile Number</label>
                                 <input type="text"
                                     class="form-control onlyphone @error('mobile_no') is-invalid @enderror"
-                                    id="mobile_no" name="mobile_no" maxlength="15" value="{{ old('mobile_no') }}">
+                                    id="phone" name="mobile_no" maxlength="15" value="{{ old('mobile_no') }}">
                                 @error('mobile_no')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -280,7 +280,7 @@
                             {{-- Email --}}
                             <div class="col-md-3 mb-3">
                                 <label class="form-label" for="email">Email</label>
-                                <input type="email" class="form-control @error('email') is-invalid @enderror"
+                                <input type="email" class="form-control  @error('email') is-invalid @enderror"
                                     id="email" name="email" value="{{ old('email') }}">
                                 @error('email')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -654,7 +654,8 @@
                                 <div class="input-group">
                                     <input type="file"
                                         class="form-control @error('attachment_ckyc') is-invalid @enderror"
-                                        id="attachment_ckyc" name="attachment_ckyc" accept=".pdf,.doc,.docx">
+                                        id="attachment_ckyc" name="attachment_ckyc"
+                                        accept=".pdf,.png, ,jpeg, .jpg, .doc,.docx">
                                     <button class="btn btn-outline-danger" type="button"
                                         onclick="document.getElementById('attachment_ckyc').value = ''">✕</button>
                                 </div>
@@ -709,4 +710,16 @@
 @endsection
 
 @push('scripts')
+    <script>
+        $(document).ready(function() {
+            $('.chkbox_fwapp_same_as_mobile').on('change', function() {
+                if ($(this).is(':checked')) {
+                    $('#whatsapp_no').val($('#phone').val());
+                } else {
+                    $('#whatsapp_no').val('');
+                }
+            });
+
+        });
+    </script>
 @endpush
