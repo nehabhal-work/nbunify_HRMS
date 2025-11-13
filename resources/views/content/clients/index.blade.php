@@ -72,10 +72,12 @@
                                             </a>
                                         </td>
                                         <td>
-                                            <button type="button" class="btn btn-sm btn-secondary">
+                                            <button type="button" class="btn btn-sm btn-secondary" data-bs-toggle="modal"
+                                                data-bs-target="#bankmodal{{ $d->id }}">
                                                 View Bank Info
                                             </button>
                                         </td>
+
                                         <td>
                                             <div class="dropdown">
                                                 <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
@@ -107,29 +109,7 @@
                                         </td>
                                     </tr>
                                 @endforeach
-                                {{-- @foreach ($clients as $d)
-                                    <div class="modal fade" id="exampleModal{{ $d->id }}" tabindex="-1"
-                                        aria-labelledby="exampleModalLabel{{ $d->id }}" aria-hidden="true">
-                                        <div class="modal-dialog modal-lg">
-                                            <div class="modal-content">
-                                                <div class="modal-header">
-                                                    <h1 class="modal-title fs-5" id="exampleModalLabel{{ $d->id }}">
-                                                        {{ $d->name ?? 'Client Details' }}
-                                                    </h1>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                        aria-label="Close"></button>
-                                                </div>
-                                                <div class="modal-body">
-                                                  
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary"
-                                                        data-bs-dismiss="modal">Close</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                @endforeach --}}
+
                             </tbody>
                         </table>
                     </div>
@@ -152,7 +132,8 @@
                                         <table class="table table-bordered align-middle">
                                             <thead class="table-light">
                                                 <tr>
-                                                    <th colspan="4" class="text-center" style="background-color: #f4ebfc;">Personal Details</th>
+                                                    <th colspan="4" class="text-center"
+                                                        style="background-color: #f4ebfc;">Personal Details</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -213,7 +194,8 @@
                                             <!-- Residential Section -->
                                             <thead class="table-light">
                                                 <tr>
-                                                    <th colspan="4" class="text-center" style="background-color: #f4ebfc;">Residential Address</th>
+                                                    <th colspan="4" class="text-center"
+                                                        style="background-color: #f4ebfc;">Residential Address</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -238,7 +220,8 @@
                                             <!-- Office Section -->
                                             <thead class="table-light">
                                                 <tr>
-                                                    <th colspan="4" class="text-center" style="background-color: #f4ebfc;">Office Address</th>
+                                                    <th colspan="4" class="text-center"
+                                                        style="background-color: #f4ebfc;">Office Address</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -263,7 +246,8 @@
                                             <!-- Attachments Section -->
                                             <thead class="table-light">
                                                 <tr>
-                                                    <th colspan="4" class="text-center" style="background-color: #f4ebfc;">Attachments</th>
+                                                    <th colspan="4" class="text-center"
+                                                        style="background-color: #f4ebfc;">Attachments</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -336,10 +320,118 @@
                         </div>
                     </div>
                 @endforeach
+                {{-- @if ($client->banks && $client->banks->count() > 0) --}}
+
+                {{-- @foreach ($clients as $d)
+                    @foreach ($d->banks as $bank)
+                        <!-- Bank Modal -->
+                        <div class="modal fade" id="bankmodal{{ $bank->id }}" tabindex="-1"
+                            aria-labelledby="bankModalLabel{{ $bank->id }}" aria-hidden="true">
+                            <div class="modal-dialog modal-xl">
+                                <div class="modal-content">
+                                    <div class="modal-header" style="background-color: #ead3ff;">
+                                        <h1 class="modal-title fs-5" id="bankModalLabel{{ $bank->id }}">
+                                            {{ $d->name ?? 'Client Details' }}
+                                        </h1>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+
+                                    <div class="modal-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-bordered align-middle">
+                                                <thead class="table-light">
+                                                    <tr>
+                                                        <th colspan="4" class="text-center"
+                                                            style="background-color: #f4ebfc;">Bank Details</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <th>Client ID</th>
+                                                        <td><b>{{ $d->id }}</b></td>
+                                                        <th>Client Name</th>
+                                                        <td><b>{{ $d->name }}</b></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>IFSC Code</th>
+                                                        <td><b>{{ $bank->ifsc_code }}</b></td>
+                                                        <th>Account No</th>
+                                                        <td><b>{{ $bank->account_number }}</b></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Bank Name</th>
+                                                        <td><b>{{ $bank->bank_name }}</b></td>
+                                                        <th>Branch Name</th>
+                                                        <td><b>{{ $bank->branch_name }}</b></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Bank Code</th>
+                                                        <td><b>{{ $bank->bank_code }}</b></td>
+                                                        <th>Primary A/c</th>
+                                                        <td><b>{{ $bank->is_primary ? 'YES' : 'NO' }}</b></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Close</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                @endforeach --}}
+                <!-- Bank Info Modal -->
+                <div class="modal fade" id="bankmodal{{ $d->id }}" tabindex="-1"
+                    aria-labelledby="bankmodalLabel{{ $d->id }}" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="bankmodalLabel{{ $d->id }}">Bank Information -
+                                    {{ $d->name }}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                @if ($d->banks && $d->banks->count() > 0)
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>IFSC</th>
+                                                <th>Account No</th>
+                                                <th>Bank Name</th>
+                                                <th>Branch</th>
+                                                <th>Bank Code</th>
+                                                <th>Primary</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($d->banks as $b)
+                                                <tr>
+                                                    <td>{{ $b->ifsc_code ?? '-' }}</td>
+                                                    <td>{{ $b->account_number ?? '-' }}</td>
+                                                    <td>{{ $b->bank_name ?? '-' }}</td>
+                                                    <td>{{ $b->branch_name ?? '-' }}</td>
+                                                    <td>{{ $b->bank_code ?? '-' }}</td>
+                                                    <td>{{ $b->is_primary ? 'Yes' : 'No' }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                @else
+                                    <p class="text-muted">No bank details found for this client.</p>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
 
             </div>
         </div>
     </div>
-
-
 @endsection
