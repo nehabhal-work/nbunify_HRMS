@@ -138,24 +138,22 @@
                                 <select class="form-select @error('nationality') is-invalid @enderror" id="nationality"
                                     name="nationality">
                                     <option value="">Select</option>
-                                    <option value="resident" {{ old('nationality') == 'resident' ? 'selected' : '' }}>
-                                        Residential Individual</option>
+                                    <option value="ri" {{ old('nationality') == 'ri' ? 'selected' : '' }}>Residential
+                                        Individual</option>
                                     <option value="nro" {{ old('nationality') == 'nro' ? 'selected' : '' }}>NRO</option>
                                     <option value="nre" {{ old('nationality') == 'nre' ? 'selected' : '' }}>NRE</option>
-                                    <option value="oci_pio" {{ old('nationality') == 'oci_pio' ? 'selected' : '' }}>OCI/PIO
+                                    <option value="pio" {{ old('nationality') == 'pio' ? 'selected' : '' }}>OCI/PIO
                                     </option>
-                                    <option value="green_card_holder"
-                                        {{ old('nationality') == 'green_card_holder' ? 'selected' : '' }}>Green Card Holder
-                                    </option>
-                                    <option value="tax_resident"
-                                        {{ old('nationality') == 'tax_resident' ? 'selected' : '' }}>Tax Resident in Other
-                                        Country</option>
-                                    <option value="foreign_nation"
-                                        {{ old('nationality') == 'foreign_nation' ? 'selected' : '' }}>Foreign National
-                                    </option>
+                                    <option value="gch" {{ old('nationality') == 'gch' ? 'selected' : '' }}>Green Card
+                                        Holder</option>
+                                    <option value="trioc" {{ old('nationality') == 'trioc' ? 'selected' : '' }}>Tax
+                                        Resident in Other Country</option>
+                                    <option value="fn" {{ old('nationality') == 'fn' ? 'selected' : '' }}>Foreign
+                                        National</option>
                                     <option value="other" {{ old('nationality') == 'other' ? 'selected' : '' }}>Other
                                     </option>
                                 </select>
+
                                 @error('nationality')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
