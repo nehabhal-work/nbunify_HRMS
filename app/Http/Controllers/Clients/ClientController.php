@@ -32,7 +32,7 @@ class ClientController extends Controller
         $client = null;
         DB::transaction(function () use ($request, &$client) {
             $client = $this->clientService->create($request->validated());
-            
+
             if ($request->has('banks')) {
                 foreach ($request->banks as $bankData) {
                     if (!empty($bankData['ifsc_code']) && !empty($bankData['account_number'])) {
@@ -42,8 +42,9 @@ class ClientController extends Controller
                 }
             }
         });
-        
-        return redirect()->route('client-families.index', ['client' => $client->id])->with('success', 'Client created successfully');
+
+        return redirect()->route('client-families.create', ['client' => $client->id])->with('success', 'Client created successfully');
+        // return redirect()->route('client-families.index', ['client' => $client->id])->with('success', 'Client created successfully');
     }
 
     public function edit(Client $client)
@@ -56,10 +57,10 @@ class ClientController extends Controller
     {
         DB::transaction(function () use ($request, $client) {
             $this->clientService->update($client, $request->validated());
-            
+
             if ($request->has('banks')) {
                 $client->banks()->delete();
-                
+
                 foreach ($request->banks as $bankData) {
                     if (!empty($bankData['ifsc_code']) && !empty($bankData['account_number'])) {
                         $bankData['client_id'] = $client->id;
@@ -68,7 +69,7 @@ class ClientController extends Controller
                 }
             }
         });
-        
+
         return redirect()->route('clients.index')->with('success', 'Client updated successfully');
     }
 

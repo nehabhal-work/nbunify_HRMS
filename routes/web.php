@@ -43,6 +43,7 @@ Route::middleware(['auth', 'verified'])->prefix('master')->name('master.')->grou
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('clients', ClientController::class);
     Route::resource('client-families', ClientFamilyController::class);
+    Route::get('client-families/family/create/{client?}', [ClientFamilyController::class, 'create'])->name('client-families.create');
     Route::get('client-families/client/{client}', [ClientFamilyController::class, 'index'])->name('client-families.index');
 });
 
