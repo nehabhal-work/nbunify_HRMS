@@ -733,3 +733,27 @@
 
 
 @endsection
+
+@push('scripts')
+    <script>
+        $(document).ready(function() {
+            // For Firm WhatsApp Number
+            $('.chkbox_fwapp_same_as_mobile').on('change', function() {
+                if ($(this).is(':checked')) {
+                    $('#whatsapp_no').val($('#phone').val());
+                } else {
+                    $('#whatsapp_no').val('');
+                }
+            });
+
+            // For Proprietor WhatsApp Number
+            $('.chkbox_prop_wa_same_as_mobile').on('change', function() {
+                if ($(this).is(':checked')) {
+                    $('#prop_whatsapp_no').val($('#prop_phone').val());
+                } else {
+                    $('#prop_whatsapp_no').val('');
+                }
+            });
+        });
+    </script>
+@endpush
