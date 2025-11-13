@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Clients;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ClientFamilyRequest;
+use App\Models\Client;
 use App\Models\ClientFamily;
 use App\Services\ClientFamilyService;
 
@@ -21,9 +22,18 @@ class ClientFamilyController extends Controller
         return view('content.clients.families.index', compact('clientFamilies', 'client'));
     }
 
-    public function create()
+    public function create($client = null)
     {
-        return view('content.clients.families.create');
+        return $client;
+        $clientData = null;
+        if ($client) {
+            $clientData = Client::find($client);
+            return 'if part';
+        } else {
+            return 'else part';
+        }
+        return $clientData;
+        return view('content.clients.families.create', compact('client'));
     }
 
     public function store(ClientFamilyRequest $request)
