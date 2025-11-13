@@ -244,7 +244,7 @@
                                 <label class="form-label" for="mobile_no">Mobile Number</label>
                                 <input type="text"
                                     class="form-control onlyphone @error('mobile_no') is-invalid @enderror"
-                                    id="mobile_no" name="mobile_no" maxlength="15" value="{{ old('mobile_no') }}">
+                                    id="phone" name="mobile_no" maxlength="15" value="{{ old('mobile_no') }}">
                                 @error('mobile_no')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
