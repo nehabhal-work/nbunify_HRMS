@@ -43,6 +43,7 @@
                                     <div class="card-body">
                                         <h4 class="card-title">Welcome to Dashboard by nehaa!!</h4>
                                         <h2>again bhal</h2>
+                                        <h3>aata neha ragavali</h3>
                                         <p class="card-text">You are successfully logged in!</p>
                                         <a href="{{ route('master.companies.index') }}" class="btn btn-primary">Manage Companies</a>
                                     </div>
