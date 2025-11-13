@@ -270,3 +270,6 @@ document.getElementById('est_date').addEventListener('input', function () {
         errorDiv.classList.add('d-none');
     }
 });
+
+
+
