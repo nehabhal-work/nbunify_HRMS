@@ -43,7 +43,6 @@
                                     <div class="card-body">
                                         <h4 class="card-title">Welcome to Dashboard!!</h4>
                                         <p class="card-text">You are successfully logged in!</p>
-                                        <p>line add by bhal</p>
                                         <a href="{{ route('master.companies.index') }}" class="btn btn-primary">Manage
                                             Companies</a>
                                     </div>
