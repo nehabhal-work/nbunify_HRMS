@@ -85,9 +85,10 @@
                                 <label class="form-label" for="live_status">Live Status</label>
                                 <select class="form-select @error('live_status') is-invalid @enderror" id="live_status"
                                     name="live_status">
-                                    <option value="1" {{ old('live_status', '1') == '1' ? 'selected' : '' }}>Live
+                                    <option value="alive" {{ old('live_status', 'alive') == '1' ? 'selected' : '' }}>Alive
                                     </option>
-                                    <option value="0" {{ old('live_status') == '0' ? 'selected' : '' }}>Deceased
+                                    <option value="deceased" {{ old('live_status') == 'deceased' ? 'selected' : '' }}>
+                                        Deceased
                                     </option>
                                 </select>
                                 @error('live_status')
