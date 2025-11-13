@@ -85,6 +85,11 @@
                                                 <div class="dropdown-menu">
                                                     <a class="dropdown-item" href="{{ route('clients.edit', $d->id) }}"><i
                                                             class="bx bx-edit-alt me-1"></i> Edit</a>
+                                                    <!-- Button trigger modal -->
+                                                    <a class="dropdown-item" data-bs-toggle="modal"
+                                                        data-bs-target="#exampleModal{{ $d->id }}">
+                                                        <i class="bx bx-show me-1"></i> View
+                                                    </a>
 
                                                     <form action="{{ route('clients.destroy', $d->id) }}" method="post"
                                                         onsubmit="return confirmDelete()">
@@ -102,10 +107,236 @@
                                         </td>
                                     </tr>
                                 @endforeach
+                                {{-- @foreach ($clients as $d)
+                                    <div class="modal fade" id="exampleModal{{ $d->id }}" tabindex="-1"
+                                        aria-labelledby="exampleModalLabel{{ $d->id }}" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="exampleModalLabel{{ $d->id }}">
+                                                        {{ $d->name ?? 'Client Details' }}
+                                                    </h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                  
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach --}}
                             </tbody>
                         </table>
                     </div>
                 </div>
+                @foreach ($clients as $d)
+                    <!-- Modal -->
+                    <div class="modal fade" id="exampleModal{{ $d->id }}" tabindex="-1"
+                        aria-labelledby="exampleModalLabel{{ $d->id }}" aria-hidden="true">
+                        <div class="modal-dialog modal-xl">
+                            <div class="modal-content">
+                                <div class="modal-header" style="background-color: #ead3ff;">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel{{ $d->id }}">
+                                        {{ $d->name ?? 'Client Details' }}
+                                    </h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered align-middle">
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th colspan="4" class="text-center" style="background-color: #f4ebfc;">Personal Details</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <td><b>{{ $d->id }}</b></td>
+                                                    <th>Name</th>
+                                                    <td><b>{{ $d->name }}</b></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Gender</th>
+                                                    <td><b>{{ ucfirst($d->gender) }}</b></td>
+                                                    <th>Date of Birth</th>
+                                                    <td><b>{{ $d->dob }}</b></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Live Status</th>
+                                                    <td><b>{{ ucfirst($d->live_status) }}</b></td>
+                                                    <th>Date of Death</th>
+                                                    <td><b>{{ $d->dod }}</b></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Marital Status</th>
+                                                    <td><b>{{ ucfirst($d->marital_status) }}</b></td>
+                                                    <th>Nationality</th>
+                                                    <td><b>{{ strtoupper($d->nationality) }}</b></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Occupation</th>
+                                                    <td><b>{{ ucfirst(str_replace('_', ' ', $d->occupation)) }}</b></td>
+                                                    <th>PAN No</th>
+                                                    <td><b>{{ $d->pan_no }}</b></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Aadhar No</th>
+                                                    <td><b>{{ $d->aadhar_no }}</b></td>
+                                                    <th>CKYC No</th>
+                                                    <td><b>{{ $d->ckyc_no }}</b></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Mobile No</th>
+                                                    <td><b>{{ $d->mobile_no }}</b></td>
+                                                    <th>WhatsApp No</th>
+                                                    <td><b>{{ $d->whatsapp_no }}</b></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Landline No</th>
+                                                    <td><b>{{ $d->landline_no }}</b></td>
+                                                    <th>Email</th>
+                                                    <td><b>{{ $d->email }}</b></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Relation Manager ID</th>
+                                                    <td colspan="3"><b>{{ $d->relation_manager_id }}</b></td>
+                                                </tr>
+                                            </tbody>
+
+                                            <!-- Residential Section -->
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th colspan="4" class="text-center" style="background-color: #f4ebfc;">Residential Address</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <th>Address</th>
+                                                    <td colspan="3"><b>{{ $d->res_address }}</b></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Country</th>
+                                                    <td><b>{{ $d->res_country }}</b></td>
+                                                    <th>State</th>
+                                                    <td><b>{{ $d->res_state }}</b></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>City</th>
+                                                    <td><b>{{ $d->res_city }}</b></td>
+                                                    <th>Pincode</th>
+                                                    <td><b>{{ $d->res_pincode }}</b></td>
+                                                </tr>
+                                            </tbody>
+
+                                            <!-- Office Section -->
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th colspan="4" class="text-center" style="background-color: #f4ebfc;">Office Address</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <th>Address</th>
+                                                    <td colspan="3"><b>{{ $d->office_address }}</b></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Country</th>
+                                                    <td><b>{{ $d->office_country }}</b></td>
+                                                    <th>State</th>
+                                                    <td><b>{{ $d->office_state }}</b></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>City</th>
+                                                    <td><b>{{ $d->office_city }}</b></td>
+                                                    <th>Pincode</th>
+                                                    <td><b>{{ $d->office_pincode }}</b></td>
+                                                </tr>
+                                            </tbody>
+
+                                            <!-- Attachments Section -->
+                                            <thead class="table-light">
+                                                <tr>
+                                                    <th colspan="4" class="text-center" style="background-color: #f4ebfc;">Attachments</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <th>Client Photo</th>
+                                                    <td>
+                                                        @if ($d->attachment_client_photo)
+                                                            <b><a href="{{ asset('storage/' . $d->attachment_client_photo) }}"
+                                                                    target="_blank">View</a></b>
+                                                        @endif
+                                                    </td>
+                                                    <th>PAN Attachment</th>
+                                                    <td>
+                                                        @if ($d->attachment_pan)
+                                                            <b><a href="{{ asset('storage/' . $d->attachment_pan) }}"
+                                                                    target="_blank">View</a></b>
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Aadhar Front</th>
+                                                    <td>
+                                                        @if ($d->attachment_aadhar_front)
+                                                            <b><a href="{{ asset('storage/' . $d->attachment_aadhar_front) }}"
+                                                                    target="_blank">View</a></b>
+                                                        @endif
+                                                    </td>
+                                                    <th>Aadhar Back</th>
+                                                    <td>
+                                                        @if ($d->attachment_aadhar_back)
+                                                            <b><a href="{{ asset('storage/' . $d->attachment_aadhar_back) }}"
+                                                                    target="_blank">View</a></b>
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Signature</th>
+                                                    <td>
+                                                        @if ($d->attachment_signature)
+                                                            <b><a href="{{ asset('storage/' . $d->attachment_signature) }}"
+                                                                    target="_blank">View</a></b>
+                                                        @endif
+                                                    </td>
+                                                    <th>CKYC Attachment</th>
+                                                    <td>
+                                                        @if ($d->attachment_ckyc)
+                                                            <b><a href="{{ asset('storage/' . $d->attachment_ckyc) }}"
+                                                                    target="_blank">View</a></b>
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Other Documents</th>
+                                                    <td colspan="3">
+                                                        @if ($d->attachment_other_documents)
+                                                            <b><a href="{{ asset('storage/' . $d->attachment_other_documents) }}"
+                                                                    target="_blank">View</a></b>
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+
             </div>
         </div>
     </div>
