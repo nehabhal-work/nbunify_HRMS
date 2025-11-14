@@ -51,9 +51,19 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
+                            <!-- Company band -->
+                            <div class="col-3 mb-3">
+                                <label class="form-label">Company brand Name <span class="text-danger">*</span></label>
+                                <input type="text" name="name" id="brand_name"
+                                    class="form-control @error('brand_name') is-invalid @enderror"
+                                    value="{{ old('brand_name', $company->brand_name) }}">
+                                @error('brand_name')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
 
                             <!-- Company Type -->
-                            <div class="col-md-3 mb-3">
+                            <div class="col-md-3 mb-3" hidden>
                                 <label class="form-label">Company Type <span class="text-danger">*</span></label>
                                 <select name="company_type" id="company_type"
                                     class="form-select select2 @error('company_type') is-invalid @enderror">
@@ -91,10 +101,11 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
+                            <div class="w-100"></div>
 
                             <!-- Contact Person -->
                             <div class="col-md-3 mb-3">
-                                <label class="form-label">Contact Person</label>
+                                <label class="form-label">Contact Person Name</label>
                                 <input type="text" name="contact_person_name" id="contact_person_name"
                                     class="form-control @error('contact_person_name') is-invalid @enderror"
                                     value="{{ old('contact_person_name', $company->contact_person_name) }}">
@@ -105,7 +116,7 @@
 
                             <!-- Contact Number -->
                             <div class="col-md-3 mb-3">
-                                <label class="form-label">Contact Number</label>
+                                <label class="form-label">Contact Person Number</label>
                                 <input type="text" name="phone" id="phone"
                                     class="form-control onlyphone @error('phone') is-invalid @enderror"
                                     value="{{ old('phone', $company->phone) }}" maxlength="15">
@@ -116,7 +127,7 @@
 
                             <!-- Email -->
                             <div class="col-md-3 mb-3">
-                                <label class="form-label">Email</label>
+                                <label class="form-label">Contact Person Email</label>
                                 <input type="email" name="email" id="email"
                                     class="form-control no-uppercase @error('email') is-invalid @enderror"
                                     value="{{ old('email', $company->email) }}">
@@ -124,7 +135,74 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
+                            {{-- WhatsApp Number --}}
+                            <div class="col-md-3 mb-3">
+                                <label class="form-label" for="whatsapp_no">Contact Person WhatsApp Number</label>
+                                <input type="text"
+                                    class="form-control onlyphone @error('whatsapp_no') is-invalid @enderror"
+                                    id="whatsapp_no" name="whatsapp_no" maxlength="15"
+                                    value="{{ old('whatsapp_no', $company->whatsapp_no) }}">
+                                <label class="uk-margin-right"><input class="uk-checkbox chkbox_fwapp_same_as_mobile"
+                                        type="checkbox" id="" value="ON">
+                                    Same as mobile no.</label>
+                                @error('whatsapp_no')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
 
+                            <!-- Proprietor Contact Person -->
+                            <div class="col-md-3 mb-3">
+                                <label class="form-label">Proprietor Name</label>
+                                <input type="text" name="prop_contact_person_name" id="prop_contact_person_name"
+                                    class="form-control @error('prop_contact_person_name') is-invalid @enderror"
+                                    value="{{ old('prop_contact_person_name', $company->prop_contact_person_name) }}">
+                                @error('prop_contact_person_name')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- Proprietor Contact Number -->
+                            <div class="col-md-3 mb-3">
+                                <label class="form-label">Proprietor Contact Number</label>
+                                <input type="text" name="prop_phone" id="prop_phone"
+                                    class="form-control onlyphone @error('prop_phone') is-invalid @enderror"
+                                    value="{{ old('prop_phone', $company->prop_phone) }}" maxlength="15">
+                                @error('prop_phone')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- Proprietor Email -->
+                            <div class="col-md-3 mb-3">
+                                <label class="form-label">Proprietor Email</label>
+                                <input type="email" name="prop_email" id="prop_email"
+                                    class="form-control no-uppercase @error('prop_email') is-invalid @enderror"
+                                    value="{{ old('prop_email', $company->prop_email) }}">
+                                @error('prop_email')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- Proprietor WhatsApp Number -->
+                            <div class="col-md-3 mb-3">
+                                <label class="form-label" for="prop_whatsapp_no">Proprietor WhatsApp Number</label>
+                                <input type="text"
+                                    class="form-control onlyphone @error('prop_whatsapp_no') is-invalid @enderror"
+                                    id="prop_whatsapp_no" name="prop_whatsapp_no" maxlength="15"
+                                    value="{{ old('prop_whatsapp_no', $company->prop_whatsapp_no) }}">
+                                <div class="form-check mt-1">
+                                    <input class="form-check-input chkbox_prop_wa_same_as_mobile" type="checkbox"
+                                        id="chkbox_prop_wa_same_as_mobile">
+                                    <label class="form-check-label" for="chkbox_prop_wa_same_as_mobile">
+                                        Same as mobile no.
+                                    </label>
+                                </div>
+                                @error('prop_whatsapp_no')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="w-100"></div>
                             <!-- Registered Address -->
                             <hr>
                             <h6 class="mb-3">Registered Address</h6>
@@ -290,7 +368,7 @@
 
                             <!-- PAN Number -->
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">PAN Number</label>
+                                <label class="form-label">PAN Number of proprietor</label>
                                 <input type="text" name="pan_no" id="pan_no"
                                     class="form-control no-uppercase @error('pan_no') is-invalid @enderror"
                                     value="{{ old('pan_no', $company->pan_no) }}" maxlength="10">
@@ -419,20 +497,7 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">PAN Attachment</label>
-                                <div class="input-group">
-                                    <input type="file"
-                                        class="form-control @error('attachment_pan') is-invalid @enderror"
-                                        id="attachment_pan" name="attachment_pan"
-                                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
-                                    <button class="btn btn-outline-danger" type="button"
-                                        onclick="document.getElementById('attachment_pan').value = ''">✕</button>
-                                </div>
-                                @error('attachment_pan')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
+
 
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">TAN Attachment</label>
@@ -445,6 +510,21 @@
                                         onclick="document.getElementById('attachment_tan').value = ''">✕</button>
                                 </div>
                                 @error('attachment_tan')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">PAN Attachment</label>
+                                <div class="input-group">
+                                    <input type="file"
+                                        class="form-control @error('attachment_pan') is-invalid @enderror"
+                                        id="attachment_pan" name="attachment_pan"
+                                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
+                                    <button class="btn btn-outline-danger" type="button"
+                                        onclick="document.getElementById('attachment_pan').value = ''">✕</button>
+                                </div>
+                                @error('attachment_pan')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -542,6 +622,205 @@
                         </div>
 
 
+                    </div>
+                </div>
+            </div>
+
+            {{-- Bank details --}}
+            <div class="col-md-12 d-flex">
+                <div class="card mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Bank details</h5>
+                        <small class="text-muted float-end">Bank Information</small>
+                    </div>
+                    <div class="card-body">
+                        <div id="bankDetailsWrapper">
+                            @if ($company->banks && $company->banks->count() > 0)
+                                @foreach ($company->banks as $bank)
+                                    <div class="bank-details-row row g-3 mb-3 bg-light position-relative">
+                                        <div class="col-md-3">
+                                            <label class="form-label">IFSC Code</label>
+                                            <input type="text" name="banks[{{ $loop->index }}][ifsc_code]"
+                                                value="{{ old('banks.' . $loop->index . '.ifsc_code', $bank->ifsc_code) }}"
+                                                class="form-control ifsc_code" placeholder="Enter IFSC Code">
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <label class="form-label">Account No</label>
+                                            <input type="text" name="banks[{{ $loop->index }}][account_number]"
+                                                value="{{ old('banks.' . $loop->index . '.account_number', $bank->account_number) }}"
+                                                class="form-control account_number" maxlength="18"
+                                                placeholder="Enter Account Number">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label class="form-label">Account Type</label>
+                                            <select class="form-select" name="banks[{{ $loop->index }}][account_type]"
+                                                class="form-select select2 @error('banks.' . $loop->index . '.account_type') is-invalid @enderror">
+
+                                                <option value="">Select Type</option>
+
+                                                <option value="savings"
+                                                    {{ old('banks.' . $loop->index . '.account_type', $bank->account_type ?? '') == 'savings' ? 'selected' : '' }}>
+                                                    Saving Account
+                                                </option>
+
+                                                <option value="current"
+                                                    {{ old('banks.' . $loop->index . '.account_type', $bank->account_type ?? '') == 'current' ? 'selected' : '' }}>
+                                                    Current Account
+                                                </option>
+
+                                                <option value="od_cc"
+                                                    {{ old('banks.' . $loop->index . '.account_type', $bank->account_type ?? '') == 'od_cc' ? 'selected' : '' }}>
+                                                    Overdraft/CC
+                                                </option>
+
+                                                <option value="nre"
+                                                    {{ old('banks.' . $loop->index . '.account_type', $bank->account_type ?? '') == 'nre' ? 'selected' : '' }}>
+                                                    NRE
+                                                </option>
+
+                                                <option value="nri"
+                                                    {{ old('banks.' . $loop->index . '.account_type', $bank->account_type ?? '') == 'nri' ? 'selected' : '' }}>
+                                                    NRI
+                                                </option>
+
+                                                <option value="nro"
+                                                    {{ old('banks.' . $loop->index . '.account_type', $bank->account_type ?? '') == 'nro' ? 'selected' : '' }}>
+                                                    NRO
+                                                </option>
+
+                                                <option value="tem_deposit"
+                                                    {{ old('banks.' . $loop->index . '.account_type', $bank->account_type ?? '') == 'tem_deposit' ? 'selected' : '' }}>
+                                                    Term Deposit
+                                                </option>
+
+                                                <option value="ra"
+                                                    {{ old('banks.' . $loop->index . '.account_type', $bank->account_type ?? '') == 'ra' ? 'selected' : '' }}>
+                                                    Recurring
+                                                </option>
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <label class="form-label">Bank Name</label>
+                                            <input type="text" name="banks[{{ $loop->index }}][bank_name]"
+                                                value="{{ old('banks.' . $loop->index . '.bank_name', $bank->bank_name) }}"
+                                                class="form-control bank_name bg-secondary-subtle bg-gradient" readonly>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <label class="form-label">Branch Name</label>
+                                            <input type="text" name="banks[{{ $loop->index }}][branch_name]"
+                                                value="{{ old('banks.' . $loop->index . '.branch_name', $bank->branch_name) }}"
+                                                class="form-control branch_name bg-secondary-subtle bg-gradient" readonly>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <label class="form-label">Bank Code</label>
+                                            <input type="text" name="banks[{{ $loop->index }}][bank_code]"
+                                                value="{{ old('banks.' . $loop->index . '.bank_code', $bank->bank_code) }}"
+                                                class="form-control bank_code bg-secondary-subtle bg-gradient" readonly>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <label class="form-label d-block">Primary a/c</label>
+                                            <input type="hidden" name="banks[{{ $loop->index }}][is_primary]"
+                                                value="0">
+                                            <input type="checkbox" name="banks[{{ $loop->index }}][is_primary]"
+                                                value="1" class="form-check-input setPrimary"
+                                                {{ old('banks.' . $loop->index . '.is_primary', $bank->is_primary) ? 'checked' : '' }}>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            @else
+                                {{-- one empty row if no bank records exist --}}
+                                <div class="bank-details-row row g-3 mb-3 bg-light position-relative">
+                                    <div class="col-md-3">
+                                        <label class="form-label">IFSC Code</label>
+                                        <input type="text" name="banks[0][ifsc_code]"
+                                            value="{{ old('banks.0.ifsc_code') }}" class="form-control ifsc_code"
+                                            placeholder="Enter IFSC Code">
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label class="form-label">Account No</label>
+                                        <input type="text" name="banks[0][account_number]"
+                                            value="{{ old('banks.0.account_number') }}"
+                                            class="form-control account_number" maxlength="18"
+                                            placeholder="Enter Account Number">
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="form-label">Account type</label>
+                                        <select class="form-select" name="banks[0][account_type]" id="account_type"
+                                            class="form-select select2 @error('account_type') is-invalid @enderror">
+                                            <option value="">Select Type</option>
+                                            <option value="savings" selected
+                                                {{ old('account_type') == 'savings' ? 'selected' : '' }}>Saving Account
+                                            </option>
+                                            <option value="current"
+                                                {{ old('account_type') == 'current' ? 'selected' : '' }}>Current Account
+                                            </option>
+                                            <option value="od_cc"
+                                                {{ old('account_type') == 'od_cc' ? 'selected' : '' }}>
+                                                Overdraft/CC
+                                            </option>
+                                            <option value="nre" {{ old('account_type') == 'nre' ? 'selected' : '' }}>
+                                                NRE
+                                            </option>
+                                            <option value="nri" {{ old('account_type') == 'nri' ? 'selected' : '' }}>
+                                                NRI
+                                            </option>
+                                            <option value="nro" {{ old('account_type') == 'nro' ? 'selected' : '' }}>
+                                                NRO
+                                            </option>
+                                            <option value="tem_deposit"
+                                                {{ old('account_type') == 'tem_deposit' ? 'selected' : '' }}>Team Deposit
+                                            </option>
+                                            <option value="ra" {{ old('account_type') == 'ra' ? 'selected' : '' }}>
+                                                Recurring
+                                            </option>
+
+                                        </select>
+                                    </div>
+
+
+                                    <div class="col-md-3">
+                                        <label class="form-label">Bank Name</label>
+                                        <input type="text" name="banks[0][bank_name]"
+                                            value="{{ old('banks.0.bank_name') }}"
+                                            class="form-control bank_name bg-secondary-subtle bg-gradient" readonly>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label class="form-label">Branch Name</label>
+                                        <input type="text" name="banks[0][branch_name]"
+                                            value="{{ old('banks.0.branch_name') }}"
+                                            class="form-control branch_name bg-secondary-subtle bg-gradient" readonly>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label class="form-label">Bank Code</label>
+                                        <input type="text" name="banks[0][bank_code]"
+                                            value="{{ old('banks.0.bank_code') }}"
+                                            class="form-control bank_code bg-secondary-subtle bg-gradient" readonly>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label class="form-label d-block">Primary a/c</label>
+                                        <input type="hidden" name="banks[0][is_primary]" value="0">
+                                        <input type="checkbox" name="banks[0][is_primary]" value="1"
+                                            class="form-check-input setPrimary"
+                                            {{ old('banks.0.is_primary') ? 'checked' : '' }}>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+                        <!-- Add More Button -->
+                        <div class="mt-2">
+                            <button type="button" id="addMoreBank" class="btn btn-primary">
+                                <i class="bx bx-plus"></i> Add More Bank
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>

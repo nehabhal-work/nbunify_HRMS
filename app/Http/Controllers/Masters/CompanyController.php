@@ -9,7 +9,7 @@ use App\Services\CompanyBankDetailService;
 
 class CompanyController extends Controller
 {
-     protected $companyService;
+    protected $companyService;
     protected $companyBankDetailService;
 
     public function __construct(CompanyService $companyService, CompanyBankDetailService $companyBankDetailService)
@@ -24,10 +24,11 @@ class CompanyController extends Controller
         return view('content.master.companies.index', compact('companies'));
     }
 
-    public function create() {
+    public function create()
+    {
         $companyTypes = config('enum_company_types');
         $bankAccountTypes = config('enum_bank_account_types');
-        return view('content.master.companies.create', compact('companyTypes','bankAccountTypes'));
+        return view('content.master.companies.create', compact('companyTypes', 'bankAccountTypes'));
     }
 
     public function store(CompanyRequest $request)
@@ -37,7 +38,7 @@ class CompanyController extends Controller
 
             if ($request->has('banks')) {
                 foreach ($request->banks as $bank) {
-                    $this->companyBankDetailService->create($company->id,$bank);
+                    $this->companyBankDetailService->create($company->id, $bank);
                 }
             }
             return redirect()->route('master.companies.index')->with('success', 'Company created successfully.');
@@ -62,7 +63,7 @@ class CompanyController extends Controller
             $this->companyBankDetailService->deleteByCompanyId($id);
             if ($request->has('banks')) {
                 foreach ($request->banks as $bank) {
-                    $this->companyBankDetailService->create($id,$bank);
+                    $this->companyBankDetailService->create($id, $bank);
                 }
             }
             return redirect()->route('master.companies.index')->with('success', 'Company updated successfully.');
