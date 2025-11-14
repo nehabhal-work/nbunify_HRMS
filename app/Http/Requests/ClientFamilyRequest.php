@@ -45,7 +45,7 @@ class ClientFamilyRequest extends FormRequest
             'office_state' => 'nullable|string|max:255',
             'office_city' => 'nullable|string|max:255',
             'office_pincode' => 'nullable|string|max:6',
-            'relation_id' => 'nullable|exists:family_relations,id',
+            'relation_id' => 'required|exists:family_relations,id',
             'remarks' => 'nullable|string|max:100',
         ];
     }

@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Storage;
 
 class ClientService
 {
+    public function __construct(private FileStorageService $fileStorageService)
+    {
+    }
 
     public function find($id) {
         return Client::findOrFail($id);
@@ -15,6 +18,7 @@ class ClientService
     public function create(array $data): Client
     {
         $data = $this->handleFileUploads($data);
+        $data['client_code'] = Client::generateClientCode();
         return Client::create($data);
     }
 
@@ -46,9 +50,13 @@ class ClientService
         foreach ($fileFields as $field) {
             if (isset($data[$field]) && $data[$field] instanceof UploadedFile) {
                 if ($client && $client->$field) {
-                    Storage::delete($client->$field);
+                    $this->fileStorageService->deleteFile($client->$field);
                 }
-                $data[$field] = $data[$field]->store('clients');
+                $data[$field] = $this->fileStorageService->storeClientDocument(
+                    $client?->id ?? 0,
+                    $data[$field],
+                    str_replace('attachment_', '', $field)
+                );
             }
         }
 
@@ -69,7 +77,7 @@ class ClientService
 
         foreach ($fileFields as $field) {
             if ($client->$field) {
-                Storage::delete($client->$field);
+                $this->fileStorageService->deleteFile($client->$field);
             }
         }
     }

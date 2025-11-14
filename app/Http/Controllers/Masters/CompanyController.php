@@ -53,7 +53,7 @@ class CompanyController extends Controller
         $bankDetails = $company->bankDetails ?? collect();
         $companyTypes = config('enum_company_types');
         $bankAccountTypes = config('enum_bank_account_types');
-        return view('content.master.companies.edit', compact('company', 'bankDetails', 'companyTypes', 'bankAccountTypes'));
+        return view('content.master.companies.edit', compact('company', 'bankDetails','companyTypes','bankAccountTypes'));
     }
 
     public function update(CompanyRequest $request, $id)

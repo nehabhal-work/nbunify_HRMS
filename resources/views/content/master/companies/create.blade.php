@@ -53,7 +53,7 @@
 
 
                             <!-- Company band -->
-                            <div class="col-3 mb-3">
+                            <div class="col-2 mb-3">
                                 <label class="form-label">Company brand Name <span class="text-danger">*</span></label>
                                 <input type="text" name="name" id="brand_name"
                                     class="form-control @error('brand_name') is-invalid @enderror"
@@ -91,7 +91,7 @@
                             </div>
 
                             <!-- Establishment Date -->
-                            <div class="col-md-3 mb-3">
+                            <div class="col-md-2 mb-3">
                                 <label class="form-label">Establishment Date</label>
                                 <input type="date" name="est_date" id="est_date"
                                     class="form-control @error('est_date') is-invalid @enderror"
@@ -100,6 +100,8 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
+
+                            <div class="w-100"></div>
                             <div class="w-100"></div>
                             <!-- Contact Person -->
                             <div class="col-md-3 mb-3">
@@ -114,6 +116,8 @@
 
 
                             <!-- Contact Number -->
+                            <div class="col-md-2 mb-3">
+                                <label class="form-label">Contact Number</label>
                             <div class="col-md-3 mb-3">
                                 <label class="form-label">Contact Person Number</label>
                                 <input type="text" name="phone" id="phone"
@@ -150,6 +154,20 @@
                             </div>
 
 
+                            <!-- Email -->
+                            <div class="col-md-3 mb-3">
+                                <label class="form-label">Email</label>
+                                <input type="email" name="email" id="email"
+                                    class="form-control no-uppercase @error('email') is-invalid @enderror"
+                                    value="{{ old('email') }}">
+                                @error('email')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+
+
+
 
 
                             <div class="w-100"></div>
@@ -166,7 +184,7 @@
                             </div>
 
                             <!-- Proprietor Contact Number -->
-                            <div class="col-md-3 mb-3">
+                            <div class="col-md-2 mb-3">
                                 <label class="form-label">Proprietor Contact Number</label>
                                 <input type="text" name="prop_phone" id="prop_phone"
                                     class="form-control onlyphone @error('prop_phone') is-invalid @enderror"
@@ -176,19 +194,8 @@
                                 @enderror
                             </div>
 
-                            <!-- Proprietor Email -->
-                            <div class="col-md-3 mb-3">
-                                <label class="form-label">Proprietor Email</label>
-                                <input type="email" name="prop_email" id="prop_email"
-                                    class="form-control no-uppercase @error('prop_email') is-invalid @enderror"
-                                    value="{{ old('prop_email') }}">
-                                @error('prop_email')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
                             <!-- Proprietor WhatsApp Number -->
-                            <div class="col-md-3 mb-3">
+                            <div class="col-md-2 mb-3">
                                 <label class="form-label" for="prop_whatsapp_no">Proprietor WhatsApp Number</label>
                                 <input type="text"
                                     class="form-control onlyphone @error('prop_whatsapp_no') is-invalid @enderror"
@@ -205,6 +212,19 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
+
+                            <!-- Proprietor Email -->
+                            <div class="col-md-3 mb-3">
+                                <label class="form-label">Proprietor Email</label>
+                                <input type="email" name="prop_email" id="prop_email"
+                                    class="form-control no-uppercase @error('prop_email') is-invalid @enderror"
+                                    value="{{ old('prop_email') }}">
+                                @error('prop_email')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+
 
 
                             <!-- Registered Address -->

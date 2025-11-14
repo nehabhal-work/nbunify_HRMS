@@ -6,13 +6,15 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ClientFamilyRequest;
 use App\Services\ClientFamilyService;
 use App\Services\ClientService;
+use App\Services\FamilyRelationService;
 use Illuminate\Http\Request;
 
 class ClientFamilyController extends Controller
 {
     public function __construct(
         private ClientFamilyService $clientFamilyService,
-        private ClientService $clientService) {}
+        private ClientService $clientService,
+        private FamilyRelationService $familyRelationService) {}
 
     public function index(Request $request)
     {
@@ -29,7 +31,8 @@ class ClientFamilyController extends Controller
     {
         if($client_id = $request->client_id) {
             $client = $this->clientService->find($client_id);
-            return view('content.clients.families.create', compact('client'));
+            $relations = $this->familyRelationService->getByGender($client->gender);
+            return view('content.clients.families.create', compact('client','relations'));
         } else {
             abort(401);
         }
@@ -44,7 +47,9 @@ class ClientFamilyController extends Controller
     public function edit($id)
     {
         $clientFamily = $this->clientFamilyService->find($id);
-        return view('content.clients.families.edit', compact('clientFamily'));
+        $client = $this->clientService->find($clientFamily->client_id);
+        $relations = $this->familyRelationService->getByGender($client->gender);
+        return view('content.clients.families.edit', compact('clientFamily','client', 'relations'));
     }
 
     public function update(ClientFamilyRequest $request, $id)

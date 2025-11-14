@@ -24,18 +24,20 @@
     @endif
 
     <h4 class="fw-bold py-3 mb-4">
-        <span class="text-muted fw-light">Master /</span> <a href="{{ route('master.companies.index') }}">Family</a>
+        <span class="text-muted fw-light">Family /</span> <a href="{{ route('master.companies.index') }}">/Add Family Member
+            of <span class="text-uppercase">{{ $client->name }}</span></a>
     </h4>
 
 
     <form action="{{ route('client-families.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('post')
+        <input type="hidden" name="client_id" value="{{ $client->id }}">
         <div class="row align-items-stretch">
             <div class="col-md-12">
                 <div class="card mb-4">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Primary Information</h5>
+                        <h5 class="mb-0">Family Information</h5>
                         <small class="text-muted float-end">Family Basic Details</small>
                     </div>
                     <div class="card-body">
@@ -85,9 +87,11 @@
                                 <label class="form-label" for="live_status">Live Status</label>
                                 <select class="form-select @error('live_status') is-invalid @enderror" id="live_status"
                                     name="live_status">
-                                    <option value="alive" {{ old('live_status', 'alive') == 'alive' ? 'selected' : '' }}>Live
+                                    <option value="alive" {{ old('live_status', 'alive') == 'alive' ? 'selected' : '' }}>
+                                        Live
                                     </option>
-                                    <option value="deceased" {{ old('live_status') == 'deceased' ? 'selected' : '' }}>Deceased
+                                    <option value="deceased" {{ old('live_status') == 'deceased' ? 'selected' : '' }}>
+                                        Deceased
                                     </option>
                                 </select>
                                 @error('live_status')
