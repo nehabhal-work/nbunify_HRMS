@@ -22,6 +22,7 @@ class ClientFamilyRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'existing_client_id' => 'nullable|exists:client,id',
             'client_id' => 'required|exists:clients,id',
             'name' => 'required|string|max:50',
             'gender' => 'nullable|in:male,female,other',
