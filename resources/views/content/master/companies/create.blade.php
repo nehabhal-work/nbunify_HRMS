@@ -100,10 +100,10 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-
+                            <div class="w-100"></div>
                             <!-- Contact Person -->
                             <div class="col-md-3 mb-3">
-                                <label class="form-label">Contact Person</label>
+                                <label class="form-label">Contact Person Name</label>
                                 <input type="text" name="contact_person_name" id="contact_person_name"
                                     class="form-control @error('contact_person_name') is-invalid @enderror"
                                     value="{{ old('contact_person_name') }}">
@@ -115,7 +115,7 @@
 
                             <!-- Contact Number -->
                             <div class="col-md-3 mb-3">
-                                <label class="form-label">Contact Number</label>
+                                <label class="form-label">Contact Person Number</label>
                                 <input type="text" name="phone" id="phone"
                                     class="form-control onlyphone @error('phone') is-invalid @enderror"
                                     value="{{ old('phone') }}" maxlength="15">
@@ -126,7 +126,7 @@
 
                             <!-- Email -->
                             <div class="col-md-3 mb-3">
-                                <label class="form-label">Email</label>
+                                <label class="form-label">Contact Person Email</label>
                                 <input type="email" name="email" id="email"
                                     class="form-control no-uppercase @error('email') is-invalid @enderror"
                                     value="{{ old('email') }}">
@@ -136,8 +136,8 @@
                             </div>
 
                             {{-- WhatsApp Number --}}
-                            <div class="col-md-2 mb-3">
-                                <label class="form-label" for="whatsapp_no">WhatsApp Number</label>
+                            <div class="col-md-3 mb-3">
+                                <label class="form-label" for="whatsapp_no">Contact Person WhatsApp Number</label>
                                 <input type="text"
                                     class="form-control onlyphone @error('whatsapp_no') is-invalid @enderror"
                                     id="whatsapp_no" name="whatsapp_no" maxlength="15" value="{{ old('whatsapp_no') }}">
@@ -152,6 +152,7 @@
 
 
 
+                            <div class="w-100"></div>
 
                             <!-- Proprietor Contact Person -->
                             <div class="col-md-3 mb-3">
@@ -653,22 +654,48 @@
                             <div id="bankDetailsWrapper">
 
                                 <div class="bank-details-row row g-3 mb-3 bg-light position-relative">
-                                    <div class="col-md-2">
+                                    <div class="col-md-3">
                                         <label class="form-label">IFSC Code</label>
                                         <input type="text" name="banks[0][ifsc_code]" class="form-control ifsc_code"
                                             placeholder="Enter IFSC Code">
                                         <span class="invalid-feedback errmsg"></span>
                                     </div>
 
-                                    <div class="col-md-2">
+                                    <div class="col-md-3">
                                         <label class="form-label">Account No</label>
                                         <input type="text" name="banks[0][account_number]"
                                             class="form-control account_number" placeholder="Enter Account Number">
                                     </div>
-                                    <div class="col-md-2">
+                                    <div class="col-md-3">
                                         <label class="form-label">Account type</label>
-                                        <select class="form-select" name="" id="">
-                                            <option value=""></option>
+                                        <select class="form-select" name="banks[0][account_type]" id="account_type"
+                                            class="form-select select2 @error('account_type') is-invalid @enderror">
+                                            <option value="">Select Type</option>
+                                            <option value="savings" selected
+                                                {{ old('account_type') == 'savings' ? 'selected' : '' }}>Saving Account
+                                            </option>
+                                            <option value="current"
+                                                {{ old('account_type') == 'current' ? 'selected' : '' }}>Current Account
+                                            </option>
+                                            <option value="od_cc" {{ old('account_type') == 'od_cc' ? 'selected' : '' }}>
+                                                Overdraft/CC
+                                            </option>
+                                            <option value="nre" {{ old('account_type') == 'nre' ? 'selected' : '' }}>
+                                                NRE
+                                            </option>
+                                            <option value="nri" {{ old('account_type') == 'nri' ? 'selected' : '' }}>
+                                                NRI
+                                            </option>
+                                            <option value="nro" {{ old('account_type') == 'nro' ? 'selected' : '' }}>
+                                                NRO
+                                            </option>
+                                            <option value="tem_deposit"
+                                                {{ old('account_type') == 'tem_deposit' ? 'selected' : '' }}>Team Deposit
+                                            </option>
+                                            <option value="ra" {{ old('account_type') == 'ra' ? 'selected' : '' }}>
+                                                Recurring
+                                            </option>
+
                                         </select>
                                     </div>
 
@@ -678,19 +705,19 @@
                                             class="form-control bank_name bg-secondary-subtle bg-gradient" readonly>
                                     </div>
 
-                                    <div class="col-md-2">
+                                    <div class="col-md-3">
                                         <label class="form-label">Branch Name</label>
                                         <input type="text" name="banks[0][branch_name]"
                                             class="form-control branch_name bg-secondary-subtle bg-gradient" readonly>
                                     </div>
 
-                                    <div class="col-md-2">
+                                    <div class="col-md-3">
                                         <label class="form-label">Bank Code</label>
                                         <input type="text" name="banks[0][bank_code]"
                                             class="form-control bank_code bg-secondary-subtle bg-gradient" readonly>
                                     </div>
 
-                                    <div class="col-md-1">
+                                    <div class="col-md-3">
                                         <label class="form-label d-block">Primary</label>
                                         <input type="hidden" name="banks[0][is_primary]" value="0">
                                         <input type="checkbox" name="banks[0][is_primary]" value="1"
