@@ -54,7 +54,8 @@ class ClientFamilyController extends Controller
 
     public function update(ClientFamilyRequest $request, $id)
     {
-        $this->clientFamilyService->update($id, $request->validated());
+        $clientFamily = $this->clientFamilyService->find($id);
+        $this->clientFamilyService->update($clientFamily, $request->validated());
         return redirect()->route('client-families.index')->with('success', 'Client family member updated successfully');
     }
 
