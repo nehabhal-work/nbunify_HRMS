@@ -54,6 +54,11 @@ class Company extends Model
         'attachment_udyam_aadhar',
         'attachment_gumasta',
         'attachment_msme',
+        'brand_name',
+        'proprietor_name',
+        'proprietor_phone',
+        'proprietor_email',
+        'proprietor_whatsapp',
     ];
 
     protected $casts = [

@@ -15,6 +15,7 @@ class CompanyBankDetail extends Model
         'branch_name',
         'is_primary',
         'bank_code',
+        'account_type',
     ];
 
     protected $casts = [

@@ -29,6 +29,7 @@ class ClientBankRequest extends FormRequest
             'branch_name' => 'required|string|max:255',
             'bank_code' => 'nullable|string|max:255',
             'is_primary' => 'boolean',
+            'account_type' => 'nullable|in:savings,current,od_cc,nre,nri,nro,tem_deposit,ra',
         ];
     }
 }

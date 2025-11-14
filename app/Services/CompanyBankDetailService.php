@@ -29,6 +29,7 @@ class CompanyBankDetailService
             'branch_name' => $data['branch_name'],
             'bank_code' => $data['bank_code'],
             'is_primary' => $data['is_primary'] ?? 0,
+            'account_type' => $data['account_type'] ?? null,
         ]);
     }
 
@@ -50,6 +51,7 @@ class CompanyBankDetailService
             'branch_name' => 'required|string',
             'bank_code' => 'required|string|max:4',
             'is_primary' => 'nullable|integer',
+            'account_type' => 'nullable|in:savings,current,od_cc,nre,nri,nro,tem_deposit,ra',
         ]);
     }
 }

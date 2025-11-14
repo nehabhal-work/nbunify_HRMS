@@ -21,7 +21,9 @@ class CompanyController extends Controller
     public function index()
     {
         $companies = $this->companyService->getAll();
-        return view('content.master.companies.index', compact('companies'));
+        $companyTypes = config('enum_company_types');
+        $bankAccountTypes = config('enum_bank_account_types');
+        return view('content.master.companies.index', compact('companies', 'companyTypes','bankAccountTypes'));
     }
 
     public function create() {
@@ -48,7 +50,9 @@ class CompanyController extends Controller
     {
         $company = $this->companyService->getById($id);
         $bankDetails = $company->bankDetails ?? collect();
-        return view('content.master.companies.edit', compact('company', 'bankDetails'));
+        $companyTypes = config('enum_company_types');
+        $bankAccountTypes = config('enum_bank_account_types');
+        return view('content.master.companies.edit', compact('company', 'bankDetails','companyTypes','bankAccoutTypes'));
     }
 
     public function update(CompanyRequest $request, $id)

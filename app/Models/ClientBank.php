@@ -15,6 +15,7 @@ class ClientBank extends Model
         'branch_name',
         'bank_code',
         'is_primary',
+        'account_type',
     ];
 
     protected $casts = [

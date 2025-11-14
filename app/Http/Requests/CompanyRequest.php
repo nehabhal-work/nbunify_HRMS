@@ -54,6 +54,11 @@ class CompanyRequest extends FormRequest
             'attachment_udyam_aadhar' => ['nullable', 'string', 'max:255'],
             'attachment_gumasta' => ['nullable', 'string', 'max:255'],
             'attachment_msme' => ['nullable', 'string', 'max:255'],
+            'brand_name' => ['nullable','string','max:50'],
+            'proprietor_name' => ['nullable','string','max:50'],
+            'proprietor_phone' => ['nullable','string','max:20'],
+            'proprietor_email' => ['nullable','string','max:20'],
+            'proprietor_whatsapp' => ['nullable','string','max:20'],
         ];
     }
 
@@ -75,7 +80,7 @@ class CompanyRequest extends FormRequest
             'registered_pincode.regex' => 'Pincode must be 6 digits.',
             'corporate_pincode.regex' => 'Pincode must be 6 digits.',
             'additional_pincode.regex' => 'Pincode must be 6 digits.',
-
+            
         ];
     }
 }
