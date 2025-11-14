@@ -59,6 +59,8 @@ class CompanyRequest extends FormRequest
             'proprietor_phone' => ['nullable','string','max:20'],
             'proprietor_email' => ['nullable','string','max:20'],
             'proprietor_whatsapp' => ['nullable','string','max:20'],
+            'whatsapp_no' => ['nullable','string','max:15'],
+            'aadhar_no' => ['nullable','string','max:12','regex:/^[0-9]{12}$/'],
         ];
     }
 

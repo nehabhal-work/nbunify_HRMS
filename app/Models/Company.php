@@ -59,6 +59,8 @@ class Company extends Model
         'proprietor_phone',
         'proprietor_email',
         'proprietor_whatsapp',
+        'whatsapp_no',
+        'aadhar_no',
     ];
 
     protected $casts = [
