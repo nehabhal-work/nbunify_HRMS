@@ -75,7 +75,8 @@ class CompanyController extends Controller
     public function destroy($id)
     {
         try {
-            $this->companyService->delete($id);
+            $company = $this->companyService->getById($id);
+            $this->companyService->delete($company);
             return redirect()->route('master.companies.index')->with('success', 'Company deleted successfully.');
         } catch (\Exception $e) {
             return back()->withErrors(['error' => $e->getMessage()]);
