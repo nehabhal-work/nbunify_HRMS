@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class ClientFamily extends Model
 {
     protected $fillable = [
+        'client_code',
         'client_id',
         'name',
         'gender',

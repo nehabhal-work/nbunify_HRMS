@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Client extends Model
 {
     protected $fillable = [
+        'client_code',
         'name',
         'gender',
         'dob',
@@ -63,5 +64,9 @@ class Client extends Model
     public function banks(): HasMany
     {
         return $this->hasMany(ClientBank::class);
+    }
+
+    public function generateClientCode(){
+        return 'CC-' . date('y') . '-' . str_pad(Client::withTrashed()->count() + 1, 10, '0', STR_PAD_LEFT);
     }
 }

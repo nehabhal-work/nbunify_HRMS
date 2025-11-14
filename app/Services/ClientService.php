@@ -18,6 +18,7 @@ class ClientService
     public function create(array $data): Client
     {
         $data = $this->handleFileUploads($data);
+        $data['client_code'] = Client::generateClientCode();
         return Client::create($data);
     }
 
