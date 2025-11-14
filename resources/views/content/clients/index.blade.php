@@ -66,11 +66,12 @@
                                         <td>{{ $d->res_address }}</td>
 
                                         <td>
-                                            <a href="{{ route('client-families.index') }}" class="btn btn-sm btn-info">
+                                            <a href="{{ route('client-families.index', ['client_id' => $d->id]) }}"
+                                                class="btn btn-sm btn-info">
                                                 View Family Info
                                             </a>
                                         </td>
-                                     
+
                                         <td>
                                             @if ($d->banks->count() > 0)
                                                 <button type="button" class="btn btn-sm btn-secondary"
@@ -331,7 +332,7 @@
                 @endforeach
 
                 <!-- Bank Info Modal -->
-              
+
                 @foreach ($clients as $d)
                     <!-- Modal for this client -->
                     <div class="modal fade" id="bankmodal{{ $d->id }}" tabindex="-1"
