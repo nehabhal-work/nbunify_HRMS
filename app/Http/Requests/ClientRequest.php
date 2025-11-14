@@ -23,7 +23,7 @@ class ClientRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:50',
-            'gender' => 'nullable|in:male,female,other',
+            'gender' => 'required|in:male,female,other',
             'dob' => 'required|date|before:today',
             'live_status' => 'nullable|in:alive,deceased',
             'dod' => 'nullable|date|after:dob',
@@ -78,11 +78,11 @@ class ClientRequest extends FormRequest
             'mobile_no.required' => 'Mobile number is required.',
             'email.required' => 'Email is required.',
             'email.email' => 'Please provide a valid email address.',
-            
+
             'attachment_client_photo.image' => 'Client photo must be an image.',
             'attachment_client_photo.max' => 'Client photo must not exceed 2MB.',
             'attachment_client_photo.mimes' => 'Client photo must be jpeg, jpg, or png format.',
-            
+
             '*.file' => 'The :attribute must be a file.',
             '*.max' => 'The :attribute must not exceed 5MB.',
             '*.mimes' => 'The :attribute must be pdf, jpeg, jpg, or png format.',
