@@ -59,8 +59,10 @@ class CompanyController extends Controller
     public function show($id)
     {
         $company = $this->companyService->getById($id);
-
-        return view('content.master.companies.view', compact('company'));
+        $bankDetails = $company->bankDetails ?? collect();
+        $companyTypes = config('enum_company_types');
+        $bankAccountTypes = config('enum_bank_account_types');
+        return view('content.master.companies.view', compact('company', 'bankDetails', 'companyTypes', 'bankAccountTypes'));
     }
 
     public function update(CompanyRequest $request, $id)

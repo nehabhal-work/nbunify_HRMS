@@ -513,6 +513,34 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Aadhar Attachment</label>
+                                <div class="input-group">
+                                    <input type="file"
+                                        class="form-control @error('attachment_aadhar') is-invalid @enderror"
+                                        id="attachment_aadhar" name="attachment_aadhar"
+                                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
+                                    <button class="btn btn-outline-danger" type="button"
+                                        onclick="document.getElementById('attachment_aadhar').value = ''">✕</button>
+                                </div>
+                                @error('attachment_aadhar')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">PAN Attachment</label>
+                                <div class="input-group">
+                                    <input type="file"
+                                        class="form-control @error('attachment_pan') is-invalid @enderror"
+                                        id="attachment_pan" name="attachment_pan"
+                                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
+                                    <button class="btn btn-outline-danger" type="button"
+                                        onclick="document.getElementById('attachment_pan').value = ''">✕</button>
+                                </div>
+                                @error('attachment_pan')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
 
 
                             <div class="col-md-6 mb-3">
@@ -530,20 +558,7 @@
                                 @enderror
                             </div>
 
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">PAN Attachment</label>
-                                <div class="input-group">
-                                    <input type="file"
-                                        class="form-control @error('attachment_pan') is-invalid @enderror"
-                                        id="attachment_pan" name="attachment_pan"
-                                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
-                                    <button class="btn btn-outline-danger" type="button"
-                                        onclick="document.getElementById('attachment_pan').value = ''">✕</button>
-                                </div>
-                                @error('attachment_pan')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
+                            
 
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">GSTIN Attachment</label>

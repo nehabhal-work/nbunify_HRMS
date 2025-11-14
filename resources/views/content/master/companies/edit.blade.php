@@ -94,9 +94,9 @@
                             <!-- Establishment Date -->
                             <div class="col-md-3 mb-3">
                                 <label class="form-label">Establishment Date</label>
-                               
-                                <input type="date" class="form-control @error('est_date') is-invalid @enderror" id="est_date"
-                                    name="est_date"
+
+                                <input type="date" class="form-control @error('est_date') is-invalid @enderror"
+                                    id="est_date" name="est_date"
                                     value="{{ old('est_date', isset($company->est_date) ? \Carbon\Carbon::parse($company->est_date)->format('Y-m-d') : '') }}"
                                     max="{{ now()->toDateString() }}">
 
@@ -496,13 +496,13 @@
                     <div class="card-body">
                         <div class="row">
 
-
-                            <!-- File Upload: Company images -->
-
-
+                            {{-- Logo --}}
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Logo Attachment</label>
-                                <div class="input-group">
+                                @if ($company->logo)
+                                    <a href="{{ asset('storage/' . $company->logo) }}" target="_blank">View</a>
+                                @endif
+                                <div class="input-group mt-1">
                                     <input type="file" class="form-control @error('logo') is-invalid @enderror"
                                         id="logo" name="logo" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
                                     <button class="btn btn-outline-danger" type="button"
@@ -513,25 +513,33 @@
                                 @enderror
                             </div>
 
-
+                            {{-- Aadhar --}}
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">TAN Attachment</label>
-                                <div class="input-group">
+                                <label class="form-label">Aadhar Attachment</label>
+                                @if ($company->attachment_aadhar)
+                                    <a href="{{ asset('storage/' . $company->attachment_aadhar) }}"
+                                        target="_blank">View</a>
+                                @endif
+                                <div class="input-group mt-1">
                                     <input type="file"
-                                        class="form-control @error('attachment_tan') is-invalid @enderror"
-                                        id="attachment_tan" name="attachment_tan"
+                                        class="form-control @error('attachment_aadhar') is-invalid @enderror"
+                                        id="attachment_aadhar" name="attachment_aadhar"
                                         accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
                                     <button class="btn btn-outline-danger" type="button"
-                                        onclick="document.getElementById('attachment_tan').value = ''">✕</button>
+                                        onclick="document.getElementById('attachment_aadhar').value = ''">✕</button>
                                 </div>
-                                @error('attachment_tan')
+                                @error('attachment_aadhar')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
 
+                            {{-- PAN --}}
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">PAN Attachment</label>
-                                <div class="input-group">
+                                @if ($company->attachment_pan)
+                                    <a href="{{ asset('storage/' . $company->attachment_pan) }}" target="_blank">View</a>
+                                @endif
+                                <div class="input-group mt-1">
                                     <input type="file"
                                         class="form-control @error('attachment_pan') is-invalid @enderror"
                                         id="attachment_pan" name="attachment_pan"
@@ -544,9 +552,33 @@
                                 @enderror
                             </div>
 
+                            {{-- TAN --}}
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">TAN Attachment</label>
+                                @if ($company->attachment_tan)
+                                    <a href="{{ asset('storage/' . $company->attachment_tan) }}" target="_blank">View</a>
+                                @endif
+                                <div class="input-group mt-1">
+                                    <input type="file"
+                                        class="form-control @error('attachment_tan') is-invalid @enderror"
+                                        id="attachment_tan" name="attachment_tan"
+                                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
+                                    <button class="btn btn-outline-danger" type="button"
+                                        onclick="document.getElementById('attachment_tan').value = ''">✕</button>
+                                </div>
+                                @error('attachment_tan')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            {{-- GSTIN --}}
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">GSTIN Attachment</label>
-                                <div class="input-group">
+                                @if ($company->attachment_gstin)
+                                    <a href="{{ asset('storage/' . $company->attachment_gstin) }}"
+                                        target="_blank">View</a>
+                                @endif
+                                <div class="input-group mt-1">
                                     <input type="file"
                                         class="form-control @error('attachment_gstin') is-invalid @enderror"
                                         id="attachment_gstin" name="attachment_gstin"
@@ -559,9 +591,14 @@
                                 @enderror
                             </div>
 
+                            {{-- CKYC --}}
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">CKYC Attachment</label>
-                                <div class="input-group">
+                                @if ($company->attachment_ckyc)
+                                    <a href="{{ asset('storage/' . $company->attachment_ckyc) }}"
+                                        target="_blank">View</a>
+                                @endif
+                                <div class="input-group mt-1">
                                     <input type="file"
                                         class="form-control @error('attachment_ckyc') is-invalid @enderror"
                                         id="attachment_ckyc" name="attachment_ckyc"
@@ -574,9 +611,14 @@
                                 @enderror
                             </div>
 
+                            {{-- Partnership Deed --}}
                             <div class="col-md-6 mb-3 d-none">
                                 <label class="form-label">Partnership Deed</label>
-                                <div class="input-group">
+                                @if ($company->attachment_partnership_deed)
+                                    <a href="{{ asset('storage/' . $company->attachment_partnership_deed) }}"
+                                        target="_blank">View</a>
+                                @endif
+                                <div class="input-group mt-1">
                                     <input type="file"
                                         class="form-control @error('attachment_partnership_deed') is-invalid @enderror"
                                         id="attachment_partnership_deed" name="attachment_partnership_deed"
@@ -589,9 +631,14 @@
                                 @enderror
                             </div>
 
+                            {{-- Udyam --}}
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Udyam Aadhar</label>
-                                <div class="input-group">
+                                @if ($company->attachment_udyam_aadhar)
+                                    <a href="{{ asset('storage/' . $company->attachment_udyam_aadhar) }}"
+                                        target="_blank">View</a>
+                                @endif
+                                <div class="input-group mt-1">
                                     <input type="file"
                                         class="form-control @error('attachment_udyam_aadhar') is-invalid @enderror"
                                         id="attachment_udyam_aadhar" name="attachment_udyam_aadhar"
@@ -604,9 +651,14 @@
                                 @enderror
                             </div>
 
+                            {{-- Gumasta --}}
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Gumasta License</label>
-                                <div class="input-group">
+                                @if ($company->attachment_gumasta)
+                                    <a href="{{ asset('storage/' . $company->attachment_gumasta) }}"
+                                        target="_blank">View</a>
+                                @endif
+                                <div class="input-group mt-1">
                                     <input type="file"
                                         class="form-control @error('attachment_gumasta') is-invalid @enderror"
                                         id="attachment_gumasta" name="attachment_gumasta"
@@ -619,9 +671,14 @@
                                 @enderror
                             </div>
 
+                            {{-- MSME --}}
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">MSME Certificate</label>
-                                <div class="input-group">
+                                @if ($company->attachment_msme)
+                                    <a href="{{ asset('storage/' . $company->attachment_msme) }}"
+                                        target="_blank">View</a>
+                                @endif
+                                <div class="input-group mt-1">
                                     <input type="file"
                                         class="form-control @error('attachment_msme') is-invalid @enderror"
                                         id="attachment_msme" name="attachment_msme"
@@ -635,6 +692,7 @@
                             </div>
 
                         </div>
+
 
 
                     </div>
@@ -912,28 +970,27 @@
 @endsection
 
 @push('scripts')
-<script>
-    $(document).ready(function() {
+    <script>
+        $(document).ready(function() {
 
-        // Firm WhatsApp same as mobile
-        $('.chkbox_fwapp_same_as_mobile').on('change', function() {
-            if ($(this).is(':checked')) {
-                $('#whatsapp_no').val($('#phone').val());
-            } else {
-                $('#whatsapp_no').val('');
-            }
+            // Firm WhatsApp same as mobile
+            $('.chkbox_fwapp_same_as_mobile').on('change', function() {
+                if ($(this).is(':checked')) {
+                    $('#whatsapp_no').val($('#phone').val());
+                } else {
+                    $('#whatsapp_no').val('');
+                }
+            });
+
+            // Proprietor WhatsApp same as mobile
+            $('.chkbox_prop_wa_same_as_mobile').on('change', function() {
+                if ($(this).is(':checked')) {
+                    $('#proprietor_whatsapp').val($('#proprietor_phone').val());
+                } else {
+                    $('#proprietor_whatsapp').val('');
+                }
+            });
+
         });
-
-        // Proprietor WhatsApp same as mobile
-        $('.chkbox_prop_wa_same_as_mobile').on('change', function() {
-            if ($(this).is(':checked')) {
-                $('#proprietor_whatsapp').val($('#proprietor_phone').val());
-            } else {
-                $('#proprietor_whatsapp').val('');
-            }
-        });
-
-    });
-</script>
-
+    </script>
 @endpush
