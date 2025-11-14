@@ -21,13 +21,13 @@ class CompanyController extends Controller
     public function index()
     {
         $companies = $this->companyService->getAll();
-        $companyTypes = config('enum_company_types');
-        $bankAccountTypes = config('enum_bank_account_types');
-        return view('content.master.companies.index', compact('companies', 'companyTypes','bankAccountTypes'));
+        return view('content.master.companies.index', compact('companies'));
     }
 
     public function create() {
-        return view('content.master.companies.create');
+        $companyTypes = config('enum_company_types');
+        $bankAccountTypes = config('enum_bank_account_types');
+        return view('content.master.companies.create', compact('companyTypes','bankAccountTypes'));
     }
 
     public function store(CompanyRequest $request)

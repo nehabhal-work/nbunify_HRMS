@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\Storage;
 
 class ClientService
 {
+
+    public function find($id) {
+        return Client::findOrFail($id);
+    }
     public function create(array $data): Client
     {
         $data = $this->handleFileUploads($data);

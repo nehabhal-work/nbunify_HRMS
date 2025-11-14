@@ -6,6 +6,11 @@ use App\Models\ClientFamily;
 
 class ClientFamilyService
 {
+
+    public function find($id) {
+        return ClientFamily::findOrFail($id);
+    }
+
     public function create(array $data): ClientFamily
     {
         return ClientFamily::create($data);
@@ -24,6 +29,6 @@ class ClientFamilyService
 
     public function getByClient(int $clientId): \Illuminate\Database\Eloquent\Collection
     {
-        return ClientFamily::where('client_id', $clientId)->with('relation')->get();
+        return ClientFamily::where('client_id', $clientId)->with('client','relation')->get();
     }
 }

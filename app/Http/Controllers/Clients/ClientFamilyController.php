@@ -4,58 +4,58 @@ namespace App\Http\Controllers\Clients;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ClientFamilyRequest;
-use App\Models\Client;
-use App\Models\ClientFamily;
 use App\Services\ClientFamilyService;
+use App\Services\ClientService;
+use Illuminate\Http\Request;
 
 class ClientFamilyController extends Controller
 {
-    public function __construct(private ClientFamilyService $clientFamilyService) {}
+    public function __construct(
+        private ClientFamilyService $clientFamilyService,
+        private ClientService $clientService) {}
 
-    public function index($client = null)
+    public function index(Request $request)
     {
-        if ($client) {
-            $clientFamilies = ClientFamily::with(['client', 'relation'])->where('client_id', $client)->get();
+        if ($client_id = $request->client_id) {
+            $client = $this->clientService->find($client_id);
+            $clientFamilies = $this->clientFamilyService->getByClient($client_id);
+            return view('content.clients.families.index', compact('clientFamilies', 'client'));
         } else {
-            $clientFamilies = ClientFamily::with(['client', 'relation'])->get();
+            abort(401);
         }
-        return view('content.clients.families.index', compact('clientFamilies', 'client'));
     }
 
-    public function create($client = null)
+    public function create(Request $request)
     {
-        return $client;
-        $clientData = null;
-        if ($client) {
-            $clientData = Client::find($client);
-            return 'if part';
+        if($client_id = $request->client_id) {
+            $client = $this->clientService->find($client_id);
+            return view('content.clients.families.create', compact('client'));
         } else {
-            return 'else part';
+            abort(401);
         }
-        return $clientData;
-        return view('content.clients.families.create', compact('client'));
     }
 
     public function store(ClientFamilyRequest $request)
     {
         $this->clientFamilyService->create($request->validated());
-        return redirect()->route('client-families.index')->with('success', 'Client family member created successfully');
+        return redirect()->route('client-families.index',['client_id' => $request->client_id])->with('success', 'Client family member created successfully');
     }
 
-    public function edit(ClientFamily $clientFamily)
+    public function edit($id)
     {
+        $clientFamily = $this->clientFamilyService->find($id);
         return view('content.clients.families.edit', compact('clientFamily'));
     }
 
-    public function update(ClientFamilyRequest $request, ClientFamily $clientFamily)
+    public function update(ClientFamilyRequest $request, $id)
     {
-        $this->clientFamilyService->update($clientFamily, $request->validated());
+        $this->clientFamilyService->update($id, $request->validated());
         return redirect()->route('client-families.index')->with('success', 'Client family member updated successfully');
     }
 
-    public function destroy(ClientFamily $clientFamily)
+    public function destroy($id)
     {
-        $this->clientFamilyService->delete($clientFamily);
+        $this->clientFamilyService->delete($id);
         return redirect()->route('client-families.index')->with('success', 'Client family member deleted successfully');
     }
 }

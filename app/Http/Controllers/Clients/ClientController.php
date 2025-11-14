@@ -42,9 +42,7 @@ class ClientController extends Controller
                 }
             }
         });
-
-        return redirect()->route('client-families.create', ['client' => $client->id])->with('success', 'Client created successfully');
-        // return redirect()->route('client-families.index', ['client' => $client->id])->with('success', 'Client created successfully');
+        return redirect()->route('client-families.create', ['client_id' => $client->id])->with('success', 'Client created successfully');
     }
 
     public function edit(Client $client)
