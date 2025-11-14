@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Clients;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ClientFamilyRequest;
+use App\Models\Client;
 use App\Services\ClientFamilyService;
 use App\Services\ClientService;
 use App\Services\FamilyRelationService;
@@ -14,7 +15,8 @@ class ClientFamilyController extends Controller
     public function __construct(
         private ClientFamilyService $clientFamilyService,
         private ClientService $clientService,
-        private FamilyRelationService $familyRelationService) {}
+        private FamilyRelationService $familyRelationService
+    ) {}
 
     public function index(Request $request)
     {
@@ -29,11 +31,11 @@ class ClientFamilyController extends Controller
 
     public function create(Request $request)
     {
-        if($client_id = $request->client_id) {
+        if ($client_id = $request->client_id) {
             $clients = $this->clientService->getAll();
             $client = $this->clientService->find($client_id);
             $relations = $this->familyRelationService->getByGender($client->gender);
-            return view('content.clients.families.create', compact('client','relations', 'clients'));
+            return view('content.clients.families.create', compact('client', 'relations', 'clients'));
         } else {
             abort(401);
         }
@@ -41,8 +43,21 @@ class ClientFamilyController extends Controller
 
     public function store(ClientFamilyRequest $request)
     {
+        if ($request->family_source == 'existing') {
+            $request->merge([
+                'name' => Client::find($request->existing_client_id)->name,
+                'relation_id' => $request->existing_relation_id,
+            ]);
+        } else {
+            $request->merge([
+                'name' => $request->new_name,
+                'relation_id' => $request->new_relation_id,
+            ]);
+        }
+        return $request;
+
         $this->clientFamilyService->create($request->validated());
-        return redirect()->route('client-families.index',['client_id' => $request->client_id])->with('success', 'Client family member created successfully');
+        return redirect()->route('client-families.index', ['client_id' => $request->client_id])->with('success', 'Client family member created successfully');
     }
 
     public function edit($id)
@@ -50,7 +65,7 @@ class ClientFamilyController extends Controller
         $clientFamily = $this->clientFamilyService->find($id);
         $client = $this->clientService->find($clientFamily->client_id);
         $relations = $this->familyRelationService->getByGender($client->gender);
-        return view('content.clients.families.edit', compact('clientFamily','client', 'relations'));
+        return view('content.clients.families.edit', compact('clientFamily', 'client', 'relations'));
     }
 
     public function update(ClientFamilyRequest $request, $id)

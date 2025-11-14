@@ -24,16 +24,83 @@
     @endif
 
     <h4 class="fw-bold py-3 mb-4">
-        <span class="text-muted fw-light">Family /</span> <a href="{{ route('master.companies.index') }}">/Add Family Member
+        <span class="text-muted fw-light">Family /</span> <a href="{{ route('master.companies.index') }}">Add Family Member
             of <span class="text-uppercase">{{ $client->name }}</span></a>
     </h4>
+
 
 
     <form action="{{ route('client-families.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('post')
         <input type="hidden" name="client_id" value="{{ $client->id }}">
-        <div class="row align-items-stretch">
+
+        <!-- RADIO OPTIONS -->
+        <div class="row mb-3">
+            <div class="col-auto">
+                <div class="form-check">
+                    <input class="form-check-input sourceOption" type="radio" name="family_source" id="source_existing"
+                        value="existing" checked>
+                    <label class="form-check-label fw-semibold" for="source_existing">
+                        Add From Existing Client List
+                    </label>
+                </div>
+            </div>
+
+            <div class="col-auto">
+                <div class="form-check">
+                    <input class="form-check-input sourceOption" type="radio" name="family_source" id="source_new"
+                        value="new">
+                    <label class="form-check-label fw-semibold" for="source_new">
+                        Create New Family Data
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+
+
+        <div id="existingSection">
+            <div class="row">
+
+                <!-- Client Dropdown -->
+                <div class="col-md-4 mb-3">
+                    <label for="existing_client_id" class="form-label">Select Existing Client</label>
+                    <select name="existing_client_id" id="existing_client_id"
+                        class="form-select select2 @error('name') is-invalid @enderror"">
+                        <option value="">Select Client</option>
+                        @foreach ($clients as $c)
+                            <option value="{{ $c->id }}">{{ $c->name }}</option>
+                        @endforeach
+                    </select>
+                    @error('name')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <!-- Relation With Client -->
+                <div class="col-md-3 mb-3">
+                    <label for="relation_id" class="form-label">Relation With Client</label>
+                    <select name="existing_relation_id" id="existing_relation_id" class="form-select select2">
+                        <option value="">Select Relation</option>
+                        @foreach ($relations as $d)
+                            <option value="{{ $d->id }}">{{ $d->main_relation }}</option>
+                        @endforeach
+                    </select>
+
+                    @error('relation_id')
+                        <div class="text-danger small">{{ $message }}</div>
+                    @enderror
+                </div>
+
+            </div>
+        </div>
+
+
+
+        <div id="newSection" class="d-none" class="row align-items-stretch">
             <div class="col-md-12">
                 <div class="card mb-4">
                     <div class="card-header d-flex justify-content-between align-items-center">
@@ -49,7 +116,8 @@
                             <div class="col-md-4 mb-3">
                                 <label class="form-label" for="name">Full Name</label>
                                 <input type="text" class="form-control onlyalpha @error('name') is-invalid @enderror"
-                                    id="name" name="name" maxlength="50" value="{{ old('name') }}" maxlength="50">
+                                    id="name" name="name" maxlength="50" value="{{ old('name') }}"
+                                    maxlength="50">
                                 @error('name')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -62,7 +130,8 @@
                                     name="gender">
                                     <option value="">Select</option>
                                     <option value="male" {{ old('gender') == 'male' ? 'selected' : '' }}>Male</option>
-                                    <option value="female" {{ old('gender') == 'female' ? 'selected' : '' }}>Female</option>
+                                    <option value="female" {{ old('gender') == 'female' ? 'selected' : '' }}>Female
+                                    </option>
                                     <option value="other" {{ old('gender') == 'other' ? 'selected' : '' }}>Other</option>
                                 </select>
                                 @error('gender')
@@ -118,7 +187,8 @@
                                 <select class="form-select @error('marital_status') is-invalid @enderror"
                                     id="marital_status" name="marital_status">
                                     <option value="">Select</option>
-                                    <option value="single" {{ old('marital_status') == 'single' ? 'selected' : '' }}>Single
+                                    <option value="single" {{ old('marital_status') == 'single' ? 'selected' : '' }}>
+                                        Single
                                     </option>
                                     <option value="married" {{ old('marital_status') == 'married' ? 'selected' : '' }}>
                                         Married</option>
@@ -143,8 +213,10 @@
                                     <option value="">Select</option>
                                     <option value="ri" {{ old('nationality') == 'ri' ? 'selected' : '' }}>Residential
                                         Individual</option>
-                                    <option value="nro" {{ old('nationality') == 'nro' ? 'selected' : '' }}>NRO</option>
-                                    <option value="nre" {{ old('nationality') == 'nre' ? 'selected' : '' }}>NRE</option>
+                                    <option value="nro" {{ old('nationality') == 'nro' ? 'selected' : '' }}>NRO
+                                    </option>
+                                    <option value="nre" {{ old('nationality') == 'nre' ? 'selected' : '' }}>NRE
+                                    </option>
                                     <option value="pio" {{ old('nationality') == 'pio' ? 'selected' : '' }}>OCI/PIO
                                     </option>
                                     <option value="gch" {{ old('nationality') == 'gch' ? 'selected' : '' }}>Green Card
@@ -204,48 +276,13 @@
                             </div>
 
 
-                            {{-- PAN No. --}}
-                            <div class="col-md-2 mb-3">
-                                <label class="form-label" for="pan_no">PAN No.</label>
-                                <input type="text" class="form-control @error('pan_no') is-invalid @enderror"
-                                    id="pan_no" name="pan_no" maxlength="10" value="{{ old('pan_no') }}"
-                                    oninput="this.value = this.value.toUpperCase()"
-                                    onblur="validatePAN(this.value,'errpancardno')">
-                                @error('pan_no')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-
-                            {{-- Aadhaar No. --}}
-                            <div class="col-md-2 mb-3">
-                                <label class="form-label" for="aadhar_no">Aadhaar No.</label>
-                                <input type="text" class="form-control @error('aadhar_no') is-invalid @enderror"
-                                    id="aadhar_no" name="aadhar_no" maxlength="12" value="{{ old('aadhar_no') }}">
-                                @error('aadhar_no')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-
-                            {{-- CKYC No --}}
-                            <div class="col-md-2 mb-3">
-                                <label class="form-label" for="ckyc_no">CKYC No.</label>
-                                <input type="text" class="form-control @error('ckyc_no') is-invalid @enderror"
-                                    id="ckyc_no" name="ckyc_no" maxlength="20" value="{{ old('ckyc_no') }}">
-                                @error('ckyc_no')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-
 
                             {{-- Mobile Number --}}
                             <div class="col-md-2 mb-3">
                                 <label class="form-label" for="mobile_no">Mobile Number</label>
                                 <input type="text"
-                                    class="form-control onlyphone @error('mobile_no') is-invalid @enderror"
-                                    id="mobile_no" name="mobile_no" maxlength="15" value="{{ old('mobile_no') }}">
+                                    class="form-control onlyphone @error('mobile_no') is-invalid @enderror" id="mobile_no"
+                                    name="mobile_no" maxlength="15" value="{{ old('mobile_no') }}">
                                 @error('mobile_no')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -291,20 +328,19 @@
                             </div>
 
 
-
                             {{-- Relation with client --}}
                             <div class="col-md-3 mb-3">
-                                <label for="relation_manager" class="form-label">Relation with client</label>
-                                <select name="relation_manager_id" id="relation_manager" class="form-select">
+                                <label for="relation_id" class="form-label">Relation with client</label>
+                                <select name="relation_id" id="relation_id" class="form-select select2">
                                     <option value="">Select Relation Manager</option>
-                                    {{-- @foreach ($relationManagers as $manager)
-                                        <option value="{{ $manager->id }}"
-                                            {{ old('relation_manager_id') == $manager->id ? 'selected' : '' }}>
-                                            {{ $manager->name }}
+                                    @foreach ($relations as $d)
+                                        <option value="{{ $d->id }}"
+                                            {{ old('relation_id') == $d->id ? 'selected' : '' }}>
+                                            {{ $d->main_relation }}
                                         </option>
-                                    @endforeach --}}
+                                    @endforeach
                                 </select>
-                                @error('relation_manager_id')
+                                @error('relation_id')
                                     <div class="text-danger small">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -499,4 +535,78 @@
 @endsection
 
 @push('scripts')
+    <script>
+        $(document).ready(function() {
+            // For Firm WhatsApp Number
+            $('.chkbox_fwapp_same_as_mobile').on('change', function() {
+                if ($(this).is(':checked')) {
+                    $('#whatsapp_no').val($('#phone').val());
+                } else {
+                    $('#whatsapp_no').val('');
+                }
+            });
+
+
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            function toggleSections() {
+                if ($("#source_existing").is(":checked")) {
+                    $("#existingSection").removeClass("d-none");
+                    $("#newSection").addClass("d-none");
+                } else {
+                    $("#existingSection").addClass("d-none");
+                    $("#newSection").removeClass("d-none");
+                }
+            }
+
+            $(".sourceOption").on("change", function() {
+                toggleSections();
+            });
+
+            toggleSections(); // Initial call
+        });
+    </script>
+
+
+    <script>
+        $(document).ready(function() {
+
+            // When selecting existing client
+            $('#existing_client_id').on('change', function() {
+
+                // Get selected option text (client name)
+                let selectedName = $("#existing_client_id option:selected").text();
+
+                // If "Select Client" is chosen, clear input
+                if ($(this).val() === "") {
+                    $('#name').val('');
+                } else {
+                    $('#name').val(selectedName);
+                }
+            });
+
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+
+            // autofill relation dropdown
+            $('#existing_relation_id').on('change', function() {
+                let selectedRelationId = $(this).val();
+
+                if (selectedRelationId === "") {
+                    // clear the target dropdown
+                    $('#relation_id').val('').trigger('change');
+                } else {
+                    // set selected relation in target dropdown
+                    $('#relation_id').val(selectedRelationId).trigger('change');
+                }
+            });
+
+        });
+    </script>
 @endpush

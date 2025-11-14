@@ -25,10 +25,11 @@
 
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h4 class="fw-bold py-3 mb-4">
-            <span class="text-muted fw-light">Master /</span> <a href="{{ route('master.companies.create') }}">Families</a>
+            <span class="text-muted fw-light">Master /</span> <a href="{{ route('master.companies.create') }}">Families of
+                <span class="text-uppercase">{{ $client->name }}</span></a>
         </h4>
     </div>
-
+    {{ $clientFamilies }}
     <div class="row">
         <!-- TABLE SECTION -->
 
@@ -36,7 +37,8 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Family List</h5>
-                    <a class="btn btn-primary" href="{{ route('client-families.create') }}" role="button">Add Family
+                    <a class="btn btn-primary" href="{{ route('client-families.create', ['client_id' => $client->id]) }}"
+                        role="button">Add Family
                         Menber</a>
                 </div>
                 <div class="card-body">
@@ -46,50 +48,59 @@
                                 <tr>
                                     <th>#</th>
                                     <th>families</th>
-                                    <th>Contact Person</th>
+                                    <th>relation</th>
+                                    <th>DOB</th>
                                     <th>Number</th>
                                     <th>Email</th>
-                                    <th>GST No</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {{-- Example static row (replace with @foreach later) --}}
-                                {{-- @foreach ($companies as $d)
+                                @foreach ($clientFamilies as $key => $d)
                                     <tr>
-                                        <td>{{ $d->id }}</td>
+                                        <td>{{ $key + 1 }}</td>
                                         <td>{{ $d->name }}</td>
-                                        <td>{{ $d->contact_person_name }}</td>
-                                        <td>{{ $d->phone }}</td>
+                                        <td>{{ $d->relation->relative_relation . '-' . $d->relation->main_relation }}</td>
+                                        <td>{{ $d->dob }}</td>
+                                        <td>{{ $d->mobile_no }}</td>
                                         <td>{{ $d->email }}</td>
-                                        <td>{{ $d->gstin }}</td>
                                         <td>
                                             <div class="dropdown">
                                                 <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
                                                     data-bs-toggle="dropdown">
                                                     <i class="bx bx-dots-vertical-rounded"></i>
                                                 </button>
-                                                <div class="dropdown-menu">
-                                                    <a class="dropdown-item"
-                                                        href="{{ route('master.companies.edit', $d->id) }}"><i
-                                                            class="bx bx-edit-alt me-1"></i> Edit</a>
-                                                    <form action="{{ route('master.companies.destroy', $d->id) }}"
-                                                        method="post" onsubmit="return confirmDelete()">
 
+                                                <div class="dropdown-menu">
+                                                    <!-- Edit -->
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('client-families.edit', $d->id) }}">
+                                                        <i class="bx bx-edit-alt me-1"></i> Edit
+                                                    </a>
+
+                                                    <!-- Delete -->
+                                                    <form action="{{ route('client-families.destroy', $d->id) }}"
+                                                        method="post" onsubmit="return confirmDelete()">
                                                         @csrf
                                                         @method('DELETE')
+
                                                         <button type="submit" class="dropdown-item text-danger delete-btn"
                                                             data-id="{{ $d->id }}">
                                                             <i class="bx bx-trash me-1"></i> Delete
                                                         </button>
-
                                                     </form>
 
+                                                    <!-- Convert to Client -->
+                                                    <a class="dropdown-item text-primary" href="#">
+                                                        <i class="bx bx-refresh me-1"></i> Convert to Client
+                                                    </a>
                                                 </div>
                                             </div>
                                         </td>
+
                                     </tr>
-                                @endforeach --}}
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
