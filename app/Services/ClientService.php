@@ -12,6 +12,11 @@ class ClientService
     {
     }
 
+    public function getAll()
+    {
+        return Client::all();
+    }
+
     public function find($id) {
         return Client::findOrFail($id);
     }

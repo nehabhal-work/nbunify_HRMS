@@ -30,9 +30,10 @@ class ClientFamilyController extends Controller
     public function create(Request $request)
     {
         if($client_id = $request->client_id) {
+            $clients = $this->clientService->getAll();
             $client = $this->clientService->find($client_id);
             $relations = $this->familyRelationService->getByGender($client->gender);
-            return view('content.clients.families.create', compact('client','relations'));
+            return view('content.clients.families.create', compact('client','relations', 'clients'));
         } else {
             abort(401);
         }
