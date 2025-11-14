@@ -59,7 +59,8 @@ class CompanyController extends Controller
     public function update(CompanyRequest $request, $id)
     {
         try {
-            $this->companyService->update($id, $request->validated());
+            $company = $this->companyService->getById($id);
+            $this->companyService->update($company, $request->validated());
             $this->companyBankDetailService->deleteByCompanyId($id);
             if ($request->has('banks')) {
                 foreach ($request->banks as $bank) {
