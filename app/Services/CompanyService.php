@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Storage;
 
 class CompanyService
 {
+    public function __construct(private FileStorageService $fileStorageService)
+    {
+    }
 
     public function getAll()
     {
@@ -51,9 +54,13 @@ class CompanyService
         foreach ($fileFields as $field) {
             if (isset($data[$field]) && $data[$field] instanceof UploadedFile) {
                 if ($company && $company->$field) {
-                    Storage::disk('public')->delete($company->$field);
+                    $this->fileStorageService->deleteFile($company->$field);
                 }
-                $data[$field] = $data[$field]->store('companies', 'public');
+                $data[$field] = $this->fileStorageService->storeCompanyDocument(
+                    $company?->id ?? 0,
+                    $data[$field],
+                    str_replace('attachment_', '', $field)
+                );
             }
         }
 
@@ -70,7 +77,7 @@ class CompanyService
 
         foreach ($fileFields as $field) {
             if ($company->$field) {
-                Storage::disk('public')->delete($company->$field);
+                $this->fileStorageService->deleteFile($company->$field);
             }
         }
     }

@@ -10,7 +10,7 @@ class CompanyRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'logo' => ['nullable', 'string', 'max:255'],
+            'logo' => ['nullable', 'file', 'image', 'max:2048', 'mimes:jpeg,jpg,png,gif'],
             'name' => ['required', 'string', 'max:255'],
             'company_type' => ['required', 'in:sole_proprietorship,partnership,pvt_ltd,public_ltd,llp,huf,ngo'],
             'code' => ['nullable', 'string', 'max:255', Rule::unique('companies')->ignore($this->company)],
@@ -46,14 +46,14 @@ class CompanyRequest extends FormRequest
             'contact_person_name' => ['nullable', 'string', 'max:255'],
             'phone' => ['nullable', 'string', 'max:20'],
             'email' => ['nullable', 'email', 'max:255'],
-            'attachment_pan' => ['nullable', 'string', 'max:255'],
-            'attachment_tan' => ['nullable', 'string', 'max:255'],
-            'attachment_gstin' => ['nullable', 'string', 'max:255'],
-            'attachment_ckyc' => ['nullable', 'string', 'max:255'],
-            'attachment_partnership_deed' => ['nullable', 'string', 'max:255'],
-            'attachment_udyam_aadhar' => ['nullable', 'string', 'max:255'],
-            'attachment_gumasta' => ['nullable', 'string', 'max:255'],
-            'attachment_msme' => ['nullable', 'string', 'max:255'],
+            'attachment_pan' => ['nullable', 'file', 'max:5120', 'mimes:pdf,jpeg,jpg,png'],
+            'attachment_tan' => ['nullable', 'file', 'max:5120', 'mimes:pdf,jpeg,jpg,png'],
+            'attachment_gstin' => ['nullable', 'file', 'max:5120', 'mimes:pdf,jpeg,jpg,png'],
+            'attachment_ckyc' => ['nullable', 'file', 'max:5120', 'mimes:pdf,jpeg,jpg,png'],
+            'attachment_partnership_deed' => ['nullable', 'file', 'max:5120', 'mimes:pdf,jpeg,jpg,png'],
+            'attachment_udyam_aadhar' => ['nullable', 'file', 'max:5120', 'mimes:pdf,jpeg,jpg,png'],
+            'attachment_gumasta' => ['nullable', 'file', 'max:5120', 'mimes:pdf,jpeg,jpg,png'],
+            'attachment_msme' => ['nullable', 'file', 'max:5120', 'mimes:pdf,jpeg,jpg,png'],
             'brand_name' => ['nullable','string','max:50'],
             'proprietor_name' => ['nullable','string','max:50'],
             'proprietor_phone' => ['nullable','string','max:20'],
@@ -80,6 +80,15 @@ class CompanyRequest extends FormRequest
             'registered_pincode.regex' => 'Pincode must be 6 digits.',
             'corporate_pincode.regex' => 'Pincode must be 6 digits.',
             'additional_pincode.regex' => 'Pincode must be 6 digits.',
+            
+            'logo.file' => 'Logo must be a file.',
+            'logo.image' => 'Logo must be an image.',
+            'logo.max' => 'Logo must not exceed 2MB.',
+            'logo.mimes' => 'Logo must be jpeg, jpg, png, or gif format.',
+            
+            '*.file' => 'The :attribute must be a file.',
+            '*.max' => 'The :attribute must not exceed 5MB.',
+            '*.mimes' => 'The :attribute must be pdf, jpeg, jpg, or png format.',
             
         ];
     }
