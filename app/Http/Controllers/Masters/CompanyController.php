@@ -101,7 +101,7 @@ class CompanyController extends Controller
 
     private function addFileUrls($company)
     {
-        $fileFields = ['logo', 'attachment_pan', 'attachment_tan', 'attachment_gstin', 'attachment_ckyc', 'attachment_partnership_deed', 'attachment_udyam_aadhar', 'attachment_gumasta', 'attachment_msme'];
+        $fileFields = ['logo', 'attachment_pan', 'attachment_tan', 'attachment_gstin', 'attachment_ckyc', 'attachment_partnership_deed', 'attachment_udyam_aadhar', 'attachment_gumasta', 'attachment_msme', 'attachment_aadhar'];
 
         foreach ($fileFields as $field) {
             if ($company->$field) {

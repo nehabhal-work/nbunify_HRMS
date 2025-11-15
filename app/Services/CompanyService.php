@@ -50,7 +50,7 @@ class CompanyService
         $fileFields = [
             'logo', 'attachment_pan', 'attachment_tan', 'attachment_gstin',
             'attachment_ckyc', 'attachment_partnership_deed', 'attachment_udyam_aadhar',
-            'attachment_gumasta', 'attachment_msme'
+            'attachment_gumasta', 'attachment_msme', 'attachment_aadhar'
         ];
 
         return array_diff_key($data, array_flip($fileFields));
@@ -61,7 +61,7 @@ class CompanyService
         $fileFields = [
             'logo', 'attachment_pan', 'attachment_tan', 'attachment_gstin',
             'attachment_ckyc', 'attachment_partnership_deed', 'attachment_udyam_aadhar',
-            'attachment_gumasta', 'attachment_msme'
+            'attachment_gumasta', 'attachment_msme', 'attachment_aadhar'
         ];
 
         $fileData = [];
@@ -86,7 +86,7 @@ class CompanyService
         $fileFields = [
             'logo', 'attachment_pan', 'attachment_tan', 'attachment_gstin',
             'attachment_ckyc', 'attachment_partnership_deed', 'attachment_udyam_aadhar',
-            'attachment_gumasta', 'attachment_msme'
+            'attachment_gumasta', 'attachment_msme', 'attachment_aadhar'
         ];
 
         foreach ($fileFields as $field) {
