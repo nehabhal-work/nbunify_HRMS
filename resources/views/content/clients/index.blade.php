@@ -369,78 +369,81 @@
                                                                     <td><b>{{ $b->is_primary ? 'Yes' : 'No' }}</b></td>
                                                                 </tr>
                                                             @endforeach
-                                                        </tbody>
-                                                    </table>
-                                                @else
-                                                    <p class="text-muted">No bank details found for this client.</p>
+                                                        @else
+                                                            <p class="text-muted">No bank details found for this client.
+                                                            </p>
                                                 @endif
-                                            </div>
+                                                </tbody>
                                         </table>
+
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary"
-                                            data-bs-dismiss="modal">Close</button>
-                                    </div>
+                                    </table>
                                 </div>
-
-
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Close</button>
+                                </div>
                             </div>
+
+
                         </div>
                     </div>
-                @endforeach
-
-                <!-- Bank Info Modal -->
-
-                @foreach ($clients as $d)
-                    <!-- Modal for this client -->
-                    <div class="modal fade" id="bankmodal{{ $d->id }}" tabindex="-1"
-                        aria-labelledby="bankmodalLabel{{ $d->id }}" aria-hidden="true">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content">
-
-                                <div class="modal-header" style="background-color: #ead3ff;">
-                                    <h5 class="modal-title" id="bankmodalLabel{{ $d->id }}">
-                                        Bank Information - {{ $d->name }}
-                                    </h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                </div>
-
-                                <div class="modal-body">
-                                    @if ($d->banks->count() > 0)
-                                        <table class="table table-striped">
-                                            <thead>
-                                                <tr>
-                                                    <th>IFSC</th>
-                                                    <th>Account No</th>
-                                                    <th>Bank Name</th>
-                                                    <th>Branch</th>
-                                                    <th>Bank Code</th>
-                                                    <th>Primary</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach ($d->banks as $b)
-                                                    <tr>
-                                                        <td class="text-uppercase"><b> {{ $b->ifsc_code ?? '-' }}</b></td>
-                                                        <td><b>{{ $b->account_number ?? '-' }}</b></td>
-                                                        <td><b>{{ $b->bank_name ?? '-' }}</b></td>
-                                                        <td><b>{{ $b->branch_name ?? '-' }}</b></td>
-                                                        <td><b>{{ $b->bank_code ?? '-' }}</b></td>
-                                                        <td><b>{{ $b->is_primary ? 'Yes' : 'No' }}</b></td>
-                                                    </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    @else
-                                        <p class="text-muted">No bank details found for this client.</p>
-                                    @endif
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
             </div>
+            @endforeach
+
+            <!-- Bank Info Modal -->
+
+            @foreach ($clients as $d)
+                <!-- Modal for this client -->
+                <div class="modal fade" id="bankmodal{{ $d->id }}" tabindex="-1"
+                    aria-labelledby="bankmodalLabel{{ $d->id }}" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+
+                            <div class="modal-header" style="background-color: #ead3ff;">
+                                <h5 class="modal-title" id="bankmodalLabel{{ $d->id }}">
+                                    Bank Information - {{ $d->name }}
+                                </h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+
+                            <div class="modal-body">
+                                @if ($d->banks->count() > 0)
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>IFSC</th>
+                                                <th>Account No</th>
+                                                <th>Bank Name</th>
+                                                <th>Branch</th>
+                                                <th>Bank Code</th>
+                                                <th>Primary</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($d->banks as $b)
+                                                <tr>
+                                                    <td class="text-uppercase"><b> {{ $b->ifsc_code ?? '-' }}</b></td>
+                                                    <td><b>{{ $b->account_number ?? '-' }}</b></td>
+                                                    <td><b>{{ $b->bank_name ?? '-' }}</b></td>
+                                                    <td><b>{{ $b->branch_name ?? '-' }}</b></td>
+                                                    <td><b>{{ $b->bank_code ?? '-' }}</b></td>
+                                                    <td><b>{{ $b->is_primary ? 'Yes' : 'No' }}</b></td>
+                                                </tr>
+                                            @endforeach
+                                        @else
+                                            <p class="text-muted">No bank details found for this client.</p>
+                                @endif
+                                </tbody>
+                                </table>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            @endforeach
         </div>
+    </div>
     </div>
 @endsection
