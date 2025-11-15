@@ -176,7 +176,7 @@
                 <div class="d-flex gap-3">
                     <button type="submit" class="btn btn-outline-els">Log-in</button>
                 </div>
-                <small>username : admin@els.com / password : password</small>
+                <small class="text-warning"><i>username : admin@els.com / password : password</i></small>
             </form>
         </div>
     </div>
