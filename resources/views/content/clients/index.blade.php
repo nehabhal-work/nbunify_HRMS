@@ -263,69 +263,127 @@
                                                 <tr>
                                                     <th>Client Photo</th>
                                                     <td>
-                                                        @if ($d->attachment_client_photo)
-                                                            <b><a href="{{ asset('storage/' . $d->attachment_client_photo) }}"
-                                                                    target="_blank">View</a></b>
+
+                                                        @if ($d->attachment_client_photo_url)
+                                                            <a href="{{ $d->attachment_client_photo_url }}"
+                                                                target="_blank">
+                                                                <img src="{{ $d->attachment_client_photo_url }}"
+                                                                    alt="" width="80">
+                                                            </a>
                                                         @endif
                                                     </td>
                                                     <th>PAN Attachment</th>
                                                     <td>
-                                                        @if ($d->attachment_pan)
-                                                            <b><a href="{{ asset('storage/' . $d->attachment_pan) }}"
-                                                                    target="_blank">View</a></b>
+
+                                                        @if ($d->attachment_pan_url)
+                                                            <a href="{{ $d->attachment_pan_url }}" target="_blank">
+                                                                <img src="{{ $d->attachment_pan_url }}" alt=""
+                                                                    width="80">
+                                                            </a>
                                                         @endif
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <th>Aadhar Front</th>
                                                     <td>
-                                                        @if ($d->attachment_aadhar_front)
-                                                            <b><a href="{{ asset('storage/' . $d->attachment_aadhar_front) }}"
-                                                                    target="_blank">View</a></b>
+
+                                                        @if ($d->attachment_aadhar_front_url)
+                                                            <a href="{{ $d->attachment_aadhar_front_url }}"
+                                                                target="_blank">
+                                                                <img src="{{ $d->attachment_aadhar_front_url }}"
+                                                                    alt="" width="80">
+                                                            </a>
                                                         @endif
                                                     </td>
                                                     <th>Aadhar Back</th>
                                                     <td>
-                                                        @if ($d->attachment_aadhar_back)
-                                                            <b><a href="{{ asset('storage/' . $d->attachment_aadhar_back) }}"
-                                                                    target="_blank">View</a></b>
+
+                                                        @if ($d->attachment_aadhar_back_url)
+                                                            <a href="{{ $d->attachment_aadhar_back_url }}"
+                                                                target="_blank">
+                                                                <img src="{{ $d->attachment_aadhar_back_url }}"
+                                                                    alt="" width="80">
+                                                            </a>
                                                         @endif
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <th>Signature</th>
                                                     <td>
-                                                        @if ($d->attachment_signature)
-                                                            <b><a href="{{ asset('storage/' . $d->attachment_signature) }}"
-                                                                    target="_blank">View</a></b>
+
+                                                        @if ($d->attachment_signature_url)
+                                                            <a href="{{ $d->attachment_signature_url }}" target="_blank">
+                                                                <img src="{{ $d->attachment_signature_url }}"
+                                                                    alt="" width="80">
+                                                            </a>
                                                         @endif
                                                     </td>
                                                     <th>CKYC Attachment</th>
                                                     <td>
-                                                        @if ($d->attachment_ckyc)
-                                                            <b><a href="{{ asset('storage/' . $d->attachment_ckyc) }}"
-                                                                    target="_blank">View</a></b>
+
+                                                        @if ($d->attachment_ckyc_url)
+                                                            <a href="{{ $d->attachment_ckyc_url }}" target="_blank">
+                                                                <img src="{{ $d->attachment_ckyc_url }}" alt=""
+                                                                    width="80">
+                                                            </a>
                                                         @endif
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <th>Other Documents</th>
                                                     <td colspan="3">
-                                                        @if ($d->attachment_other_documents)
-                                                            <b><a href="{{ asset('storage/' . $d->attachment_other_documents) }}"
-                                                                    target="_blank">View</a></b>
+
+                                                        @if ($d->attachment_other_documents_url)
+                                                            <a href="{{ $d->attachment_other_documents_url }}"
+                                                                target="_blank">
+                                                                <img src="{{ $d->attachment_other_documents_url }}"
+                                                                    alt="" width="80">
+                                                            </a>
                                                         @endif
                                                     </td>
                                                 </tr>
                                             </tbody>
+
+                                            <div class="modal-body ">
+                                                @if ($d->banks->count() > 0)
+                                                    <table class="table table-striped">
+                                                        <thead style="background-color: #f4ebfc;">
+                                                            <tr>
+                                                                <th>IFSC</th>
+                                                                <th>Account No</th>
+                                                                <th>Bank Name</th>
+                                                                <th>Branch</th>
+                                                                <th>Bank Code</th>
+                                                                <th>Primary</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            @foreach ($d->banks as $b)
+                                                                <tr>
+                                                                    <td class="text-uppercase"><b>
+                                                                            {{ $b->ifsc_code ?? '-' }}</b></td>
+                                                                    <td><b>{{ $b->account_number ?? '-' }}</b></td>
+                                                                    <td><b>{{ $b->bank_name ?? '-' }}</b></td>
+                                                                    <td><b>{{ $b->branch_name ?? '-' }}</b></td>
+                                                                    <td><b>{{ $b->bank_code ?? '-' }}</b></td>
+                                                                    <td><b>{{ $b->is_primary ? 'Yes' : 'No' }}</b></td>
+                                                                </tr>
+                                                            @endforeach
+                                                        </tbody>
+                                                    </table>
+                                                @else
+                                                    <p class="text-muted">No bank details found for this client.</p>
+                                                @endif
+                                            </div>
                                         </table>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Close</button>
                                     </div>
                                 </div>
 
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Close</button>
-                                </div>
+
                             </div>
                         </div>
                     </div>
