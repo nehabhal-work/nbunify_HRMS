@@ -54,7 +54,7 @@ class ClientFamilyController extends Controller
                 'relation_id' => $request->new_relation_id,
             ]);
         }
-        return $request;
+        // return $request;
 
         $this->clientFamilyService->create($request->validated());
         return redirect()->route('client-families.index', ['client_id' => $request->client_id])->with('success', 'Client family member created successfully');
