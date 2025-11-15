@@ -29,7 +29,11 @@
                 <span class="text-uppercase">{{ $client->name }}</span></a>
         </h4>
     </div>
-    {{ $clientFamilies }}
+
+    <div class="div d-flex">
+        <a href="{{ route('clients.index') }}" class="btn btn-secondary px-4">Go back</a>
+
+    </div>
     <div class="row">
         <!-- TABLE SECTION -->
 

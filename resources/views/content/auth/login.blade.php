@@ -158,8 +158,8 @@
                 @method('post')
                 <input type="email" class="form-control" name="email" placeholder="Enter your email" required>
                 <div class="mb-3 position-relative">
-                    <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password"
-                        required>
+                    <input type="password" class="form-control" id="password" name="password"
+                        placeholder="Enter your password" required>
                     <button type="button"
                         class="btn position-absolute top-50 end-0 translate-middle-y me-2 p-0 border-0 bg-transparent"
                         id="togglePassword">
@@ -177,6 +177,7 @@
                     <button type="submit" class="btn btn-outline-els">Log-in</button>
                 </div>
             </form>
+            <small>username : admin@els.com / password : password</small>
         </div>
     </div>
     <script>
