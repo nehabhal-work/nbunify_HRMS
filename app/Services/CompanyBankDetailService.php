@@ -19,7 +19,19 @@ class CompanyBankDetailService
 
     public function create(int $companyId, array $data)
     {
-        $this->validateBankDetails($data);
+        if($data['account_number'] == null) {
+            return null;
+        }
+
+        Validator::validate($data, [
+            'account_number' => 'required|numeric|max_digits:15',
+            'ifsc_code' => 'required|string|max:11',
+            'bank_name' => 'required|string',
+            'branch_name' => 'required|string',
+            'bank_code' => 'required|string|max:4',
+            'is_primary' => 'nullable|integer',
+            'account_type' => 'nullable|in:savings,current,od_cc,nre,nri,nro,tem_deposit,ra',
+        ]);
 
         return CompanyBankDetail::create([
             'company_id' => $companyId,
@@ -41,17 +53,5 @@ class CompanyBankDetailService
     public function deleteByCompanyId($companyId)
     {
         CompanyBankDetail::where('company_id', $companyId)->delete();
-    }
-
-    private function validateBankDetails($data) {
-        Validator::validate($data, [
-            'account_number' => 'required|numeric|max_digits:15',
-            'ifsc_code' => 'required|string|max:11',
-            'bank_name' => 'required|string',
-            'branch_name' => 'required|string',
-            'bank_code' => 'required|string|max:4',
-            'is_primary' => 'nullable|integer',
-            'account_type' => 'nullable|in:savings,current,od_cc,nre,nri,nro,tem_deposit,ra',
-        ]);
     }
 }

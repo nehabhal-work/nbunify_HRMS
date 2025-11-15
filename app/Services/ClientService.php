@@ -22,9 +22,10 @@ class ClientService
     }
     public function create(array $data): Client
     {
-        $data = $this->handleFileUploads($data);
         $data['client_code'] = Client::generateClientCode();
-        return Client::create($data);
+        $client = Client::create($data);
+        $data = $this->handleFileUploads($data, $client);
+        return $client;
     }
 
     public function update(Client $client, array $data): Client
@@ -40,7 +41,7 @@ class ClientService
         return $client->delete();
     }
 
-    private function handleFileUploads(array $data, ?Client $client = null): array
+    private function handleFileUploads(array $data, Client $client): array
     {
         $fileFields = [
             'attachment_client_photo',
@@ -58,7 +59,7 @@ class ClientService
                     $this->fileStorageService->deleteFile($client->$field);
                 }
                 $data[$field] = $this->fileStorageService->storeClientDocument(
-                    $client?->id ?? 0,
+                    $client->id,
                     $data[$field],
                     str_replace('attachment_', '', $field)
                 );

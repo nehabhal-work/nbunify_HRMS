@@ -7,13 +7,15 @@ use App\Http\Requests\ClientRequest;
 use App\Models\Client;
 use App\Services\ClientService;
 use App\Services\ClientBankService;
+use App\Services\FileStorageService;
 use Illuminate\Support\Facades\DB;
 
 class ClientController extends Controller
 {
     public function __construct(
         private ClientService $clientService,
-        private ClientBankService $clientBankService
+        private ClientBankService $clientBankService,
+        private FileStorageService $fileStorageService,
     ) {}
 
     public function index()
@@ -45,9 +47,17 @@ class ClientController extends Controller
         return redirect()->route('client-families.create', ['client_id' => $client->id])->with('success', 'Client created successfully');
     }
 
+    public function show(Client $client)
+    {
+        $client->load('banks');
+        $client = $this->addFileUrls($client);
+        return view('content.clients.show', compact('client'));
+    }
+
     public function edit(Client $client)
     {
         $client->load('banks');
+        $client = $this->addFileUrls($client);
         return view('content.clients.edit', compact('client'));
     }
 
@@ -75,5 +85,25 @@ class ClientController extends Controller
     {
         $this->clientService->delete($client);
         return redirect()->route('clients.index')->with('success', 'Client deleted successfully');
+    }
+
+    private function addFileUrls($client)
+    {
+        $fileFields = ['attachment_client_photo',
+            'attachment_pan',
+            'attachment_aadhar_front',
+            'attachment_aadhar_back',
+            'attachment_signature',
+            'attachment_ckyc',
+            'attachment_other_documents'
+        ];
+
+        foreach ($fileFields as $field) {
+            if ($client->$field) {
+                $client->{$field . '_url'} = $this->fileStorageService->getTemporaryUrl($client->$field);
+            }
+        }
+
+        return $client;
     }
 }
