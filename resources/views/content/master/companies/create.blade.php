@@ -558,7 +558,7 @@
                                 @enderror
                             </div>
 
-                            
+
 
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">GSTIN Attachment</label>
@@ -635,7 +635,7 @@
                                 @enderror
                             </div>
 
-                            <div class="col-md-6 mb-3">
+                            {{-- <div class="col-md-6 mb-3">
                                 <label class="form-label">MSME Certificate</label>
                                 <div class="input-group">
                                     <input type="file"
@@ -648,7 +648,33 @@
                                 @error('attachment_msme')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
+                            </div> --}}
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">MSME Certificate</label>
+                                <div class="input-group">
+                                    <input type="file"
+                                        class="form-control @error('attachment_msme') is-invalid @enderror"
+                                        id="attachment_msme" name="attachment_msme"
+                                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
+
+                                    <button class="btn btn-outline-danger" type="button"
+                                        onclick="document.getElementById('attachment_msme').value = ''">✕</button>
+                                </div>
+
+                                @if (session('temp_msme'))
+                                    <div class="mt-2">
+                                        <strong>Previously selected file:</strong>
+                                        <a href="{{ asset('storage/' . session('temp_msme')) }}" target="_blank">View
+                                            File</a>
+                                    </div>
+                                @endif
+
+                                @error('attachment_msme')
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
                             </div>
+
 
                         </div>
 
@@ -806,28 +832,27 @@
 @endsection
 
 @push('scripts')
-<script>
-    $(document).ready(function() {
+    <script>
+        $(document).ready(function() {
 
-        // Firm WhatsApp same as mobile
-        $('.chkbox_fwapp_same_as_mobile').on('change', function() {
-            if ($(this).is(':checked')) {
-                $('#whatsapp_no').val($('#phone').val());
-            } else {
-                $('#whatsapp_no').val('');
-            }
+            // Firm WhatsApp same as mobile
+            $('.chkbox_fwapp_same_as_mobile').on('change', function() {
+                if ($(this).is(':checked')) {
+                    $('#whatsapp_no').val($('#phone').val());
+                } else {
+                    $('#whatsapp_no').val('');
+                }
+            });
+
+            // Proprietor WhatsApp same as mobile
+            $('.chkbox_prop_wa_same_as_mobile').on('change', function() {
+                if ($(this).is(':checked')) {
+                    $('#proprietor_whatsapp').val($('#proprietor_phone').val());
+                } else {
+                    $('#proprietor_whatsapp').val('');
+                }
+            });
+
         });
-
-        // Proprietor WhatsApp same as mobile
-        $('.chkbox_prop_wa_same_as_mobile').on('change', function() {
-            if ($(this).is(':checked')) {
-                $('#proprietor_whatsapp').val($('#proprietor_phone').val());
-            } else {
-                $('#proprietor_whatsapp').val('');
-            }
-        });
-
-    });
-</script>
-
+    </script>
 @endpush
