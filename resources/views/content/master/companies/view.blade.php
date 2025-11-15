@@ -211,16 +211,20 @@
                                 <tr>
                                     <th>Logo Attachment</th>
                                     <td>
-                                        @if ($company->logo)
-                                            <b><a href="{{ asset('storage/' . $company->logo) }}"
-                                                    target="_blank">View</a></b>
+
+                                        @if ($company->logo_url)
+                                            <a href="{{ $company->logo_url }}" target="_blank">
+                                                <img src="{{ $company->logo_url }}" alt="" width="80">
+                                            </a>
                                         @endif
                                     </td>
                                     <th>Aadhar Attachment</th>
                                     <td>
-                                        @if ($company->attachment_aadhar)
-                                            <b><a href="{{ asset('storage/' . $company->attachment_aadhar) }}"
-                                                    target="_blank">View</a></b>
+                                        @if ($company->attachment_aadhar_url)
+                                            <a href="{{ $company->attachment_aadhar_url }}" target="_blank">
+                                                <img src="{{ $company->attachment_aadhar_url }}" alt=""
+                                                    width="80">
+                                            </a>
                                         @endif
                                     </td>
 
@@ -228,16 +232,20 @@
                                 <tr>
                                     <th>PAN Attachment</th>
                                     <td>
-                                        @if ($company->attachment_pan)
-                                            <b><a href="{{ asset('storage/' . $company->attachment_pan) }}"
-                                                    target="_blank">View</a></b>
+                                        @if ($company->attachment_pan_url)
+                                            <a href="{{ $company->attachment_pan_url }}" target="_blank">
+                                                <img src="{{ $company->attachment_pan_url }}" alt=""
+                                                    width="80">
+                                            </a>
                                         @endif
                                     </td>
                                     <th>TAN Attachment</th>
                                     <td>
-                                        @if ($company->attachment_tan)
-                                            <b><a href="{{ asset('storage/' . $company->attachment_tan) }}"
-                                                    target="_blank">View</a></b>
+                                        @if ($company->attachment_tan_url)
+                                            <a href="{{ $company->attachment_tan_url }}" target="_blank">
+                                                <img src="{{ $company->attachment_tan_url }}" alt=""
+                                                    width="80">
+                                            </a>
                                         @endif
                                     </td>
 
@@ -245,16 +253,20 @@
                                 <tr>
                                     <th>CKYC Attachment</th>
                                     <td>
-                                        @if ($company->attachment_ckyc)
-                                            <b><a href="{{ asset('storage/' . $company->attachment_ckyc) }}"
-                                                    target="_blank">View</a></b>
+                                        @if ($company->attachment_ckyc_url)
+                                            <a href="{{ $company->attachment_ckyc_url }}" target="_blank">
+                                                <img src="{{ $company->attachment_ckyc_url }}" alt=""
+                                                    width="80">
+                                            </a>
                                         @endif
                                     </td>
                                     <th>GSTIN Attachment</th>
                                     <td>
-                                        @if ($company->attachment_gstin)
-                                            <b><a href="{{ asset('storage/' . $company->attachment_gstin) }}"
-                                                    target="_blank">View</a></b>
+                                        @if ($company->attachment_gstin_url)
+                                            <a href="{{ $company->attachment_gstin_url }}" target="_blank">
+                                                <img src="{{ $company->attachment_gstin_url }}" alt=""
+                                                    width="80">
+                                            </a>
                                         @endif
                                     </td>
 
@@ -262,16 +274,20 @@
                                 <tr>
                                     <th>Udyam Aadhar</th>
                                     <td>
-                                        @if ($company->attachment_udyam_aadhar)
-                                            <b><a href="{{ asset('storage/' . $company->attachment_udyam_aadhar) }}"
-                                                    target="_blank">View</a></b>
+                                        @if ($company->attachment_udyam_aadhar_url)
+                                            <a href="{{ $company->attachment_udyam_aadhar_url }}" target="_blank">
+                                                <img src="{{ $company->attachment_udyam_aadhar_url }}" alt=""
+                                                    width="80">
+                                            </a>
                                         @endif
                                     </td>
                                     <th>Gumasta License</th>
                                     <td>
-                                        @if ($company->attachment_gumasta)
-                                            <b><a href="{{ asset('storage/' . $company->attachment_gumasta) }}"
-                                                    target="_blank">View</a></b>
+                                        @if ($company->attachment_gumasta_url)
+                                            <a href="{{ $company->attachment_gumasta_url }}" target="_blank">
+                                                <img src="{{ $company->attachment_gumasta_url }}" alt=""
+                                                    width="80">
+                                            </a>
                                         @endif
                                     </td>
                                 </tr>
@@ -282,8 +298,9 @@
                                     <th>MSME Certificate</th>
                                     <td colspan="3">
                                         @if ($company->attachment_msme)
-                                            <b><a href="{{ asset('storage/' . $company->attachment_msme) }}"
-                                                    target="_blank">View</a></b>
+                                            <a href="{{ $company->attachment_msme }}" target="_blank">
+                                                <img src="{{ $company->attachment_msme }}" alt="" width="80">
+                                            </a>
                                         @endif
                                     </td>
                                 </tr>
