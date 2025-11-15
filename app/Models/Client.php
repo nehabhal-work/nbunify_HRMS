@@ -65,8 +65,4 @@ class Client extends Model
     {
         return $this->hasMany(ClientBank::class);
     }
-
-    public function generateClientCode(){
-        return 'CC-' . date('y') . '-' . str_pad(Client::withTrashed()->count() + 1, 10, '0', STR_PAD_LEFT);
-    }
 }

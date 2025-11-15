@@ -22,7 +22,7 @@ class ClientService
     }
     public function create(array $data): Client
     {
-        $data['client_code'] = Client::generateClientCode();
+        $data['client_code'] = $this->generateClientCode();
         $client = Client::create($data);
         $data = $this->handleFileUploads($data, $client);
         return $client;
@@ -86,5 +86,22 @@ class ClientService
                 $this->fileStorageService->deleteFile($client->$field);
             }
         }
+    }
+
+    public function generateClientCode(): string
+    {
+        $currentDate = now();
+        $currentYear = $currentDate->year;
+        $financialYear = $currentDate->month >= 4 ? $currentYear . '-' . ($currentYear + 1) : ($currentYear - 1) . '-' . $currentYear;
+
+        $baseCode = 'CC/' . $financialYear . '/';
+        $counter = 1;
+
+        do {
+            $code = $baseCode . str_pad($counter, 4, '0', STR_PAD_LEFT);
+            $counter++;
+        } while (Client::where('client_code', $code)->exists());
+
+        return $code;
     }
 }
