@@ -152,11 +152,11 @@
                                                             </div>
                                                         </li>
 
+                                                     
                                                         <!-- Edit Sub-designations Modal -->
-                                                        <div class="modal fade"
-                                                            id="editSubdesignationsModal{{ $sub->id }}" tabindex="-1"
-                                                            aria-labelledby="editSubdesignationsLabel{{ $sub->id }}"
-                                                            aria-hidden="true">
+
+                                                        <div class="modal fade" id="editSubdesignationsModal{{ $sub->id }}" tabindex="-1"
+                                                            aria-labelledby="editSubdesignationsLabel{{ $sub->id }}" aria-hidden="true">
                                                             <div class="modal-dialog modal-dialog-centered">
                                                                 <form method="POST"
                                                                     action="{{ route('master.sub-designations.update', $sub->id) }}">
@@ -292,7 +292,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body">
-                        <input type="hidden1" name="designation_id" id="designations_id">
+                        <input type="hidden" name="designation_id" id="designations_id">
 
                         <div class="mb-3">
                             <label class="form-label">Sub-designations Name</label>

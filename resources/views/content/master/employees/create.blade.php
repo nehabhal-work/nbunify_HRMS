@@ -342,6 +342,15 @@
                                 @enderror
                             </div>
 
+                            <div class="col-md-2 mb-3">
+                                <label for="status" class="form-label">Previous Salary Amount</label>
+                              
+                                <input type="text" name="prev_salary" id="prev_salary" class="form-control">
+                                @error('prev_salary')
+                                    <div class="text-danger small">{{ $message }}</div>
+                                @enderror
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -359,10 +368,6 @@
 
                     <div class="card-body">
                         <div class="row">
-
-
-
-
                             <!-- Basic Salary -->
                             <div class="col-md-6 mb-3">
                                 <label for="basic_salary" class="form-label">Basic Salary</label>
@@ -466,11 +471,7 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-
-
                             <!-- File Upload: Company images -->
-
-
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">employee photo Attachment</label>
                                 <div class="input-group">
@@ -545,11 +546,22 @@
                                 @enderror
                             </div>
 
-
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Upload CV Attachment</label>
+                                <div class="input-group">
+                                    <input type="file"
+                                        class="form-control @error('attachment_cv') is-invalid @enderror"
+                                        id="attachment_cv" name="attachment_cv"
+                                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
+                                    <button class="btn btn-outline-danger" type="button"
+                                        onclick="document.getElementById('attachment_cv').value = ''">✕</button>
+                                </div>
+                                @error('attachment_cv')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
 
                         </div>
-
-
                     </div>
                 </div>
             </div>
