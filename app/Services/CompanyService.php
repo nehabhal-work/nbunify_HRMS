@@ -25,13 +25,15 @@ class CompanyService
     public function create(array $data): Company
     {
         $data = $this->prepareCompanyData($data);
-        $data = $this->handleFileUploads($data);
-        return Company::create($data);
+        $company = Company::create($this->extractNonFileData($data));
+        $fileData = $this->handleFileUploads($data, $company);
+        $company->update($fileData);
+        return $company->fresh();
     }
 
     public function update(Company $company, array $data): Company
     {
-        $data = $this->prepareCompanyData($data, $company);
+        $data = $this->prepareCompanyData($data);
         $data = $this->handleFileUploads($data, $company);
         $company->update($data);
         return $company;
@@ -43,7 +45,7 @@ class CompanyService
         return $company->delete();
     }
 
-    private function handleFileUploads(array $data, ?Company $company = null): array
+    private function extractNonFileData(array $data): array
     {
         $fileFields = [
             'logo', 'attachment_pan', 'attachment_tan', 'attachment_gstin',
@@ -51,20 +53,32 @@ class CompanyService
             'attachment_gumasta', 'attachment_msme'
         ];
 
+        return array_diff_key($data, array_flip($fileFields));
+    }
+
+    private function handleFileUploads(array $data, Company $company): array
+    {
+        $fileFields = [
+            'logo', 'attachment_pan', 'attachment_tan', 'attachment_gstin',
+            'attachment_ckyc', 'attachment_partnership_deed', 'attachment_udyam_aadhar',
+            'attachment_gumasta', 'attachment_msme'
+        ];
+
+        $fileData = [];
         foreach ($fileFields as $field) {
             if (isset($data[$field]) && $data[$field] instanceof UploadedFile) {
-                if ($company && $company->$field) {
+                if ($company->$field) {
                     $this->fileStorageService->deleteFile($company->$field);
                 }
-                $data[$field] = $this->fileStorageService->storeCompanyDocument(
-                    $company?->id ?? 0,
+                $fileData[$field] = $this->fileStorageService->storeCompanyDocument(
+                    $company->id,
                     $data[$field],
                     str_replace('attachment_', '', $field)
                 );
             }
         }
 
-        return $data;
+        return $fileData;
     }
 
     private function deleteFiles(Company $company): void
@@ -95,7 +109,7 @@ class CompanyService
         return $code;
     }
 
-    public function prepareCompanyData(array $data, ?Company $company = null): array
+    public function prepareCompanyData(array $data): array
     {
         if (empty($data['code'])) {
             $data['code'] = $this->generateCompanyCode($data['name']);
