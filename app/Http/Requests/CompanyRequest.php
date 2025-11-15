@@ -54,6 +54,7 @@ class CompanyRequest extends FormRequest
             'attachment_udyam_aadhar' => ['nullable', 'file', 'max:5120', 'mimes:pdf,jpeg,jpg,png'],
             'attachment_gumasta' => ['nullable', 'file', 'max:5120', 'mimes:pdf,jpeg,jpg,png'],
             'attachment_msme' => ['nullable', 'file', 'max:5120', 'mimes:pdf,jpeg,jpg,png'],
+            'attachment_aadhar' => ['nullable', 'file', 'max:5120', 'mimes:pdf,jpeg,jpg,png'],
             'brand_name' => ['nullable','string','max:50'],
             'proprietor_name' => ['nullable','string','max:50'],
             'proprietor_phone' => ['nullable','string','max:20'],

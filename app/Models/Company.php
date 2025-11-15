@@ -54,6 +54,7 @@ class Company extends Model
         'attachment_udyam_aadhar',
         'attachment_gumasta',
         'attachment_msme',
+        'attachment_aadhar',
         'brand_name',
         'proprietor_name',
         'proprietor_phone',
