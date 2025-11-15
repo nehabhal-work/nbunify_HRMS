@@ -499,9 +499,7 @@
                             {{-- Logo --}}
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Logo Attachment</label>
-                                @if ($company->logo)
-                                    <a href="{{ asset('storage/' . $company->logo) }}" target="_blank">View</a>
-                                @endif
+
                                 <div class="input-group mt-1">
                                     <input type="file" class="form-control @error('logo') is-invalid @enderror"
                                         id="logo" name="logo" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
@@ -511,6 +509,11 @@
                                 @error('logo')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
+                                @if ($company->logo_url)
+                                    <a href="{{ $company->logo_url }}" target="_blank">
+                                        <img src="{{ $company->logo_url }}" alt="" width="80">
+                                    </a>
+                                @endif
                             </div>
 
                             {{-- Aadhar --}}
@@ -531,14 +534,17 @@
                                 @error('attachment_aadhar')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
+                                @if ($company->attachment_aadhar_url)
+                                    <a href="{{ $company->attachment_aadhar_url }}" target="_blank">
+                                        <img src="{{ $company->attachment_aadhar_url }}" alt="" width="80">
+                                    </a>
+                                @endif
                             </div>
 
                             {{-- PAN --}}
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">PAN Attachment</label>
-                                @if ($company->attachment_pan)
-                                    <a href="{{ asset('storage/' . $company->attachment_pan) }}" target="_blank">View</a>
-                                @endif
+
                                 <div class="input-group mt-1">
                                     <input type="file"
                                         class="form-control @error('attachment_pan') is-invalid @enderror"
@@ -550,14 +556,17 @@
                                 @error('attachment_pan')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
+                                @if ($company->attachment_pan_url)
+                                    <a href="{{ $company->attachment_pan_url }}" target="_blank">
+                                        <img src="{{ $company->attachment_pan_url }}" alt="" width="80">
+                                    </a>
+                                @endif
                             </div>
 
                             {{-- TAN --}}
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">TAN Attachment</label>
-                                @if ($company->attachment_tan)
-                                    <a href="{{ asset('storage/' . $company->attachment_tan) }}" target="_blank">View</a>
-                                @endif
+
                                 <div class="input-group mt-1">
                                     <input type="file"
                                         class="form-control @error('attachment_tan') is-invalid @enderror"
@@ -569,15 +578,17 @@
                                 @error('attachment_tan')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
+                                @if ($company->attachment_tan_url)
+                                    <a href="{{ $company->attachment_tan_url }}" target="_blank">
+                                        <img src="{{ $company->attachment_tan_url }}" alt="" width="80">
+                                    </a>
+                                @endif
                             </div>
 
                             {{-- GSTIN --}}
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">GSTIN Attachment</label>
-                                @if ($company->attachment_gstin)
-                                    <a href="{{ asset('storage/' . $company->attachment_gstin) }}"
-                                        target="_blank">View</a>
-                                @endif
+
                                 <div class="input-group mt-1">
                                     <input type="file"
                                         class="form-control @error('attachment_gstin') is-invalid @enderror"
@@ -589,15 +600,17 @@
                                 @error('attachment_gstin')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
+                                @if ($company->attachment_gstin_url)
+                                    <a href="{{ $company->attachment_gstin_url }}" target="_blank">
+                                        <img src="{{ $company->attachment_gstin_url }}" alt="" width="80">
+                                    </a>
+                                @endif
                             </div>
 
                             {{-- CKYC --}}
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">CKYC Attachment</label>
-                                @if ($company->attachment_ckyc)
-                                    <a href="{{ asset('storage/' . $company->attachment_ckyc) }}"
-                                        target="_blank">View</a>
-                                @endif
+
                                 <div class="input-group mt-1">
                                     <input type="file"
                                         class="form-control @error('attachment_ckyc') is-invalid @enderror"
@@ -609,15 +622,17 @@
                                 @error('attachment_ckyc')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
+                                @if ($company->attachment_ckyc_url)
+                                    <a href="{{ $company->attachment_ckyc_url }}" target="_blank">
+                                        <img src="{{ $company->attachment_ckyc_url }}" alt="" width="80">
+                                    </a>
+                                @endif
                             </div>
 
                             {{-- Partnership Deed --}}
                             <div class="col-md-6 mb-3 d-none">
                                 <label class="form-label">Partnership Deed</label>
-                                @if ($company->attachment_partnership_deed)
-                                    <a href="{{ asset('storage/' . $company->attachment_partnership_deed) }}"
-                                        target="_blank">View</a>
-                                @endif
+
                                 <div class="input-group mt-1">
                                     <input type="file"
                                         class="form-control @error('attachment_partnership_deed') is-invalid @enderror"
@@ -629,15 +644,18 @@
                                 @error('attachment_partnership_deed')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
+                                @if ($company->attachment_partnership_deed_url)
+                                    <a href="{{ $company->attachment_partnership_deed_url }}" target="_blank">
+                                        <img src="{{ $company->attachment_partnership_deed_url }}" alt=""
+                                            width="80">
+                                    </a>
+                                @endif
                             </div>
 
                             {{-- Udyam --}}
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Udyam Aadhar</label>
-                                @if ($company->attachment_udyam_aadhar)
-                                    <a href="{{ asset('storage/' . $company->attachment_udyam_aadhar) }}"
-                                        target="_blank">View</a>
-                                @endif
+
                                 <div class="input-group mt-1">
                                     <input type="file"
                                         class="form-control @error('attachment_udyam_aadhar') is-invalid @enderror"
@@ -649,15 +667,18 @@
                                 @error('attachment_udyam_aadhar')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
+                                @if ($company->attachment_udyam_aadhar_url)
+                                    <a href="{{ $company->attachment_udyam_aadhar_url }}" target="_blank">
+                                        <img src="{{ $company->attachment_udyam_aadhar_url }}" alt=""
+                                            width="80">
+                                    </a>
+                                @endif
                             </div>
 
                             {{-- Gumasta --}}
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Gumasta License</label>
-                                @if ($company->attachment_gumasta)
-                                    <a href="{{ asset('storage/' . $company->attachment_gumasta) }}"
-                                        target="_blank">View</a>
-                                @endif
+
                                 <div class="input-group mt-1">
                                     <input type="file"
                                         class="form-control @error('attachment_gumasta') is-invalid @enderror"
@@ -669,15 +690,18 @@
                                 @error('attachment_gumasta')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
+                                @if ($company->attachment_gumasta_url)
+                                    <a href="{{ $company->attachment_gumasta_url }}" target="_blank">
+                                        <img src="{{ $company->attachment_gumasta_url }}" alt=""
+                                            width="80">
+                                    </a>
+                                @endif
                             </div>
 
                             {{-- MSME --}}
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">MSME Certificate</label>
-                                @if ($company->attachment_msme)
-                                    <a href="{{ asset('storage/' . $company->attachment_msme) }}"
-                                        target="_blank">View</a>
-                                @endif
+
                                 <div class="input-group mt-1">
                                     <input type="file"
                                         class="form-control @error('attachment_msme') is-invalid @enderror"
@@ -689,6 +713,11 @@
                                 @error('attachment_msme')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
+                                @if ($company->attachment_msme)
+                                    <a href="{{ $company->attachment_msme }}" target="_blank">
+                                        <img src="{{ $company->attachment_msme }}" alt="" width="80">
+                                    </a>
+                                @endif
                             </div>
 
                         </div>

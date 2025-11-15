@@ -31,6 +31,10 @@
     <form action="{{ route('clients.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('post')
+
+        <div class="d-flex justify-content-end">
+            <a href="{{ route('clients.index') }}" class="btn btn-secondary px-4">Go Back</a>
+        </div>
         <div class="row align-items-stretch">
             <div class="col-md-12">
                 <div class="card mb-4">
@@ -702,7 +706,7 @@
 
         <div class="text-end mt-3">
             <button type="submit" class="btn btn-primary px-4">Save</button>
-            <a href="" class="btn btn-secondary px-4">Cancel</a>
+
         </div>
     </form>
 
