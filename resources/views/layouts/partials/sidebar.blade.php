@@ -145,12 +145,12 @@
 
              <ul class="menu-sub">
                  <!-- ELS-Investment -->
-                 <li class="menu-item {{ request()->routeIs('investment.els-investment.*') ? 'active' : '' }}">
-                     <a href="{{ route('investment.els-investment.index') }}" class="menu-link">
+                 {{-- <li class="menu-item {{ request()->routeIs('investment.els-investment.*') ? 'active' : '' }}">
+                     <a href="#" class="menu-link">
                          <i class="menu-icon bx bx-bar-chart-alt-2"></i>
                          <div class="text-truncate">ELS-Investment</div>
                      </a>
-                 </li>
+                 </li> --}}
 
 
              </ul>
