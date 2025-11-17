@@ -310,16 +310,19 @@ function uploadTempFile(input, fieldName) {
 
         success: function (response) {
             console.log('image temp = ', response);
+            console.log('image fieldName = ', fieldName);
 
-            if (response.status) {
+            if (response.success) {
 
                 // Set hidden/text input
-                $("#" + fieldName + "_url").val(response.url);
+                $("#" + fieldName + "_url").val(response['url']);
 
                 // (Optional) Show preview
                 $("#" + fieldName + "_preview").html(`
                     <img src="${response.url}" width="80" class="mt-2 rounded">
                 `);
+            } else {
+
             }
         },
 
