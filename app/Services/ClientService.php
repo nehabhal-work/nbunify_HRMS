@@ -54,13 +54,13 @@ class ClientService
         ];
 
         foreach ($fileFields as $field) {
-            if (isset($data[$field]) && $data[$field] instanceof UploadedFile) {
+            if (isset($data[$field . '_url'])) {
                 if ($client && $client->$field) {
                     $this->fileStorageService->deleteFile($client->$field);
                 }
                 $data[$field] = $this->fileStorageService->storeClientDocument(
                     $client->id,
-                    $data[$field],
+                    $data[$field . '_url'],
                     str_replace('attachment_', '', $field)
                 );
             }
