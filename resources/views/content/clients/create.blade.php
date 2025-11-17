@@ -581,7 +581,22 @@
                                         onclick="document.getElementById('attachment_client_photo').value = ''">✕</button>
                                 </div>
                                 <input type="hidden" id="attachment_client_photo_url"
-                                    name="attachment_client_photo_url">
+                                    value="{{ old('attachment_client_photo_url') }}" name="attachment_client_photo_url">
+
+                                @if (old('attachment_client_photo_url'))
+                                    <div id="attachment_client_photo_preview" class="position-relative d-inline-block">
+                                        <img src="{{ old('attachment_client_photo_url') }}" width="100"
+                                            class="rounded">
+
+                                        <!-- Remove (X) button -->
+                                        <button type="button"
+                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                                            onclick="removeImage('attachment_client_photo')">
+                                            ✕
+                                        </button>
+                                    </div>
+                                @endif
+
                                 @error('attachment_client_photo')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
