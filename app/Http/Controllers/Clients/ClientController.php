@@ -8,7 +8,6 @@ use App\Models\Client;
 use App\Services\ClientService;
 use App\Services\ClientBankService;
 use App\Services\FileStorageService;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ClientController extends Controller
@@ -49,22 +48,17 @@ class ClientController extends Controller
         return redirect()->route('client-families.create', ['client_id' => $client->id])->with('success', 'Client created successfully');
     }
 
-    public function show(Client $client)
+    public function edit($id)
     {
-        $client->load('banks');
-        $client = $this->addFileUrls($client);
-        return view('content.clients.show', compact('client'));
-    }
-
-    public function edit(Client $client)
-    {
+        $client = $this->clientService->find($id);
         $client->load('banks');
         $client = $this->addFileUrls($client);
         return view('content.clients.edit', compact('client'));
     }
 
-    public function update(ClientRequest $request, Client $client)
+    public function update(ClientRequest $request, $id)
     {
+        $client = $this->clientService->find($id);
         DB::transaction(function () use ($request, $client) {
             $this->clientService->update($client, $request->validated());
 
@@ -83,15 +77,17 @@ class ClientController extends Controller
         return redirect()->route('clients.index')->with('success', 'Client updated successfully');
     }
 
-    public function destroy(Client $client)
+    public function destroy($id)
     {
+        $client = $this->clientService->find($id);
         $this->clientService->delete($client);
         return redirect()->route('clients.index')->with('success', 'Client deleted successfully');
     }
 
     private function addFileUrls($client)
     {
-        $fileFields = ['attachment_client_photo',
+        $fileFields = [
+            'attachment_client_photo',
             'attachment_pan',
             'attachment_aadhar_front',
             'attachment_aadhar_back',

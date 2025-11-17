@@ -31,21 +31,24 @@ class BranchController extends Controller
         return redirect()->route('master.branches.index')->with('success', 'Branch created successfully.');
     }
 
-    public function edit(Branch $branch): View
+    public function edit($id): View
     {
+        $branch = $this->branchService->find($id);
         return view('content.master.branches.edit', [
             'branch' => $branch
         ]);
     }
 
-    public function update(StoreBranchRequest $request, Branch $branch): RedirectResponse
+    public function update(StoreBranchRequest $request, $id): RedirectResponse
     {
+        $branch = $this->branchService->find($id);
         $this->branchService->updateBranch($branch->id, $request->validated());
         return redirect()->route('master.branches.edit', $branch->id)->with('success', 'Branch updated successfully.');
     }
 
-    public function destroy(Branch $branch): RedirectResponse
+    public function destroy($id): RedirectResponse
     {
+        $branch = $this->branchService->find($id);
         $this->branchService->deleteBranch($branch->id);
         return redirect()->route('master.branches.index')->with('success', 'Branch deleted successfully.');
     }

@@ -31,21 +31,24 @@ class HeadOfficeController extends Controller
         return redirect()->route('master.head-offices.index')->with('success', 'Head office created successfully.');
     }
 
-    public function edit(HeadOffice $headOffice): View
+    public function edit($id): View
     {
+        $headOffice = $this->headOfficeService->find($id);
         return view('content.master.head-offices.edit', [
             'headOffice' => $headOffice
         ]);
     }
 
-    public function update(StoreHeadOfficeRequest $request, HeadOffice $headOffice): RedirectResponse
+    public function update(StoreHeadOfficeRequest $request, $id): RedirectResponse
     {
+        $headOffice = $this->headOfficeService->find($id);
         $this->headOfficeService->updateHeadOffice($headOffice->id, $request->validated());
         return redirect()->route('master.head-offices.edit', $headOffice->id)->with('success', 'Head office updated successfully.');
     }
 
-    public function destroy(HeadOffice $headOffice): RedirectResponse
+    public function destroy($id): RedirectResponse
     {
+        $headOffice = $this->headOfficeService->find($id);
         $this->headOfficeService->deleteHeadOffice($headOffice->id);
         return redirect()->route('master.head-offices.index')->with('success', 'Head office deleted successfully.');
     }

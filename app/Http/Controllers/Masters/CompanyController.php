@@ -52,7 +52,7 @@ class CompanyController extends Controller
 
     public function edit($id)
     {
-        $company = $this->companyService->getById($id);
+        $company = $this->companyService->find($id);
         $company = $this->addFileUrls($company);
         $bankDetails = $company->bankDetails ?? collect();
         $companyTypes = config('enum_company_types');
@@ -63,7 +63,7 @@ class CompanyController extends Controller
 
     public function show($id)
     {
-        $company = $this->companyService->getById($id);
+        $company = $this->companyService->find($id);
         $company = $this->addFileUrls($company);
         $bankDetails = $company->bankDetails ?? collect();
         $companyTypes = config('enum_company_types');
@@ -74,7 +74,7 @@ class CompanyController extends Controller
     public function update(CompanyRequest $request, $id)
     {
         try {
-            $company = $this->companyService->getById($id);
+            $company = $this->companyService->find($id);
             $this->companyService->update($company, $request->validated());
             $this->companyBankDetailService->deleteByCompanyId($id);
             if ($request->has('banks')) {
@@ -91,7 +91,7 @@ class CompanyController extends Controller
     public function destroy($id)
     {
         try {
-            $company = $this->companyService->getById($id);
+            $company = $this->companyService->find($id);
             $this->companyService->delete($company);
             return redirect()->route('master.companies.index')->with('success', 'Company deleted successfully.');
         } catch (\Exception $e) {
