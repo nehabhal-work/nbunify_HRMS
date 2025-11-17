@@ -32,7 +32,7 @@
     <div class="row">
         <!-- TABLE SECTION -->
 
-        <div class="col-md-12">
+        <div class="col-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Client List</h5>
