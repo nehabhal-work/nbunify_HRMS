@@ -14,7 +14,8 @@ class FileUploadController extends Controller
         ]);
 
         $file = $request->file('file');
-        $filename = time() . '_' . $file->getClientOriginalName();
+        $extension = $file->getClientOriginalExtension();
+        $filename = time() . '_' . bin2hex(random_bytes(8)) . '.' . $extension;
         $path = $file->storeAs('temp', $filename, 'public');
 
         return response()->json([

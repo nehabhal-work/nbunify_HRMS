@@ -3,8 +3,6 @@
 namespace App\Services;
 
 use App\Models\Client;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
 
 class ClientService
 {
@@ -25,6 +23,7 @@ class ClientService
         $data['client_code'] = $this->generateClientCode();
         $client = Client::create($data);
         $data = $this->handleFileUploads($data, $client);
+        $client->update($data);
         return $client;
     }
 
@@ -65,7 +64,6 @@ class ClientService
                 );
             }
         }
-
         return $data;
     }
 

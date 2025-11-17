@@ -56,12 +56,12 @@ class ClientRequest extends FormRequest
             'relation_manager_id' => 'nullable',
             'remarks' => 'nullable|string|max:100',
             'attachment_client_photo_url' => ['nullable', 'url'],
-            'attachment_pan' => ['nullable', 'url'],
-            'attachment_aadhar_front' => ['nullable', 'url'],
-            'attachment_aadhar_back' => ['nullable', 'url'],
-            'attachment_signature' => ['nullable', 'url'],
-            'attachment_ckyc' => ['nullable', 'url'],
-            'attachment_other_documents' => ['nullable', 'url'],
+            'attachment_pan_url' => ['nullable', 'url'],
+            'attachment_aadhar_front_url' => ['nullable', 'url'],
+            'attachment_aadhar_back_url' => ['nullable', 'url'],
+            'attachment_signature_url' => ['nullable', 'url'],
+            'attachment_ckyc_url' => ['nullable', 'url'],
+            'attachment_other_documents_url' => ['nullable', 'url'],
         ];
     }
 

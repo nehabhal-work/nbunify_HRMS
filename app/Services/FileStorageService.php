@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
@@ -29,7 +28,6 @@ class FileStorageService
         $path = "clients/{$clientId}/{$type}/{$filename}";
 
         Storage::disk('wasabi')->put($path, $response->body());
-
         return $path;
     }
 
