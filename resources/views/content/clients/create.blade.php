@@ -575,6 +575,7 @@
                                     <input type="file"
                                         class="form-control @error('attachment_client_photo') is-invalid @enderror"
                                         id="attachment_client_photo" name="attachment_client_photo"
+                                        onchange="uploadTempFile(this, 'attachment_client_photo')"
                                         accept=".jpg,.jpeg,.png">
                                     <button class="btn btn-outline-danger" type="button"
                                         onclick="document.getElementById('attachment_client_photo').value = ''">✕</button>
@@ -582,6 +583,8 @@
                                 @error('attachment_client_photo')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
+
+
                             </div>
 
 
@@ -589,7 +592,7 @@
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">pan Card</label>
                                 <div class="input-group">
-                                    <input type="file"
+                                    <input type="file" onchange="uploadTempFile(this, 'attachment_pan')"
                                         class="form-control @error('attachment_pan') is-invalid @enderror"
                                         id="attachment_pan" name="attachment_pan" accept=".pdf,.jpg,.jpeg,.png">
                                     <button class="btn btn-outline-danger" type="button"
@@ -605,7 +608,7 @@
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">aadhar Card front</label>
                                 <div class="input-group">
-                                    <input type="file"
+                                    <input type="file" onchange="uploadTempFile(this, 'attachment_aadhar_front')"
                                         class="form-control @error('attachment_aadhar_front') is-invalid @enderror"
                                         id="attachment_aadhar_front" name="attachment_aadhar_front"
                                         accept=".pdf,.jpg,.jpeg,.png">
@@ -622,7 +625,7 @@
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">aadhar Card Back</label>
                                 <div class="input-group">
-                                    <input type="file"
+                                    <input type="file" onchange="uploadTempFile(this, 'attachment_aadhar_back')"
                                         class="form-control @error('attachment_aadhar_back') is-invalid @enderror"
                                         id="attachment_aadhar_back" name="attachment_aadhar_back"
                                         accept=".pdf,.jpg,.jpeg,.png">
@@ -640,7 +643,7 @@
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Signature</label>
                                 <div class="input-group">
-                                    <input type="file"
+                                    <input type="file" onchange="uploadTempFile(this, 'attachment_signature')"
                                         class="form-control @error('attachment_signature') is-invalid @enderror"
                                         id="attachment_signature" name="attachment_signature"
                                         accept=".pdf,.jpg,.jpeg,.png">
@@ -656,7 +659,7 @@
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">ckyc</label>
                                 <div class="input-group">
-                                    <input type="file"
+                                    <input type="file" onchange="uploadTempFile(this, 'attachment_ckyc')"
                                         class="form-control @error('attachment_ckyc') is-invalid @enderror"
                                         id="attachment_ckyc" name="attachment_ckyc"
                                         accept=".pdf,.png, ,jpeg, .jpg, .doc,.docx">
@@ -672,7 +675,7 @@
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Other Documents (Optional)</label>
                                 <div class="input-group">
-                                    <input type="file"
+                                    <input type="file" onchange="uploadTempFile(this, 'attachment_other_documents')"
                                         class="form-control @error('attachment_other_documents') is-invalid @enderror"
                                         id="attachment_other_documents" name="attachment_other_documents[]"
                                         accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" multiple>

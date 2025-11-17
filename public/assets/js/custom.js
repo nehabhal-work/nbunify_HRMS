@@ -256,20 +256,70 @@ $(document).ready(function () {
 
 
 // Year should not exceed 4 digits
-document.getElementById('est_date').addEventListener('input', function () {
-    const value = this.value;
-    const year = value.split('-')[0];
-    const errorDiv = document.getElementById('est_date_error');
+// document.getElementById('est_date').addEventListener('input', function () {
+//     const value = this.value;
+//     const year = value.split('-')[0];
+//     const errorDiv = document.getElementById('est_date_error');
+
+//     if (year && year.length > 4) {
+//         this.classList.add('is-invalid');
+//         errorDiv.classList.remove('d-none');
+//         this.value = ''; // clear invalid value
+//     } else {
+//         this.classList.remove('is-invalid');
+//         errorDiv.classList.add('d-none');
+//     }
+// });
+
+$(document).on('input', '#est_date', function () {
+    let value = $(this).val();
+    let year = value.split('-')[0];
+    let errorDiv = $('#est_date_error');
 
     if (year && year.length > 4) {
-        this.classList.add('is-invalid');
-        errorDiv.classList.remove('d-none');
-        this.value = ''; // clear invalid value
+        $(this).addClass('is-invalid');
+        errorDiv.removeClass('d-none');
+        $(this).val(''); // clear invalid value
     } else {
-        this.classList.remove('is-invalid');
-        errorDiv.classList.add('d-none');
+        $(this).removeClass('is-invalid');
+        errorDiv.addClass('d-none');
     }
 });
 
 
 
+// ****************************************
+// Image Temporary Upload
+// ****************************************
+
+function uploadTempFile(input, fieldName) {
+
+    let file = input.files[0];
+    if (!file) return;
+
+    let formData = new FormData();
+    formData.append("file", file);
+    formData.append("field_name", fieldName);
+
+    $.ajax({
+        url: "/api/upload-temp-file",   // your API URL
+        type: "POST",
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function (response) {
+            console.log('image temp = ', response)
+            if (response.status) {
+                $("#" + fieldName + "_preview").html(`
+                    <img src="${response.url}" width="80" class="mt-2 rounded">
+                `);
+            }
+        },
+        error: function (xhr) {
+            console.error(xhr.responseText);
+        }
+    });
+}
+
+
+// ------------------- End Image Temporary Upload END -----------------------
