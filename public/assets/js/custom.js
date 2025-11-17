@@ -316,6 +316,7 @@ function uploadTempFile(input, fieldName) {
 
                 // Set hidden/text input
                 $("#" + fieldName + "_url").val(response['url']);
+                $("#" + fieldName).val(response['url']);
 
                 // (Optional) Show preview
                 $("#" + fieldName + "_preview").html(`
