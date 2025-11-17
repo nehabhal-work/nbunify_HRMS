@@ -302,24 +302,33 @@ function uploadTempFile(input, fieldName) {
     formData.append("field_name", fieldName);
 
     $.ajax({
-        url: "/api/upload-temp-file",   // your API URL
+        url: "/api/upload-temp-file",
         type: "POST",
         data: formData,
         processData: false,
         contentType: false,
+
         success: function (response) {
-            console.log('image temp = ', response)
+            console.log('image temp = ', response);
+
             if (response.status) {
+
+                // Set hidden/text input
+                $("#" + fieldName + "_url").val(response.url);
+
+                // (Optional) Show preview
                 $("#" + fieldName + "_preview").html(`
                     <img src="${response.url}" width="80" class="mt-2 rounded">
                 `);
             }
         },
+
         error: function (xhr) {
             console.error(xhr.responseText);
         }
     });
 }
+
 
 
 // ------------------- End Image Temporary Upload END -----------------------

@@ -580,6 +580,8 @@
                                     <button class="btn btn-outline-danger" type="button"
                                         onclick="document.getElementById('attachment_client_photo').value = ''">✕</button>
                                 </div>
+                                <input type="hidden" id="attachment_client_photo_url"
+                                    name="attachment_client_photo_url">
                                 @error('attachment_client_photo')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
