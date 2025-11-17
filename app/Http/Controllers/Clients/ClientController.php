@@ -8,6 +8,7 @@ use App\Models\Client;
 use App\Services\ClientService;
 use App\Services\ClientBankService;
 use App\Services\FileStorageService;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ClientController extends Controller
@@ -31,6 +32,7 @@ class ClientController extends Controller
 
     public function store(ClientRequest $request)
     {
+        // return $request;
         $client = null;
         DB::transaction(function () use ($request, &$client) {
             $client = $this->clientService->create($request->validated());

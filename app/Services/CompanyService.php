@@ -17,18 +17,17 @@ class CompanyService
         return Company::all();
     }
 
-    public function getById($id)
-    {
+    public function find($id) {
         return Company::findOrFail($id);
     }
 
     public function create(array $data): Company
     {
         $data = $this->prepareCompanyData($data);
-        $company = Company::create($this->extractNonFileData($data));
-        $fileData = $this->handleFileUploads($data, $company);
-        $company->update($fileData);
-        return $company->fresh();
+        $company = Company::create($data);
+        $data = $this->handleFileUploads($data, $company);
+        $company->update($data);
+        return $company;
     }
 
     public function update(Company $company, array $data): Company
@@ -36,24 +35,13 @@ class CompanyService
         $data = $this->prepareCompanyData($data);
         $data = $this->handleFileUploads($data, $company);
         $company->update($data);
-        return $company;
+        return $company->fresh();
     }
 
     public function delete(Company $company): bool
     {
         $this->deleteFiles($company);
         return $company->delete();
-    }
-
-    private function extractNonFileData(array $data): array
-    {
-        $fileFields = [
-            'logo', 'attachment_pan', 'attachment_tan', 'attachment_gstin',
-            'attachment_ckyc', 'attachment_partnership_deed', 'attachment_udyam_aadhar',
-            'attachment_gumasta', 'attachment_msme', 'attachment_aadhar'
-        ];
-
-        return array_diff_key($data, array_flip($fileFields));
     }
 
     private function handleFileUploads(array $data, Company $company): array
@@ -64,21 +52,19 @@ class CompanyService
             'attachment_gumasta', 'attachment_msme', 'attachment_aadhar'
         ];
 
-        $fileData = [];
         foreach ($fileFields as $field) {
-            if (isset($data[$field]) && $data[$field] instanceof UploadedFile) {
-                if ($company->$field) {
+            if (isset($data[$field . '_url'])) {
+                if ($company && $company->$field) {
                     $this->fileStorageService->deleteFile($company->$field);
                 }
-                $fileData[$field] = $this->fileStorageService->storeCompanyDocument(
+                $data[$field] = $this->fileStorageService->storeCompanyDocument(
                     $company->id,
-                    $data[$field],
+                    $data[$field . '_url'],
                     str_replace('attachment_', '', $field)
                 );
             }
         }
-
-        return $fileData;
+        return $data;
     }
 
     private function deleteFiles(Company $company): void

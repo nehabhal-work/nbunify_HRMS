@@ -46,15 +46,15 @@ class CompanyRequest extends FormRequest
             'contact_person_name' => ['nullable', 'string', 'max:255'],
             'phone' => ['nullable', 'string', 'max:20'],
             'email' => ['nullable', 'email', 'max:255'],
-            'attachment_pan' => ['nullable', 'file', 'max:5120', 'mimes:pdf,jpeg,jpg,png'],
-            'attachment_tan' => ['nullable', 'file', 'max:5120', 'mimes:pdf,jpeg,jpg,png'],
-            'attachment_gstin' => ['nullable', 'file', 'max:5120', 'mimes:pdf,jpeg,jpg,png'],
-            'attachment_ckyc' => ['nullable', 'file', 'max:5120', 'mimes:pdf,jpeg,jpg,png'],
-            'attachment_partnership_deed' => ['nullable', 'file', 'max:5120', 'mimes:pdf,jpeg,jpg,png'],
-            'attachment_udyam_aadhar' => ['nullable', 'file', 'max:5120', 'mimes:pdf,jpeg,jpg,png'],
-            'attachment_gumasta' => ['nullable', 'file', 'max:5120', 'mimes:pdf,jpeg,jpg,png'],
-            'attachment_msme' => ['nullable', 'file', 'max:5120', 'mimes:pdf,jpeg,jpg,png'],
-            'attachment_aadhar' => ['nullable', 'file', 'max:5120', 'mimes:pdf,jpeg,jpg,png'],
+            'attachment_pan_url' => ['nullable', 'url'],
+            'attachment_tan_url' => ['nullable', 'url'],
+            'attachment_gstin_url' => ['nullable', 'url'],
+            'attachment_ckyc_url' => ['nullable', 'url'],
+            'attachment_partnership_deed_url' => ['nullable', 'url'],
+            'attachment_udyam_aadhar_url' => ['nullable', 'url'],
+            'attachment_gumasta_url' => ['nullable', 'url'],
+            'attachment_msme_url' => ['nullable', 'url'],
+            'attachment_aadhar_url' => ['nullable', 'url'],
             'brand_name' => ['nullable','string','max:50'],
             'proprietor_name' => ['nullable','string','max:50'],
             'proprietor_phone' => ['nullable','string','max:20'],
@@ -83,16 +83,16 @@ class CompanyRequest extends FormRequest
             'registered_pincode.regex' => 'Pincode must be 6 digits.',
             'corporate_pincode.regex' => 'Pincode must be 6 digits.',
             'additional_pincode.regex' => 'Pincode must be 6 digits.',
-            
+
             'logo.file' => 'Logo must be a file.',
             'logo.image' => 'Logo must be an image.',
             'logo.max' => 'Logo must not exceed 2MB.',
             'logo.mimes' => 'Logo must be jpeg, jpg, png, or gif format.',
-            
+
             '*.file' => 'The :attribute must be a file.',
             '*.max' => 'The :attribute must not exceed 5MB.',
             '*.mimes' => 'The :attribute must be pdf, jpeg, jpg, or png format.',
-            
+
         ];
     }
 }

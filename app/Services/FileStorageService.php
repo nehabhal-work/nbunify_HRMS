@@ -2,38 +2,43 @@
 
 namespace App\Services;
 
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 
 class FileStorageService
 {
-    public function storeCompanyDocument(int $companyId, UploadedFile $file, string $type = 'general'): string
+    public function storeCompanyDocument(int $companyId, string $tempUrl, string $type = 'general'): string
     {
-        $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
+        $response = Http::get($tempUrl);
+        $extension = pathinfo(parse_url($tempUrl, PHP_URL_PATH), PATHINFO_EXTENSION) ?: 'tmp';
+        $filename = Str::uuid() . '.' . $extension;
         $path = "companies/{$companyId}/{$type}/{$filename}";
 
-        Storage::disk('wasabi')->put($path, file_get_contents($file));
+        Storage::disk('wasabi')->put($path, $response->body());
 
         return $path;
     }
 
-    public function storeClientDocument(int $clientId, UploadedFile $file, string $type = 'general'): string
+    public function storeClientDocument(int $clientId, string $tempUrl, string $type = 'general'): string
     {
-        $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
+        $response = Http::get($tempUrl);
+        $extension = pathinfo(parse_url($tempUrl, PHP_URL_PATH), PATHINFO_EXTENSION) ?: 'tmp';
+        $filename = Str::uuid() . '.' . $extension;
         $path = "clients/{$clientId}/{$type}/{$filename}";
 
-        Storage::disk('wasabi')->put($path, file_get_contents($file));
-
+        Storage::disk('wasabi')->put($path, $response->body());
         return $path;
     }
 
-    public function storeEmployeeDocument(int $employeeId, UploadedFile $file, string $type = 'general'): string
+    public function storeEmployeeDocument(int $employeeId, string $tempUrl, string $type = 'general'): string
     {
-        $filename = Str::uuid() . '.' . $file->getClientOriginalExtension();
+        $response = Http::get($tempUrl);
+        $extension = pathinfo(parse_url($tempUrl, PHP_URL_PATH), PATHINFO_EXTENSION) ?: 'tmp';
+        $filename = Str::uuid() . '.' . $extension;
         $path = "employees/{$employeeId}/{$type}/{$filename}";
 
-        Storage::disk('wasabi')->put($path, file_get_contents($file));
+        Storage::disk('wasabi')->put($path, $response->body());
 
         return $path;
     }
