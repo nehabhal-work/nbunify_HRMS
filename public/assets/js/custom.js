@@ -317,13 +317,6 @@ function uploadTempFile(input, fieldName) {
                 // Set hidden/text input
                 $("#" + fieldName + "_url").val(response['url']);
                 $("#" + fieldName).val(response['url']);
-
-                // (Optional) Show preview
-                $("#" + fieldName + "_preview").html(`
-                    <img src="${response.url}" width="80" class="mt-2 rounded">
-                `);
-            } else {
-
             }
         },
 
@@ -331,6 +324,18 @@ function uploadTempFile(input, fieldName) {
             console.error(xhr.responseText);
         }
     });
+}
+
+function removeImage(fieldName) {
+
+    // Clear the main file input
+    $("#" + fieldName).val("");
+
+    // Clear the hidden URL field
+    $("#" + fieldName + "_url").val("");
+
+    // Clear the preview wrapper (image + button)
+    $("#" + fieldName + "_preview").html("");
 }
 
 
