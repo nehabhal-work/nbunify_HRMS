@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\FamilyRelation;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -66,13 +67,29 @@ class FamilyRelationSeeder extends Seeder
             ['AUNT', 'NEPHEW', 'male'],
             ['AUNT', 'NEICE', 'female'],
             ['AUNT', 'OTHER', 'other'],
+            ['NEPHEW', 'UNCLE', 'male'],
+            ['NEPHEW', 'AUNT', 'female'],
+            ['NEPHEW', 'OTHER', 'other'],
+            ['NEICE', 'UNCLE', 'male'],
+            ['NEICE', 'AUNT', 'female'],
+            ['NEICE', 'OTHER', 'other'],
+            ['GRAND-FATHER', 'GRAND-SON', 'male'],
+            ['GRAND-FATHER', 'GRAND-DAUGHTER', 'female'],
+            ['GRAND-FATHER', 'OTHER', 'other'],
+            ['GRAND-MOTHER', 'GRAND-SON', 'male'],
+            ['GRAND-MOTHER', 'GRAND-DAUGHTER', 'female'],
+            ['GRAND-MOTHER', 'OTHER', 'other'],
+            ['COUSIN', 'COUSIN', 'male'],
+            ['COUSIN', 'COUSIN', 'female'],
+            ['COUSIN', 'COUSIN', 'other'],
         ];
 
         foreach ($relations as $relation) {
-            DB::table('family_relations')->insert([
+            FamilyRelation::updateOrCreate([
                 'main_relation' => $relation[0],
                 'relative_relation' => $relation[1],
                 'gender' => $relation[2],
+            ],[
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
