@@ -720,7 +720,7 @@
                                 <label class="form-label">Client Photo</label>
 
                                 <div class="input-group">
-                                    <input type="file"
+                                    <input type="file" onchange="uploadTempFile(this, 'attachment_aadhar_front')"
                                         class="form-control @error('attachment_client_photo') is-invalid @enderror"
                                         id="attachment_client_photo" name="attachment_client_photo"
                                         accept=".jpg,.jpeg,.png">
@@ -736,6 +736,23 @@
                                         <img src="{{ $client->attachment_client_photo_url }}" alt=""
                                             width="80">
                                     </a>
+                                @endif
+
+                                <input type="hidden" id="attachment_aadhar_front_url"
+                                    value="{{ old('attachment_aadhar_front_url') }}" name="attachment_aadhar_front_url">
+
+                                @if (old('attachment_aadhar_front_url'))
+                                    <div id="attachment_aadhar_front_preview" class="position-relative d-inline-block">
+                                        <img src="{{ old('attachment_aadhar_front_url') }}" width="100"
+                                            class="rounded">
+
+                                        <!-- Remove (X) button -->
+                                        <button type="button"
+                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                                            onclick="removeImage('attachment_aadhar_front')">
+                                            ✕
+                                        </button>
+                                    </div>
                                 @endif
                             </div>
 
