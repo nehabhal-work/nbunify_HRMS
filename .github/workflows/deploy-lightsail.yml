@@ -41,4 +41,7 @@ jobs:
           # Optimize for production
           $PHP_BIN artisan optimize
 
+          # Restart Laravel queue workers
+          sudo supervisorctl restart els-laravel-worker:*
+
           echo "Deployment completed!"
