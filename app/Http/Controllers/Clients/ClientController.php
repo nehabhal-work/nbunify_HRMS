@@ -29,9 +29,17 @@ class ClientController extends Controller
         return view('content.clients.create');
     }
 
+    public function show($id)
+    {
+        $client = $this->clientService->find($id);
+        $client->load('banks');
+        $client = $this->addFileUrls($client);
+        return view('content.clients.show', compact('client'));
+    }
+
     public function store(ClientRequest $request)
     {
-        
+
         $client = null;
         DB::transaction(function () use ($request, &$client) {
             $client = $this->clientService->create($request->validated());
