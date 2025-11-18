@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Client;
+use Illuminate\Support\Str;
 
 class ClientService
 {
@@ -65,7 +66,7 @@ class ClientService
         } else if($mode == 'E') {
             foreach ($fileFields as $field) {
                 if (isset($data[$field . '_url'])) {
-                    if($data[$field . '_url'].contains('temp')) {
+                    if(Str::contains($data[$field . '_url'], 'temp')) {
                         if ($client && $client->$field) {
                             $this->fileStorageService->deleteFile($client->$field);
                         }

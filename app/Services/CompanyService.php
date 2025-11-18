@@ -3,8 +3,7 @@
 namespace App\Services;
 
 use App\Models\Company;
-use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class CompanyService
 {
@@ -65,7 +64,7 @@ class CompanyService
         } else if($mode == 'E') {
             foreach ($fileFields as $field) {
                 if (isset($data[$field . '_url'])) {
-                    if($data[$field . '_url'].contains('temp')) {
+                    if(Str::contains($data[$field . '_url'], 'temp')) {
                         if ($company && $company->$field) {
                             $this->fileStorageService->deleteFile($company->$field);
                         }
