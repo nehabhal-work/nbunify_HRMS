@@ -82,4 +82,14 @@ class ClientRequest extends FormRequest
             '*.url' => 'The :attribute must be a valid URL.',
         ];
     }
+
+    protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
+    {
+        \Log::info('Validation failed for ClientRequest', [
+            'errors' => $validator->errors()->toArray(),
+            'input' => $this->all()
+        ]);
+        
+        parent::failedValidation($validator);
+    }
 }
