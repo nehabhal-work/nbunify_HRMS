@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Jobs\StoreFileJob;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
@@ -20,14 +21,26 @@ class FileStorageService
         return $path;
     }
 
+    public function uploadToWasabi(string $tempUrl, string $storagePath) {
+        try {
+            $response = Http::timeout(30)->get($tempUrl);
+            if (!$response->successful()) {
+                throw new \Exception("Failed to download temp file: " . $tempUrl);
+            }
+            Storage::disk('wasabi')->put($storagePath, $response->body());
+        } catch (\Throwable $e) {
+            // log or rethrow so the job fails and retries
+            logger()->error("Document upload failed: {$e->getMessage()}");
+            throw $e;
+        }
+    }
+
     public function storeClientDocument(int $clientId, string $tempUrl, string $type = 'general'): string
     {
-        $response = Http::get($tempUrl);
         $extension = pathinfo(parse_url($tempUrl, PHP_URL_PATH), PATHINFO_EXTENSION) ?: 'tmp';
         $filename = Str::uuid() . '.' . $extension;
         $path = "clients/{$clientId}/{$type}/{$filename}";
-
-        Storage::disk('wasabi')->put($path, $response->body());
+        StoreFileJob::dispatch($tempUrl, $path);
         return $path;
     }
 
