@@ -622,7 +622,7 @@
                                     {{-- One empty row when no banks exist --}}
                                     <div class="bank-details-row row g-3 mb-3 bg-light position-relative">
 
-                                        <div class="col-md-3">
+                                        <div class="col-md-6">
                                             <label class="form-label">IFSC Code</label>
                                             <input type="text" name="banks[0][ifsc_code]"
                                                 value="{{ old('banks.0.ifsc_code') }}"
@@ -632,7 +632,7 @@
                                             @enderror
                                         </div>
 
-                                        <div class="col-md-3">
+                                        <div class="col-md-6">
                                             <label class="form-label">Account No</label>
                                             <input type="text" name="banks[0][account_number]"
                                                 value="{{ old('banks.0.account_number') }}"
@@ -645,7 +645,7 @@
 
 
 
-                                        <div class="col-md-3">
+                                        <div class="col-md-6">
                                             <label class="form-label">Bank Name</label>
                                             <input type="text" name="banks[0][bank_name]"
                                                 value="{{ old('banks.0.bank_name') }}"
@@ -656,7 +656,7 @@
                                             @enderror
                                         </div>
 
-                                        <div class="col-md-3">
+                                        <div class="col-md-6">
                                             <label class="form-label">Branch Name</label>
                                             <input type="text" name="banks[0][branch_name]"
                                                 value="{{ old('banks.0.branch_name') }}"
@@ -667,7 +667,7 @@
                                             @enderror
                                         </div>
 
-                                        <div class="col-md-3">
+                                        <div class="col-md-6">
                                             <label class="form-label">Bank Code</label>
                                             <input type="text" name="banks[0][bank_code]"
                                                 value="{{ old('banks.0.bank_code') }}"
@@ -678,7 +678,7 @@
                                             @enderror
                                         </div>
 
-                                        <div class="col-md-3">
+                                        <div class="col-md-6">
                                             <label class="form-label d-block">Primary a/c</label>
                                             <input type="hidden" name="banks[0][is_primary]" value="0">
                                             <input type="checkbox" name="banks[0][is_primary]" value="1"
