@@ -22,14 +22,14 @@ class ClientService
     {
         $data['client_code'] = $this->generateClientCode();
         $client = Client::create($data);
-        $data = $this->handleFileUploads($data, $client);
+        $data = $this->handleFileUploads($data, $client, 'A');
         $client->update($data);
         return $client;
     }
 
     public function update(Client $client, array $data): Client
     {
-        $data = $this->handleFileUploads($data, $client);
+        $data = $this->handleFileUploads($data, $client, 'E');
         $client->update($data);
         return $client->fresh();
     }
@@ -40,7 +40,7 @@ class ClientService
         return $client->delete();
     }
 
-    private function handleFileUploads(array $data, Client $client): array
+    private function handleFileUploads(array $data, Client $client, string $mode): array
     {
         $fileFields = [
             'attachment_client_photo',
@@ -52,16 +52,37 @@ class ClientService
             'attachment_other_documents'
         ];
 
-        foreach ($fileFields as $field) {
-            if (isset($data[$field . '_url'])) {
-                if ($client && $client->$field) {
-                    $this->fileStorageService->deleteFile($client->$field);
+        if($mode == 'A') {
+            foreach ($fileFields as $field) {
+                if (isset($data[$field . '_url'])) {
+                    $data[$field] = $this->fileStorageService->storeClientDocument(
+                        $client->id,
+                        $data[$field . '_url'],
+                        str_replace('attachment_', '', $field)
+                    );
                 }
-                $data[$field] = $this->fileStorageService->storeClientDocument(
-                    $client->id,
-                    $data[$field . '_url'],
-                    str_replace('attachment_', '', $field)
-                );
+            }
+        } else if($mode == 'E') {
+            foreach ($fileFields as $field) {
+                if (isset($data[$field . '_url'])) {
+                    if($data[$field . '_url'].contains('temp')) {
+                        if ($client && $client->$field) {
+                            $this->fileStorageService->deleteFile($client->$field);
+                        }
+                        $data[$field] = $this->fileStorageService->storeClientDocument(
+                            $client->id,
+                            $data[$field . '_url'],
+                            str_replace('attachment_', '', $field)
+                        );
+                    } else {
+                        $data[$field] = $client->$field ?? null;
+                    }
+                } else {
+                    if ($client && $client->$field) {
+                        $this->fileStorageService->deleteFile($client->$field);
+                    }
+                    $data[$field] = null;
+                }
             }
         }
         return $data;
