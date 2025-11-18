@@ -17,6 +17,13 @@
 <script src="https://cdn.datatables.net/2.3.4/js/dataTables.bootstrap5.js"></script>
 <script src="{{ asset('assets/vendor/libs/sweetalert2/sweetalert2.js') }}"></script>
 <script src="{{ asset('assets/js/extended-ui-sweetalert2.js') }}"></script>
+
+<script src="{{ asset('assets/vendor/libs/flatpickr/flatpickr.js') }}"></script>
+<script src="{{ asset('assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.js') }}"></script>
+<script src="{{ asset('assets/vendor/libs/bootstrap-daterangepicker/bootstrap-daterangepicker.js') }}"></script>
+{{-- <script src="{{ asset('assets/vendor/libs/jquery-timepicker/jquery-timepicker.js') }}"></script> --}}
+{{-- <script src="{{ asset('assets/vendor/libs/pickr/pickr.js') }}"></script> --}}
+{{-- <script src="{{ asset('assets/js/forms-pickers.js') }}"></script> --}}
 @stack('vendorjs')
 
 
@@ -24,6 +31,7 @@
 <script src="{{ asset('assets/js/main.js') }}"></script>
 <script src="{{ asset('assets/js/forms-extras.js') }}"></script>
 <script src="{{ asset('assets/js/custom.js') }}"></script>
+
 
 
 <!-- Page JS -->

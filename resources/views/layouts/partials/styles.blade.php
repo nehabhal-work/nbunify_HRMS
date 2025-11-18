@@ -18,7 +18,15 @@
 <link rel="stylesheet" href="{{ asset('assets/vendor/css/rtl/theme-default.css') }}"
     class="template-customizer-theme-css" />
 <link rel="stylesheet" href="{{ asset('assets/css/demo.css') }}" />
-<link rel="stylesheet" href="../../../assets/vendor/libs/select2/select2.css" />
+{{-- <link rel="stylesheet" href="../../../assets/vendor/libs/select2/select2.css" /> --}}
+<link rel="stylesheet" href="{{ asset('assets/vendor/libs/select2/select2.css') }}" />
+
+{{-- <link rel="stylesheet" href="{{ asset('assets/vendor/libs/flatpickr/flatpickr.css') }}" /> --}}
+<link rel="stylesheet" href="{{ asset('assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.css') }}" />
+<link rel="stylesheet"
+    href="{{ asset('assets/vendor/libs/bootstrap-daterangepicker/bootstrap-daterangepicker.css') }}" />
+{{-- <link rel="stylesheet" href="{{ asset('assets/vendor/libs/jquery-timepicker/jquery-timepicker.css') }}" /> --}}
+{{-- <link rel="stylesheet" href="{{ asset('assets/vendor/libs/pickr/pickr-themes.css') }}" /> --}}
 
 <!-- Vendors CSS -->
 <link rel="stylesheet" href="{{ asset('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
