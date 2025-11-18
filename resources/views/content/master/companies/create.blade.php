@@ -93,10 +93,10 @@
 
                             <!-- Establishment Date -->
                             <div class="col-md-2 mb-3">
-                                <label class="form-label">Establishment Date</label>
-                                <input type="date" name="est_date" id="est_date"
-                                    class="form-control @error('est_date') is-invalid @enderror"
-                                    value="{{ old('est_date') }}" max="{{ date('Y-m-d') }}">
+                                <label class="form-label">Establishment Date</label>                         
+                                <input type="text" name="est_date" id="est_date"
+                                    class="form-control datepicker @error('est_date') is-invalid @enderror"
+                                    value="{{ old('est_date') }}" placeholder="Select Date" readonly>
                                 @error('est_date')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror

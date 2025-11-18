@@ -79,8 +79,8 @@
                                     <!-- Date of Birth -->
                                     <div class="col-md-2">
                                         <label class="form-label">Date of Birth</label>
-                                        <input type="date" class="form-control @error('dob') is-invalid @enderror"
-                                            name="dob" value="{{ old('dob') }}">
+                                        <input type="text" class="form-control datepicker @error('dob') is-invalid @enderror"
+                                            name="dob" value="{{ old('dob') }}" readonly placeholder="Select Date">
                                         @error('dob')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
@@ -227,9 +227,9 @@
                                     <!-- Joining Date -->
                                     <div class="col-md-2">
                                         <label class="form-label">Joining Date</label>
-                                        <input type="date"
-                                            class="form-control @error('joining_date') is-invalid @enderror"
-                                            name="joining_date" value="{{ old('joining_date') }}">
+                                        <input type="text"
+                                            class="form-control datepicker @error('joining_date') is-invalid @enderror"
+                                            name="joining_date" value="{{ old('joining_date') }}" readonly placeholder="Select Date">
                                         @error('joining_date')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror

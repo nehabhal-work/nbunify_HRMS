@@ -74,9 +74,9 @@
                             {{-- Date of Birth --}}
                             <div class="col-md-2 mb-3">
                                 <label class="form-label" for="dob">Date of Birth</label>
-                                <input type="date" class="form-control @error('dob') is-invalid @enderror" id="dob"
+                                <input type="text" class="form-control datepicker @error('dob') is-invalid @enderror" id="dob"
                                     name="dob" value="{{ old('dob', $clientFamily->dob) }}"
-                                    max="{{ now()->toDateString() }}">
+                                    max="{{ now()->toDateString() }}" readonly placeholder="Select Date">
                                 @error('dob')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -105,8 +105,8 @@
                             {{-- Date of Death --}}
                             <div class="col-md-2 mb-3 d-none">
                                 <label for="dod" class="form-label">Date of Death</label>
-                                <input type="date" name="dod" id="dod" class="form-control"
-                                    value="{{ old('dod', $clientFamily->dod) }}">
+                                <input type="text" name="dod" id="dod" class="form-control datepicker"
+                                    value="{{ old('dod', $clientFamily->dod) }}" readonly placeholder="Select Date">
                                 @error('dod')
                                     <div class="text-danger small">{{ $message }}</div>
                                 @enderror

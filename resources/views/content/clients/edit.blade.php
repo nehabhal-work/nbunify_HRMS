@@ -76,10 +76,10 @@
                             {{-- Date of Birth --}}
                             <div class="col-md-2 mb-3">
                                 <label class="form-label" for="dob">Date of Birth</label>
-                                <input type="date" class="form-control @error('dob') is-invalid @enderror" id="dob"
+                                <input type="text" class="form-control datepicker @error('dob') is-invalid @enderror" id="dob"
                                     name="dob"
-                                    value="{{ old('dob', isset($client->dob) ? \Carbon\Carbon::parse($client->dob)->format('Y-m-d') : '') }}"
-                                    max="{{ now()->toDateString() }}">
+                                    value="{{ old('dob', isset($client->dob) ? \Carbon\Carbon::parse($client->dob)->format('d-m-Y') : '') }}"
+                                    max="{{ now()->toDateString() }}" readonly placeholder="Select Date">
 
                                 @error('dob')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -107,8 +107,8 @@
                             <div
                                 class="col-md-2 mb-3 {{ old('live_status', $client->live_status ?? '') == 'deceased' ? '' : 'd-none' }}">
                                 <label for="dod" class="form-label">Date of Death</label>
-                                <input type="date" name="dod" id="dod" class="form-control"
-                                    value="{{ old('dod', $client->dod ?? '') }}">
+                                <input type="text" name="dod" id="dod" class="form-control datepicker"
+                                    value="{{ old('dod', $client->dod ?? '') }}" readonly placeholder="Select Date">
                                 @error('dod')
                                     <div class="text-danger small">{{ $message }}</div>
                                 @enderror
@@ -541,7 +541,7 @@
                                         <div class="bank-details-row row g-3 mb-3 bg-light position-relative">
 
                                             {{-- IFSC --}}
-                                            <div class="col-md-3">
+                                            <div class="col-md-6">
                                                 <label class="form-label">IFSC Code</label>
                                                 <input type="text" name="banks[{{ $loop->index }}][ifsc_code]"
                                                     value="{{ old('banks.' . $loop->index . '.ifsc_code', $bank->ifsc_code) }}"
@@ -553,7 +553,7 @@
                                             </div>
 
                                             {{-- Account No --}}
-                                            <div class="col-md-3">
+                                            <div class="col-md-6">
                                                 <label class="form-label">Account No</label>
                                                 <input type="text" name="banks[{{ $loop->index }}][account_number]"
                                                     value="{{ old('banks.' . $loop->index . '.account_number', $bank->account_number) }}"
@@ -567,7 +567,7 @@
 
 
                                             {{-- Bank Name --}}
-                                            <div class="col-md-3">
+                                            <div class="col-md-6">
                                                 <label class="form-label">Bank Name</label>
                                                 <input type="text" name="banks[{{ $loop->index }}][bank_name]"
                                                     value="{{ old('banks.' . $loop->index . '.bank_name', $bank->bank_name) }}"
@@ -579,7 +579,7 @@
                                             </div>
 
                                             {{-- Branch Name --}}
-                                            <div class="col-md-3">
+                                            <div class="col-md-6">
                                                 <label class="form-label">Branch Name</label>
                                                 <input type="text" name="banks[{{ $loop->index }}][branch_name]"
                                                     value="{{ old('banks.' . $loop->index . '.branch_name', $bank->branch_name) }}"
@@ -591,7 +591,7 @@
                                             </div>
 
                                             {{-- Bank Code --}}
-                                            <div class="col-md-3">
+                                            <div class="col-md-6">
                                                 <label class="form-label">Bank Code</label>
                                                 <input type="text" name="banks[{{ $loop->index }}][bank_code]"
                                                     value="{{ old('banks.' . $loop->index . '.bank_code', $bank->bank_code) }}"
@@ -603,7 +603,7 @@
                                             </div>
 
                                             {{-- Primary Checkbox --}}
-                                            <div class="col-md-3">
+                                            <div class="col-md-6">
                                                 <label class="form-label d-block">Primary a/c</label>
                                                 <input type="hidden" name="banks[{{ $loop->index }}][is_primary]"
                                                     value="0">

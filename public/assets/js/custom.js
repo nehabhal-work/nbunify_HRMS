@@ -342,9 +342,12 @@ function removeImage(fieldName) {
 
 // ------------------- End Image Temporary Upload END -----------------------
 
+
 $('.datepicker').datepicker({
     format: "dd-mm-yyyy",
     autoclose: true,
     todayHighlight: true,
-    clearBtn: true
+    clearBtn: true,
+    endDate: new Date()   // disallow future dates
 });
+// ------------------- End Datepicker END -----------------------

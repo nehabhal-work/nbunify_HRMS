@@ -95,10 +95,10 @@
                             <div class="col-md-3 mb-3">
                                 <label class="form-label">Establishment Date</label>
 
-                                <input type="date" class="form-control @error('est_date') is-invalid @enderror"
+                                <input type="text" class="form-control datepicker @error('est_date') is-invalid @enderror"
                                     id="est_date" name="est_date"
-                                    value="{{ old('est_date', isset($company->est_date) ? \Carbon\Carbon::parse($company->est_date)->format('Y-m-d') : '') }}"
-                                    max="{{ now()->toDateString() }}">
+                                    value="{{ old('est_date', isset($company->est_date) ? \Carbon\Carbon::parse($company->est_date)->format('d-m-Y') : '') }}"
+                                    max="{{ now()->toDateString() }}" readonly placeholder="Select Date">
 
                                 @error('est_date')
                                     <div class="invalid-feedback">{{ $message }}</div>
