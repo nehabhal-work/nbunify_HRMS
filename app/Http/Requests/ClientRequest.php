@@ -55,13 +55,13 @@ class ClientRequest extends FormRequest
             'office_pincode' => 'nullable|string|max:6',
             'relation_manager_id' => 'nullable',
             'remarks' => 'nullable|string|max:100',
-            'attachment_client_photo' => ['nullable', 'file', 'image', 'max:2048', 'mimes:jpeg,jpg,png'],
-            'attachment_pan' => ['nullable', 'file', 'max:5120', 'mimes:pdf,jpeg,jpg,png'],
-            'attachment_aadhar_front' => ['nullable', 'file', 'max:5120', 'mimes:pdf,jpeg,jpg,png'],
-            'attachment_aadhar_back' => ['nullable', 'file', 'max:5120', 'mimes:pdf,jpeg,jpg,png'],
-            'attachment_signature' => ['nullable', 'file', 'max:5120', 'mimes:pdf,jpeg,jpg,png'],
-            'attachment_ckyc' => ['nullable', 'file', 'max:5120', 'mimes:pdf,jpeg,jpg,png'],
-            'attachment_other_documents' => ['nullable', 'file', 'max:5120', 'mimes:pdf,jpeg,jpg,png'],
+            'attachment_client_photo_url' => ['nullable', 'url'],
+            'attachment_pan_url' => ['nullable', 'url'],
+            'attachment_aadhar_front_url' => ['nullable', 'url'],
+            'attachment_aadhar_back_url' => ['nullable', 'url'],
+            'attachment_signature_url' => ['nullable', 'url'],
+            'attachment_ckyc_url' => ['nullable', 'url'],
+            'attachment_other_documents_url' => ['nullable', 'url'],
         ];
     }
 
@@ -79,13 +79,17 @@ class ClientRequest extends FormRequest
             'email.required' => 'Email is required.',
             'email.email' => 'Please provide a valid email address.',
 
-            'attachment_client_photo.image' => 'Client photo must be an image.',
-            'attachment_client_photo.max' => 'Client photo must not exceed 2MB.',
-            'attachment_client_photo.mimes' => 'Client photo must be jpeg, jpg, or png format.',
-
-            '*.file' => 'The :attribute must be a file.',
-            '*.max' => 'The :attribute must not exceed 5MB.',
-            '*.mimes' => 'The :attribute must be pdf, jpeg, jpg, or png format.',
+            '*.url' => 'The :attribute must be a valid URL.',
         ];
+    }
+
+    protected function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
+    {
+        \Log::info('Validation failed for ClientRequest', [
+            'errors' => $validator->errors()->toArray(),
+            'input' => $this->all()
+        ]);
+        
+        parent::failedValidation($validator);
     }
 }

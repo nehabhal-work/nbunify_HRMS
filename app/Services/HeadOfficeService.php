@@ -6,6 +6,11 @@ use App\Models\HeadOffice;
 
 class HeadOfficeService
 {
+
+    public function find($id) {
+        return HeadOffice::findOrFail($id);
+    }
+
     public function getAllHeadOffices()
     {
         return HeadOffice::all();

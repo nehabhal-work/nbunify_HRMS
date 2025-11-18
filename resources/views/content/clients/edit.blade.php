@@ -535,55 +535,160 @@
                         <div class="col-12 ">
 
                             <div id="bankDetailsWrapper">
+
                                 @if ($client->banks && $client->banks->count() > 0)
                                     @foreach ($client->banks as $bank)
                                         <div class="bank-details-row row g-3 mb-3 bg-light position-relative">
-                                            <div class="col-md-6">
+
+                                            {{-- IFSC --}}
+                                            <div class="col-md-3">
                                                 <label class="form-label">IFSC Code</label>
                                                 <input type="text" name="banks[{{ $loop->index }}][ifsc_code]"
-                                                    value="{{ old('banks.' . $loop->index . '.ifsc_code', $bank->ifsc_code ?? '') }}"
-                                                    class="form-control ifsc_code" placeholder="Enter IFSC Code">
+                                                    value="{{ old('banks.' . $loop->index . '.ifsc_code', $bank->ifsc_code) }}"
+                                                    class="form-control ifsc_code @error('banks.' . $loop->index . '.ifsc_code') is-invalid @enderror"
+                                                    placeholder="Enter IFSC Code">
+                                                @error('banks.' . $loop->index . '.ifsc_code')
+                                                    <span class="invalid-feedback">{{ $message }}</span>
+                                                @enderror
                                             </div>
-                                            <div class="col-md-6">
+
+                                            {{-- Account No --}}
+                                            <div class="col-md-3">
                                                 <label class="form-label">Account No</label>
                                                 <input type="text" name="banks[{{ $loop->index }}][account_number]"
-                                                    value="{{ old('banks.' . $loop->index . '.account_number', $bank->account_number ?? '') }}"
-                                                    class="form-control account_number" maxlength="18"
-                                                    placeholder="Enter Account Number">
+                                                    value="{{ old('banks.' . $loop->index . '.account_number', $bank->account_number) }}"
+                                                    class="form-control account_number @error('banks.' . $loop->index . '.account_number') is-invalid @enderror"
+                                                    maxlength="18" placeholder="Enter Account Number">
+                                                @error('banks.' . $loop->index . '.account_number')
+                                                    <span class="invalid-feedback">{{ $message }}</span>
+                                                @enderror
                                             </div>
-                                            <div class="col-md-6">
+
+
+
+                                            {{-- Bank Name --}}
+                                            <div class="col-md-3">
                                                 <label class="form-label">Bank Name</label>
                                                 <input type="text" name="banks[{{ $loop->index }}][bank_name]"
-                                                    value="{{ old('banks.' . $loop->index . '.bank_name', $bank->bank_name ?? '') }}"
-                                                    class="form-control bank_name bg-secondary-subtle bg-gradient"
+                                                    value="{{ old('banks.' . $loop->index . '.bank_name', $bank->bank_name) }}"
+                                                    class="form-control bank_name bg-secondary-subtle bg-gradient @error('banks.' . $loop->index . '.bank_name') is-invalid @enderror"
                                                     readonly>
+                                                @error('banks.' . $loop->index . '.bank_name')
+                                                    <span class="invalid-feedback">{{ $message }}</span>
+                                                @enderror
                                             </div>
-                                            <div class="col-md-6">
+
+                                            {{-- Branch Name --}}
+                                            <div class="col-md-3">
                                                 <label class="form-label">Branch Name</label>
                                                 <input type="text" name="banks[{{ $loop->index }}][branch_name]"
-                                                    value="{{ old('banks.' . $loop->index . '.branch_name', $bank->branch_name ?? '') }}"
-                                                    class="form-control branch_name bg-secondary-subtle bg-gradient"
+                                                    value="{{ old('banks.' . $loop->index . '.branch_name', $bank->branch_name) }}"
+                                                    class="form-control branch_name bg-secondary-subtle bg-gradient @error('banks.' . $loop->index . '.branch_name') is-invalid @enderror"
                                                     readonly>
+                                                @error('banks.' . $loop->index . '.branch_name')
+                                                    <span class="invalid-feedback">{{ $message }}</span>
+                                                @enderror
                                             </div>
-                                            <div class="col-md-6">
+
+                                            {{-- Bank Code --}}
+                                            <div class="col-md-3">
                                                 <label class="form-label">Bank Code</label>
                                                 <input type="text" name="banks[{{ $loop->index }}][bank_code]"
-                                                    value="{{ old('banks.' . $loop->index . '.bank_code', $bank->bank_code ?? '') }}"
-                                                    class="form-control bank_code bg-secondary-subtle bg-gradient"
+                                                    value="{{ old('banks.' . $loop->index . '.bank_code', $bank->bank_code) }}"
+                                                    class="form-control bank_code bg-secondary-subtle bg-gradient @error('banks.' . $loop->index . '.bank_code') is-invalid @enderror"
                                                     readonly>
+                                                @error('banks.' . $loop->index . '.bank_code')
+                                                    <span class="invalid-feedback">{{ $message }}</span>
+                                                @enderror
                                             </div>
-                                            <div class="col-md-6">
+
+                                            {{-- Primary Checkbox --}}
+                                            <div class="col-md-3">
                                                 <label class="form-label d-block">Primary a/c</label>
                                                 <input type="hidden" name="banks[{{ $loop->index }}][is_primary]"
                                                     value="0">
                                                 <input type="checkbox" name="banks[{{ $loop->index }}][is_primary]"
-                                                    value="1" class="form-check-input setPrimary"
-                                                    {{ old('banks.' . $loop->index . '.is_primary', $bank->is_primary ?? false) ? 'checked' : '' }}>
+                                                    value="1"
+                                                    class="form-check-input setPrimary @error('banks.' . $loop->index . '.is_primary') is-invalid @enderror"
+                                                    {{ old('banks.' . $loop->index . '.is_primary', $bank->is_primary) ? 'checked' : '' }}>
+                                                @error('banks.' . $loop->index . '.is_primary')
+                                                    <span class="invalid-feedback">{{ $message }}</span>
+                                                @enderror
                                             </div>
+
                                         </div>
                                     @endforeach
                                 @else
-                                    <p class="text-muted">No bank details available.</p>
+                                    {{-- One empty row when no banks exist --}}
+                                    <div class="bank-details-row row g-3 mb-3 bg-light position-relative">
+
+                                        <div class="col-md-3">
+                                            <label class="form-label">IFSC Code</label>
+                                            <input type="text" name="banks[0][ifsc_code]"
+                                                value="{{ old('banks.0.ifsc_code') }}"
+                                                class="form-control ifsc_code @error('banks.0.ifsc_code') is-invalid @enderror">
+                                            @error('banks.0.ifsc_code')
+                                                <span class="invalid-feedback">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <label class="form-label">Account No</label>
+                                            <input type="text" name="banks[0][account_number]"
+                                                value="{{ old('banks.0.account_number') }}"
+                                                class="form-control account_number @error('banks.0.account_number') is-invalid @enderror"
+                                                maxlength="18">
+                                            @error('banks.0.account_number')
+                                                <span class="invalid-feedback">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+
+
+
+                                        <div class="col-md-3">
+                                            <label class="form-label">Bank Name</label>
+                                            <input type="text" name="banks[0][bank_name]"
+                                                value="{{ old('banks.0.bank_name') }}"
+                                                class="form-control bank_name bg-secondary-subtle bg-gradient @error('banks.0.bank_name') is-invalid @enderror"
+                                                readonly>
+                                            @error('banks.0.bank_name')
+                                                <span class="invalid-feedback">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <label class="form-label">Branch Name</label>
+                                            <input type="text" name="banks[0][branch_name]"
+                                                value="{{ old('banks.0.branch_name') }}"
+                                                class="form-control branch_name bg-secondary-subtle bg-gradient @error('banks.0.branch_name') is-invalid @enderror"
+                                                readonly>
+                                            @error('banks.0.branch_name')
+                                                <span class="invalid-feedback">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <label class="form-label">Bank Code</label>
+                                            <input type="text" name="banks[0][bank_code]"
+                                                value="{{ old('banks.0.bank_code') }}"
+                                                class="form-control bank_code bg-secondary-subtle bg-gradient @error('banks.0.bank_code') is-invalid @enderror"
+                                                readonly>
+                                            @error('banks.0.bank_code')
+                                                <span class="invalid-feedback">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <label class="form-label d-block">Primary a/c</label>
+                                            <input type="hidden" name="banks[0][is_primary]" value="0">
+                                            <input type="checkbox" name="banks[0][is_primary]" value="1"
+                                                class="form-check-input setPrimary @error('banks.0.is_primary') is-invalid @enderror"
+                                                {{ old('banks.0.is_primary') ? 'checked' : '' }}>
+                                            @error('banks.0.is_primary')
+                                                <span class="invalid-feedback">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </div>
                                 @endif
 
                             </div>
@@ -613,12 +718,7 @@
                             <!-- Profile Photo -->
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Client Photo</label>
-                                @if (!empty($client->attachment_client_photo))
-                                    <div class="mb-2">
-                                        <img src="{{ asset('storage/' . $client->attachment_client_photo) }}"
-                                            alt="Client Photo" class="img-fluid rounded" style="max-height: 150px;">
-                                    </div>
-                                @endif
+
                                 <div class="input-group">
                                     <input type="file"
                                         class="form-control @error('attachment_client_photo') is-invalid @enderror"
@@ -630,17 +730,19 @@
                                 @error('attachment_client_photo')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
+
+                                @if ($client->attachment_client_photo_url)
+                                    <a href="{{ $client->attachment_client_photo_url }}" target="_blank">
+                                        <img src="{{ $client->attachment_client_photo_url }}" alt=""
+                                            width="80">
+                                    </a>
+                                @endif
                             </div>
 
                             <!-- PAN Card -->
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">PAN Card</label>
-                                @if (!empty($client->attachment_pan))
-                                    <div class="mb-2">
-                                        <img src="{{ asset('storage/' . $client->attachment_pan) }}" alt="PAN Card"
-                                            class="img-fluid rounded" style="max-height: 150px;">
-                                    </div>
-                                @endif
+
                                 <div class="input-group">
                                     <input type="file"
                                         class="form-control @error('attachment_pan') is-invalid @enderror"
@@ -651,17 +753,18 @@
                                 @error('attachment_pan')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
+
+                                @if ($client->attachment_pan_url)
+                                    <a href="{{ $client->attachment_pan_url }}" target="_blank">
+                                        <img src="{{ $client->attachment_pan_url }}" alt="" width="80">
+                                    </a>
+                                @endif
                             </div>
 
                             <!-- Aadhar Front -->
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Aadhar Card Front</label>
-                                @if (!empty($client->attachment_aadhar_front))
-                                    <div class="mb-2">
-                                        <img src="{{ asset('storage/' . $client->attachment_aadhar_front) }}"
-                                            alt="Aadhar Front" class="img-fluid rounded" style="max-height: 150px;">
-                                    </div>
-                                @endif
+
                                 <div class="input-group">
                                     <input type="file"
                                         class="form-control @error('attachment_aadhar_front') is-invalid @enderror"
@@ -673,17 +776,19 @@
                                 @error('attachment_aadhar_front')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
+
+                                @if ($client->attachment_aadhar_front_url)
+                                    <a href="{{ $client->attachment_aadhar_front_url }}" target="_blank">
+                                        <img src="{{ $client->attachment_aadhar_front_url }}" alt=""
+                                            width="80">
+                                    </a>
+                                @endif
                             </div>
 
                             <!-- Aadhar Back -->
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Aadhar Card Back</label>
-                                @if (!empty($client->attachment_aadhar_back))
-                                    <div class="mb-2">
-                                        <img src="{{ asset('storage/' . $client->attachment_aadhar_back) }}"
-                                            alt="Aadhar Back" class="img-fluid rounded" style="max-height: 150px;">
-                                    </div>
-                                @endif
+
                                 <div class="input-group">
                                     <input type="file"
                                         class="form-control @error('attachment_aadhar_back') is-invalid @enderror"
@@ -695,17 +800,19 @@
                                 @error('attachment_aadhar_back')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
+
+                                @if ($client->attachment_aadhar_back_url)
+                                    <a href="{{ $client->attachment_aadhar_back_url }}" target="_blank">
+                                        <img src="{{ $client->attachment_aadhar_back_url }}" alt=""
+                                            width="80">
+                                    </a>
+                                @endif
                             </div>
 
                             <!-- Signature -->
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Signature</label>
-                                @if (!empty($client->attachment_signature))
-                                    <div class="mb-2">
-                                        <img src="{{ asset('storage/' . $client->attachment_signature) }}" alt="Signature"
-                                            class="img-fluid rounded" style="max-height: 150px;">
-                                    </div>
-                                @endif
+
                                 <div class="input-group">
                                     <input type="file"
                                         class="form-control @error('attachment_signature') is-invalid @enderror"
@@ -717,17 +824,19 @@
                                 @error('attachment_signature')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
+
+                                @if ($client->attachment_signature_url)
+                                    <a href="{{ $client->attachment_signature_url }}" target="_blank">
+                                        <img src="{{ $client->attachment_signature_url }}" alt=""
+                                            width="80">
+                                    </a>
+                                @endif
                             </div>
 
                             <!-- CKYC -->
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">CKYC</label>
-                                @if (!empty($client->attachment_ckyc))
-                                    <div class="mb-2">
-                                        <img src="{{ asset('storage/' . $client->attachment_ckyc) }}" alt="CKYC Document"
-                                            class="img-fluid rounded" style="max-height: 150px;">
-                                    </div>
-                                @endif
+
                                 <div class="input-group">
                                     <input type="file"
                                         class="form-control @error('attachment_ckyc') is-invalid @enderror"
@@ -738,17 +847,18 @@
                                 @error('attachment_ckyc')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
+
+                                @if ($client->attachment_ckyc_url)
+                                    <a href="{{ $client->attachment_ckyc_url }}" target="_blank">
+                                        <img src="{{ $client->attachment_ckyc_url }}" alt="" width="80">
+                                    </a>
+                                @endif
                             </div>
 
                             <!-- Other Documents -->
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Other Documents (Optional)</label>
-                                @if (!empty($client->attachment_other_documents))
-                                    <div class="mb-2">
-                                        <img src="{{ asset('storage/' . $client->attachment_other_documents) }}"
-                                            alt="Other Documents" class="img-fluid rounded" style="max-height: 150px;">
-                                    </div>
-                                @endif
+
                                 <div class="input-group">
                                     <input type="file"
                                         class="form-control @error('attachment_other_documents') is-invalid @enderror"
@@ -760,12 +870,15 @@
                                 @error('attachment_other_documents')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
+
+                                @if ($client->attachment_other_documents_url)
+                                    <a href="{{ $client->attachment_other_documents_url }}" target="_blank">
+                                        <img src="{{ $client->attachment_other_documents_url }}" alt=""
+                                            width="80">
+                                    </a>
+                                @endif
                             </div>
                         </div>
-
-
-
-
                     </div>
                 </div>
             </div>
@@ -788,8 +901,6 @@
             <a href="{{ route('clients.index') }}" class="btn btn-secondary px-4">Cancel</a>
         </div>
     </form>
-
-
 @endsection
 
 @push('scripts')
