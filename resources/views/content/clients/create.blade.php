@@ -580,6 +580,11 @@
                                     <button class="btn btn-outline-danger" type="button"
                                         onclick="document.getElementById('attachment_client_photo').value = ''">✕</button>
                                 </div>
+
+                                @error('attachment_client_photo')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+
                                 <input type="hidden" id="attachment_client_photo_url"
                                     value="{{ old('attachment_client_photo_url') }}" name="attachment_client_photo_url">
 
@@ -597,11 +602,6 @@
                                     </div>
                                 @endif
 
-                                @error('attachment_client_photo')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-
-
                             </div>
 
 
@@ -618,6 +618,22 @@
                                 @error('attachment_pan')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
+
+                                <input type="hidden" id="attachment_pan_url" value="{{ old('attachment_pan_url') }}"
+                                    name="attachment_pan_url">
+
+                                @if (old('attachment_pan_url'))
+                                    <div id="attachment_pan_preview" class="position-relative d-inline-block">
+                                        <img src="{{ old('attachment_pan_url') }}" width="100" class="rounded">
+
+                                        <!-- Remove (X) button -->
+                                        <button type="button"
+                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                                            onclick="removeImage('attachment_pan')">
+                                            ✕
+                                        </button>
+                                    </div>
+                                @endif
                             </div>
 
 
@@ -635,6 +651,23 @@
                                 @error('attachment_aadhar_front')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
+
+                                <input type="hidden" id="attachment_aadhar_front_url"
+                                    value="{{ old('attachment_aadhar_front_url') }}" name="attachment_aadhar_front_url">
+
+                                @if (old('attachment_aadhar_front_url'))
+                                    <div id="attachment_aadhar_front_preview" class="position-relative d-inline-block">
+                                        <img src="{{ old('attachment_aadhar_front_url') }}" width="100"
+                                            class="rounded">
+
+                                        <!-- Remove (X) button -->
+                                        <button type="button"
+                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                                            onclick="removeImage('attachment_aadhar_front')">
+                                            ✕
+                                        </button>
+                                    </div>
+                                @endif
                             </div>
 
 
@@ -652,6 +685,23 @@
                                 @error('attachment_aadhar_back')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
+
+                                <input type="hidden" id="attachment_aadhar_back_url"
+                                    value="{{ old('attachment_aadhar_back_url') }}" name="attachment_aadhar_back_url">
+
+                                @if (old('attachment_aadhar_back_url'))
+                                    <div id="attachment_aadhar_back_preview" class="position-relative d-inline-block">
+                                        <img src="{{ old('attachment_aadhar_back_url') }}" width="100"
+                                            class="rounded">
+
+                                        <!-- Remove (X) button -->
+                                        <button type="button"
+                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                                            onclick="removeImage('attachment_aadhar_back')">
+                                            ✕
+                                        </button>
+                                    </div>
+                                @endif
                             </div>
 
 
@@ -670,6 +720,23 @@
                                 @error('attachment_signature')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
+
+                                <input type="hidden" id="attachment_signature_url"
+                                    value="{{ old('attachment_signature_url') }}" name="attachment_signature_url">
+
+                                @if (old('attachment_signature_url'))
+                                    <div id="attachment_signature_preview" class="position-relative d-inline-block">
+                                        <img src="{{ old('attachment_signature_url') }}" width="100"
+                                            class="rounded">
+
+                                        <!-- Remove (X) button -->
+                                        <button type="button"
+                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                                            onclick="removeImage('attachment_signature')">
+                                            ✕
+                                        </button>
+                                    </div>
+                                @endif
                             </div>
 
                             <!-- Resume -->
@@ -686,6 +753,22 @@
                                 @error('attachment_ckyc')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
+
+                                <input type="hidden" id="attachment_ckyc_url" value="{{ old('attachment_ckyc_url') }}"
+                                    name="attachment_ckyc_url">
+
+                                @if (old('attachment_ckyc_url'))
+                                    <div id="attachment_ckyc_preview" class="position-relative d-inline-block">
+                                        <img src="{{ old('attachment_ckyc_url') }}" width="100" class="rounded">
+
+                                        <!-- Remove (X) button -->
+                                        <button type="button"
+                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                                            onclick="removeImage('attachment_ckyc')">
+                                            ✕
+                                        </button>
+                                    </div>
+                                @endif
                             </div>
 
                             <!-- Other Supporting Documents -->
@@ -702,6 +785,24 @@
                                 @error('attachment_other_documents')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
+
+                                <input type="hidden" id="attachment_other_documents_url"
+                                    value="{{ old('attachment_other_documents_url') }}"
+                                    name="attachment_other_documents_url">
+
+                                @if (old('attachment_other_documents_url'))
+                                    <div id="attachment_other_documents_preview" class="position-relative d-inline-block">
+                                        <img src="{{ old('attachment_other_documents_url') }}" width="100"
+                                            class="rounded">
+
+                                        <!-- Remove (X) button -->
+                                        <button type="button"
+                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                                            onclick="removeImage('attachment_other_documents')">
+                                            ✕
+                                        </button>
+                                    </div>
+                                @endif
                             </div>
                         </div>
 
