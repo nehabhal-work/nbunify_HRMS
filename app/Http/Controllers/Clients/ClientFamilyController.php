@@ -25,7 +25,7 @@ class ClientFamilyController extends Controller
             $clientFamilies = $this->clientFamilyService->getByClient($client_id);
             return view('content.clients.families.index', compact('clientFamilies', 'client'));
         } else {
-            abort(401);
+            abort(404);
         }
     }
 
@@ -37,7 +37,7 @@ class ClientFamilyController extends Controller
             $relations = $this->familyRelationService->getByGender($client->gender);
             return view('content.clients.families.create', compact('client', 'relations', 'clients'));
         } else {
-            abort(401);
+            abort(404);
         }
     }
 
@@ -72,12 +72,17 @@ class ClientFamilyController extends Controller
     {
         $clientFamily = $this->clientFamilyService->find($id);
         $this->clientFamilyService->update($clientFamily, $request->validated());
-        return redirect()->route('client-families.index')->with('success', 'Client family member updated successfully');
+        return redirect()->route('client-families.index', ['client_id' => $clientFamily->client_id])->with('success', 'Client family member updated successfully');
     }
 
-    public function destroy($id)
+    public function destroy($id, Request $request)
     {
-        $this->clientFamilyService->delete($id);
-        return redirect()->route('client-families.index')->with('success', 'Client family member deleted successfully');
+        if($client_id = $request->client_id) {
+            $this->clientFamilyService->delete($id);
+            return redirect()->route('client-families.index', ['client_id' => $client_id])->with('success', 'Client family member deleted successfully');
+        } else {
+            abort(404);
+        }
+
     }
 }
