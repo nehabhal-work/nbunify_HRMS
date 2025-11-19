@@ -88,7 +88,7 @@
                                                         method="post" onsubmit="return confirmDelete()">
                                                         @csrf
                                                         @method('DELETE')
-
+                                                        <input type="hidden" name="client_id" value="{{ $d->client_id }}">
                                                         <button type="submit" class="dropdown-item text-danger delete-btn"
                                                             data-id="{{ $d->id }}">
                                                             <i class="bx bx-trash me-1"></i> Delete

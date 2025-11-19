@@ -26,9 +26,11 @@
     <h4 class="fw-bold py-3 mb-4">
         <span class="text-muted fw-light">Family /</span> <a href="">Edit Family Member</a>
     </h4>
-    {{ $clientFamily }}
+    {{-- {{ $clientFamily }} --}}
     <a href="{{ route('client-families.index', ['client_id' => $clientFamily->client_id]) }}"
         class="btn btn-secondary px-4">Back</a>
+
+
     <form action="{{ route('client-families.update', $clientFamily->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
