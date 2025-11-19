@@ -120,7 +120,6 @@
                                 <label class="form-label" for="marital_status">Marital Status</label>
                                 <select class="form-select @error('marital_status') is-invalid @enderror"
                                     id="marital_status" name="marital_status">
-                                    <option value="">Select</option>
                                     <option value="single" {{ old('marital_status') == 'single' ? 'selected' : '' }}>Single
                                     </option>
                                     <option value="married" {{ old('marital_status') == 'married' ? 'selected' : '' }}>
@@ -143,7 +142,6 @@
                                 <label class="form-label" for="nationality">Nationality</label>
                                 <select class="form-select @error('nationality') is-invalid @enderror" id="nationality"
                                     name="nationality">
-                                    <option value="">Select</option>
                                     <option value="ri" {{ old('nationality') == 'ri' ? 'selected' : '' }}>Residential
                                         Individual</option>
                                     <option value="nro" {{ old('nationality') == 'nro' ? 'selected' : '' }}>NRO</option>
@@ -296,7 +294,7 @@
 
 
                             {{-- Relation Manager --}}
-                            <div class="col-md-3 mb-3">
+                            <div class="col-md-3 mb-3 d-none">
                                 <label for="relation_manager" class="form-label">Relation /account Manager</label>
                                 <select name="relation_manager_id" id="relation_manager" class="form-select">
                                     <option value="">Select Relation Manager</option>
@@ -562,7 +560,7 @@
 
 
             {{-- Image Section --}}
-            <div class="col-md-6 d-flex">
+            <div id="divImageSection" class="col-md-6 d-flex">
                 <div class="card mb-4">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="mb-0">Image Section</h5>

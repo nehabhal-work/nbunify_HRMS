@@ -93,7 +93,7 @@
 
                             <!-- Establishment Date -->
                             <div class="col-md-2 mb-3">
-                                <label class="form-label">Establishment Date</label>                         
+                                <label class="form-label">Establishment Date</label>
                                 <input type="text" name="est_date" id="est_date"
                                     class="form-control datepicker @error('est_date') is-invalid @enderror"
                                     value="{{ old('est_date') }}" placeholder="Select Date" readonly>
@@ -488,7 +488,7 @@
 
 
 
-            <div class="col-md-6 d-flex">
+            <div id="divImageSection" class="col-md-6 d-flex">
                 <div class="card mb-4">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="mb-0">Image Section</h5>
@@ -505,174 +505,342 @@
                                 <label class="form-label">Logo Attachment</label>
                                 <div class="input-group">
                                     <input type="file" class="form-control @error('logo') is-invalid @enderror"
-                                        id="logo" name="logo" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
+                                        id="logo" name="logo" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                                        onchange="uploadTempFile(this, 'logo')">
                                     <button class="btn btn-outline-danger" type="button"
                                         onclick="document.getElementById('logo').value = ''">✕</button>
                                 </div>
                                 @error('logo')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
+
+                                <input type="hidden" id="logo_url" value="{{ old('logo_url') }}" name="logo_url">
+
+                                @if (old('logo_url'))
+                                    <div id="logo_preview" class="position-relative d-inline-block">
+                                        <img src="{{ old('logo_url') }}" width="100" class="rounded">
+
+                                        <!-- Remove (X) button -->
+                                        <button type="button"
+                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                                            onclick="removeImage('logo_url')">
+                                            ✕
+                                        </button>
+                                    </div>
+                                @endif
                             </div>
+
+
+                            {{-- Aadhar Attachment --}}
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Aadhar Attachment</label>
                                 <div class="input-group">
                                     <input type="file"
                                         class="form-control @error('attachment_aadhar') is-invalid @enderror"
                                         id="attachment_aadhar" name="attachment_aadhar"
-                                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
+                                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                                        onchange="uploadTempFile(this, 'attachment_aadhar')">
                                     <button class="btn btn-outline-danger" type="button"
                                         onclick="document.getElementById('attachment_aadhar').value = ''">✕</button>
                                 </div>
                                 @error('attachment_aadhar')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
+
+                                <input type="hidden" id="attachment_aadhar_url"
+                                    value="{{ old('attachment_aadhar_url') }}" name="attachment_aadhar_url">
+
+                                @if (old('attachment_aadhar_url'))
+                                    <div id="attachment_aadhar_preview" class="position-relative d-inline-block">
+                                        <img src="{{ old('attachment_aadhar_url') }}" width="100" class="rounded">
+
+                                        <!-- Remove (X) button -->
+                                        <button type="button"
+                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                                            onclick="removeImage('attachment_aadhar')">
+                                            ✕
+                                        </button>
+                                    </div>
+                                @endif
                             </div>
+
+
+                            {{-- PAN Attachment --}}
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">PAN Attachment</label>
                                 <div class="input-group">
                                     <input type="file"
                                         class="form-control @error('attachment_pan') is-invalid @enderror"
                                         id="attachment_pan" name="attachment_pan"
-                                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
+                                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                                        onchange="uploadTempFile(this, 'attachment_pan')">
                                     <button class="btn btn-outline-danger" type="button"
                                         onclick="document.getElementById('attachment_pan').value = ''">✕</button>
                                 </div>
                                 @error('attachment_pan')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
+
+                                <input type="hidden" id="attachment_pan_url" value="{{ old('attachment_pan_url') }}"
+                                    name="attachment_pan_url">
+
+                                @if (old('attachment_pan_url'))
+                                    <div id="attachment_pan_preview" class="position-relative d-inline-block">
+                                        <img src="{{ old('attachment_pan_url') }}" width="100" class="rounded">
+
+                                        <!-- Remove (X) button -->
+                                        <button type="button"
+                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                                            onclick="removeImage('attachment_pan')">
+                                            ✕
+                                        </button>
+                                    </div>
+                                @endif
                             </div>
 
 
+                            {{-- TAN Attachment --}}
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">TAN Attachment</label>
                                 <div class="input-group">
                                     <input type="file"
                                         class="form-control @error('attachment_tan') is-invalid @enderror"
                                         id="attachment_tan" name="attachment_tan"
-                                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
+                                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                                        onchange="uploadTempFile(this, 'attachment_tan')">
                                     <button class="btn btn-outline-danger" type="button"
                                         onclick="document.getElementById('attachment_tan').value = ''">✕</button>
                                 </div>
                                 @error('attachment_tan')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
+
+                                <input type="hidden" id="attachment_tan_url" value="{{ old('attachment_tan_url') }}"
+                                    name="attachment_tan_url">
+
+                                @if (old('attachment_tan_url'))
+                                    <div id="attachment_tan_preview" class="position-relative d-inline-block">
+                                        <img src="{{ old('attachment_tan_url') }}" width="100" class="rounded">
+
+                                        <!-- Remove (X) button -->
+                                        <button type="button"
+                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                                            onclick="removeImage('attachment_tan')">
+                                            ✕
+                                        </button>
+                                    </div>
+                                @endif
                             </div>
 
 
 
+                            {{-- GSTIN Attachment --}}
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">GSTIN Attachment</label>
                                 <div class="input-group">
                                     <input type="file"
                                         class="form-control @error('attachment_gstin') is-invalid @enderror"
                                         id="attachment_gstin" name="attachment_gstin"
-                                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
+                                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                                        onchange="uploadTempFile(this, 'attachment_gstin')">
                                     <button class="btn btn-outline-danger" type="button"
                                         onclick="document.getElementById('attachment_gstin').value = ''">✕</button>
                                 </div>
                                 @error('attachment_gstin')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
+
+                                <input type="hidden" id="attachment_gstin_url"
+                                    value="{{ old('attachment_gstin_url') }}" name="attachment_gstin_url">
+
+                                @if (old('attachment_gstin_url'))
+                                    <div id="attachment_gstin_preview" class="position-relative d-inline-block">
+                                        <img src="{{ old('attachment_gstin_url') }}" width="100" class="rounded">
+
+                                        <!-- Remove (X) button -->
+                                        <button type="button"
+                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                                            onclick="removeImage('attachment_gstin')">
+                                            ✕
+                                        </button>
+                                    </div>
+                                @endif
                             </div>
 
+
+                            {{-- CKYC Attachment --}}
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">CKYC Attachment</label>
                                 <div class="input-group">
                                     <input type="file"
                                         class="form-control @error('attachment_ckyc') is-invalid @enderror"
                                         id="attachment_ckyc" name="attachment_ckyc"
-                                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
+                                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                                        onchange="uploadTempFile(this, 'attachment_ckyc')">
                                     <button class="btn btn-outline-danger" type="button"
                                         onclick="document.getElementById('attachment_ckyc').value = ''">✕</button>
                                 </div>
                                 @error('attachment_ckyc')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
+
+                                <input type="hidden" id="attachment_ckyc" value="{{ old('attachment_ckyc') }}"
+                                    name="attachment_ckyc">
+
+                                @if (old('attachment_ckyc'))
+                                    <div id="attachment_ckyc_preview" class="position-relative d-inline-block">
+                                        <img src="{{ old('attachment_ckyc') }}" width="100" class="rounded">
+
+                                        <!-- Remove (X) button -->
+                                        <button type="button"
+                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                                            onclick="removeImage('attachment_ckyc')">
+                                            ✕
+                                        </button>
+                                    </div>
+                                @endif
                             </div>
 
+                            {{-- Partnership Deed --}}
                             <div class="col-md-6 mb-3 d-none">
                                 <label class="form-label">Partnership Deed</label>
                                 <div class="input-group">
                                     <input type="file"
                                         class="form-control @error('attachment_partnership_deed') is-invalid @enderror"
                                         id="attachment_partnership_deed" name="attachment_partnership_deed"
-                                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
+                                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                                        onchange="uploadTempFile(this, 'attachment_partnership_deed')">
                                     <button class="btn btn-outline-danger" type="button"
                                         onclick="document.getElementById('attachment_partnership_deed').value = ''">✕</button>
                                 </div>
                                 @error('attachment_partnership_deed')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
+
+                                <input type="hidden" id="attachment_partnership_deed_url"
+                                    value="{{ old('attachment_partnership_deed_url') }}"
+                                    name="attachment_partnership_deed_url">
+
+                                @if (old('attachment_partnership_deed_url'))
+                                    <div id="attachment_partnership_deed_preview"
+                                        class="position-relative d-inline-block">
+                                        <img src="{{ old('attachment_partnership_deed_url') }}" width="100"
+                                            class="rounded">
+
+                                        <!-- Remove (X) button -->
+                                        <button type="button"
+                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                                            onclick="removeImage('attachment_partnership_deed')">
+                                            ✕
+                                        </button>
+                                    </div>
+                                @endif
                             </div>
 
+
+                            {{-- Udyam Aadhar --}}
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Udyam Aadhar</label>
                                 <div class="input-group">
                                     <input type="file"
                                         class="form-control @error('attachment_udyam_aadhar') is-invalid @enderror"
                                         id="attachment_udyam_aadhar" name="attachment_udyam_aadhar"
-                                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
+                                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                                        onchange="uploadTempFile(this, 'attachment_udyam_aadhar')">
                                     <button class="btn btn-outline-danger" type="button"
                                         onclick="document.getElementById('attachment_udyam_aadhar').value = ''">✕</button>
                                 </div>
                                 @error('attachment_udyam_aadhar')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
+
+                                <input type="hidden" id="attachment_udyam_aadhar_url"
+                                    value="{{ old('attachment_udyam_aadhar_url') }}" name="attachment_udyam_aadhar_url">
+
+                                @if (old('attachment_udyam_aadhar_url'))
+                                    <div id="attachment_udyam_aadhar_preview" class="position-relative d-inline-block">
+                                        <img src="{{ old('attachment_udyam_aadhar_url') }}" width="100"
+                                            class="rounded">
+
+                                        <!-- Remove (X) button -->
+                                        <button type="button"
+                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                                            onclick="removeImage('attachment_udyam_aadhar')">
+                                            ✕
+                                        </button>
+                                    </div>
+                                @endif
                             </div>
 
+
+                            {{-- Gumasta License --}}
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Gumasta License</label>
                                 <div class="input-group">
                                     <input type="file"
                                         class="form-control @error('attachment_gumasta') is-invalid @enderror"
                                         id="attachment_gumasta" name="attachment_gumasta"
-                                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
+                                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                                        onchange="uploadTempFile(this, 'attachment_gumasta')">
                                     <button class="btn btn-outline-danger" type="button"
                                         onclick="document.getElementById('attachment_gumasta').value = ''">✕</button>
                                 </div>
                                 @error('attachment_gumasta')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
+
+                                <input type="hidden" id="attachment_gumasta_url"
+                                    value="{{ old('attachment_gumasta_url') }}" name="attachment_gumasta_url">
+
+                                @if (old('attachment_gumasta_url'))
+                                    <div id="attachment_gumasta_preview" class="position-relative d-inline-block">
+                                        <img src="{{ old('attachment_gumasta_url') }}" width="100" class="rounded">
+
+                                        <!-- Remove (X) button -->
+                                        <button type="button"
+                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                                            onclick="removeImage('attachment_gumasta')">
+                                            ✕
+                                        </button>
+                                    </div>
+                                @endif
                             </div>
 
-                            {{-- <div class="col-md-6 mb-3">
-                                <label class="form-label">MSME Certificate</label>
-                                <div class="input-group">
-                                    <input type="file"
-                                        class="form-control @error('attachment_msme') is-invalid @enderror"
-                                        id="attachment_msme" name="attachment_msme"
-                                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
-                                    <button class="btn btn-outline-danger" type="button"
-                                        onclick="document.getElementById('attachment_msme').value = ''">✕</button>
-                                </div>
-                                @error('attachment_msme')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div> --}}
 
+                            {{-- MSME Certificate --}}
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">MSME Certificate</label>
                                 <div class="input-group">
                                     <input type="file"
                                         class="form-control @error('attachment_msme') is-invalid @enderror"
                                         id="attachment_msme" name="attachment_msme"
-                                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
+                                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                                        onchange="uploadTempFile(this, 'attachment_msme')">
 
                                     <button class="btn btn-outline-danger" type="button"
                                         onclick="document.getElementById('attachment_msme').value = ''">✕</button>
                                 </div>
 
-                                @if (session('temp_msme'))
-                                    <div class="mt-2">
-                                        <strong>Previously selected file:</strong>
-                                        <a href="{{ asset('storage/' . session('temp_msme')) }}" target="_blank">View
-                                            File</a>
-                                    </div>
-                                @endif
 
                                 @error('attachment_msme')
                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                 @enderror
+
+                                <input type="hidden" id="attachment_msme_url" value="{{ old('attachment_msme_url') }}"
+                                    name="attachment_msme_url">
+
+                                @if (old('attachment_msme_url'))
+                                    <div id="attachment_msme_preview" class="position-relative d-inline-block">
+                                        <img src="{{ old('attachment_msme_url') }}" width="100" class="rounded">
+
+                                        <!-- Remove (X) button -->
+                                        <button type="button"
+                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                                            onclick="removeImage('attachment_msme')">
+                                            ✕
+                                        </button>
+                                    </div>
+                                @endif
                             </div>
 
 
@@ -731,7 +899,8 @@
                                                 {{ old('banks.0.account_type') == 'current' ? 'selected' : '' }}>Current
                                                 Account</option>
                                             <option value="od_cc"
-                                                {{ old('banks.0.account_type') == 'od_cc' ? 'selected' : '' }}>Overdraft/CC
+                                                {{ old('banks.0.account_type') == 'od_cc' ? 'selected' : '' }}>
+                                                Overdraft/CC
                                             </option>
                                             <option value="nre"
                                                 {{ old('banks.0.account_type') == 'nre' ? 'selected' : '' }}>NRE</option>

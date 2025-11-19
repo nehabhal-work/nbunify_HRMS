@@ -336,6 +336,7 @@ function removeImage(fieldName) {
 
     // Clear the preview wrapper (image + button)
     $("#" + fieldName + "_preview").html("");
+    $("#" + fieldName + "_previews").html("");
 }
 
 

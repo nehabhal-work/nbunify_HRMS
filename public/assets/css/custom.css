@@ -16,3 +16,8 @@ input[type="email"] {
 h6 {
     color: #BC13BE;
 }
+
+#divImageSection img {
+    width: 100px;
+    height: 100px;
+}
