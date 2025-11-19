@@ -54,7 +54,7 @@ class CompanyService
         if($mode == 'A') {
             foreach ($fileFields as $field) {
                 if (isset($data[$field . '_url'])) {
-                    $data[$field] = $this->fileStorageService->storeClientDocument(
+                    $data[$field] = $this->fileStorageService->storeCompanyDocument(
                         $company->id,
                         $data[$field . '_url'],
                         str_replace('attachment_', '', $field)
@@ -68,7 +68,7 @@ class CompanyService
                         if ($company && $company->$field) {
                             $this->fileStorageService->deleteFile($company->$field);
                         }
-                        $data[$field] = $this->fileStorageService->storeClientDocument(
+                        $data[$field] = $this->fileStorageService->storeCompanyDocument(
                             $company->id,
                             $data[$field . '_url'],
                             str_replace('attachment_', '', $field)

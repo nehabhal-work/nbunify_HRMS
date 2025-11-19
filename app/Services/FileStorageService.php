@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Jobs\StoreExtClientFileJob;
 use App\Jobs\StoreFileJob;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Http;
@@ -24,6 +25,15 @@ class FileStorageService
         $filename = Str::uuid() . '.' . $extension;
         $path = "clients/{$clientId}/{$type}/{$filename}";
         StoreFileJob::dispatch($tempUrl, $path);
+        return $path;
+    }
+
+    public function storeExternalClientDocument(int $clientId, string $tempUrl, string $type = 'general'): string
+    {
+        $extension = pathinfo(parse_url($tempUrl, PHP_URL_PATH), PATHINFO_EXTENSION) ?: 'tmp';
+        $filename = Str::uuid() . '.' . $extension;
+        $path = "clients/{$clientId}/{$type}/{$filename}";
+        StoreExtClientFileJob::dispatch($tempUrl, $path, $clientId, 'attachment_' . $type);
         return $path;
     }
 
