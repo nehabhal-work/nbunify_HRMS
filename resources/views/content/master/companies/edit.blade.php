@@ -488,7 +488,8 @@
 
 
 
-            <div class="col-md-6 d-flex">
+            {{-- Image Section --}}
+            <div id="divImageSection" class="col-md-6 d-flex">
                 <div class="card mb-4">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="mb-0">Image Section</h5>
@@ -497,437 +498,463 @@
                     <div class="card-body">
                         <div class="row">
 
-                            {{-- LOGO --}}
+
+                            <!-- File Upload: Company images -->
+
+
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Logo Attachment</label>
-
-                                <div class="input-group mt-1">
+                                <div class="input-group">
                                     <input type="file" class="form-control @error('logo') is-invalid @enderror"
                                         id="logo" name="logo" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
                                         onchange="uploadTempFile(this, 'logo')">
                                     <button class="btn btn-outline-danger" type="button"
-                                        onclick="removeImage('logo')">✕</button>
+                                        onclick="document.getElementById('logo').value = ''">✕</button>
                                 </div>
                                 @error('logo')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
 
-                                {{-- hidden temp/url field --}}
-                                <input type="hidden" id="logo_url" name="logo_url"
-                                    value="{{ old('logo_url', $company->logo_url ?? '') }}">
+                                <input type="hidden" id="logo_url" value="{{ old('logo_url') }}" name="logo_url">
 
-                                {{-- preview / view --}}
-                                @if (old('logo_url'))
-                                    <div id="logo_preview" class="position-relative d-inline-block mt-2">
-                                        <a href="{{ old('logo_url') }}" target="_blank">
-                                            <img src="{{ old('logo_url') }}" width="80" class="rounded">
-                                        </a>
+                                @if ($company->logo_url)
+                                    <div id="logo_previews" class="position-relative d-inline-block">
+                                        <img src="{{ $company->logo_url }}" class="rounded">
+
+                                        <!-- Remove (X) button -->
                                         <button type="button"
                                             class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
-                                            onclick="removeImage('logo')">✕</button>
+                                            onclick="removeImage('logo_url')">
+                                            ✕
+                                        </button>
                                     </div>
-                                @elseif (!empty($company->logo_url))
-                                    <div id="logo_preview" class="position-relative d-inline-block mt-2">
-                                        <a href="{{ $company->logo_url }}" target="_blank">
-                                            <img src="{{ $company->logo_url }}" width="80" class="rounded">
-                                        </a>
+                                @elseif (old('logo_url'))
+                                    <div id="logo_preview" class="position-relative d-inline-block">
+                                        <img src="{{ old('logo_url') }}" class="rounded">
+
+                                        <!-- Remove (X) button -->
                                         <button type="button"
                                             class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
-                                            onclick="removeImage('logo')">✕</button>
+                                            onclick="removeImage('logo_url')">
+                                            ✕
+                                        </button>
                                     </div>
                                 @endif
                             </div>
 
-                            {{-- AADHAR --}}
+
+                            {{-- Aadhar Attachment --}}
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Aadhar Attachment</label>
-
-                                <div class="input-group mt-1">
+                                <div class="input-group">
                                     <input type="file"
                                         class="form-control @error('attachment_aadhar') is-invalid @enderror"
                                         id="attachment_aadhar" name="attachment_aadhar"
                                         accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
                                         onchange="uploadTempFile(this, 'attachment_aadhar')">
                                     <button class="btn btn-outline-danger" type="button"
-                                        onclick="removeImage('attachment_aadhar')">✕</button>
+                                        onclick="document.getElementById('attachment_aadhar').value = ''">✕</button>
                                 </div>
                                 @error('attachment_aadhar')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
 
-                                <input type="hidden" id="attachment_aadhar_url" name="attachment_aadhar_url"
-                                    value="{{ old('attachment_aadhar_url', $company->attachment_aadhar_url ?? '') }}">
+                                <input type="hidden" id="attachment_aadhar_url"
+                                    value="{{ old('attachment_aadhar_url') }}" name="attachment_aadhar_url">
 
-                                @if (old('attachment_aadhar_url'))
-                                    <div id="attachment_aadhar_preview" class="position-relative d-inline-block mt-2">
-                                        <a href="{{ old('attachment_aadhar_url') }}" target="_blank">
-                                            <img src="{{ old('attachment_aadhar_url') }}" width="80"
-                                                class="rounded">
-                                        </a>
+                                @if ($company->attachment_aadhar_url)
+                                    <div id="attachment_aadhar_preview" class="position-relative d-inline-block">
+                                        <img src="{{ $company->attachment_aadhar_url }}" class="rounded">
+
+                                        <!-- Remove (X) button -->
                                         <button type="button"
                                             class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
-                                            onclick="removeImage('attachment_aadhar')">✕</button>
+                                            onclick="removeImage('attachment_aadhar')">
+                                            ✕
+                                        </button>
                                     </div>
-                                @elseif (!empty($company->attachment_aadhar_url))
-                                    <div id="attachment_aadhar_preview" class="position-relative d-inline-block mt-2">
-                                        <a href="{{ $company->attachment_aadhar_url }}" target="_blank">
-                                            <img src="{{ $company->attachment_aadhar_url }}" width="80"
-                                                class="rounded">
-                                        </a>
+                                @elseif (old('attachment_aadhar_url'))
+                                    <div id="attachment_aadhar_preview" class="position-relative d-inline-block">
+                                        <img src="{{ old('attachment_aadhar_url') }}" class="rounded">
+
+                                        <!-- Remove (X) button -->
                                         <button type="button"
                                             class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
-                                            onclick="removeImage('attachment_aadhar')">✕</button>
+                                            onclick="removeImage('attachment_aadhar')">
+                                            ✕
+                                        </button>
                                     </div>
                                 @endif
                             </div>
 
-                            {{-- PAN --}}
+
+                            {{-- PAN Attachment --}}
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">PAN Attachment</label>
-
-                                <div class="input-group mt-1">
+                                <div class="input-group">
                                     <input type="file"
                                         class="form-control @error('attachment_pan') is-invalid @enderror"
                                         id="attachment_pan" name="attachment_pan"
                                         accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
                                         onchange="uploadTempFile(this, 'attachment_pan')">
                                     <button class="btn btn-outline-danger" type="button"
-                                        onclick="removeImage('attachment_pan')">✕</button>
+                                        onclick="document.getElementById('attachment_pan').value = ''">✕</button>
                                 </div>
                                 @error('attachment_pan')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
 
-                                <input type="hidden" id="attachment_pan_url" name="attachment_pan_url"
-                                    value="{{ old('attachment_pan_url', $company->attachment_pan_url ?? '') }}">
+                                <input type="hidden" id="attachment_pan_url" value="{{ old('attachment_pan_url') }}"
+                                    name="attachment_pan_url">
 
-                                @if (old('attachment_pan_url'))
-                                    <div id="attachment_pan_preview" class="position-relative d-inline-block mt-2">
-                                        <a href="{{ old('attachment_pan_url') }}" target="_blank">
-                                            <img src="{{ old('attachment_pan_url') }}" width="80" class="rounded">
-                                        </a>
+                                @if ($company->attachment_pan_url)
+                                    <div id="attachment_pan_preview" class="position-relative d-inline-block">
+                                        <img src="{{ $company->attachment_pan_url }}" class="rounded">
+
+                                        <!-- Remove (X) button -->
                                         <button type="button"
                                             class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
-                                            onclick="removeImage('attachment_pan')">✕</button>
+                                            onclick="removeImage('attachment_pan')">
+                                            ✕
+                                        </button>
                                     </div>
-                                @elseif (!empty($company->attachment_pan_url))
-                                    <div id="attachment_pan_preview" class="position-relative d-inline-block mt-2">
-                                        <a href="{{ $company->attachment_pan_url }}" target="_blank">
-                                            <img src="{{ $company->attachment_pan_url }}" width="80"
-                                                class="rounded">
-                                        </a>
+                                @elseif (old('attachment_pan_url'))
+                                    <div id="attachment_pan_preview" class="position-relative d-inline-block">
+                                        <img src="{{ old('attachment_pan_url') }}" class="rounded">
+
+                                        <!-- Remove (X) button -->
                                         <button type="button"
                                             class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
-                                            onclick="removeImage('attachment_pan')">✕</button>
+                                            onclick="removeImage('attachment_pan')">
+                                            ✕
+                                        </button>
                                     </div>
                                 @endif
                             </div>
 
-                            {{-- TAN --}}
+
+                            {{-- TAN Attachment --}}
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">TAN Attachment</label>
-
-                                <div class="input-group mt-1">
+                                <div class="input-group">
                                     <input type="file"
                                         class="form-control @error('attachment_tan') is-invalid @enderror"
                                         id="attachment_tan" name="attachment_tan"
                                         accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
                                         onchange="uploadTempFile(this, 'attachment_tan')">
                                     <button class="btn btn-outline-danger" type="button"
-                                        onclick="removeImage('attachment_tan')">✕</button>
+                                        onclick="document.getElementById('attachment_tan').value = ''">✕</button>
                                 </div>
                                 @error('attachment_tan')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
 
-                                <input type="hidden" id="attachment_tan_url" name="attachment_tan_url"
-                                    value="{{ old('attachment_tan_url', $company->attachment_tan_url ?? '') }}">
+                                <input type="hidden" id="attachment_tan_url" value="{{ old('attachment_tan_url') }}"
+                                    name="attachment_tan_url">
 
-                                @if (old('attachment_tan_url'))
-                                    <div id="attachment_tan_preview" class="position-relative d-inline-block mt-2">
-                                        <a href="{{ old('attachment_tan_url') }}" target="_blank">
-                                            <img src="{{ old('attachment_tan_url') }}" width="80" class="rounded">
-                                        </a>
+                                @if ($company->attachment_tan_url)
+                                    <div id="attachment_tan_preview" class="position-relative d-inline-block">
+                                        <img src="{{ $company->attachment_tan_url }}" class="rounded">
+
+                                        <!-- Remove (X) button -->
                                         <button type="button"
                                             class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
-                                            onclick="removeImage('attachment_tan')">✕</button>
+                                            onclick="removeImage('attachment_tan')">
+                                            ✕
+                                        </button>
                                     </div>
-                                @elseif (!empty($company->attachment_tan_url))
-                                    <div id="attachment_tan_preview" class="position-relative d-inline-block mt-2">
-                                        <a href="{{ $company->attachment_tan_url }}" target="_blank">
-                                            <img src="{{ $company->attachment_tan_url }}" width="80"
-                                                class="rounded">
-                                        </a>
+                                @elseif (old('attachment_tan_url'))
+                                    <div id="attachment_tan_preview" class="position-relative d-inline-block">
+                                        <img src="{{ old('attachment_tan_url') }}" class="rounded">
+
+                                        <!-- Remove (X) button -->
                                         <button type="button"
                                             class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
-                                            onclick="removeImage('attachment_tan')">✕</button>
+                                            onclick="removeImage('attachment_tan')">
+                                            ✕
+                                        </button>
                                     </div>
                                 @endif
                             </div>
 
-                            {{-- GSTIN --}}
+
+
+                            {{-- GSTIN Attachment --}}
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">GSTIN Attachment</label>
-
-                                <div class="input-group mt-1">
+                                <div class="input-group">
                                     <input type="file"
                                         class="form-control @error('attachment_gstin') is-invalid @enderror"
                                         id="attachment_gstin" name="attachment_gstin"
                                         accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
                                         onchange="uploadTempFile(this, 'attachment_gstin')">
                                     <button class="btn btn-outline-danger" type="button"
-                                        onclick="removeImage('attachment_gstin')">✕</button>
+                                        onclick="document.getElementById('attachment_gstin').value = ''">✕</button>
                                 </div>
                                 @error('attachment_gstin')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
 
-                                <input type="hidden" id="attachment_gstin_url" name="attachment_gstin_url"
-                                    value="{{ old('attachment_gstin_url', $company->attachment_gstin_url ?? '') }}">
+                                <input type="hidden" id="attachment_gstin_url"
+                                    value="{{ old('attachment_gstin_url') }}" name="attachment_gstin_url">
 
-                                @if (old('attachment_gstin_url'))
-                                    <div id="attachment_gstin_preview" class="position-relative d-inline-block mt-2">
-                                        <a href="{{ old('attachment_gstin_url') }}" target="_blank">
-                                            <img src="{{ old('attachment_gstin_url') }}" width="80"
-                                                class="rounded">
-                                        </a>
+                                @if ($company->attachment_gstin_url)
+                                    <div id="attachment_gstin_preview" class="position-relative d-inline-block">
+                                        <img src="{{ $company->attachment_gstin_url }}" class="rounded">
+
+                                        <!-- Remove (X) button -->
                                         <button type="button"
                                             class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
-                                            onclick="removeImage('attachment_gstin')">✕</button>
+                                            onclick="removeImage('attachment_gstin')">
+                                            ✕
+                                        </button>
                                     </div>
-                                @elseif (!empty($company->attachment_gstin_url))
-                                    <div id="attachment_gstin_preview" class="position-relative d-inline-block mt-2">
-                                        <a href="{{ $company->attachment_gstin_url }}" target="_blank">
-                                            <img src="{{ $company->attachment_gstin_url }}" width="80"
-                                                class="rounded">
-                                        </a>
+                                @elseif (old('attachment_gstin_url'))
+                                    <div id="attachment_gstin_preview" class="position-relative d-inline-block">
+                                        <img src="{{ old('attachment_gstin_url') }}" class="rounded">
+
+                                        <!-- Remove (X) button -->
                                         <button type="button"
                                             class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
-                                            onclick="removeImage('attachment_gstin')">✕</button>
+                                            onclick="removeImage('attachment_gstin')">
+                                            ✕
+                                        </button>
                                     </div>
                                 @endif
                             </div>
 
-                            {{-- CKYC --}}
+
+                            {{-- CKYC Attachment --}}
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">CKYC Attachment</label>
-
-                                <div class="input-group mt-1">
+                                <div class="input-group">
                                     <input type="file"
                                         class="form-control @error('attachment_ckyc') is-invalid @enderror"
                                         id="attachment_ckyc" name="attachment_ckyc"
                                         accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
                                         onchange="uploadTempFile(this, 'attachment_ckyc')">
                                     <button class="btn btn-outline-danger" type="button"
-                                        onclick="removeImage('attachment_ckyc')">✕</button>
+                                        onclick="document.getElementById('attachment_ckyc').value = ''">✕</button>
                                 </div>
                                 @error('attachment_ckyc')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
 
-                                <input type="hidden" id="attachment_ckyc_url" name="attachment_ckyc_url"
-                                    value="{{ old('attachment_ckyc_url', $company->attachment_ckyc_url ?? '') }}">
+                                <input type="hidden" id="attachment_ckyc" value="{{ old('attachment_ckyc') }}"
+                                    name="attachment_ckyc">
 
-                                @if (old('attachment_ckyc_url'))
-                                    <div id="attachment_ckyc_preview" class="position-relative d-inline-block mt-2">
-                                        <a href="{{ old('attachment_ckyc_url') }}" target="_blank">
-                                            <img src="{{ old('attachment_ckyc_url') }}" width="80" class="rounded">
-                                        </a>
+                                @if ($company->attachment_ckyc)
+                                    <div id="attachment_ckyc_preview" class="position-relative d-inline-block">
+                                        <img src="{{ $company->attachment_ckyc }}" class="rounded">
+
+                                        <!-- Remove (X) button -->
                                         <button type="button"
                                             class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
-                                            onclick="removeImage('attachment_ckyc')">✕</button>
+                                            onclick="removeImage('attachment_ckyc')">
+                                            ✕
+                                        </button>
                                     </div>
-                                @elseif (!empty($company->attachment_ckyc_url))
-                                    <div id="attachment_ckyc_preview" class="position-relative d-inline-block mt-2">
-                                        <a href="{{ $company->attachment_ckyc_url }}" target="_blank">
-                                            <img src="{{ $company->attachment_ckyc_url }}" width="80"
-                                                class="rounded">
-                                        </a>
+                                @elseif (old('attachment_ckyc'))
+                                    <div id="attachment_ckyc_preview" class="position-relative d-inline-block">
+                                        <img src="{{ old('attachment_ckyc') }}" class="rounded">
+
+                                        <!-- Remove (X) button -->
                                         <button type="button"
                                             class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
-                                            onclick="removeImage('attachment_ckyc')">✕</button>
+                                            onclick="removeImage('attachment_ckyc')">
+                                            ✕
+                                        </button>
                                     </div>
                                 @endif
                             </div>
 
-                            {{-- Partnership Deed (hidden) --}}
+                            {{-- Partnership Deed --}}
                             <div class="col-md-6 mb-3 d-none">
                                 <label class="form-label">Partnership Deed</label>
-
-                                <div class="input-group mt-1">
+                                <div class="input-group">
                                     <input type="file"
                                         class="form-control @error('attachment_partnership_deed') is-invalid @enderror"
                                         id="attachment_partnership_deed" name="attachment_partnership_deed"
                                         accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
                                         onchange="uploadTempFile(this, 'attachment_partnership_deed')">
                                     <button class="btn btn-outline-danger" type="button"
-                                        onclick="removeImage('attachment_partnership_deed')">✕</button>
+                                        onclick="document.getElementById('attachment_partnership_deed').value = ''">✕</button>
                                 </div>
                                 @error('attachment_partnership_deed')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
 
                                 <input type="hidden" id="attachment_partnership_deed_url"
-                                    name="attachment_partnership_deed_url"
-                                    value="{{ old('attachment_partnership_deed_url', $company->attachment_partnership_deed_url ?? '') }}">
+                                    value="{{ old('attachment_partnership_deed_url') }}"
+                                    name="attachment_partnership_deed_url">
 
-                                @if (old('attachment_partnership_deed_url'))
+                                @if ($company->attachment_partnership_deed_url)
                                     <div id="attachment_partnership_deed_preview"
-                                        class="position-relative d-inline-block mt-2">
-                                        <a href="{{ old('attachment_partnership_deed_url') }}" target="_blank">
-                                            <img src="{{ old('attachment_partnership_deed_url') }}" width="80"
-                                                class="rounded">
-                                        </a>
+                                        class="position-relative d-inline-block">
+                                        <img src="{{ $company->attachment_partnership_deed_url }}" class="rounded">
+
+                                        <!-- Remove (X) button -->
                                         <button type="button"
                                             class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
-                                            onclick="removeImage('attachment_partnership_deed')">✕</button>
+                                            onclick="removeImage('attachment_partnership_deed')">
+                                            ✕
+                                        </button>
                                     </div>
-                                @elseif (!empty($company->attachment_partnership_deed_url))
+                                @elseif (old('attachment_partnership_deed_url'))
                                     <div id="attachment_partnership_deed_preview"
-                                        class="position-relative d-inline-block mt-2">
-                                        <a href="{{ $company->attachment_partnership_deed_url }}" target="_blank">
-                                            <img src="{{ $company->attachment_partnership_deed_url }}" width="80"
-                                                class="rounded">
-                                        </a>
+                                        class="position-relative d-inline-block">
+                                        <img src="{{ old('attachment_partnership_deed_url') }}" class="rounded">
+
+                                        <!-- Remove (X) button -->
                                         <button type="button"
                                             class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
-                                            onclick="removeImage('attachment_partnership_deed')">✕</button>
+                                            onclick="removeImage('attachment_partnership_deed')">
+                                            ✕
+                                        </button>
                                     </div>
                                 @endif
                             </div>
 
+
                             {{-- Udyam Aadhar --}}
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Udyam Aadhar</label>
-
-                                <div class="input-group mt-1">
+                                <div class="input-group">
                                     <input type="file"
                                         class="form-control @error('attachment_udyam_aadhar') is-invalid @enderror"
                                         id="attachment_udyam_aadhar" name="attachment_udyam_aadhar"
                                         accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
                                         onchange="uploadTempFile(this, 'attachment_udyam_aadhar')">
                                     <button class="btn btn-outline-danger" type="button"
-                                        onclick="removeImage('attachment_udyam_aadhar')">✕</button>
+                                        onclick="document.getElementById('attachment_udyam_aadhar').value = ''">✕</button>
                                 </div>
                                 @error('attachment_udyam_aadhar')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
 
-                                <input type="hidden" id="attachment_udyam_aadhar_url" name="attachment_udyam_aadhar_url"
-                                    value="{{ old('attachment_udyam_aadhar_url', $company->attachment_udyam_aadhar_url ?? '') }}">
+                                <input type="hidden" id="attachment_udyam_aadhar_url"
+                                    value="{{ old('attachment_udyam_aadhar_url') }}" name="attachment_udyam_aadhar_url">
 
-                                @if (old('attachment_udyam_aadhar_url'))
-                                    <div id="attachment_udyam_aadhar_preview"
-                                        class="position-relative d-inline-block mt-2">
-                                        <a href="{{ old('attachment_udyam_aadhar_url') }}" target="_blank">
-                                            <img src="{{ old('attachment_udyam_aadhar_url') }}" width="80"
-                                                class="rounded">
-                                        </a>
+                                @if ($company->attachment_udyam_aadhar_url)
+                                    <div id="attachment_udyam_aadhar_preview" class="position-relative d-inline-block">
+                                        <img src="{{ old('attachment_udyam_aadhar_url') }}" class="rounded">
+
+                                        <!-- Remove (X) button -->
                                         <button type="button"
                                             class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
-                                            onclick="removeImage('attachment_udyam_aadhar')">✕</button>
+                                            onclick="removeImage('attachment_udyam_aadhar')">
+                                            ✕
+                                        </button>
                                     </div>
-                                @elseif (!empty($company->attachment_udyam_aadhar_url))
-                                    <div id="attachment_udyam_aadhar_preview"
-                                        class="position-relative d-inline-block mt-2">
-                                        <a href="{{ $company->attachment_udyam_aadhar_url }}" target="_blank">
-                                            <img src="{{ $company->attachment_udyam_aadhar_url }}" width="80"
-                                                class="rounded">
-                                        </a>
+                                @elseif ($company->attachment_udyam_aadhar_url)
+                                    <div id="attachment_udyam_aadhar_preview" class="position-relative d-inline-block">
+                                        <img src="{{ old('attachment_udyam_aadhar_url') }}" class="rounded">
+
+                                        <!-- Remove (X) button -->
                                         <button type="button"
                                             class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
-                                            onclick="removeImage('attachment_udyam_aadhar')">✕</button>
+                                            onclick="removeImage('attachment_udyam_aadhar')">
+                                            ✕
+                                        </button>
                                     </div>
                                 @endif
                             </div>
 
-                            {{-- Gumasta --}}
+
+                            {{-- Gumasta License --}}
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Gumasta License</label>
-
-                                <div class="input-group mt-1">
+                                <div class="input-group">
                                     <input type="file"
                                         class="form-control @error('attachment_gumasta') is-invalid @enderror"
                                         id="attachment_gumasta" name="attachment_gumasta"
                                         accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
                                         onchange="uploadTempFile(this, 'attachment_gumasta')">
                                     <button class="btn btn-outline-danger" type="button"
-                                        onclick="removeImage('attachment_gumasta')">✕</button>
+                                        onclick="document.getElementById('attachment_gumasta').value = ''">✕</button>
                                 </div>
                                 @error('attachment_gumasta')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
 
-                                <input type="hidden" id="attachment_gumasta_url" name="attachment_gumasta_url"
-                                    value="{{ old('attachment_gumasta_url', $company->attachment_gumasta_url ?? '') }}">
+                                <input type="hidden" id="attachment_gumasta_url"
+                                    value="{{ old('attachment_gumasta_url') }}" name="attachment_gumasta_url">
 
-                                @if (old('attachment_gumasta_url'))
-                                    <div id="attachment_gumasta_preview" class="position-relative d-inline-block mt-2">
-                                        <a href="{{ old('attachment_gumasta_url') }}" target="_blank">
-                                            <img src="{{ old('attachment_gumasta_url') }}" width="80"
-                                                class="rounded">
-                                        </a>
+                                @if ($company->attachment_gumasta_url)
+                                    <div id="attachment_gumasta_preview" class="position-relative d-inline-block">
+                                        <img src="{{ $company->attachment_gumasta_url }}" class="rounded">
+
+                                        <!-- Remove (X) button -->
                                         <button type="button"
                                             class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
-                                            onclick="removeImage('attachment_gumasta')">✕</button>
+                                            onclick="removeImage('attachment_gumasta')">
+                                            ✕
+                                        </button>
                                     </div>
-                                @elseif (!empty($company->attachment_gumasta_url))
-                                    <div id="attachment_gumasta_preview" class="position-relative d-inline-block mt-2">
-                                        <a href="{{ $company->attachment_gumasta_url }}" target="_blank">
-                                            <img src="{{ $company->attachment_gumasta_url }}" width="80"
-                                                class="rounded">
-                                        </a>
+                                @elseif (old('attachment_gumasta_url'))
+                                    <div id="attachment_gumasta_preview" class="position-relative d-inline-block">
+                                        <img src="{{ old('attachment_gumasta_url') }}" class="rounded">
+
+                                        <!-- Remove (X) button -->
                                         <button type="button"
                                             class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
-                                            onclick="removeImage('attachment_gumasta')">✕</button>
+                                            onclick="removeImage('attachment_gumasta')">
+                                            ✕
+                                        </button>
                                     </div>
                                 @endif
                             </div>
 
-                            {{-- MSME --}}
+
+                            {{-- MSME Certificate --}}
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">MSME Certificate</label>
-
-                                <div class="input-group mt-1">
+                                <div class="input-group">
                                     <input type="file"
                                         class="form-control @error('attachment_msme') is-invalid @enderror"
                                         id="attachment_msme" name="attachment_msme"
                                         accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
                                         onchange="uploadTempFile(this, 'attachment_msme')">
+
                                     <button class="btn btn-outline-danger" type="button"
-                                        onclick="removeImage('attachment_msme')">✕</button>
+                                        onclick="document.getElementById('attachment_msme').value = ''">✕</button>
                                 </div>
+
+
                                 @error('attachment_msme')
-                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
                                 @enderror
 
-                                <input type="hidden" id="attachment_msme_url" name="attachment_msme_url"
-                                    value="{{ old('attachment_msme_url', $company->attachment_msme_url ?? '') }}">
+                                <input type="hidden" id="attachment_msme_url" value="{{ old('attachment_msme_url') }}"
+                                    name="attachment_msme_url">
 
-                                @if (old('attachment_msme_url'))
-                                    <div id="attachment_msme_preview" class="position-relative d-inline-block mt-2">
-                                        <a href="{{ old('attachment_msme_url') }}" target="_blank">
-                                            <img src="{{ old('attachment_msme_url') }}" width="80" class="rounded">
-                                        </a>
+                                @if ($company->attachment_msme_url)
+                                    <div id="attachment_msme_preview" class="position-relative d-inline-block">
+                                        <img src="{{ $company->attachment_msme_url }}" class="rounded">
+
+                                        <!-- Remove (X) button -->
                                         <button type="button"
                                             class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
-                                            onclick="removeImage('attachment_msme')">✕</button>
+                                            onclick="removeImage('attachment_msme')">
+                                            ✕
+                                        </button>
                                     </div>
-                                @elseif (!empty($company->attachment_msme_url))
-                                    <div id="attachment_msme_preview" class="position-relative d-inline-block mt-2">
-                                        <a href="{{ $company->attachment_msme }}" target="_blank">
-                                            <img src="{{ $company->attachment_msme }}" width="80" class="rounded">
-                                        </a>
+                                @elseif (old('attachment_msme_url'))
+                                    <div id="attachment_msme_preview" class="position-relative d-inline-block">
+                                        <img src="{{ old('attachment_msme_url') }}" class="rounded">
+
+                                        <!-- Remove (X) button -->
                                         <button type="button"
                                             class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
-                                            onclick="removeImage('attachment_msme')">✕</button>
+                                            onclick="removeImage('attachment_msme')">
+                                            ✕
+                                        </button>
                                     </div>
                                 @endif
                             </div>
 
+
                         </div>
-
-
 
 
                     </div>
@@ -1200,8 +1227,6 @@
             <a href="{{ route('master.companies.index') }}" class="btn btn-secondary px-4">Cancel</a>
         </div>
     </form>
-
-
 @endsection
 
 @push('scripts')

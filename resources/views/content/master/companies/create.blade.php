@@ -487,7 +487,7 @@
             </div>
 
 
-
+            {{-- image  --}}
             <div id="divImageSection" class="col-md-6 d-flex">
                 <div class="card mb-4">
                     <div class="card-header d-flex justify-content-between align-items-center">
