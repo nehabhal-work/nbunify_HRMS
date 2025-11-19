@@ -58,12 +58,12 @@
                                 @foreach ($clients as $d)
                                     <tr>
                                         <td>{{ $d->id }}</td>
-                                        <td>{{ $d->name }}</td>
+                                        <td>{{ strtoupper($d->name) }}</td>
                                         <td>{{ $d->pan_no }}</td>
                                         <td>{{ $d->aadhar_no }}</td>
                                         <td>{{ $d->mobile_no }}</td>
                                         <td>{{ $d->email }}</td>
-                                        <td>{{ $d->res_address }}</td>
+                                        <td>{{ strtoupper($d->res_address) }}</td>
 
                                         <td>
                                             <a href="{{ route('client-families.index', ['client_id' => $d->id]) }}"

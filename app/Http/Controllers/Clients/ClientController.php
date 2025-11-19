@@ -33,6 +33,7 @@ class ClientController extends Controller
     {
         $client = $this->clientService->find($id);
         $client->load('banks');
+        $client->load('families.relation');
         $client = $this->addFileUrls($client);
         return view('content.clients.view', compact('client'));
     }
