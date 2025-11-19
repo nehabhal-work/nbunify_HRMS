@@ -21,3 +21,8 @@ h6 {
     width: 100px;
     height: 100px;
 }
+
+#clientViewAttachments img {
+    width: 200px;
+    height: 200px;
+}
