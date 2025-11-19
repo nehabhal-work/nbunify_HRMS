@@ -66,16 +66,22 @@
                                         <td>{{ strtoupper($d->res_address) }}</td>
 
                                         <td>
-                                            <a href="{{ route('client-families.index', ['client_id' => $d->id]) }}"
-                                                class="btn btn-sm btn-info">
-                                                View Family Info
-                                            </a>
+
+                                            @if ($d->banks->count() > 0)
+                                                <a href="{{ route('client-families.index', ['client_id' => $d->id]) }}"
+                                                    class="btn btn-sm btn-info">
+                                                    View Family Info
+                                                @else
+                                                    <button type="button" class="btn btn-sm btn-secondary" disabled>
+                                                        No Family Info
+                                                    </button>
+                                            @endif
                                         </td>
 
                                         <td>
                                             @if ($d->banks->count() > 0)
-                                                <button type="button" class="btn btn-sm btn-secondary"
-                                                    data-bs-toggle="modal" data-bs-target="#bankmodal{{ $d->id }}">
+                                                <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal"
+                                                    data-bs-target="#bankmodal{{ $d->id }}">
                                                     View Bank Info
                                                 </button>
                                             @else
