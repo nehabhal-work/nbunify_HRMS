@@ -32,7 +32,7 @@
     <form action="{{ route('client-families.update', $clientFamily->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
-        <input type="hidden" name="client_id" value="{{ $client->id }}">
+        <input type="hidden" name="client_id" value="{{ $clientFamily->client_id }}">
         <div class="row align-items-stretch">
             <div class="col-md-12">
                 <div class="card mb-4">
