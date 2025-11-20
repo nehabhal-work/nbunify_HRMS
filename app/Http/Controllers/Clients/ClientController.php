@@ -28,38 +28,12 @@ class ClientController extends Controller
     public function create()
     {
 
-        // curl_setopt_array($curl, array(
-        //     CURLOPT_URL => "https://api.countrystatecity.in/v1/countries/{$countryCode}",
-        //     CURLOPT_RETURNTRANSFER => true,
-        //     CURLOPT_HTTPHEADER => array(
-        //         'X-CSCAPI-KEY: Q2lrMzdpZ3FmZ2JGS29jczFLb0RRSkppZ0pqTUx0dFhyOHhsYzFlVg=='
-        //     ),
-        // ));
-
-        // Call API
-        $countryCode = 'IN';
-        $curl = curl_init();
-
-        curl_setopt_array($curl, [
-            CURLOPT_URL => "https://api.countrystatecity.in/v1/countries/{$countryCode}/states",
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_HTTPHEADER => [
-                'X-CSCAPI-KEY: Q2lrMzdpZ3FmZ2JGS29jczFLb0RRSkppZ0pqTUx0dFhyOHhsYzFlVg=='
-            ],
+        $data = $this->getCountries();
+        // return $data['states'];
+        return view('content.clients.create', [
+            'country' => $data['country'] ?? null,
+            'states'  => $data['states'] ?? [],
         ]);
-
-        $response = curl_exec($curl);
-        $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-        curl_close($curl);
-
-        if ($httpCode == 200) {
-            $countries = json_decode($response, true);
-        } else {
-            $countries = "Country not found";
-        }
-
-        return $countries;
-        return view('content.clients.create', compact('countries'));
     }
 
     public function show($id)
@@ -145,5 +119,29 @@ class ClientController extends Controller
         }
 
         return $client;
+    }
+
+    private function getCountries($code = 'IN')
+    {
+        $headers = [
+            'X-CSCAPI-KEY' => 'Q2lrMzdpZ3FmZ2JGS29jczFLb0RRSkppZ0pqTUx0dFhyOHhsYzFlVg=='
+        ];
+
+        // Country details (IN)
+        $responseCountry = Http::withHeaders($headers)
+            ->get("https://api.countrystatecity.in/v1/countries/{$code}");
+
+        // States of the country
+        $responseStates = Http::withHeaders($headers)
+            ->get("https://api.countrystatecity.in/v1/countries/{$code}/states");
+
+        if ($responseCountry->successful() && $responseStates->successful()) {
+            return [
+                'country' => $responseCountry->json(),
+                'states'  => $responseStates->json(),
+            ];
+        }
+
+        return [];
     }
 }

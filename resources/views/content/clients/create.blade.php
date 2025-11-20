@@ -343,8 +343,9 @@
                                 <label class="form-label">Country</label>
                                 <select name="res_country" id="res_country"
                                     class="form-select select2  @error('res_country') is-invalid @enderror">
-                                    <option value="{{ $countries['id'] }}">
-                                        {{ $countries['name'] }}
+                                    <option value="{{ $country['iso2'] }}"
+                                        {{ old('res_country', $country['iso2']) == $country['iso2'] ? 'selected' : '' }}>
+                                        {{ $country['name'] }}
                                     </option>
 
                                 </select>
@@ -357,13 +358,12 @@
                                 <label class="form-label">State</label>
                                 <select name="res_state" id="res_state"
                                     class="form-select select2 @error('res_state') is-invalid @enderror">
-                                    <option value="">Select State</option>
-                                    <option value="Maharashtra" {{ old('res_state') == 'Maharashtra' ? 'selected' : '' }}>
-                                        Maharashtra</option>
-                                    <option value="Gujarat" {{ old('res_state') == 'Gujarat' ? 'selected' : '' }}>Gujarat
-                                    </option>
-                                    <option value="Delhi" {{ old('res_state') == 'Delhi' ? 'selected' : '' }}>Delhi
-                                    </option>
+                                    @foreach ($states as $state)
+                                        <option value="{{ $state['iso2'] }}"
+                                            {{ old('res_state', 'MH') == $state['iso2'] ? 'selected' : '' }}>
+                                            {{ $state['name'] }}
+                                        </option>
+                                    @endforeach
                                 </select>
                                 @error('res_state')
                                     <div class="invalid-feedback">{{ $message }}</div>
