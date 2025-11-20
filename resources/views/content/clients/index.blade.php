@@ -42,7 +42,7 @@
                         <table class="table srkdataTable">
                             <thead class="table-light">
                                 <tr>
-                                    <th>#</th>
+                                    <th>client-code</th>
                                     <th>Client name</th>
                                     <th>pan no</th>
                                     <th>addhar no</th>
@@ -57,12 +57,12 @@
                             <tbody>
                                 @foreach ($clients as $d)
                                     <tr>
-                                        <td>{{ $d->id }}</td>
+                                        <td>{{ $d->client_code }}</td>
                                         <td>{{ strtoupper($d->name) }}</td>
-                                        <td>{{ $d->pan_no }}</td>
-                                        <td>{{ $d->aadhar_no }}</td>
-                                        <td>{{ $d->mobile_no }}</td>
-                                        <td>{{ $d->email }}</td>
+                                        <td>{{ $d->pan_no ?? '' }}</td>
+                                        <td>{{ $d->aadhar_no ?? '' }}</td>
+                                        <td>{{ $d->mobile_no ?? '' }}</td>
+                                        <td>{{ strtolower($d->email ?? '') }}</td>
                                         <td class="text-truncate" style="max-width: 250px;" data-bs-toggle="tooltip"
                                             title="{{ strtoupper($d->res_address) }}">
                                             {{ \Illuminate\Support\Str::limit(strtoupper($d->res_address), 200) }}
@@ -86,10 +86,9 @@
 
                                         <td>
                                             @if ($d->banks->count() > 0)
-                                              
                                                 <a href="{{ route('client-banks.index', ['client_id' => $d->id]) }}"
                                                     class="btn btn-sm btn-warning">
-                                                     View Bank Info
+                                                    View Bank Info
                                                 </a>
                                             @else
                                                 <button type="button" class="btn btn-sm btn-secondary" disabled>
@@ -137,6 +136,6 @@
             </div>
         </div>
 
-     
+
     </div>
 @endsection

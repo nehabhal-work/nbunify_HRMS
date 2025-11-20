@@ -47,7 +47,7 @@
 
                         <tr>
                             <th>ID</th>
-                            <td class="value">{{ $client->id }}</td>
+                            <td class="value">{{ $client->client_code }}</td>
                             <th>Name</th>
                             <td class="value">{{ $client->name }}</td>
                         </tr>
@@ -132,7 +132,7 @@
 
 
                 <!-- ATTACHMENTS -->
-                <div class="table-responsive mt-4">
+                <div class="table-responsive mt-4 clientViewAttachments">
                     <table class="table table-bordered align-middle">
 
                         <tr>

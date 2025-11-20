@@ -22,10 +22,12 @@ h6 {
     height: 100px;
 }
 
-#clientViewAttachments img {
+#clientViewAttachments img,
+.clientViewAttachments img {
     width: 200px;
     height: 200px;
 }
-td{
+
+/* td{
     text-transform: uppercase!important;
-}
+} */
