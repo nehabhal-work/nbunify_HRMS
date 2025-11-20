@@ -65,7 +65,7 @@
                                         <td>{{ $d->email }}</td>
                                         <td class="text-truncate" style="max-width: 250px;" data-bs-toggle="tooltip"
                                             title="{{ strtoupper($d->res_address) }}">
-                                            {{ \Illuminate\Support\Str::limit(strtoupper($d->res_address), 100) }}
+                                            {{ \Illuminate\Support\Str::limit(strtoupper($d->res_address), 200) }}
                                         </td>
 
 
