@@ -11,6 +11,7 @@ use App\Http\Controllers\Masters\DesignationController;
 use App\Http\Controllers\Masters\EmployeeController;
 use App\Http\Controllers\Clients\ClientController;
 use App\Http\Controllers\Clients\ClientFamilyController;
+use App\Http\Controllers\Clients\ClientBankController;
 use App\Http\Controllers\Masters\SubDepartmentController;
 use App\Http\Controllers\Masters\SubDesignationController;
 use Illuminate\Support\Facades\Route;
@@ -43,6 +44,7 @@ Route::middleware(['auth', 'verified'])->prefix('master')->name('master.')->grou
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('clients', ClientController::class);
     Route::resource('client-families', ClientFamilyController::class);
+    Route::resource('client-banks', ClientBankController::class);
 });
 
 Route::middleware(['auth', 'verified'])->prefix('accounts')->name('accounts.')->group(function () {

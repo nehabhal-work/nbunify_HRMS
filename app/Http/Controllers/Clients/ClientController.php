@@ -20,7 +20,7 @@ class ClientController extends Controller
 
     public function index()
     {
-        $clients = Client::with('banks')->get();
+        $clients = Client::with(['banks','families'])->get();
         return view('content.clients.index', compact('clients'));
     }
 
@@ -32,7 +32,7 @@ class ClientController extends Controller
     public function show($id)
     {
         $client = $this->clientService->find($id);
-        $client->load('banks');
+        $client->load(['banks','families']);
         $client = $this->addFileUrls($client);
         return view('content.clients.view', compact('client'));
     }
@@ -59,7 +59,7 @@ class ClientController extends Controller
     public function edit($id)
     {
         $client = $this->clientService->find($id);
-        $client->load('banks');
+        $client->load([ 'banks','families' ]);
         $client = $this->addFileUrls($client);
         return view('content.clients.edit', compact('client'));
     }

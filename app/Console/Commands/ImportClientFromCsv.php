@@ -5,8 +5,6 @@ namespace App\Console\Commands;
 use App\Models\Client;
 use App\Services\FileStorageService;
 use Illuminate\Console\Command;
-use League\Csv\Reader;
-
 
 class ImportClientFromCsv extends Command
 {
