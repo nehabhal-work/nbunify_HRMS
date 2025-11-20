@@ -28,6 +28,7 @@
     </h4>
 
 
+
     <form action="{{ route('clients.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('post')
@@ -342,13 +343,10 @@
                                 <label class="form-label">Country</label>
                                 <select name="res_country" id="res_country"
                                     class="form-select select2  @error('res_country') is-invalid @enderror">
-                                    <option value="">Select Country</option>
-                                    <option value="India" {{ old('res_country') == 'India' ? 'selected' : '' }}>India
+                                    <option value="{{ $countries['id'] }}">
+                                        {{ $countries['name'] }}
                                     </option>
-                                    <option value="USA" {{ old('res_country') == 'USA' ? 'selected' : '' }}>United
-                                        States</option>
-                                    <option value="UK" {{ old('res_country') == 'UK' ? 'selected' : '' }}>United
-                                        Kingdom</option>
+
                                 </select>
                                 @error('res_country')
                                     <div class="invalid-feedback">{{ $message }}</div>

@@ -9,6 +9,7 @@ use App\Services\ClientService;
 use App\Services\ClientBankService;
 use App\Services\FileStorageService;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 
 class ClientController extends Controller
 {
@@ -26,7 +27,39 @@ class ClientController extends Controller
 
     public function create()
     {
-        return view('content.clients.create');
+
+        // curl_setopt_array($curl, array(
+        //     CURLOPT_URL => "https://api.countrystatecity.in/v1/countries/{$countryCode}",
+        //     CURLOPT_RETURNTRANSFER => true,
+        //     CURLOPT_HTTPHEADER => array(
+        //         'X-CSCAPI-KEY: Q2lrMzdpZ3FmZ2JGS29jczFLb0RRSkppZ0pqTUx0dFhyOHhsYzFlVg=='
+        //     ),
+        // ));
+
+        // Call API
+        $countryCode = 'IN';
+        $curl = curl_init();
+
+        curl_setopt_array($curl, [
+            CURLOPT_URL => "https://api.countrystatecity.in/v1/countries/{$countryCode}/states",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_HTTPHEADER => [
+                'X-CSCAPI-KEY: Q2lrMzdpZ3FmZ2JGS29jczFLb0RRSkppZ0pqTUx0dFhyOHhsYzFlVg=='
+            ],
+        ]);
+
+        $response = curl_exec($curl);
+        $httpCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        curl_close($curl);
+
+        if ($httpCode == 200) {
+            $countries = json_decode($response, true);
+        } else {
+            $countries = "Country not found";
+        }
+
+        return $countries;
+        return view('content.clients.create', compact('countries'));
     }
 
     public function show($id)
