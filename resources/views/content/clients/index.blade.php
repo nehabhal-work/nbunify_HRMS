@@ -71,23 +71,26 @@
 
                                         <td>
 
-                                            @if ($d->banks->count() > 0)
+                                            @if ($d->families->count() > 0)
                                                 <a href="{{ route('client-families.index', ['client_id' => $d->id]) }}"
                                                     class="btn btn-sm btn-info">
                                                     View Family Info
-                                                @else
-                                                    <button type="button" class="btn btn-sm btn-secondary" disabled>
-                                                        No Family Info
-                                                    </button>
+                                                </a>
+                                            @else
+                                                <button type="button" class="btn btn-sm btn-secondary" disabled>
+                                                    No Family Info
+                                                </button>
                                             @endif
+
                                         </td>
 
                                         <td>
                                             @if ($d->banks->count() > 0)
-                                                <button type="button" class="btn btn-sm btn-warning" data-bs-toggle="modal"
-                                                    data-bs-target="#bankmodal{{ $d->id }}">
-                                                    View Bank Info
-                                                </button>
+                                              
+                                                <a href="{{ route('client-banks.index', ['client_id' => $d->id]) }}"
+                                                    class="btn btn-sm btn-warning">
+                                                     View Bank Info
+                                                </a>
                                             @else
                                                 <button type="button" class="btn btn-sm btn-secondary" disabled>
                                                     No Bank Info
@@ -102,6 +105,11 @@
                                                     <i class="bx bx-dots-vertical-rounded"></i>
                                                 </button>
                                                 <div class="dropdown-menu">
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('client-families.index', ['client_id' => $d->id]) }}">
+                                                        <i class="bx bxs-group me-1"></i>
+                                                        Add Family
+                                                    </a>
                                                     <a class="dropdown-item" href="{{ route('clients.edit', $d->id) }}">
                                                         <i class="bx bx-edit-alt me-1"></i> Edit
                                                     </a>
@@ -129,54 +137,6 @@
             </div>
         </div>
 
-        <!-- Bank Info Modal (Separate) -->
-        {{-- @foreach ($clients as $d)
-            <div class="modal fade" id="bankmodal{{ $d->id }}" tabindex="-1"
-                aria-labelledby="bankmodalLabel{{ $d->id }}" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header" style="background-color: #ead3ff;">
-                            <h5 class="modal-title" id="bankmodalLabel{{ $d->id }}">
-                                Bank Information - {{ $d->name }}
-                            </h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                        </div>
-                        <div class="modal-body">
-                            @if ($d->banks->count() > 0)
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>IFSC</th>
-                                            <th>Account No</th>
-                                            <th>Bank Name</th>
-                                            <th>Branch</th>
-                                            <th>Bank Code</th>
-                                            <th>Primary</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($d->banks as $b)
-                                            <tr>
-                                                <td class="text-uppercase"><b>{{ $b->ifsc_code ?? '-' }}</b></td>
-                                                <td><b>{{ $b->account_number ?? '-' }}</b></td>
-                                                <td><b>{{ $b->bank_name ?? '-' }}</b></td>
-                                                <td><b>{{ $b->branch_name ?? '-' }}</b></td>
-                                                <td><b>{{ $b->bank_code ?? '-' }}</b></td>
-                                                <td><b>{{ $b->is_primary ? 'Yes' : 'No' }}</b></td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            @else
-                                <p class="text-muted">No bank details found for this client.</p>
-                            @endif
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        @endforeach --}}
+     
     </div>
 @endsection

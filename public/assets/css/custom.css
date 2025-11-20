@@ -26,3 +26,6 @@ h6 {
     width: 200px;
     height: 200px;
 }
+td{
+    text-transform: uppercase!important;
+}

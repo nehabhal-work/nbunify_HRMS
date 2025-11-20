@@ -36,65 +36,68 @@
         <input type="hidden" name="client_id" value="{{ $client->id }}">
 
         <!-- RADIO OPTIONS -->
-        <div class="row mb-3">
-            <div class="col-auto">
-                <div class="form-check">
-                    <input class="form-check-input sourceOption" type="radio" name="family_source" id="source_existing"
-                        value="existing" checked>
-                    <label class="form-check-label fw-semibold" for="source_existing">
-                        Add From Existing Client List
-                    </label>
+        <div class="card p-5">
+            <div class="row mb-3">
+                <div class="col-auto">
+                    <div class="form-check">
+                        <input class="form-check-input sourceOption" type="radio" name="family_source"
+                            id="source_existing" value="existing" checked>
+                        <label class="form-check-label fw-semibold" for="source_existing">
+                            Add From Existing Client List
+                        </label>
+                    </div>
                 </div>
-            </div>
 
-            <div class="col-auto">
-                <div class="form-check">
-                    <input class="form-check-input sourceOption" type="radio" name="family_source" id="source_new"
-                        value="new">
-                    <label class="form-check-label fw-semibold" for="source_new">
-                        Create New Family Data
-                    </label>
+                <div class="col-auto">
+                    <div class="form-check">
+                        <input class="form-check-input sourceOption" type="radio" name="family_source" id="source_new"
+                            value="new">
+                        <label class="form-check-label fw-semibold" for="source_new">
+                            Create New Family Data
+                        </label>
+                    </div>
                 </div>
             </div>
         </div>
-
         <hr>
 
 
 
         <div id="existingSection">
-            <div class="row">
+            <div class="card p-5">
+                <div class="row">
 
-                <!-- Client Dropdown -->
-                <div class="col-md-4 mb-3">
-                    <label for="existing_client_id" class="form-label">Select Existing Client</label>
-                    <select name="existing_client_id" id="existing_client_id"
-                        class="form-select select2 @error('name') is-invalid @enderror"">
-                        <option value="">Select Client</option>
-                        @foreach ($clients as $c)
-                            <option value="{{ $c->id }}">{{ $c->name }}</option>
-                        @endforeach
-                    </select>
-                    @error('name')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
+                    <!-- Client Dropdown -->
+                    <div class="col-md-4 mb-3">
+                        <label for="existing_client_id" class="form-label">Select Existing Client</label>
+                        <select name="existing_client_id" id="existing_client_id"
+                            class="form-select select2 @error('name') is-invalid @enderror"">
+                            <option value="">Select Client</option>
+                            @foreach ($clients as $c)
+                                <option value="{{ $c->id }}">{{ $c->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('name')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <!-- Relation With Client -->
+                    <div class="col-md-3 mb-3">
+                        <label for="relation_id" class="form-label">Relation With Client</label>
+                        <select name="existing_relation_id" id="existing_relation_id" class="form-select select2">
+                            <option value="">Select Relation</option>
+                            @foreach ($relations as $d)
+                                <option value="{{ $d->id }}">{{ $d->main_relation }}</option>
+                            @endforeach
+                        </select>
+
+                        @error('relation_id')
+                            <div class="text-danger small">{{ $message }}</div>
+                        @enderror
+                    </div>
+
                 </div>
-
-                <!-- Relation With Client -->
-                <div class="col-md-3 mb-3">
-                    <label for="relation_id" class="form-label">Relation With Client</label>
-                    <select name="existing_relation_id" id="existing_relation_id" class="form-select select2">
-                        <option value="">Select Relation</option>
-                        @foreach ($relations as $d)
-                            <option value="{{ $d->id }}">{{ $d->main_relation }}</option>
-                        @endforeach
-                    </select>
-
-                    @error('relation_id')
-                        <div class="text-danger small">{{ $message }}</div>
-                    @enderror
-                </div>
-
             </div>
         </div>
 
@@ -109,9 +112,6 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-
-
-
                             {{-- Full Name --}}
                             <div class="col-md-4 mb-3">
                                 <label class="form-label" for="name">Full Name</label>
@@ -143,8 +143,9 @@
                             {{-- Date of Birth --}}
                             <div class="col-md-2 mb-3">
                                 <label class="form-label" for="dob">Date of Birth</label>
-                                <input type="text" class="form-control datepicker @error('dob') is-invalid @enderror" id="dob"
-                                    name="dob" value="{{ old('dob') }}" max="{{ now()->toDateString() }}" readonly placeholder="Select Date">
+                                <input type="text" class="form-control datepicker @error('dob') is-invalid @enderror"
+                                    id="dob" name="dob" value="{{ old('dob') }}"
+                                    max="{{ now()->toDateString() }}" readonly placeholder="Select Date">
                                 @error('dob')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror

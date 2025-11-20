@@ -88,6 +88,7 @@ function openFullImage(src) {
 // *************************
 //   IFSC Validation
 // *************************
+
 $(document).ready(function () {
     $(document).on('blur', '.ifsc_code', function () {
         const input = $(this); // current IFSC field
@@ -147,10 +148,8 @@ $(document).ready(function () {
             }
         });
     });
-
-
-
-}); //  --------------END /IFSC Validation ------------------
+}); 
+//  --------------END /IFSC Validation ------------------
 
 
 
