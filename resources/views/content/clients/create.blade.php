@@ -233,8 +233,8 @@
                             {{-- CKYC No --}}
                             <div class="col-md-2 mb-3">
                                 <label class="form-label" for="ckyc_no">CKYC No.</label>
-                                <input type="text" class="form-control @error('ckyc_no') is-invalid @enderror"
-                                    id="ckyc_no" name="ckyc_no" maxlength="20" value="{{ old('ckyc_no') }}">
+                                <input type="text" class="form-control onlydigit @error('ckyc_no') is-invalid @enderror"
+                                    id="ckyc_no" name="ckyc_no" maxlength="14" value="{{ old('ckyc_no') }}">
                                 @error('ckyc_no')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -247,7 +247,7 @@
                                 <label class="form-label" for="mobile_no">Mobile Number</label>
                                 <input type="text"
                                     class="form-control onlyphone @error('mobile_no') is-invalid @enderror"
-                                    id="phone" name="mobile_no" maxlength="15" value="{{ old('mobile_no') }}">
+                                    id="phone" name="mobile_no" maxlength="10" value="{{ old('mobile_no') }}">
                                 @error('mobile_no')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -259,7 +259,7 @@
                                 <label class="form-label" for="whatsapp_no">WhatsApp Number</label>
                                 <input type="text"
                                     class="form-control onlyphone @error('whatsapp_no') is-invalid @enderror"
-                                    id="whatsapp_no" name="whatsapp_no" maxlength="15"
+                                    id="whatsapp_no" name="whatsapp_no" maxlength="10"
                                     value="{{ old('whatsapp_no') }}">
                                 <label class="uk-margin-right"><input class="uk-checkbox chkbox_fwapp_same_as_mobile"
                                         type="checkbox" id="" value="ON">
@@ -574,7 +574,7 @@
                                         class="form-control @error('attachment_client_photo') is-invalid @enderror"
                                         id="attachment_client_photo" name="attachment_client_photo"
                                         onchange="uploadTempFile(this, 'attachment_client_photo')"
-                                        accept=".jpg,.jpeg,.png">
+                                        accept=".jpg,.jpeg,.png,.pdf">
                                     <button class="btn btn-outline-danger" type="button"
                                         onclick="document.getElementById('attachment_client_photo').value = ''">✕</button>
                                 </div>

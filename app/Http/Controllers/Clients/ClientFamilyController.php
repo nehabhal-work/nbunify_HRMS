@@ -16,7 +16,8 @@ class ClientFamilyController extends Controller
         private ClientFamilyService $clientFamilyService,
         private ClientService $clientService,
         private FamilyRelationService $familyRelationService
-    ) {}
+    ) {
+    }
 
     public function index(Request $request)
     {
@@ -75,14 +76,19 @@ class ClientFamilyController extends Controller
         return redirect()->route('client-families.index', ['client_id' => $clientFamily->client_id])->with('success', 'Client family member updated successfully');
     }
 
-    public function destroy($id, Request $request)
+    public function destroy(Request $request, $id)
     {
-        if($client_id = $request->client_id) {
+        if ($client_id = $request->client_id) {
+
             $this->clientFamilyService->delete($id);
-            return redirect()->route('client-families.index', ['client_id' => $client_id])->with('success', 'Client family member deleted successfully');
-        } else {
-            abort(404);
+
+            return redirect()
+                ->route('client-families.index', ['client_id' => $client_id])
+                ->with('success', 'Family member deleted successfully.');
         }
 
+        abort(404);
     }
+    
+
 }

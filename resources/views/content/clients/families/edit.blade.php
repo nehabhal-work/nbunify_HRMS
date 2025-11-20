@@ -215,7 +215,7 @@
                             <div class="col-md-2 mb-3">
                                 <label class="form-label">Mobile Number</label>
                                 <input type="text"
-                                    class="form-control onlyphone @error('mobile_no') is-invalid @enderror"
+                                    class="form-control onlyphone @error('mobile_no') is-invalid @enderror" id="phone"
                                     name="mobile_no" value="{{ old('mobile_no', $clientFamily->mobile_no) }}">
                                 @error('mobile_no')
                                     <div class="invalid-feedback">{{ $message }}</div>

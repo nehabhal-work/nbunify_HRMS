@@ -538,18 +538,17 @@
 @push('scripts')
     <script>
         $(document).ready(function() {
-            // For Firm WhatsApp Number
+            // Copy Mobile → WhatsApp when checked
             $('.chkbox_fwapp_same_as_mobile').on('change', function() {
                 if ($(this).is(':checked')) {
-                    $('#whatsapp_no').val($('#phone').val());
+                    $('#whatsapp_no').val($('#mobile_no').val());
                 } else {
                     $('#whatsapp_no').val('');
                 }
             });
-
-
         });
     </script>
+
 
     <script>
         $(document).ready(function() {

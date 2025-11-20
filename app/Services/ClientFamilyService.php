@@ -24,6 +24,7 @@ class ClientFamilyService
 
     public function delete(ClientFamily $clientFamily): bool
     {
+        $this->deleteFiles($clientFamily);
         return $clientFamily->delete();
     }
 
