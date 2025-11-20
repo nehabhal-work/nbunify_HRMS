@@ -28,6 +28,7 @@
     </h4>
 
 
+
     <form action="{{ route('clients.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('post')
@@ -342,13 +343,11 @@
                                 <label class="form-label">Country</label>
                                 <select name="res_country" id="res_country"
                                     class="form-select select2  @error('res_country') is-invalid @enderror">
-                                    <option value="">Select Country</option>
-                                    <option value="India" {{ old('res_country') == 'India' ? 'selected' : '' }}>India
+                                    <option value="{{ $country['iso2'] }}"
+                                        {{ old('res_country', $country['iso2']) == $country['iso2'] ? 'selected' : '' }}>
+                                        {{ $country['name'] }}
                                     </option>
-                                    <option value="USA" {{ old('res_country') == 'USA' ? 'selected' : '' }}>United
-                                        States</option>
-                                    <option value="UK" {{ old('res_country') == 'UK' ? 'selected' : '' }}>United
-                                        Kingdom</option>
+
                                 </select>
                                 @error('res_country')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -359,13 +358,12 @@
                                 <label class="form-label">State</label>
                                 <select name="res_state" id="res_state"
                                     class="form-select select2 @error('res_state') is-invalid @enderror">
-                                    <option value="">Select State</option>
-                                    <option value="Maharashtra" {{ old('res_state') == 'Maharashtra' ? 'selected' : '' }}>
-                                        Maharashtra</option>
-                                    <option value="Gujarat" {{ old('res_state') == 'Gujarat' ? 'selected' : '' }}>Gujarat
-                                    </option>
-                                    <option value="Delhi" {{ old('res_state') == 'Delhi' ? 'selected' : '' }}>Delhi
-                                    </option>
+                                    @foreach ($states as $state)
+                                        <option value="{{ $state['iso2'] }}"
+                                            {{ old('res_state', 'MH') == $state['iso2'] ? 'selected' : '' }}>
+                                            {{ $state['name'] }}
+                                        </option>
+                                    @endforeach
                                 </select>
                                 @error('res_state')
                                     <div class="invalid-feedback">{{ $message }}</div>

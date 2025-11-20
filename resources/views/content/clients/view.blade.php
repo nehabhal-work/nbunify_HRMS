@@ -8,8 +8,7 @@
     </div>
 
     <div class="row">
-        {{ $client }}
-        <div class="table-responsive">
+        {{-- <div class="table-responsive">
             <table class="table table-bordered align-middle">
                 <!-- Personal Details Section -->
                 <thead class="table-light">
@@ -240,57 +239,270 @@
                     @endif
                 </tbody>
             </table>
+        </div> --}}
+
+
+        <style>
+            .section-heading {
+                background: #8a4bef;
+                font-weight: 600;
+                padding: 6px 0;
+                text-transform: uppercase;
+                border-left: 4px solid #8a4bef;
+            }
+
+            .value {
+                font-weight: 600;
+                color: #333;
+            }
+
+            .attach-img {
+                height: 80px;
+                border: 1px solid #ddd;
+                padding: 3px;
+                border-radius: 5px;
+                background: #fff;
+                margin-right: 8px;
+            }
+        </style>
+
+        <div class="table-responsive">
+            <table class="table table-bordered align-middle">
+
+                <!-- PERSONAL DETAILS -->
+                <tr>
+                    <th colspan="4" class="text-center section-heading">Personal Details</th>
+                </tr>
+
+                <tr>
+                    <th>ID</th>
+                    <td class="value">{{ $client->client_code }}</td>
+                    <th>Name</th>
+                    <td class="value">{{ $client->name }}</td>
+                </tr>
+
+                <tr>
+                    <th>Gender</th>
+                    <td class="value">{{ ucfirst($client->gender) }}</td>
+                    <th>DOB</th>
+                    <td class="value">{{ $client->dob }}</td>
+                </tr>
+
+                <tr>
+                    <th>Live Status</th>
+                    <td class="value">{{ ucfirst($client->live_status) }}</td>
+                    <th>DOD</th>
+                    <td class="value">{{ $client->dod ?: '-' }}</td>
+                </tr>
+
+                <tr>
+                    <th>Marital Status</th>
+                    <td class="value">{{ ucfirst($client->marital_status) }}</td>
+                    <th>Nationality</th>
+                    <td class="value">{{ strtoupper($client->nationality) }}</td>
+                </tr>
+
+                <tr>
+                    <th>Occupation</th>
+                    <td class="value">{{ ucfirst(str_replace('_', ' ', $client->occupation)) }}</td>
+                    <th>PAN No</th>
+                    <td class="value">{{ $client->pan_no }}</td>
+                </tr>
+
+                <tr>
+                    <th>Aadhar</th>
+                    <td class="value">{{ $client->aadhar_no }}</td>
+                    <th>CKYC No</th>
+                    <td class="value">{{ $client->ckyc_no }}</td>
+                </tr>
+
+                <tr>
+                    <th>Mobile</th>
+                    <td class="value">{{ $client->mobile_no }}</td>
+                    <th>WhatsApp</th>
+                    <td class="value">{{ $client->whatsapp_no }}</td>
+                </tr>
+
+                <tr>
+                    <th>Landline</th>
+                    <td class="value">{{ $client->landline_no }}</td>
+                    <th>Email</th>
+                    <td class="value">{{ $client->email }}</td>
+                </tr>
+
+                <tr>
+                    <th>Relationship Manager</th>
+                    <td colspan="3" class="value">{{ $client->relation_manager_id }}</td>
+                </tr>
+
+
+                <!-- RESIDENTIAL ADDRESS -->
+                <tr>
+                    <th>RESIDENTIAL ADDRESS:</th>
+                    <td colspan="3" class="value">
+                        {{ $client->res_address }},
+                        {{ $client->res_city }},
+                        {{ $client->res_state }},
+                        {{ $client->res_country }} - {{ $client->res_pincode }}
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>OFFICE ADDRESS:</th>
+                    <td colspan="3" class="value">
+                        {{ $client->office_address }},
+                        {{ $client->office_city }},
+                        {{ $client->office_state }},
+                        {{ $client->office_country }} - {{ $client->office_pincode }}
+                    </td>
+                </tr>
+
+
+
+                <!-- ATTACHMENTS -->
+                <tr>
+                    <th colspan="4" class="text-center section-heading">Attachments</th>
+                </tr>
+
+                <tr>
+                    <th>Documents</th>
+                    <td colspan="3">
+                        <div class="d-flex flex-wrap gap-3">
+
+                            @if ($client->attachment_client_photo_url)
+                                <div class="text-center">
+                                    <a href="{{ $client->attachment_client_photo_url }}" target="_blank">
+                                        <img src="{{ $client->attachment_client_photo_url }}" class="attach-img">
+                                    </a>
+                                    <div class="doc-title">Client Photo</div>
+                                </div>
+                            @endif
+
+                            @if ($client->attachment_pan_url)
+                                <div class="text-center">
+                                    <a href="{{ $client->attachment_pan_url }}" target="_blank">
+                                        <img src="{{ $client->attachment_pan_url }}" class="attach-img">
+                                    </a>
+                                    <div class="doc-title">PAN</div>
+                                </div>
+                            @endif
+
+                            @if ($client->attachment_aadhar_front_url)
+                                <div class="text-center">
+                                    <a href="{{ $client->attachment_aadhar_front_url }}" target="_blank">
+                                        <img src="{{ $client->attachment_aadhar_front_url }}" class="attach-img">
+                                    </a>
+                                    <div class="doc-title">Aadhar Front</div>
+                                </div>
+                            @endif
+
+                            @if ($client->attachment_aadhar_back_url)
+                                <div class="text-center">
+                                    <a href="{{ $client->attachment_aadhar_back_url }}" target="_blank">
+                                        <img src="{{ $client->attachment_aadhar_back_url }}" class="attach-img">
+                                    </a>
+                                    <div class="doc-title">Aadhar Back</div>
+                                </div>
+                            @endif
+
+                            @if ($client->attachment_signature_url)
+                                <div class="text-center">
+                                    <a href="{{ $client->attachment_signature_url }}" target="_blank">
+                                        <img src="{{ $client->attachment_signature_url }}" class="attach-img">
+                                    </a>
+                                    <div class="doc-title">Signature</div>
+                                </div>
+                            @endif
+
+                            @if ($client->attachment_ckyc_url)
+                                <div class="text-center">
+                                    <a href="{{ $client->attachment_ckyc_url }}" target="_blank">
+                                        <img src="{{ $client->attachment_ckyc_url }}" class="attach-img">
+                                    </a>
+                                    <div class="doc-title">CKYC</div>
+                                </div>
+                            @endif
+
+                            @if ($client->attachment_other_documents_url)
+                                <div class="text-center">
+                                    <a href="{{ $client->attachment_other_documents_url }}" target="_blank">
+                                        <img src="{{ $client->attachment_other_documents_url }}" class="attach-img">
+                                    </a>
+                                    <div class="doc-title">Other Document</div>
+                                </div>
+                            @endif
+
+                        </div>
+                    </td>
+                </tr>
+
+
+
+                <!-- families DETAILS -->
+                <tr>
+                    <th colspan="6" class="text-center section-heading">Families Information</th>
+                </tr>
+
+                @if ($client->families->count() > 0)
+                    <tr class="table-secondary">
+                        <th>Name</th>
+                        <th>Gender</th>
+                        <th>DOB</th>
+                        <th>Live Status</th>
+                        <th>Marital Status</th>
+                        <th>Relation</th>
+                    </tr>
+
+                    @foreach ($client->families as $f)
+                        <tr>
+                            <td class="value">{{ $f->name ?? '-' }}</td>
+                            <td class="value">{{ $f->gender ?? '-' }}</td>
+                            <td class="value">{{ $f->dob ? \Carbon\Carbon::parse($f->dob)->format('d-m-Y') : '-' }}</td>
+                            <td class="value">{{ $f->live_status ?? '-' }}</td>
+                            <td class="value">{{ $f->marital_status ?? '-' }}</td>
+                            <td class="value">{{ $f->relation->main_relation . ' - ' . $f->relation->relative_relation }}
+                            </td>
+                        </tr>
+                    @endforeach
+                @else
+                    <tr>
+                        <td colspan="6" class="text-center text-muted">No families found.</td>
+                    </tr>
+                @endif
+
+                <!-- BANK DETAILS -->
+                <tr>
+                    <th colspan="6" class="text-center section-heading">Bank Information</th>
+                </tr>
+
+                @if ($client->banks->count() > 0)
+                    <tr class="table-secondary">
+                        <th>IFSC</th>
+                        <th>Account No</th>
+                        <th>Bank Name</th>
+                        <th>Branch</th>
+                        <th>Bank Code</th>
+                        <th>Primary</th>
+                    </tr>
+
+                    @foreach ($client->banks as $b)
+                        <tr>
+                            <td class="value">{{ $b->ifsc_code ?? '-' }}</td>
+                            <td class="value">{{ $b->account_number ?? '-' }}</td>
+                            <td class="value">{{ $b->bank_name ?? '-' }}</td>
+                            <td class="value">{{ $b->branch_name ?? '-' }}</td>
+                            <td class="value">{{ $b->bank_code ?? '-' }}</td>
+                            <td class="value">{{ $b->is_primary ? 'Yes' : 'No' }}</td>
+                        </tr>
+                    @endforeach
+                @else
+                    <tr>
+                        <td colspan="6" class="text-center text-muted">No bank details found.</td>
+                    </tr>
+                @endif
+
+            </table>
         </div>
 
-
-        <!-- Bank Info Modal (Separate) -->
-        {{-- @foreach ($clients as $client)
-            <div class="modal fade" id="bankmodal{{ $client->id }}" tabindex="-1"
-                aria-labelledby="bankmodalLabel{{ $client->id }}" aria-hidden="true">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header" style="background-color: #ead3ff;">
-                            <h5 class="modal-title" id="bankmodalLabel{{ $client->id }}">
-                                Bank Information - {{ $client->name }}
-                            </h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                        </div>
-                        <div class="modal-body">
-                            @if ($client->banks->count() > 0)
-                                <table class="table table-striped">
-                                    <thead>
-                                        <tr>
-                                            <th>IFSC</th>
-                                            <th>Account No</th>
-                                            <th>Bank Name</th>
-                                            <th>Branch</th>
-                                            <th>Bank Code</th>
-                                            <th>Primary</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($client->banks as $b)
-                                            <tr>
-                                                <td class="text-uppercase"><b>{{ $b->ifsc_code ?? '-' }}</b></td>
-                                                <td><b>{{ $b->account_number ?? '-' }}</b></td>
-                                                <td><b>{{ $b->bank_name ?? '-' }}</b></td>
-                                                <td><b>{{ $b->branch_name ?? '-' }}</b></td>
-                                                <td><b>{{ $b->bank_code ?? '-' }}</b></td>
-                                                <td><b>{{ $b->is_primary ? 'Yes' : 'No' }}</b></td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
-                            @else
-                                <p class="text-muted">No bank details found for this client.</p>
-                            @endif
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        @endforeach --}}
     </div>
 @endsection

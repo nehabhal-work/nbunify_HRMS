@@ -9,6 +9,7 @@ use App\Services\ClientService;
 use App\Services\ClientBankService;
 use App\Services\FileStorageService;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 
 class ClientController extends Controller
 {
@@ -26,7 +27,13 @@ class ClientController extends Controller
 
     public function create()
     {
-        return view('content.clients.create');
+
+        $data = $this->getCountries();
+        // return $data['states'];
+        return view('content.clients.create', [
+            'country' => $data['country'] ?? null,
+            'states'  => $data['states'] ?? [],
+        ]);
     }
 
     public function show($id)
@@ -111,5 +118,29 @@ class ClientController extends Controller
         }
 
         return $client;
+    }
+
+    private function getCountries($code = 'IN')
+    {
+        $headers = [
+            'X-CSCAPI-KEY' => 'Q2lrMzdpZ3FmZ2JGS29jczFLb0RRSkppZ0pqTUx0dFhyOHhsYzFlVg=='
+        ];
+
+        // Country details (IN)
+        $responseCountry = Http::withHeaders($headers)
+            ->get("https://api.countrystatecity.in/v1/countries/{$code}");
+
+        // States of the country
+        $responseStates = Http::withHeaders($headers)
+            ->get("https://api.countrystatecity.in/v1/countries/{$code}/states");
+
+        if ($responseCountry->successful() && $responseStates->successful()) {
+            return [
+                'country' => $responseCountry->json(),
+                'states'  => $responseStates->json(),
+            ];
+        }
+
+        return [];
     }
 }
