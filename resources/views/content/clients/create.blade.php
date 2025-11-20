@@ -233,8 +233,9 @@
                             {{-- CKYC No --}}
                             <div class="col-md-2 mb-3">
                                 <label class="form-label" for="ckyc_no">CKYC No.</label>
-                                <input type="text" class="form-control onlydigit @error('ckyc_no') is-invalid @enderror"
-                                    id="ckyc_no" name="ckyc_no" maxlength="14" value="{{ old('ckyc_no') }}">
+                                <input type="text"
+                                    class="form-control onlydigit @error('ckyc_no') is-invalid @enderror" id="ckyc_no"
+                                    name="ckyc_no" maxlength="14" value="{{ old('ckyc_no') }}">
                                 @error('ckyc_no')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -375,12 +376,14 @@
                                 <select name="res_city" id="res_city"
                                     class="form-select select2  @error('res_city') is-invalid @enderror">
                                     <option value="">Select City</option>
-                                    <option value="Mumbai" {{ old('res_city') == 'Mumbai' ? 'selected' : '' }}>Mumbai
-                                    </option>
-                                    <option value="Pune" {{ old('res_city') == 'Pune' ? 'selected' : '' }}>Pune</option>
-                                    <option value="Ahmedabad" {{ old('res_city') == 'Ahmedabad' ? 'selected' : '' }}>
-                                        Ahmedabad</option>
+                                    @foreach ($cities as $c)
+                                        <option value="{{ $c['id'] }}"
+                                            {{ old('res_city') == $c['id'] ? 'selected' : '' }}>
+                                            {{ $c['name'] }}
+                                        </option>
+                                    @endforeach
                                 </select>
+
                                 @error('res_city')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -416,13 +419,10 @@
                                 <label class="form-label">Country</label>
                                 <select name="office_country" id="office_country"
                                     class="form-select select2 @error('office_country') is-invalid @enderror">
-                                    <option value="">Select Country</option>
-                                    <option value="India" {{ old('office_country') == 'India' ? 'selected' : '' }}>India
+                                    <option value="{{ $country['iso2'] }}"
+                                        {{ old('office_country', $country['iso2']) == $country['iso2'] ? 'selected' : '' }}>
+                                        {{ $country['name'] }}
                                     </option>
-                                    <option value="USA" {{ old('office_country') == 'USA' ? 'selected' : '' }}>United
-                                        States</option>
-                                    <option value="UK" {{ old('office_country') == 'UK' ? 'selected' : '' }}>United
-                                        Kingdom</option>
                                 </select>
                                 @error('office_country')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -433,13 +433,12 @@
                                 <label class="form-label">State</label>
                                 <select name="office_state" id="office_state"
                                     class="form-select select2 @error('office_state') is-invalid @enderror">
-                                    <option value="">Select State</option>
-                                    <option value="Maharashtra"
-                                        {{ old('office_state') == 'Maharashtra' ? 'selected' : '' }}>Maharashtra</option>
-                                    <option value="Gujarat" {{ old('office_state') == 'Gujarat' ? 'selected' : '' }}>
-                                        Gujarat</option>
-                                    <option value="Delhi" {{ old('office_state') == 'Delhi' ? 'selected' : '' }}>Delhi
-                                    </option>
+                                    @foreach ($states as $state)
+                                        <option value="{{ $state['iso2'] }}"
+                                            {{ old('office_state', 'MH') == $state['iso2'] ? 'selected' : '' }}>
+                                            {{ $state['name'] }}
+                                        </option>
+                                    @endforeach
                                 </select>
                                 @error('office_state')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -451,12 +450,12 @@
                                 <select name="office_city" id="office_city"
                                     class="form-select select2 @error('office_city') is-invalid @enderror">
                                     <option value="">Select City</option>
-                                    <option value="Mumbai" {{ old('office_city') == 'Mumbai' ? 'selected' : '' }}>Mumbai
-                                    </option>
-                                    <option value="Pune" {{ old('office_city') == 'Pune' ? 'selected' : '' }}>Pune
-                                    </option>
-                                    <option value="Ahmedabad" {{ old('office_city') == 'Ahmedabad' ? 'selected' : '' }}>
-                                        Ahmedabad</option>
+                                    @foreach ($cities as $c)
+                                        <option value="{{ $c['id'] }}"
+                                            {{ old('office_city') == $c['id'] ? 'selected' : '' }}>
+                                            {{ $c['name'] }}
+                                        </option>
+                                    @endforeach
                                 </select>
                                 @error('office_city')
                                     <div class="invalid-feedback">{{ $message }}</div>
