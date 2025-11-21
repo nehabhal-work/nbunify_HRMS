@@ -8,3 +8,4 @@ use App\Http\Controllers\Api\GetStateCitiesController;
 Route::post('/validate-ifsc', [BankController::class, 'validateIfsc'])->name('validate-ifsc');
 Route::post('/upload-temp-file', [FileUploadController::class, 'uploadToTempStorage'])->name('upload-temp-file');
 Route::get('get-cities/{country}/{state}', [GetStateCitiesController::class, 'getCitiesByState']);
+Route::get('get-countries', [GetStateCitiesController::class, 'getCountries']);
