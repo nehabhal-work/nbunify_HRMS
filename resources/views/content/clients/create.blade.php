@@ -326,7 +326,7 @@
 
 
 
-
+                            {{-- {{ dd($country) }} --}}
 
                             <!-- Residential Address -->
                             <h6 class="my-3">Residential Address</h6>
@@ -339,13 +339,12 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-
                             <div class="col-md-2 mb-3">
                                 <label class="form-label">Country</label>
                                 <select name="res_country" id="res_country"
                                     class="form-select select2  @error('res_country') is-invalid @enderror">
-                                    <option value="{{ $country->iso3 ?? '' }}"
-                                        {{ old('res_country', $country->iso3) == $country->iso3 ? 'selected' : '' }}>
+                                    <option value="{{ $country['iso2'] }}"
+                                        {{ old('res_country', 'IND') == $country['iso2'] ? 'selected' : '' }}>
                                         {{ $country['name'] }}
                                     </option>
 

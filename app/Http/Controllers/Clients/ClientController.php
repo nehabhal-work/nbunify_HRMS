@@ -135,22 +135,18 @@ class ClientController extends Controller
         $responseCity   = Http::withHeaders($headers)
             ->get("https://api.countrystatecity.in/v1/countries/{$countryCode}/states/{$stateCode}/cities");
 
-        if (
-            $responseCountry->successful() &&
-            $responseStates->successful() &&
-            $responseCity->successful()
-        ) {
+        if ($responseCountry->successful() && $responseStates->successful()) {
             return [
                 'country' => $responseCountry->json(),
                 'states'  => $responseStates->json(),
                 'cities'  => $responseCity->json(),
             ];
+        } else {
+            return [
+                'country' => null,
+                'states'  => [],
+                'cities'  => []
+            ];
         }
-
-        return [
-            'country' => null,
-            'states'  => [],
-            'cities'  => []
-        ];
     }
 }
