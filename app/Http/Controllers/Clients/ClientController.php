@@ -130,6 +130,8 @@ class ClientController extends Controller
         $responseCountry = Http::withHeaders($headers)
             ->get("https://api.countrystatecity.in/v1/countries/{$countryCode}");
 
+        return $responseCountry;
+
         $responseStates = Http::withHeaders($headers)
             ->get("https://api.countrystatecity.in/v1/countries/{$countryCode}/states");
 
