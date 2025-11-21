@@ -29,12 +29,11 @@ class ClientController extends Controller
     {
 
         $data = $this->getCountries();
-        // return $data['cities'];
-        return view('content.clients.create', [
-            'country' => $data['country'] ?? null,
-            'states'  => $data['states'] ?? [],
-            'cities'  => $data['cities'] ?? [],
-        ]);
+        $country = $data['country'] ?? null;
+        $states = $data['states'] ?? [];
+        $cities  = $data['cities'] ?? [];
+        // return $country;
+        return view('content.clients.create', compact('country', 'states', 'cities'));
     }
 
     public function show($id)
