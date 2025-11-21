@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 class GetStateCitiesController extends Controller
 {
 
-    private function getCountries()
+    public function getCountries()
     {
         $curl = curl_init();
 
