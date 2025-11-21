@@ -344,8 +344,8 @@
                                 <label class="form-label">Country</label>
                                 <select name="res_country" id="res_country"
                                     class="form-select select2  @error('res_country') is-invalid @enderror">
-                                    <option value="{{ $country['iso2'] }}"
-                                        {{ old('res_country', $country['iso2']) == $country['iso2'] ? 'selected' : '' }}>
+                                    <option value="{{ $country['iso3'] }}"
+                                        {{ old('res_country', $country['iso3']) == $country['iso3'] ? 'selected' : '' }}>
                                         {{ $country['name'] }}
                                     </option>
 
