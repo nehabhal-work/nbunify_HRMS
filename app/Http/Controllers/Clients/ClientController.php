@@ -29,6 +29,7 @@ class ClientController extends Controller
     {
 
         $data = $this->getCountries();
+        return $data;
         $country = $data['country'] ?? null;
         $states = $data['states'] ?? [];
         $cities  = $data['cities'] ?? [];
@@ -143,7 +144,7 @@ class ClientController extends Controller
             ];
         } else {
             return [
-                'country' => null,
+                'country' => [],
                 'states'  => [],
                 'cities'  => []
             ];
