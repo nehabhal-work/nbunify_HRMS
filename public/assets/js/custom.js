@@ -148,7 +148,7 @@ $(document).ready(function () {
             }
         });
     });
-}); 
+});
 //  --------------END /IFSC Validation ------------------
 
 
@@ -351,3 +351,55 @@ $('.datepicker').datepicker({
     endDate: new Date()   // disallow future dates
 });
 // ------------------- End Datepicker END -----------------------
+
+
+$('#res_state').on('change', function () {
+
+    let country = $('#res_country').val();
+    let state = $(this).val();
+
+    $.ajax({
+        url: `/api/get-cities/${country}/${state}`,
+        type: 'GET',
+        success: function (res) {
+
+            $('#res_city').empty().append('<option value="">Select City</option>');
+
+            res.forEach(function (city) {
+                $('#res_city').append(
+                    `<option value="${city.name}">${city.name}</option>`
+                );
+            });
+            $('#res_city').trigger('change.select2');
+        },
+        error: function () {
+            $('#res_city').empty().append('<option>No Cities Found</option>');
+        }
+    });
+
+});
+$('#office_state').on('change', function () {
+
+    let country = $('#office_country').val();
+    let state = $(this).val();
+
+    $.ajax({
+        url: `/api/get-cities/${country}/${state}`,
+        type: 'GET',
+        success: function (res) {
+
+            $('#office_city').empty().append('<option value="">Select City</option>');
+
+            res.forEach(function (city) {
+                $('#office_city').append(
+                    `<option value="${city.name}">${city.name}</option>`
+                );
+            });
+            $('#office_city').trigger('change.select2');
+        },
+        error: function () {
+            $('#office_city').empty().append('<option>No Cities Found</option>');
+        }
+    });
+
+});

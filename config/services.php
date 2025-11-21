@@ -35,4 +35,7 @@ return [
         ],
     ],
 
+    'countrystatecity' => [
+        'api_key' => env('CSC_API_KEY'),
+    ],
 ];
