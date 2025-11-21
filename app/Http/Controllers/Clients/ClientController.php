@@ -127,6 +127,8 @@ class ClientController extends Controller
             'X-CSCAPI-KEY' => env('CSC_API_KEY')
         ];
 
+        return $headers;
+
         $responseCountry = Http::withHeaders($headers)
             ->get("https://api.countrystatecity.in/v1/countries/{$countryCode}");
 
