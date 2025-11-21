@@ -29,7 +29,6 @@ class ClientController extends Controller
     {
 
         $data = $this->getCountries();
-        return $data;
         $country = $data['country'] ?? null;
         $states = $data['states'] ?? [];
         $cities  = $data['cities'] ?? [];
@@ -124,14 +123,12 @@ class ClientController extends Controller
     private function getCountries($countryCode = 'IN', $stateCode = 'MH')
     {
         $headers = [
-            'X-CSCAPI-KEY' => env('CSC_API_KEY'),
+            'X-CSCAPI-KEY' => config('services.countrystatecity.api_key'),
             'content-type' => 'application/json',
         ];
 
         $responseCountry = Http::withHeaders($headers)
             ->get("https://api.countrystatecity.in/v1/countries/{$countryCode}");
-
-        return $responseCountry;
 
         $responseStates = Http::withHeaders($headers)
             ->get("https://api.countrystatecity.in/v1/countries/{$countryCode}/states");
