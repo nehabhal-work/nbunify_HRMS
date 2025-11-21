@@ -124,10 +124,9 @@ class ClientController extends Controller
     private function getCountries($countryCode = 'IN', $stateCode = 'MH')
     {
         $headers = [
-            'X-CSCAPI-KEY' => env('CSC_API_KEY')
+            'X-CSCAPI-KEY' => env('CSC_API_KEY'),
+            'content-type' => 'application/json',
         ];
-
-        return $headers;
 
         $responseCountry = Http::withHeaders($headers)
             ->get("https://api.countrystatecity.in/v1/countries/{$countryCode}");
