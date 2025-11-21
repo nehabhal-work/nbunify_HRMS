@@ -15,7 +15,7 @@ class GetStateCitiesController extends Controller
             CURLOPT_URL => "https://api.countrystatecity.in/v1/countries",
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_HTTPHEADER => array(
-                'X-CSCAPI-KEY: ' . env('CSC_API_KEY')
+                'X-CSCAPI-KEY: ' . config('services.countrystatecity.api_key')
             ),
         ));
 
