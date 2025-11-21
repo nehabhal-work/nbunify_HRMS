@@ -45,4 +45,4 @@
 <script src="{{ asset('assets/vendor/js/template-customizer.js') }}"></script>
 <script src="{{ asset('assets/js/config.js') }}"></script>
 
-<link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}" />
+<link rel="stylesheet" href="{{ asset('assets/css/custom.css') }}?v={{ time() }}" />

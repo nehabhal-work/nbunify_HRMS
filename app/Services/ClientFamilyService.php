@@ -7,7 +7,8 @@ use App\Models\ClientFamily;
 class ClientFamilyService
 {
 
-    public function find($id) {
+    public function find($id)
+    {
         return ClientFamily::findOrFail($id);
     }
 
@@ -22,14 +23,14 @@ class ClientFamilyService
         return $clientFamily->fresh();
     }
 
-    public function delete(ClientFamily $clientFamily): bool
+    public function delete($id): bool
     {
-        $this->deleteFiles($clientFamily);
+        $clientFamily = ClientFamily::findOrFail($id);
         return $clientFamily->delete();
     }
 
     public function getByClient(int $clientId): \Illuminate\Database\Eloquent\Collection
     {
-        return ClientFamily::where('client_id', $clientId)->with('client','relation')->get();
+        return ClientFamily::where('client_id', $clientId)->with('client', 'relation')->get();
     }
 }
