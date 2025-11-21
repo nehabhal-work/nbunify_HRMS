@@ -403,3 +403,80 @@ $('#office_state').on('change', function () {
     });
 
 });
+
+
+$('#registered_state').on('change', function () {
+
+    let country = $('#registered_country').val();
+    let state = $(this).val();
+
+    $.ajax({
+        url: `/api/get-cities/${country}/${state}`,
+        type: 'GET',
+        success: function (res) {
+
+            $('#registered_city').empty().append('<option value="">Select City</option>');
+
+            res.forEach(function (city) {
+                $('#registered_city').append(
+                    `<option value="${city.name}">${city.name}</option>`
+                );
+            });
+            $('#registered_city').trigger('change.select2');
+        },
+        error: function () {
+            $('#registered_city').empty().append('<option>No Cities Found</option>');
+        }
+    });
+
+});
+$('#corporate_state').on('change', function () {
+
+    let country = $('#corporate_country').val();
+    let state = $(this).val();
+
+    $.ajax({
+        url: `/api/get-cities/${country}/${state}`,
+        type: 'GET',
+        success: function (res) {
+
+            $('#corporate_city').empty().append('<option value="">Select City</option>');
+
+            res.forEach(function (city) {
+                $('#corporate_city').append(
+                    `<option value="${city.name}">${city.name}</option>`
+                );
+            });
+            $('#corporate_city').trigger('change.select2');
+        },
+        error: function () {
+            $('#corporate_city').empty().append('<option>No Cities Found</option>');
+        }
+    });
+
+});
+$('#additional_state').on('change', function () {
+
+    let country = $('#additional_country').val();
+    let state = $(this).val();
+
+    $.ajax({
+        url: `/api/get-cities/${country}/${state}`,
+        type: 'GET',
+        success: function (res) {
+
+            $('#additional_city').empty().append('<option value="">Select City</option>');
+
+            res.forEach(function (city) {
+                $('#additional_city').append(
+                    `<option value="${city.name}">${city.name}</option>`
+                );
+            });
+            $('#additional_city').trigger('change.select2');
+        },
+        error: function () {
+            $('#additional_city').empty().append('<option>No Cities Found</option>');
+        }
+    });
+
+});
