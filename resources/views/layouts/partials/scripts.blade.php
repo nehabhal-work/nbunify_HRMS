@@ -30,7 +30,7 @@
 <!-- Main JS -->
 <script src="{{ asset('assets/js/main.js') }}"></script>
 <script src="{{ asset('assets/js/forms-extras.js') }}"></script>
-<script src="{{ asset('assets/js/custom.js') }}"></script>
+<script src="{{ asset('assets/js/custom.js') }}?v={{ time() }}"></script>
 
 
 

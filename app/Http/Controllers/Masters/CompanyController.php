@@ -7,6 +7,7 @@ use App\Http\Requests\CompanyRequest;
 use App\Services\CompanyService;
 use App\Services\CompanyBankDetailService;
 use App\Services\FileStorageService;
+use Illuminate\Support\Facades\Http;
 
 class CompanyController extends Controller
 {
@@ -29,9 +30,13 @@ class CompanyController extends Controller
 
     public function create()
     {
+        $data = $this->getCountries();
+        $country = $data['country'] ?? null;
+        $states = $data['states'] ?? [];
+        $cities = $data['cities'] ?? [];
         $companyTypes = config('enum_company_types');
         $bankAccountTypes = config('enum_bank_account_types');
-        return view('content.master.companies.create', compact('companyTypes', 'bankAccountTypes'));
+        return view('content.master.companies.create', compact('companyTypes', 'bankAccountTypes', 'country', 'states', 'cities'));
     }
 
     public function store(CompanyRequest $request)
@@ -110,5 +115,35 @@ class CompanyController extends Controller
         }
 
         return $company;
+    }
+    private function getCountries($countryCode = 'IN', $stateCode = 'MH')
+    {
+        $headers = [
+            'X-CSCAPI-KEY' => config('services.countrystatecity.api_key'),
+            'content-type' => 'application/json',
+        ];
+
+        $responseCountry = Http::withHeaders($headers)
+            ->get("https://api.countrystatecity.in/v1/countries/{$countryCode}");
+
+        $responseStates = Http::withHeaders($headers)
+            ->get("https://api.countrystatecity.in/v1/countries/{$countryCode}/states");
+
+        $responseCity = Http::withHeaders($headers)
+            ->get("https://api.countrystatecity.in/v1/countries/{$countryCode}/states/{$stateCode}/cities");
+
+        if ($responseCountry->successful() && $responseStates->successful()) {
+            return [
+                'country' => $responseCountry->json(),
+                'states' => $responseStates->json(),
+                'cities' => $responseCity->json(),
+            ];
+        } else {
+            return [
+                'country' => [],
+                'states' => [],
+                'cities' => []
+            ];
+        }
     }
 }

@@ -47,6 +47,7 @@ class ClientController extends Controller
     public function store(ClientRequest $request)
     {
 
+        // return $request;
         $client = null;
         DB::transaction(function () use ($request, &$client) {
             $client = $this->clientService->create($request->validated());

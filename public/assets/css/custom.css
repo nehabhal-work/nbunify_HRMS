@@ -28,6 +28,10 @@ h6 {
     height: 200px;
 }
 
-/* td{
-    text-transform: uppercase!important;
-} */
+td {
+    text-transform: uppercase;
+}
+
+.email {
+    text-transform: lowercase;
+}

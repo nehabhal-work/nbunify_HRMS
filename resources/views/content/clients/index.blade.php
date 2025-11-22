@@ -62,7 +62,7 @@
                                         <td>{{ $d->pan_no ?? '' }}</td>
                                         <td>{{ $d->aadhar_no ?? '' }}</td>
                                         <td>{{ $d->mobile_no ?? '' }}</td>
-                                        <td>{{ strtolower($d->email ?? '') }}</td>
+                                        <td class="email">{{ strtolower($d->email ?? '') }}</td>
                                         <td class="text-truncate" style="max-width: 250px;" data-bs-toggle="tooltip"
                                             title="{{ strtoupper($d->res_address) }}">
                                             {{ \Illuminate\Support\Str::limit(strtoupper($d->res_address), 200) }}
