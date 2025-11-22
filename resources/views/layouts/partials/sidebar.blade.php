@@ -55,7 +55,7 @@
                          <div class="text-truncate">Designations</div>
                      </a>
                  </li>
-                 <li class="menu-item {{ request()->routeIs('content.master.employees.*') ? 'active' : '' }}">
+                 <li class="menu-item {{ request()->routeIs('master.employees.*') ? 'active' : '' }}">
                      <a href="{{ route('master.employees.index') }}" class="menu-link">
                          <i class="menu-icon bx bx-group"></i>
                          <div class="text-truncate">Employees</div>
@@ -69,7 +69,7 @@
              </ul>
          </li>
 
-         <li class="menu-item {{ request()->routeIs('clients.*') ? 'active' : '' }}">
+         <li class="menu-item {{ request()->routeIs('client*') ? 'active' : '' }}">
              <a href="{{ route('clients.index') }}" class="menu-link">
                  <i class="menu-icon bx bx-id-card"></i>
                  <div class="text-truncate">Client</div>

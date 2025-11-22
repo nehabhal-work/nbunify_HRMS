@@ -9,6 +9,7 @@ use App\Services\ClientFamilyService;
 use App\Services\ClientService;
 use App\Services\FamilyRelationService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class ClientFamilyController extends Controller
 {
@@ -16,8 +17,7 @@ class ClientFamilyController extends Controller
         private ClientFamilyService $clientFamilyService,
         private ClientService $clientService,
         private FamilyRelationService $familyRelationService
-    ) {
-    }
+    ) {}
 
     public function index(Request $request)
     {
@@ -36,7 +36,13 @@ class ClientFamilyController extends Controller
             $clients = $this->clientService->getAll();
             $client = $this->clientService->find($client_id);
             $relations = $this->familyRelationService->getByGender($client->gender);
-            return view('content.clients.families.create', compact('client', 'relations', 'clients'));
+
+            $data = getCountries();
+            $country = $data['country'] ?? null;
+            $states = $data['states'] ?? [];
+            $cities  = $data['cities'] ?? [];
+
+            return view('content.clients.families.create', compact('client', 'relations', 'clients', 'country', 'states', 'cities'));
         } else {
             abort(404);
         }
@@ -66,7 +72,13 @@ class ClientFamilyController extends Controller
         $clientFamily = $this->clientFamilyService->find($id);
         $client = $this->clientService->find($clientFamily->client_id);
         $relations = $this->familyRelationService->getByGender($client->gender);
-        return view('content.clients.families.edit', compact('clientFamily', 'client', 'relations'));
+
+        $data = getCountries();
+        $country = $data['country'] ?? null;
+        $states = $data['states'] ?? [];
+        $cities  = $data['cities'] ?? [];
+
+        return view('content.clients.families.edit', compact('clientFamily', 'client', 'relations', 'country', 'states', 'cities'));
     }
 
     public function update(ClientFamilyRequest $request, $id)
@@ -89,6 +101,4 @@ class ClientFamilyController extends Controller
 
         abort(404);
     }
-    
-
 }

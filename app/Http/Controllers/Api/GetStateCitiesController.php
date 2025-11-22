@@ -29,6 +29,9 @@ class GetStateCitiesController extends Controller
 
         return response()->json(['message' => 'Country not found'], 404);
     }
+
+
+
     public function getCitiesByState($countryCode, $stateCode)
     {
         $curl = curl_init();

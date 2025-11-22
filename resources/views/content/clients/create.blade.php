@@ -349,6 +349,8 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
+
+                            {{-- Country --}}
                             <div class="col-md-2 mb-3">
                                 <label class="form-label">Country</label>
                                 <select name="res_country_code" id="res_country_code"
@@ -365,6 +367,7 @@
                                 @enderror
                             </div>
 
+                            {{-- State --}}
                             <div class="col-md-2 mb-3">
                                 <label class="form-label">State</label>
                                 <select name="res_state_code" id="res_state_code"
@@ -382,6 +385,7 @@
                                 @enderror
                             </div>
 
+                            {{-- City --}}
                             <div class="col-md-2 mb-3">
                                 <label class="form-label">City</label>
                                 <select name="res_city_code" id="res_city_code"
@@ -401,6 +405,7 @@
                                 @enderror
                             </div>
 
+                            {{-- Pincode --}}
                             <div class="col-md-2 mb-3">
                                 <label class="form-label">Pincode</label>
                                 <input type="text" name="res_pincode" id="res_pincode"

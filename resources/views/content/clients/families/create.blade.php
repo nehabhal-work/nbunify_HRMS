@@ -71,7 +71,7 @@
                     <div class="col-md-4 mb-3">
                         <label for="existing_client_id" class="form-label">Select Existing Client</label>
                         <select name="existing_client_id" id="existing_client_id"
-                            class="form-select select2 @error('name') is-invalid @enderror"">
+                            class="form-select select2 @error('name') is-invalid @enderror">
                             <option value="">Select Client</option>
                             @foreach ($clients as $c)
                                 <option value="{{ $c->id }}">{{ $c->name }}</option>
@@ -374,52 +374,57 @@
                                 @enderror
                             </div>
 
+                            {{-- Country --}}
                             <div class="col-md-2 mb-3">
                                 <label class="form-label">Country</label>
-                                <select name="res_country" id="res_country"
-                                    class="form-select select2  @error('res_country') is-invalid @enderror">
-                                    <option value="">Select Country</option>
-                                    <option value="India" {{ old('res_country') == 'India' ? 'selected' : '' }}>India
+                                <select name="res_country_code" id="res_country_code"
+                                    class="form-select select2  @error('res_country_code') is-invalid @enderror">
+                                    <option value="{{ $country['iso2'] }}"
+                                        {{ old('res_country_code', 'IND') == $country['iso2'] ? 'selected' : '' }}
+                                        data-country-name="{{ $country['name'] }}">
+                                        {{ $country['name'] }}
                                     </option>
-                                    <option value="USA" {{ old('res_country') == 'USA' ? 'selected' : '' }}>United
-                                        States</option>
-                                    <option value="UK" {{ old('res_country') == 'UK' ? 'selected' : '' }}>United
-                                        Kingdom</option>
+
                                 </select>
-                                @error('res_country')
+                                @error('res_country_code')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
 
+                            {{-- State --}}
                             <div class="col-md-2 mb-3">
                                 <label class="form-label">State</label>
-                                <select name="res_state" id="res_state"
-                                    class="form-select select2 @error('res_state') is-invalid @enderror">
-                                    <option value="">Select State</option>
-                                    <option value="Maharashtra" {{ old('res_state') == 'Maharashtra' ? 'selected' : '' }}>
-                                        Maharashtra</option>
-                                    <option value="Gujarat" {{ old('res_state') == 'Gujarat' ? 'selected' : '' }}>Gujarat
-                                    </option>
-                                    <option value="Delhi" {{ old('res_state') == 'Delhi' ? 'selected' : '' }}>Delhi
-                                    </option>
+                                <select name="res_state_code" id="res_state_code"
+                                    class="form-select select2 @error('res_state_code') is-invalid @enderror">
+                                    @foreach ($states as $state)
+                                        <option value="{{ $state['iso2'] }}"
+                                            {{ old('res_state_code', 'MH') == $state['iso2'] ? 'selected' : '' }}
+                                            data-state-name="{{ $state['name'] }}">
+                                            {{ $state['name'] }}
+                                        </option>
+                                    @endforeach
                                 </select>
-                                @error('res_state')
+                                @error('res_state_code')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
 
+                            {{-- City --}}
                             <div class="col-md-2 mb-3">
                                 <label class="form-label">City</label>
-                                <select name="res_city" id="res_city"
-                                    class="form-select select2  @error('res_city') is-invalid @enderror">
+                                <select name="res_city_code" id="res_city_code"
+                                    class="form-select select2  @error('res_city_code') is-invalid @enderror">
                                     <option value="">Select City</option>
-                                    <option value="Mumbai" {{ old('res_city') == 'Mumbai' ? 'selected' : '' }}>Mumbai
-                                    </option>
-                                    <option value="Pune" {{ old('res_city') == 'Pune' ? 'selected' : '' }}>Pune</option>
-                                    <option value="Ahmedabad" {{ old('res_city') == 'Ahmedabad' ? 'selected' : '' }}>
-                                        Ahmedabad</option>
+                                    @foreach ($cities as $c)
+                                        <option value="{{ $c['id'] }}"
+                                            {{ old('res_city_code') == $c['id'] ? 'selected' : '' }}
+                                            data-city-name="{{ $c['name'] }}">
+                                            {{ $c['name'] }}
+                                        </option>
+                                    @endforeach
                                 </select>
-                                @error('res_city')
+
+                                @error('res_city_code')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -537,8 +542,8 @@
 
 @push('scripts')
     <script>
+        // Copy Mobile → WhatsApp when checked
         $(document).ready(function() {
-            // Copy Mobile → WhatsApp when checked
             $('.chkbox_fwapp_same_as_mobile').on('change', function() {
                 if ($(this).is(':checked')) {
                     $('#whatsapp_no').val($('#mobile_no').val());
@@ -554,11 +559,33 @@
         $(document).ready(function() {
             function toggleSections() {
                 if ($("#source_existing").is(":checked")) {
+
+                    // Show existing section
                     $("#existingSection").removeClass("d-none");
                     $("#newSection").addClass("d-none");
+
+                    // Rename IDs (Existing selected)
+                    $("#existing_client_id")
+                        .attr("id", "existing_client_id_old")
+                        .attr("name", "existing_client_id_old");
+
+                    $("#existing_client_id_new")
+                        .attr("id", "existing_client_id")
+                        .attr("name", "existing_client_id");
                 } else {
+
+                    // Show new section
                     $("#existingSection").addClass("d-none");
                     $("#newSection").removeClass("d-none");
+
+                    // Rename IDs back (New selected)
+                    $("#existing_client_id_old")
+                        .attr("id", "existing_client_id")
+                        .attr("name", "existing_client_id");
+
+                    $("#existing_client_id")
+                        .attr("id", "existing_client_id_new")
+                        .attr("name", "existing_client_id_new");
                 }
             }
 

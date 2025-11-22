@@ -13,7 +13,11 @@ class EmployeeController extends Controller
 
     public function create()
     {
-        return view('content.master.employees.create');
+        $data = getCountries();
+        $country = $data['country'] ?? null;
+        $states = $data['states'] ?? [];
+        $cities = $data['cities'] ?? [];
+        return view('content.master.employees.create', compact('country', 'states', 'cities'));
     }
 
     public function store()
@@ -28,7 +32,11 @@ class EmployeeController extends Controller
 
     public function edit($id)
     {
-        return view('content.master.employees.edit');
+        $data = getCountries();
+        $country = $data['country'] ?? null;
+        $states = $data['states'] ?? [];
+        $cities = $data['cities'] ?? [];
+        return view('content.master.employees.edit', compact('country', 'states', 'cities'));
     }
 
     public function update($id)

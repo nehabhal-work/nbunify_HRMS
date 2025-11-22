@@ -31,6 +31,12 @@
     <form action="{{ route('master.companies.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('post')
+
+        <input type="hidden" name="res_country" id="res_country">
+        <input type="hidden" name="res_state" id="res_state">
+        <input type="hidden" name="res_city" id="res_city">
+
+
         <div class="row align-items-stretch">
             <div class="col-md-12">
                 <div class="card mb-4">
@@ -73,8 +79,8 @@
                             <!-- Date of Birth -->
                             <div class="col-md-2 mb-3">
                                 <label class="form-label">Date of Birth</label>
-                                <input type="text" class="form-control datepicker @error('dob') is-invalid @enderror" name="dob"
-                                    value="{{ old('dob') }}" readonly placeholder="Select Date">
+                                <input type="text" class="form-control datepicker @error('dob') is-invalid @enderror"
+                                    name="dob" value="{{ old('dob') }}" readonly placeholder="Select Date">
                                 @error('dob')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -120,94 +126,94 @@
                                 @enderror
                             </div>
 
-                            <!-- Local Address -->
-                            <h6 class="my-3">Local Address:</h6>
-                            <div class="col-6 mb-3">
+                        </div>
+
+
+                        {{-- address section --}}
+                        <div class="row my-3">
+                            <!-- Residential Address -->
+                            <h6> Address</h6>
+                            <div class="col-md-4 mb-3">
                                 <label class="form-label">Address</label>
-                                <input type="text" name="registered_address" id="registered_address"
-                                    class="form-control @error('registered_address') is-invalid @enderror"
-                                    value="{{ old('registered_address') }}">
-                                @error('registered_address')
+                                <input type="text" name="res_address" id="res_address"
+                                    class="form-control @error('res_address') is-invalid @enderror"
+                                    value="{{ old('res_address') }}">
+                                @error('res_address')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
 
+                            {{-- Country --}}
+                            <div class="col-md-2 mb-3">
+                                <label class="form-label">Country</label>
+                                <select name="res_country_code" id="res_country_code"
+                                    class="form-select select2  @error('res_country_code') is-invalid @enderror">
+                                    <option value="{{ $country['iso2'] }}"
+                                        {{ old('res_country_code', 'IND') == $country['iso2'] ? 'selected' : '' }}
+                                        data-country-name="{{ $country['name'] }}">
+                                        {{ $country['name'] }}
+                                    </option>
 
+                                </select>
+                                @error('res_country_code')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            {{-- State --}}
                             <div class="col-md-2 mb-3">
                                 <label class="form-label">State</label>
-                                <input type="text" name="registered_state" id="registered_state"
-                                    class="form-control @error('registered_state') is-invalid @enderror"
-                                    value="{{ old('registered_state') }}">
-                                @error('registered_state')
+                                <select name="res_state_code" id="res_state_code"
+                                    class="form-select select2 @error('res_state_code') is-invalid @enderror">
+                                    @foreach ($states as $state)
+                                        <option value="{{ $state['iso2'] }}"
+                                            {{ old('res_state_code', 'MH') == $state['iso2'] ? 'selected' : '' }}
+                                            data-state-name="{{ $state['name'] }}">
+                                            {{ $state['name'] }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('res_state_code')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
 
+                            {{-- City --}}
                             <div class="col-md-2 mb-3">
                                 <label class="form-label">City</label>
-                                <input type="text" name="registered_city" id="registered_city"
-                                    class="form-control @error('registered_city') is-invalid @enderror"
-                                    value="{{ old('registered_city') }}">
-                                @error('registered_city')
+                                <select name="res_city_code" id="res_city_code"
+                                    class="form-select select2  @error('res_city_code') is-invalid @enderror">
+                                    <option value="">Select City</option>
+                                    @foreach ($cities as $c)
+                                        <option value="{{ $c['id'] }}"
+                                            {{ old('res_city_code') == $c['id'] ? 'selected' : '' }}
+                                            data-city-name="{{ $c['name'] }}">
+                                            {{ $c['name'] }}
+                                        </option>
+                                    @endforeach
+                                </select>
+
+                                @error('res_city_code')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
 
-                            <div class="col-md-2 mb-3">
-                                <label class="form-label">Postal Code</label>
-                                <input type="text" name="registered_pincode" id="registered_pincode"
-                                    class="form-control onlydigit @error('registered_pincode') is-invalid @enderror"
-                                    value="{{ old('registered_pincode') }}" maxlength="6">
-                                @error('registered_pincode')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <!-- Corporate Address -->
-                            <h6 class="my-3">Permanant Address:</h6>
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Address</label>
-                                <input type="text" name="corporate_address" id="corporate_address"
-                                    class="form-control @error('corporate_address') is-invalid @enderror"
-                                    value="{{ old('corporate_address') }}">
-                                @error('corporate_address')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-
-
-                            <div class="col-md-2 mb-3">
-                                <label class="form-label">State</label>
-                                <input type="text" name="corporate_state" id="corporate_state"
-                                    class="form-control @error('corporate_state') is-invalid @enderror"
-                                    value="{{ old('corporate_state') }}">
-                                @error('corporate_state')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="col-md-2 mb-3">
-                                <label class="form-label">City</label>
-                                <input type="text" name="corporate_city" id="corporate_city"
-                                    class="form-control @error('corporate_city') is-invalid @enderror"
-                                    value="{{ old('corporate_city') }}">
-                                @error('corporate_city')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
+                            {{-- Pincode --}}
                             <div class="col-md-2 mb-3">
                                 <label class="form-label">Pincode</label>
-                                <input type="text" name="corporate_pincode" id="corporate_pincode"
-                                    class="form-control onlydigit @error('corporate_pincode') is-invalid @enderror"
-                                    value="{{ old('corporate_pincode') }}" maxlength="6">
-                                @error('corporate_pincode')
+                                <input type="text" name="res_pincode" id="res_pincode"
+                                    class="form-control onlydigit @error('res_pincode') is-invalid @enderror"
+                                    value="{{ old('res_pincode') }}" maxlength="6">
+                                @error('res_pincode')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
 
-                            <hr>
+                        </div>
+
+
+
+                        <div class="row my-3">
 
                             <!-- Branch -->
                             <div class="col-md-2 mb-3">
@@ -259,8 +265,10 @@
                             <!-- Joining Date -->
                             <div class="col-md-2 mb-3">
                                 <label class="form-label">Joining Date</label>
-                                <input type="text" class="form-control datepicker @error('joining_date') is-invalid @enderror"
-                                    name="joining_date" value="{{ old('joining_date') }}" placeholder="Select Date" readonly>
+                                <input type="text"
+                                    class="form-control datepicker @error('joining_date') is-invalid @enderror"
+                                    name="joining_date" value="{{ old('joining_date') }}" placeholder="Select Date"
+                                    readonly>
                                 @error('joining_date')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -344,7 +352,7 @@
 
                             <div class="col-md-2 mb-3">
                                 <label for="status" class="form-label">Previous Salary Amount</label>
-                              
+
                                 <input type="text" name="prev_salary" id="prev_salary" class="form-control">
                                 @error('prev_salary')
                                     <div class="text-danger small">{{ $message }}</div>
@@ -551,8 +559,7 @@
                                 <div class="input-group">
                                     <input type="file"
                                         class="form-control @error('attachment_cv') is-invalid @enderror"
-                                        id="attachment_cv" name="attachment_cv"
-                                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
+                                        id="attachment_cv" name="attachment_cv" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
                                     <button class="btn btn-outline-danger" type="button"
                                         onclick="document.getElementById('attachment_cv').value = ''">✕</button>
                                 </div>

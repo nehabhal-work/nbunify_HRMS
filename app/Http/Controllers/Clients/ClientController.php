@@ -28,7 +28,7 @@ class ClientController extends Controller
     public function create()
     {
 
-        $data = $this->getCountries();
+        $data = getCountries();
         $country = $data['country'] ?? null;
         $states = $data['states'] ?? [];
         $cities  = $data['cities'] ?? [];
@@ -69,7 +69,13 @@ class ClientController extends Controller
         $client = $this->clientService->find($id);
         $client->load(['banks', 'families']);
         $client = $this->addFileUrls($client);
-        return view('content.clients.edit', compact('client'));
+
+        $data = getCountries();
+        $country = $data['country'] ?? null;
+        $states = $data['states'] ?? [];
+        $cities  = $data['cities'] ?? [];
+
+        return view('content.clients.edit', compact('client', 'country', 'states', 'cities'));
     }
 
     public function update(ClientRequest $request, $id)
@@ -119,36 +125,5 @@ class ClientController extends Controller
         }
 
         return $client;
-    }
-
-    private function getCountries($countryCode = 'IN', $stateCode = 'MH')
-    {
-        $headers = [
-            'X-CSCAPI-KEY' => config('services.countrystatecity.api_key'),
-            'content-type' => 'application/json',
-        ];
-
-        $responseCountry = Http::withHeaders($headers)
-            ->get("https://api.countrystatecity.in/v1/countries/{$countryCode}");
-
-        $responseStates = Http::withHeaders($headers)
-            ->get("https://api.countrystatecity.in/v1/countries/{$countryCode}/states");
-
-        $responseCity   = Http::withHeaders($headers)
-            ->get("https://api.countrystatecity.in/v1/countries/{$countryCode}/states/{$stateCode}/cities");
-
-        if ($responseCountry->successful() && $responseStates->successful()) {
-            return [
-                'country' => $responseCountry->json(),
-                'states'  => $responseStates->json(),
-                'cities'  => $responseCity->json(),
-            ];
-        } else {
-            return [
-                'country' => [],
-                'states'  => [],
-                'cities'  => []
-            ];
-        }
     }
 }

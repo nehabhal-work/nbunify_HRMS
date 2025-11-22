@@ -31,6 +31,12 @@
     <form action="{{ route('master.branches.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('post')
+
+        <input type="hidden" name="res_country" id="res_country">
+        <input type="hidden" name="res_state" id="res_state">
+        <input type="hidden" name="res_city" id="res_city">
+
+
         <div class="row align-items-stretch">
             <div class="col-md-12">
                 <div class="card mb-4">
@@ -62,7 +68,7 @@
 
                             <div class="w-100"></div>
                             {{-- gumasta --}}
-                            <div class="col-3 mb-3">
+                            <div class="col-2 mb-3">
                                 <label class="form-label">gumasta no. <span class="text-info text-lowercase fst-italic ">(If
                                         required)</span></label>
                                 <input type="text" name="gumasta" id="gumasta"
@@ -90,7 +96,7 @@
                             </div>
 
                             <!-- Contact Number -->
-                            <div class="col-md-3 mb-3">
+                            <div class="col-md-2 mb-3">
                                 <label class="form-label">Contact Number</label>
                                 <input type="text" name="phone" id="phone"
                                     class="form-control onlyphone @error('phone') is-invalid @enderror"
@@ -111,8 +117,29 @@
                                 @enderror
                             </div>
 
-                            <!-- Registered Address -->
-                            <div class="col-6 mb-3">
+                            {{-- WhatsApp Number --}}
+                            <div class="col-md-2 mb-3">
+                                <label class="form-label" for="whatsapp_no">WhatsApp Number</label>
+                                <input type="text"
+                                    class="form-control onlyphone @error('whatsapp_no') is-invalid @enderror"
+                                    id="whatsapp_no" name="whatsapp_no" maxlength="15" value="{{ old('whatsapp_no') }}">
+                                <label class="uk-margin-right"><input class="uk-checkbox chkbox_fwapp_same_as_mobile"
+                                        type="checkbox" id="" value="ON">
+                                    Same as mobile no.</label>
+                                @error('whatsapp_no')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                        </div>
+
+
+
+                        {{-- address section --}}
+                        <div class="row">
+                            <!-- Residential Address -->
+                            <h6 class="my-3"> Address</h6>
+                            <div class="col-md-4 mb-3">
                                 <label class="form-label">Address</label>
                                 <input type="text" name="address" id="address"
                                     class="form-control @error('address') is-invalid @enderror"
@@ -122,49 +149,89 @@
                                 @enderror
                             </div>
 
+                            {{-- Country --}}
+                            <div class="col-md-2 mb-3">
+                                <label class="form-label">Country</label>
+                                <select name="res_country_code" id="res_country_code"
+                                    class="form-select select2  @error('res_country_code') is-invalid @enderror">
+                                    <option value="{{ $country['iso2'] }}"
+                                        {{ old('res_country_code', 'IND') == $country['iso2'] ? 'selected' : '' }}
+                                        data-country-name="{{ $country['name'] }}">
+                                        {{ $country['name'] }}
+                                    </option>
 
+                                </select>
+                                @error('res_country_code')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            {{-- State --}}
                             <div class="col-md-2 mb-3">
                                 <label class="form-label">State</label>
-                                <input type="text" name="state" id="state"
-                                    class="form-control @error('state') is-invalid @enderror" value="{{ old('state') }}">
-                                @error('state')
+                                <select name="res_state_code" id="res_state_code"
+                                    class="form-select select2 @error('res_state_code') is-invalid @enderror">
+                                    @foreach ($states as $state)
+                                        <option value="{{ $state['iso2'] }}"
+                                            {{ old('res_state_code', 'MH') == $state['iso2'] ? 'selected' : '' }}
+                                            data-state-name="{{ $state['name'] }}">
+                                            {{ $state['name'] }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                                @error('res_state_code')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
 
+                            {{-- City --}}
                             <div class="col-md-2 mb-3">
                                 <label class="form-label">City</label>
-                                <input type="text" name="city" id="city"
-                                    class="form-control @error('city') is-invalid @enderror" value="{{ old('city') }}">
-                                @error('city')
+                                <select name="res_city_code" id="res_city_code"
+                                    class="form-select select2  @error('res_city_code') is-invalid @enderror">
+                                    <option value="">Select City</option>
+                                    @foreach ($cities as $c)
+                                        <option value="{{ $c['id'] }}"
+                                            {{ old('res_city_code') == $c['id'] ? 'selected' : '' }}
+                                            data-city-name="{{ $c['name'] }}">
+                                            {{ $c['name'] }}
+                                        </option>
+                                    @endforeach
+                                </select>
+
+                                @error('res_city_code')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
 
+                            {{-- Pincode --}}
                             <div class="col-md-2 mb-3">
-                                <label class="form-label">Postal Code</label>
-                                <input type="text" name="pincode" id="pincode"
-                                    class="form-control onlydigit @error('pincode') is-invalid @enderror"
-                                    value="{{ old('pincode') }}" maxlength="6">
-                                @error('pincode')
+                                <label class="form-label">Pincode</label>
+                                <input type="text" name="res_pincode" id="res_pincode"
+                                    class="form-control onlydigit @error('res_pincode') is-invalid @enderror"
+                                    value="{{ old('res_pincode') }}" maxlength="6">
+                                @error('res_pincode')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
 
-
-
-
-
-                            <!-- Submit -->
-                            <div class="text-end mt-3">
-                                <button type="submit" class="btn btn-primary px-4">Save</button>
-                                <a href="{{ route('master.branches.index') }}" class="btn btn-secondary px-4">Cancel</a>
-                            </div>
 
                         </div>
+
+
+
+
+
+                        <!-- Submit -->
+                        <div class="text-end mt-3">
+                            <button type="submit" class="btn btn-primary px-4">Save</button>
+                            <a href="{{ route('master.branches.index') }}" class="btn btn-secondary px-4">Cancel</a>
+                        </div>
+
                     </div>
                 </div>
             </div>
+        </div>
 
 
 
@@ -248,4 +315,27 @@
 @endsection
 
 @push('scripts')
+    <script>
+        $(document).ready(function() {
+
+            // Firm WhatsApp same as mobile
+            $('.chkbox_fwapp_same_as_mobile').on('change', function() {
+                if ($(this).is(':checked')) {
+                    $('#whatsapp_no').val($('#phone').val());
+                } else {
+                    $('#whatsapp_no').val('');
+                }
+            });
+
+            // Proprietor WhatsApp same as mobile
+            $('.chkbox_prop_wa_same_as_mobile').on('change', function() {
+                if ($(this).is(':checked')) {
+                    $('#proprietor_whatsapp').val($('#proprietor_phone').val());
+                } else {
+                    $('#proprietor_whatsapp').val('');
+                }
+            });
+
+        });
+    </script>
 @endpush

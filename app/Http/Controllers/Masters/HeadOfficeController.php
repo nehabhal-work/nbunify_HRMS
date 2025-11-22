@@ -15,9 +15,14 @@ class HeadOfficeController extends Controller
 
     public function index(): View
     {
+        $data = getCountries();
+        $country = $data['country'] ?? null;
+        $states = $data['states'] ?? [];
+        $cities = $data['cities'] ?? [];
+
         return view('content.master.head-offices.index', [
             'headOffices' => HeadOffice::all()
-        ]);
+        ], compact('country', 'states', 'cities'));
     }
 
     public function create(): View
@@ -34,9 +39,14 @@ class HeadOfficeController extends Controller
     public function edit($id): View
     {
         $headOffice = $this->headOfficeService->find($id);
+        $data = getCountries();
+        $country = $data['country'] ?? null;
+        $states = $data['states'] ?? [];
+        $cities = $data['cities'] ?? [];
+
         return view('content.master.head-offices.edit', [
             'headOffice' => $headOffice
-        ]);
+        ], compact('country', 'states', 'cities'));
     }
 
     public function update(StoreHeadOfficeRequest $request, $id): RedirectResponse

@@ -30,7 +30,7 @@ class CompanyController extends Controller
 
     public function create()
     {
-        $data = $this->getCountries();
+        $data = getCountries();
         $country = $data['country'] ?? null;
         $states = $data['states'] ?? [];
         $cities = $data['cities'] ?? [];
@@ -62,8 +62,13 @@ class CompanyController extends Controller
         $bankDetails = $company->bankDetails ?? collect();
         $companyTypes = config('enum_company_types');
         $bankAccountTypes = config('enum_bank_account_types');
+
+        $data = getCountries();
+        $country = $data['country'] ?? null;
+        $states = $data['states'] ?? [];
+        $cities = $data['cities'] ?? [];
         // return $company;
-        return view('content.master.companies.edit', compact('company', 'bankDetails', 'companyTypes', 'bankAccountTypes'));
+        return view('content.master.companies.edit', compact('company', 'bankDetails', 'companyTypes', 'bankAccountTypes', 'country', 'states', 'cities'));
     }
 
     public function show($id)
@@ -115,35 +120,5 @@ class CompanyController extends Controller
         }
 
         return $company;
-    }
-    private function getCountries($countryCode = 'IN', $stateCode = 'MH')
-    {
-        $headers = [
-            'X-CSCAPI-KEY' => config('services.countrystatecity.api_key'),
-            'content-type' => 'application/json',
-        ];
-
-        $responseCountry = Http::withHeaders($headers)
-            ->get("https://api.countrystatecity.in/v1/countries/{$countryCode}");
-
-        $responseStates = Http::withHeaders($headers)
-            ->get("https://api.countrystatecity.in/v1/countries/{$countryCode}/states");
-
-        $responseCity = Http::withHeaders($headers)
-            ->get("https://api.countrystatecity.in/v1/countries/{$countryCode}/states/{$stateCode}/cities");
-
-        if ($responseCountry->successful() && $responseStates->successful()) {
-            return [
-                'country' => $responseCountry->json(),
-                'states' => $responseStates->json(),
-                'cities' => $responseCity->json(),
-            ];
-        } else {
-            return [
-                'country' => [],
-                'states' => [],
-                'cities' => []
-            ];
-        }
     }
 }

@@ -15,13 +15,18 @@ class BranchController extends Controller
 
     public function index(): View
     {
+        $data = getCountries();
+        $country = $data['country'] ?? null;
+        $states = $data['states'] ?? [];
+        $cities = $data['cities'] ?? [];
         return view('content.master.branches.index', [
             'branches' => Branch::all()
-        ]);
+        ], compact('country', 'states', 'cities'));
     }
 
     public function create(): View
     {
+
         return view('content.master.branches.create');
     }
 
@@ -34,9 +39,14 @@ class BranchController extends Controller
     public function edit($id): View
     {
         $branch = $this->branchService->find($id);
+        $data = getCountries();
+        $country = $data['country'] ?? null;
+        $states = $data['states'] ?? [];
+        $cities = $data['cities'] ?? [];
+
         return view('content.master.branches.edit', [
             'branch' => $branch
-        ]);
+        ], compact('country', 'states', 'cities'));
     }
 
     public function update(StoreBranchRequest $request, $id): RedirectResponse
