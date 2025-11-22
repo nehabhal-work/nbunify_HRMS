@@ -4,9 +4,13 @@ namespace App\Services;
 
 use App\Models\ClientBank;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 
 class ClientBankService
 {
+    public function __construct(private FileStorageService $fileStorageService)
+    {
+    }
     public function getByClientId($clientId)
     {
         return ClientBank::where('client_id', $clientId)->get();
@@ -31,9 +35,10 @@ class ClientBankService
             'bank_code' => 'required|string|max:4',
             'is_primary' => 'nullable|integer',
             'account_type' => 'nullable|in:savings,current,od_cc,nre,nri,nro,tem_deposit,ra',
+            'attachment_cancelled_cheque_url' => 'nullable|string',
         ]);
 
-        return ClientBank::create([
+        $clientBank = ClientBank::create([
             'client_id' => $data['client_id'],
             'account_number' => $data['account_number'],
             'ifsc_code' => $data['ifsc_code'],
@@ -43,6 +48,17 @@ class ClientBankService
             'is_primary' => $data['is_primary'] ?? 0,
             'account_type' => $data['account_type'] ?? null,
         ]);
+
+        if (isset($data['attachment_cancelled_cheque_url'])) {
+            $clientBank->attachment_cancelled_cheque = $this->fileStorageService->storeClientDocument(
+                $data['client_id'],
+                $data['attachment_cancelled_cheque_url'],
+                'cancelled_cheque'
+            );
+            $clientBank->save();
+        }
+
+        return $clientBank;
     }
 
     public function update($clientBank, array $data)
@@ -55,9 +71,10 @@ class ClientBankService
             'bank_code' => 'nullable|string|max:255',
             'is_primary' => 'boolean',
             'account_type' => 'nullable|in:savings,current,od_cc,nre,nri,nro,tem_deposit,ra',
+            'attachment_cancelled_cheque_url' => 'nullable|string',
         ]);
 
-        return $clientBank->update([
+        $updateData = [
             'account_number' => $data['account_number'],
             'ifsc_code' => $data['ifsc_code'],
             'bank_name' => $data['bank_name'],
@@ -65,16 +82,46 @@ class ClientBankService
             'bank_code' => $data['bank_code'] ?? null,
             'is_primary' => $data['is_primary'] ?? 0,
             'account_type' => $data['account_type'] ?? null,
-        ]);
+        ];
+
+        if (isset($data['attachment_cancelled_cheque_url'])) {
+            if (Str::contains($data['attachment_cancelled_cheque_url'], 'temp')) {
+                if ($clientBank->attachment_cancelled_cheque) {
+                    $this->fileStorageService->deleteFile($clientBank->attachment_cancelled_cheque);
+                }
+                $updateData['attachment_cancelled_cheque'] = $this->fileStorageService->storeClientDocument(
+                    $clientBank->client_id,
+                    $data['attachment_cancelled_cheque_url'],
+                    'cancelled_cheque'
+                );
+            }
+        } else {
+            if ($clientBank->attachment_cancelled_cheque) {
+                $this->fileStorageService->deleteFile($clientBank->attachment_cancelled_cheque);
+            }
+            $updateData['attachment_cancelled_cheque'] = null;
+        }
+
+        return $clientBank->update($updateData);
     }
 
     public function delete($id)
     {
-        ClientBank::findOrFail($id)->delete();
+        $clientBank = ClientBank::findOrFail($id);
+        if ($clientBank->attachment_cancelled_cheque) {
+            $this->fileStorageService->deleteFile($clientBank->attachment_cancelled_cheque);
+        }
+        $clientBank->delete();
     }
 
     public function deleteByClientId($clientId)
     {
+        $clientBanks = ClientBank::where('client_id', $clientId)->get();
+        foreach ($clientBanks as $clientBank) {
+            if ($clientBank->attachment_cancelled_cheque) {
+                $this->fileStorageService->deleteFile($clientBank->attachment_cancelled_cheque);
+            }
+        }
         ClientBank::where('client_id', $clientId)->delete();
     }
 }
