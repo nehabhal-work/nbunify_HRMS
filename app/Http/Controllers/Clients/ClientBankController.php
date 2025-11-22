@@ -6,13 +6,15 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\ClientBankRequest;
 use App\Services\ClientBankService;
 use App\Services\ClientService;
+use App\Services\FileStorageService;
 use Illuminate\Http\Request;
 
 class ClientBankController extends Controller
 {
     public function __construct(
         private ClientBankService $clientBankService,
-        private ClientService $clientService
+        private ClientService $clientService,
+        private FileStorageService $fileStorageService
     ) {}
 
     public function index(Request $request)
