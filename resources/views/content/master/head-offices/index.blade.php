@@ -144,10 +144,10 @@
                             <h6 class="my-3"> Address</h6>
                             <div class="col-md-4 mb-3">
                                 <label class="form-label">Address</label>
-                                <input type="text" name="res_address" id="res_address"
-                                    class="form-control @error('res_address') is-invalid @enderror"
-                                    value="{{ old('res_address') }}">
-                                @error('res_address')
+                                <input type="text" name="address" id="address"
+                                    class="form-control @error('address') is-invalid @enderror"
+                                    value="{{ old('address') }}">
+                                @error('address')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>

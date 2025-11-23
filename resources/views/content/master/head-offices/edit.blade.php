@@ -30,9 +30,9 @@
         @csrf
         @method('PUT')
 
-        <input type="hidden" name="res_country" id="res_country" value="{{ $branch->res_country }}">
-        <input type="hidden" name="res_state" id="res_state" value="{{ $branch->res_state }}">
-        <input type="hidden" name="res_city" id="res_city" value="{{ $branch->res_city }}">
+        <input type="hidden" name="res_country" id="res_country" value="{{ $headOffice->res_country }}">
+        <input type="hidden" name="res_state" id="res_state" value="{{ $headOffice->res_state }}">
+        <input type="hidden" name="res_city" id="res_city" value="{{ $headOffice->res_city }}">
 
 
         {{-- {{ $headOffice }} --}}

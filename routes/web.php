@@ -12,6 +12,8 @@ use App\Http\Controllers\Masters\EmployeeController;
 use App\Http\Controllers\Clients\ClientController;
 use App\Http\Controllers\Clients\ClientFamilyController;
 use App\Http\Controllers\Clients\ClientBankController;
+use App\Http\Controllers\Investment\ElsInvestmentController;
+use App\Http\Controllers\Investment\SchemeController;
 use App\Http\Controllers\Masters\SubDepartmentController;
 use App\Http\Controllers\Masters\SubDesignationController;
 use Illuminate\Support\Facades\Route;
@@ -57,7 +59,8 @@ Route::middleware(['auth', 'verified'])->prefix('accounts')->name('accounts.')->
 });
 
 Route::middleware(['auth', 'verified'])->prefix('investment')->name('investment.')->group(function () {
-    // Route::resource('els-investment', ElsInvestmentController::class);
+    Route::resource('scheme', SchemeController::class);
+    Route::resource('els', ElsInvestmentController::class);
 });
 
 Route::post('/logout', function () {

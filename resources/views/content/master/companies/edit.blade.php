@@ -1381,8 +1381,8 @@
 
             // After AJAX loads city options → set selected city
             $(document).ajaxSuccess(function() {
-                let savedCityRes = "{{ $client->res_city_code }}";
-                let savedCity = "{{ $client->office_city_code }}";
+                let savedCityRes = "{{ $company->res_city_code }}";
+                let savedCity = "{{ $company->office_city_code }}";
 
                 // Residence city
                 if (savedCityRes) {

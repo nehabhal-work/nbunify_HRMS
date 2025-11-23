@@ -25,8 +25,7 @@
     @endif
 
     <h4 class="fw-bold py-3 mb-4">
-        <span class="text-muted fw-light">Master /</span> <a
-            href="{{ route('investment.els-investment.create') }}">ELS-Investment</a>
+        <span class="text-muted fw-light">Master /</span> <a href="{{ route('investment.els.create') }}">ELS-Investment</a>
     </h4>
 
     <div class="row">
@@ -36,7 +35,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Companies List</h5>
-                    <a class="btn btn-primary" href="{{ route('investment.els-investment.create') }}" role="button">Add
+                    <a class="btn btn-primary" href="{{ route('investment.els.create') }}" role="button">Add
                         New</a>
                 </div>
                 <div class="card-body">

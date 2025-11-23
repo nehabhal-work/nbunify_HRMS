@@ -144,18 +144,49 @@
              </a>
 
              <ul class="menu-sub">
-                 <!-- ELS-Investment -->
-                 {{-- <li class="menu-item {{ request()->routeIs('investment.els-investment.*') ? 'active' : '' }}">
-                     <a href="#" class="menu-link">
-                         <i class="menu-icon bx bx-bar-chart-alt-2"></i>
-                         <div class="text-truncate">ELS-Investment</div>
+                 <!-- Master-Scheme -->
+                 <li class="menu-item {{ request()->routeIs('investment.scheme.*') ? 'active' : '' }}">
+                     <a href="{{ route('investment.scheme.index') }}" class="menu-link">
+                         <i class="menu-icon bx bx-layer"></i>
+                         <div class="text-truncate">Master-Scheme</div>
+                     </a>
+                 </li>
+
+                 <!-- Purchase -->
+                 <li class="menu-item {{ request()->routeIs('investment.els.*') ? 'active' : '' }}">
+                     <a href="{{ route('investment.els.index') }}" class="menu-link">
+                         <i class="menu-icon bx bx-wallet"></i>
+                         <div class="text-truncate">ELS Inevestment</div>
+                     </a>
+                 </li>
+
+                 <!-- Sales -->
+                 {{-- <li class="menu-item {{ request()->routeIs('accounts.sales.*') ? 'active' : '' }}">
+                     <a href="{{ route('accounts.sales.index') }}" class="menu-link">
+                         <i class="menu-icon bx bx-trending-up"></i>
+                         <div class="text-truncate">ELS Payout</div>
+                     </a>
+                 </li> --}}
+
+                 <!-- Purchase Order -->
+                 {{-- <li class="menu-item {{ request()->routeIs('accounts.purchase-orders.*') ? 'active' : '' }}">
+                     <a href="{{ route('accounts.purchase-orders.index') }}" class="menu-link">
+                         <i class="menu-icon bx bx-receipt"></i>
+                         <div class="text-truncate">Payout dues</div>
                      </a>
                  </li> --}}
 
 
+
+                 <!-- Ledger -->
+                 {{-- <li class="menu-item {{ request()->routeIs('accounts.ledger.*') ? 'active' : '' }}">
+                     <a href="{{ route('accounts.ledger.index') }}" class="menu-link">
+                         <i class="menu-icon bx bx-book-content"></i>
+                         <div class="text-truncate">Ledger Report</div>
+                     </a>
+                 </li> --}}
              </ul>
          </li>
-
 
 
 
