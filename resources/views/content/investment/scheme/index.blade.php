@@ -80,7 +80,7 @@
                             <!-- Min ROI -->
                             <div class="col-md-2 mb-3">
                                 <label for="roi_min" class="form-label">Min ROI (%)</label>
-                                <input type="number" class="form-control @error('roi_min') is-invalid @enderror"
+                                <input type="number" class="form-control onlydigit @error('roi_min') is-invalid @enderror"
                                     id="roi_min" name="roi_min" step="0.01" value="{{ old('roi_min') }}">
                                 @error('roi_min')
                                     <span class="invalid-feedback">{{ $message }}</span>
@@ -90,7 +90,7 @@
                             <!-- Max ROI -->
                             <div class="col-md-2 mb-3">
                                 <label for="roi_max" class="form-label">Max ROI (%)</label>
-                                <input type="number" class="form-control @error('roi_max') is-invalid @enderror"
+                                <input type="number" class="form-control onlydigit @error('roi_max') is-invalid @enderror"
                                     id="roi_max" name="roi_max" step="0.01" value="{{ old('roi_max') }}">
                                 @error('roi_max')
                                     <span class="invalid-feedback">{{ $message }}</span>
@@ -100,7 +100,8 @@
                             <!-- Additional ROI -->
                             <div class="col-md-2 mb-3">
                                 <label for="roi_additional" class="form-label">Additional ROI (%)</label>
-                                <input type="number" class="form-control @error('roi_additional') is-invalid @enderror"
+                                <input type="number"
+                                    class="form-control onlydigit @error('roi_additional') is-invalid @enderror"
                                     id="roi_additional" name="roi_additional" step="0.01"
                                     value="{{ old('roi_additional') }}">
                                 @error('roi_additional')
@@ -130,8 +131,9 @@
                             <!-- Min Tenure -->
                             <div class="col-md-2 mb-3">
                                 <label for="tenure_min" class="form-label">Minimum Tenure</label>
-                                <input type="number" class="form-control @error('tenure_min') is-invalid @enderror"
-                                    id="tenure_min" name="tenure_min" value="{{ old('tenure_min') }}">
+                                <input type="number"
+                                    class="form-control onlydigit @error('tenure_min') is-invalid @enderror" id="tenure_min"
+                                    name="tenure_min" value="{{ old('tenure_min') }}">
                                 @error('tenure_min')
                                     <span class="invalid-feedback">{{ $message }}</span>
                                 @enderror
@@ -140,7 +142,8 @@
                             <!-- Max Tenure -->
                             <div class="col-md-2 mb-3">
                                 <label for="tenure_max" class="form-label">Maximum Tenure</label>
-                                <input type="number" class="form-control @error('tenure_max') is-invalid @enderror"
+                                <input type="number"
+                                    class="form-control onlydigit @error('tenure_max') is-invalid @enderror"
                                     id="tenure_max" name="tenure_max" value="{{ old('tenure_max') }}">
                                 @error('tenure_max')
                                     <span class="invalid-feedback">{{ $message }}</span>
@@ -151,9 +154,10 @@
                             <div class="col-md-4 mb-3">
                                 <label for="frequency" class="form-label">Payout Frequency <span
                                         class="text-danger">*</span></label>
-                                <select name="frequency" id="frequency" multiple
+                                <select name="frequency[]" id="frequency" multiple
                                     class="form-control select2 @error('frequency') is-invalid @enderror">
-                                    <option value="monthly" {{ old('frequency') == 'monthly' ? 'selected' : '' }}>Monthly
+                                    <option value="monthly" {{ old('frequency') == 'monthly' ? 'selected' : '' }}
+                                        selected>Monthly
                                     </option>
                                     <option value="quarterly" {{ old('frequency') == 'quarterly' ? 'selected' : '' }}>
                                         Quarterly</option>
