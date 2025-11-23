@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Investment;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SchemesMasterRequest;
+use App\Models\SchemesMaster;
 use App\Services\SchemeService;
 use Illuminate\Http\Request;
 
@@ -20,7 +21,8 @@ class SchemeController extends Controller
 
     public function index()
     {
-        return view('content.investment.scheme.index');
+
+        return view('content.investment.scheme.index', ['schemes' => SchemesMaster::all()]);
     }
 
     /**
@@ -42,7 +44,7 @@ class SchemeController extends Controller
         $this->schemeService->createScheme($data);
 
         return redirect()
-            ->route('schemes.index')
+            ->route('investment.scheme.index')
             ->with('success', 'Scheme created successfully.');
     }
 

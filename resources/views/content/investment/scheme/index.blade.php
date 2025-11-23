@@ -192,7 +192,7 @@
 
     <div class="row">
         <!-- TABLE SECTION -->
-
+        {{-- {{ $schemes }} --}}
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
@@ -201,10 +201,10 @@
                 <div class="card-body">
                     <div class="table-responsive text-nowrap">
                         <table class="table srkdataTable ">
-                            <thead class="table-light">
+                            <thead>
                                 <tr>
                                     <th>#</th>
-                                    <td>Scheme id</td>
+                                    <th>Scheme ID</th>
                                     <th>Date</th>
                                     <th>Name</th>
                                     <th>ROI (%)</th>
@@ -215,45 +215,54 @@
                                     <th>Action</th>
                                 </tr>
                             </thead>
+
                             <tbody>
-                                {{-- Example static row (replace with @foreach later) --}}
-                                {{-- @foreach ($Schemees as $d)
+                                @foreach ($schemes as $key => $scheme)
                                     <tr>
-                                        <td>{{ $d->id }}</td>
-                                        <td>{{ $d->name }}</td>
-                                        <td>{{ $d->code }}</td>
-                                        <td>{{ $d->contact_person }}</td>
-                                        <td>{{ $d->phone }}</td>
-                                        <td>{{ $d->email }}</td>
+                                        <td>{{ $key + 1 }}</td>
+
+                                        <td>{{ $scheme->id }}</td>
+
                                         <td>
-                                            <div class="dropdown">
-                                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                                    data-bs-toggle="dropdown">
-                                                    <i class="bx bx-dots-vertical-rounded"></i>
+                                            {{ \Carbon\Carbon::parse($scheme->start_date)->format('d-m-Y') }}
+                                            to
+                                            {{ \Carbon\Carbon::parse($scheme->end_date)->format('d-m-Y') }}
+                                        </td>
+
+                                        <td>{{ $scheme->scheme_name }}</td>
+
+                                        <td>{{ $scheme->roi_min }}% - {{ $scheme->roi_max }}%</td>
+
+                                        <td>{{ $scheme->roi_additional }}%</td>
+
+                                        <td>{{ ucfirst($scheme->tenure_type) }}</td>
+
+                                        <td>{{ $scheme->tenure_min }} - {{ $scheme->tenure_max }}</td>
+
+                                        <td>
+                                            @foreach ($scheme->frequency as $freq)
+                                                <span class="badge bg-primary me-1">{{ ucfirst($freq) }}</span>
+                                            @endforeach
+                                        </td>
+
+                                        <td>
+                                            <a href="{{ route('investment.scheme.edit', $scheme->id) }}"
+                                                class="btn btn-sm btn-warning">Edit</a>
+
+                                            <form action="{{ route('investment.scheme.destroy', $scheme->id) }}"
+                                                method="POST" style="display:inline-block;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button class="btn btn-sm btn-danger"
+                                                    onclick="return confirm('Delete this scheme?')">
+                                                    Delete
                                                 </button>
-                                                <div class="dropdown-menu">
-                                                    <a class="dropdown-item"
-                                                        href="{{ route('master.Schemees.edit', $d->id) }}"><i
-                                                            class="bx bx-edit-alt me-1"></i> Edit</a>
-                                                    <form action="{{ route('master.Schemees.destroy', $d->id) }}"
-                                                        method="post" onsubmit="return confirmDelete()">
-
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit"
-                                                            class="dropdown-item text-danger delete-btn"
-                                                            data-id="{{ $d->id }}">
-                                                            <i class="bx bx-trash me-1"></i> Delete
-                                                        </button>
-
-                                                    </form>
-
-                                                </div>
-                                            </div>
+                                            </form>
                                         </td>
                                     </tr>
-                                @endforeach --}}
+                                @endforeach
                             </tbody>
+
                         </table>
                     </div>
                 </div>
