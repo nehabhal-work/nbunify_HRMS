@@ -7,6 +7,16 @@ use App\Models\Branch;
 class BranchService
 {
 
+
+    public function __construct()
+    {
+    }
+
+    public function getAll()
+    {
+        return Branch::all();
+    }
+    
     public function find($id) {
         return Branch::findOrFail($id);
     }

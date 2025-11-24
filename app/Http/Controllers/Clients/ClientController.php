@@ -9,7 +9,6 @@ use App\Services\ClientService;
 use App\Services\ClientBankService;
 use App\Services\FileStorageService;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Http;
 
 class ClientController extends Controller
 {

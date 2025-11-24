@@ -110,15 +110,16 @@ class ClientService
 
     public function generateClientCode(): string
     {
-        $currentDate = now();
-        $currentYear = $currentDate->year;
-        $financialYear = $currentDate->month >= 4 ? $currentYear . '-' . ($currentYear + 1) : ($currentYear - 1) . '-' . $currentYear;
+        // $currentDate = now();
+        // $currentYear = $currentDate->year;
+        // $financialYear = $currentDate->month >= 4 ? $currentYear . '-' . ($currentYear + 1) : ($currentYear - 1) . '-' . $currentYear;
 
-        $baseCode = 'CC/' . $financialYear . '/';
+        // $baseCode = 'CC/' . $financialYear . '/';
+        $baseCode = 'CL';
         $counter = 1;
 
         do {
-            $code = $baseCode . str_pad($counter, 4, '0', STR_PAD_LEFT);
+            $code = $baseCode . str_pad($counter, 8, '0', STR_PAD_LEFT);
             $counter++;
         } while (Client::where('client_code', $code)->exists());
 
