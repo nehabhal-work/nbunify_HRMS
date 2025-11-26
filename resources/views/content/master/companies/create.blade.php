@@ -59,8 +59,7 @@
                             <div class="col-md-3 mb-3">
                                 <label class="form-label">Company Name <span class="text-danger">*</span></label>
                                 <input type="text" name="name" id="name"
-                                    class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}"
-                                    required>
+                                    class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}">
                                 @error('name')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror

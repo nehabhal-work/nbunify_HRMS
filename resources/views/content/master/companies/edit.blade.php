@@ -620,7 +620,7 @@
                                 <label class="form-label">Logo Attachment</label>
                                 <div class="input-group">
                                     <input type="file" class="form-control @error('logo') is-invalid @enderror"
-                                        id="logo" name="logo" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                                        id="logo" name="logo" accept=".jpg,.jpeg,.png"
                                         onchange="uploadTempFile(this, 'logo')">
                                     <button class="btn btn-outline-danger" type="button"
                                         onclick="document.getElementById('logo').value = ''">✕</button>
@@ -637,7 +637,7 @@
 
                                         <!-- Remove (X) button -->
                                         <button type="button"
-                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                                            class="btn btn-sm btn-danger position-absolute bottom-0 start-100 translate-middle"
                                             onclick="removeImage('logo_url')">
                                             ✕
                                         </button>
@@ -648,7 +648,7 @@
 
                                         <!-- Remove (X) button -->
                                         <button type="button"
-                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                                            class="btn btn-sm btn-danger position-absolute bottom-0 start-100 translate-middle"
                                             onclick="removeImage('logo_url')">
                                             ✕
                                         </button>
@@ -682,7 +682,7 @@
 
                                         <!-- Remove (X) button -->
                                         <button type="button"
-                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                                            class="btn btn-sm btn-danger position-absolute bottom-0 start-100 translate-middle"
                                             onclick="removeImage('attachment_aadhar')">
                                             ✕
                                         </button>
@@ -693,7 +693,7 @@
 
                                         <!-- Remove (X) button -->
                                         <button type="button"
-                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                                            class="btn btn-sm btn-danger position-absolute bottom-0 start-100 translate-middle"
                                             onclick="removeImage('attachment_aadhar')">
                                             ✕
                                         </button>
@@ -727,7 +727,7 @@
 
                                         <!-- Remove (X) button -->
                                         <button type="button"
-                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                                            class="btn btn-sm btn-danger position-absolute bottom-0 start-100 translate-middle"
                                             onclick="removeImage('attachment_pan')">
                                             ✕
                                         </button>
@@ -738,7 +738,7 @@
 
                                         <!-- Remove (X) button -->
                                         <button type="button"
-                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                                            class="btn btn-sm btn-danger position-absolute bottom-0 start-100 translate-middle"
                                             onclick="removeImage('attachment_pan')">
                                             ✕
                                         </button>
@@ -772,7 +772,7 @@
 
                                         <!-- Remove (X) button -->
                                         <button type="button"
-                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                                            class="btn btn-sm btn-danger position-absolute bottom-0 start-100 translate-middle"
                                             onclick="removeImage('attachment_tan')">
                                             ✕
                                         </button>
@@ -783,7 +783,7 @@
 
                                         <!-- Remove (X) button -->
                                         <button type="button"
-                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                                            class="btn btn-sm btn-danger position-absolute bottom-0 start-100 translate-middle"
                                             onclick="removeImage('attachment_tan')">
                                             ✕
                                         </button>
@@ -818,7 +818,7 @@
 
                                         <!-- Remove (X) button -->
                                         <button type="button"
-                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                                            class="btn btn-sm btn-danger position-absolute bottom-0 start-100 translate-middle"
                                             onclick="removeImage('attachment_gstin')">
                                             ✕
                                         </button>
@@ -829,7 +829,7 @@
 
                                         <!-- Remove (X) button -->
                                         <button type="button"
-                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                                            class="btn btn-sm btn-danger position-absolute bottom-0 start-100 translate-middle"
                                             onclick="removeImage('attachment_gstin')">
                                             ✕
                                         </button>
@@ -863,7 +863,7 @@
 
                                         <!-- Remove (X) button -->
                                         <button type="button"
-                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                                            class="btn btn-sm btn-danger position-absolute bottom-0 start-100 translate-middle"
                                             onclick="removeImage('attachment_ckyc')">
                                             ✕
                                         </button>
@@ -874,7 +874,7 @@
 
                                         <!-- Remove (X) button -->
                                         <button type="button"
-                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                                            class="btn btn-sm btn-danger position-absolute bottom-0 start-100 translate-middle"
                                             onclick="removeImage('attachment_ckyc')">
                                             ✕
                                         </button>
@@ -909,7 +909,7 @@
 
                                         <!-- Remove (X) button -->
                                         <button type="button"
-                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                                            class="btn btn-sm btn-danger position-absolute bottom-0 start-100 translate-middle"
                                             onclick="removeImage('attachment_partnership_deed')">
                                             ✕
                                         </button>
@@ -921,7 +921,7 @@
 
                                         <!-- Remove (X) button -->
                                         <button type="button"
-                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                                            class="btn btn-sm btn-danger position-absolute bottom-0 start-100 translate-middle"
                                             onclick="removeImage('attachment_partnership_deed')">
                                             ✕
                                         </button>
@@ -955,7 +955,7 @@
 
                                         <!-- Remove (X) button -->
                                         <button type="button"
-                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                                            class="btn btn-sm btn-danger position-absolute bottom-0 start-100 translate-middle"
                                             onclick="removeImage('attachment_udyam_aadhar')">
                                             ✕
                                         </button>
@@ -966,7 +966,7 @@
 
                                         <!-- Remove (X) button -->
                                         <button type="button"
-                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                                            class="btn btn-sm btn-danger position-absolute bottom-0 start-100 translate-middle"
                                             onclick="removeImage('attachment_udyam_aadhar')">
                                             ✕
                                         </button>
@@ -1000,7 +1000,7 @@
 
                                         <!-- Remove (X) button -->
                                         <button type="button"
-                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                                            class="btn btn-sm btn-danger position-absolute bottom-0 start-100 translate-middle"
                                             onclick="removeImage('attachment_gumasta')">
                                             ✕
                                         </button>
@@ -1011,7 +1011,7 @@
 
                                         <!-- Remove (X) button -->
                                         <button type="button"
-                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                                            class="btn btn-sm btn-danger position-absolute bottom-0 start-100 translate-middle"
                                             onclick="removeImage('attachment_gumasta')">
                                             ✕
                                         </button>
@@ -1048,7 +1048,7 @@
 
                                         <!-- Remove (X) button -->
                                         <button type="button"
-                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                                            class="btn btn-sm btn-danger position-absolute bottom-0 start-100 translate-middle"
                                             onclick="removeImage('attachment_msme')">
                                             ✕
                                         </button>
@@ -1059,7 +1059,7 @@
 
                                         <!-- Remove (X) button -->
                                         <button type="button"
-                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                                            class="btn btn-sm btn-danger position-absolute bottom-0 start-100 translate-middle"
                                             onclick="removeImage('attachment_msme')">
                                             ✕
                                         </button>
