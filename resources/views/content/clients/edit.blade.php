@@ -780,7 +780,7 @@
                                             <input type="text" name="banks[0][account_number]"
                                                 value="{{ old('banks.0.account_number') }}"
                                                 class="form-control account_number @error('banks.0.account_number') is-invalid @enderror"
-                                                maxlength="18">
+                                                maxlength="15">
                                             @error('banks.0.account_number')
                                                 <span class="invalid-feedback">{{ $message }}</span>
                                             @enderror

@@ -387,24 +387,53 @@ $('.datepicker').datepicker({
 // ------------------- End Datepicker END -----------------------
 // ------------------- operation mode for joint and anyone -----------------------
 
-document.addEventListener("change", function (e) {
-    if (e.target.classList.contains("operation_mode")) {
-        let row = e.target.closest(".bank-details-row");
-        let holders = row.querySelectorAll(".holder_names");
 
-        // Always hide first
-        holders.forEach(h => h.classList.add("d-none"));
+document.addEventListener("DOMContentLoaded", function () {
 
-        if (e.target.value === "joint") {
-            // Show all three
-            holders.forEach(h => h.classList.remove("d-none"));
-        } else if (e.target.value === "anyone") {
-            // Show only Holder 1
-            holders[0].classList.remove("d-none");
+    // Run on page load for edit mode
+    document.querySelectorAll(".bank-details-row").forEach(function(row){
+        applyOperationMode(row);
+    });
+
+    // Run when user changes operation mode
+    document.addEventListener("change", function (e) {
+        if (e.target.classList.contains("operation_mode")) {
+            const row = e.target.closest(".bank-details-row");
+            applyOperationMode(row);
         }
-        // Single = hide all
+    });
+
+    // Core logic
+    function applyOperationMode(row) {
+        const mode = row.querySelector(".operation_mode")?.value;
+
+        const h1 = row.querySelector(".holder_name_1");
+        const h2 = row.querySelector(".holder_name_2");
+        const h3 = row.querySelector(".holder_name_3");
+
+        if (!h1 || !h2 || !h3) return;
+
+        // Reset visibility
+        h1.classList.add("d-none");
+        h2.classList.add("d-none");
+        h3.classList.add("d-none");
+
+        if (mode === "single") {
+            // none visible
+        }
+
+        if (mode === "joint") {
+            h1.classList.remove("d-none");
+            h2.classList.remove("d-none");
+            h3.classList.remove("d-none");
+        }
+
+        if (mode === "anyone") {
+            h1.classList.remove("d-none");
+        }
     }
 });
+
 // ------------------- End operation mode for joint and anyone-----------------------
 
 

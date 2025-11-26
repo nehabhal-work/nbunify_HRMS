@@ -533,7 +533,7 @@
                                         <label class="form-label">Account No</label>
                                         <input type="text" name="banks[0][account_number]"
                                             class="form-control account_number @error('banks.0.account_number') is-invalid @enderror"
-                                            placeholder="Enter Account Number">
+                                            placeholder="Enter Account Number" maxlength="15">
                                         @error('banks.0.account_number')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
