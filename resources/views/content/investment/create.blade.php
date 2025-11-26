@@ -26,12 +26,11 @@
     @endif
 
     <h4 class="fw-bold py-3 mb-4">
-        <span class="text-muted fw-light">Master /</span> <a
-            href="{{ route('investment.els-investment.create') }}">ELS-Investment</a>
+        <span class="text-muted fw-light">Master /</span> <a href="{{ route('investment.els.index') }}">ELS-Investment</a>
     </h4>
 
 
-    <form action="{{ route('investment.els-investment.store') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('investment.els.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('post')
         <div class="row align-items-stretch">
@@ -42,129 +41,247 @@
                         <small class="text-muted float-end">investment Basic Details</small>
                     </div>
                     <div class="card-body">
+                        <div class="row g-3">
+
+                            <!-- Investment Date -->
+                            <div class="col-md-2">
+                                <label for="investment_date" class="form-label">Investment Date</label>
+                                <input type="date" class="form-control @error('investment_date') is-invalid @enderror"
+                                    name="investment_date" id="investment_date"
+                                    value="{{ old('investment_date', date('Y-m-d')) }}" max="{{ date('Y-m-d') }}" required>
+
+                                @error('investment_date')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <!-- Investment Type -->
+                            <div class="col-md-2">
+                                <label for="investment_type" class="form-label">Investment Type</label>
+                                <select class="form-select @error('investment_type') is-invalid @enderror"
+                                    name="investment_type" id="investment_type" required>
+                                    <option value="single" selected>Single</option>
+                                    <option value="joined">Joined</option>
+                                </select>
+
+                                @error('investment_type')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <!-- Investment Holder -->
+                            <div class="col-md-8 holderBox" id="holder_single">
+                                <label for="client_id" class="form-label">Investment Holder</label>
+                                <select class="form-select select2 @error('client_id') is-invalid @enderror"
+                                    name="client_id" id="client_id" required>
+                                    <option value="">Select Holder</option>
+                                    {{-- @foreach ($profile as $d)
+                                        <option value="{{ $d->id }}" data-banks='@json($d->banking)'
+                                            data-family='@json($d->family)' data-dob="{{ $d->dob }}">
+                                            {{ ucfirst(strtolower($d->fname)) }}
+                                        </option>
+                                    @endforeach --}}
+                                </select>
+
+                                @error('client_id')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <!-- Scheme -->
+                            <div class="col-md-4">
+                                <label for="scheme_id" class="form-label">Scheme Name *</label>
+                                <select
+                                    class="form-select
+                                    @error('scheme_id') is-invalid @enderror"
+                                    name="scheme_id" id="scheme_id" required>
+                                    <option value="">Select Scheme</option>
+
+                                    {{-- @forelse ($elsScheme as $s)
+                                        <option value="{{ $s->id }}" data-tenure-type="{{ $s->tenure_type }}"
+                                            data-min-tenure="{{ $s->min_tenure }}" data-max-tenure="{{ $s->max_tenure }}"
+                                            data-frequencies="{{ $s->frequency }}" data-min-roi="{{ $s->min_roi }}"
+                                            data-max-roi="{{ $s->max_roi }}" data-addi-roi="{{ $s->additional_roi }}"
+                                            data-scheme-name="{{ $s->name }}">
+                                            {{ $s->name }}
+                                        </option>
+                                    @empty
+                                        <option value="">No Schemes Available</option>
+                                    @endforelse --}}
+                                </select>
+
+                                @error('scheme_id')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <!-- Total Invested Amount -->
+                            <div class="col-md-2">
+                                <label for="invested_amount" class="form-label">Total Invested Amount *</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">₹</span>
+                                    <input type="number"
+                                        class="form-control onlydigit @error('invested_amount') is-invalid @enderror"
+                                        name="invested_amount" id="invested_amount" value="{{ old('invested_amount') }}"
+                                        required>
+                                </div>
+
+                                @error('invested_amount')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <!-- Tenure Type -->
+                            <div class="col-md-2">
+                                <label for="tenure_type" class="form-label">Tenure Type</label>
+                                <input type="text"
+                                    class="form-control bg-secondary-subtle @error('tenure_type') is-invalid @enderror"
+                                    name="tenure_type" id="tenure_type" readonly required>
+
+                                @error('tenure_type')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <!-- Tenure -->
+                            <div class="col-md-2">
+                                <label for="tenure" class="form-label">Tenure *</label>
+                                <select class="form-select @error('tenure') is-invalid @enderror" name="tenure"
+                                    id="tenure" required>
+                                    <!-- options loaded by JS -->
+                                </select>
+
+                                @error('tenure')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <!-- Frequency -->
+                            <div class="col-md-2">
+                                <label for="frequency" class="form-label">Frequency *</label>
+                                <select class="form-select @error('frequency') is-invalid @enderror" name="frequency"
+                                    id="frequency" required>
+                                    <!-- Loaded via jQuery -->
+                                </select>
+
+                                @error('frequency')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <!-- ROI -->
+                            <div class="col-md-2">
+                                <label for="roi" class="form-label">ROI *</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control @error('roi') is-invalid @enderror"
+                                        name="roi" id="roi" maxlength="5" required>
+                                    <span class="input-group-text">%</span>
+                                </div>
+
+                                <small class="text-muted d-block mt-1">Select a scheme to see allowed ROI range</small>
+                                <div id="roi-message"></div>
+
+                                @error('roi')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <!-- Additional ROI -->
+                            <div class="col-md-2 d-none" id="addi_roi_box">
+                                <label for="addi_roi" class="form-label">Additional ROI</label>
+                                <div class="input-group">
+                                    <input type="text"
+                                        class="form-control onlydigit bg-info-subtle @error('addi_roi') is-invalid @enderror"
+                                        name="addi_roi" id="addi_roi" maxlength="5">
+                                    <span class="input-group-text">%</span>
+                                </div>
+
+                                @error('addi_roi')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <!-- Maturity Date -->
+                            <div class="col-md-2">
+                                <label for="maturity_date" class="form-label">Maturity Date</label>
+                                <input type="date"
+                                    class="form-control bg-secondary-subtle @error('maturity_date') is-invalid @enderror"
+                                    name="maturity_date" id="maturity_date" readonly required>
+
+                                @error('maturity_date')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <!-- Payout Amount -->
+                            <div class="col-md-2">
+                                <label for="payout_amount" class="form-label">Interest / Payout Amount</label>
+                                <div class="input-group">
+                                    <span class="input-group-text">₹</span>
+                                    <input type="number"
+                                        class="form-control bg-secondary-subtle onlydigit @error('int_payout_amount') is-invalid @enderror"
+                                        name="int_payout_amount" id="payout_amount" readonly required>
+                                </div>
+
+                                @error('int_payout_amount')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <!-- TDS -->
+                            <div class="col-md-2">
+                                <label for="tds" class="form-label">TDS</label>
+                                <select class="form-select @error('tds') is-invalid @enderror" name="tds"
+                                    id="tds">
+                                    <option value="no">No</option>
+                                    <option value="yes">Yes</option>
+                                </select>
+
+                                @error('tds')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+
+
+
+
+
+
+
+                        </div>
+
+                        {{-- address section --}}
                         <div class="row">
+                            <!-- Residential Address -->
+                            <h6 class="my-3">Residential Address</h6>
 
-                            <!-- investment Name -->
-                            <div class="col-3 mb-3">
-                                <label class="form-label">investment Name <span class="text-danger">*</span></label>
-                                <input type="text" name="name" id="name"
-                                    class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}">
-                                @error('name')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <!-- investment Code -->
-                            <div class="col-3 mb-3">
-                                <label class="form-label">investment Code <span class="text-danger">*</span></label>
-                                <input type="text" name="code" id="code"
-                                    class="form-control @error('code') is-invalid @enderror" value="{{ old('code') }}">
-                                @error('code')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
+                            <!-- Company Bank (From) -->
+                            <div class="col-md-4">
+                                <label class="form-label text-danger">From Company Bank *</label>
+                                <select class="form-select" id="out_company_bank" name="out_company_bank" required>
+                                    <option value="">Select Company Bank</option>
+
+                                </select>
+
                             </div>
 
-                            <div class="w-100"></div>
-                            {{-- gumasta --}}
-                            <div class="col-3 mb-3">
-                                <label class="form-label">gumasta no. <span class="text-info text-lowercase fst-italic ">(If
-                                        required)</span></label>
-                                <input type="text" name="gumasta" id="gumasta"
-                                    class="form-control @error('gumasta') is-invalid @enderror"
-                                    value="{{ old('gumasta') }}">
-                                @error('gumasta')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-
+                            <!-- Client Bank (To) -->
+                            <div class="col-md-4">
+                                <label class="form-label text-danger">To Client Bank *</label>
+                                <select class="form-select to_client_bank" name="to_client_bank" required>
+                                    <option value="">Select Client Bank</option>
+                                </select>
                             </div>
 
 
 
+                        </div>
 
-
-                            <!-- Contact Person -->
-                            <div class="col-md-3 mb-3">
-                                <label class="form-label">Contact Person</label>
-                                <input type="text" name="contact_person" id="contact_person"
-                                    class="form-control @error('contact_person') is-invalid @enderror"
-                                    value="{{ old('contact_persn') }}">
-                                @error('contact_persn')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <!-- Contact Number -->
-                            <div class="col-md-3 mb-3">
-                                <label class="form-label">Contact Number</label>
-                                <input type="text" name="phone" id="phone"
-                                    class="form-control onlyphone @error('phone') is-invalid @enderror"
-                                    value="{{ old('phone') }}" maxlength="15">
-                                @error('phone')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <!-- Email -->
-                            <div class="col-md-3 mb-3">
-                                <label class="form-label">Email</label>
-                                <input type="email" name="email" id="email"
-                                    class="form-control no-uppercase @error('email') is-invalid @enderror"
-                                    value="{{ old('email') }}">
-                                @error('email')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <!-- Registered Address -->
-                            <div class="col-6 mb-3">
-                                <label class="form-label">Address</label>
-                                <input type="text" name="address" id="address"
-                                    class="form-control @error('address') is-invalid @enderror"
-                                    value="{{ old('address') }}">
-                                @error('address')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-
-                            <div class="col-md-2 mb-3">
-                                <label class="form-label">State</label>
-                                <input type="text" name="state" id="state"
-                                    class="form-control @error('state') is-invalid @enderror" value="{{ old('state') }}">
-                                @error('state')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="col-md-2 mb-3">
-                                <label class="form-label">City</label>
-                                <input type="text" name="city" id="city"
-                                    class="form-control @error('city') is-invalid @enderror" value="{{ old('city') }}">
-                                @error('city')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="col-md-2 mb-3">
-                                <label class="form-label">Postal Code</label>
-                                <input type="text" name="pincode" id="pincode"
-                                    class="form-control onlydigit @error('pincode') is-invalid @enderror"
-                                    value="{{ old('pincode') }}" maxlength="6">
-                                @error('pincode')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-
-
-
-
-                            <!-- Submit -->
-                            <div class="text-end mt-3">
-                                <button type="submit" class="btn btn-primary px-4">Save</button>
-                                <a href="{{ route('investment.els-investment.index') }}"
-                                    class="btn btn-secondary px-4">Cancel</a>
-                            </div>
-
+                        <!-- Submit -->
+                        <div class="text-end mt-3">
+                            <button type="submit" class="btn btn-primary px-4">Save</button>
+                            <a href="{{ route('investment.els.index') }}" class="btn btn-secondary px-4">Cancel</a>
                         </div>
                     </div>
                 </div>

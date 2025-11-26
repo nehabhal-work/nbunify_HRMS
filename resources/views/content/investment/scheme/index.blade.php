@@ -47,7 +47,8 @@
                             <div class="col-md-2 mb-3">
                                 <label for="start_date" class="form-label">Start Date <span
                                         class="text-danger">*</span></label>
-                                <input type="date" class="form-control @error('start_date') is-invalid @enderror"
+                                <input type="text"
+                                    class="form-control datepicker @error('start_date') is-invalid @enderror"
                                     id="start_date" name="start_date" value="{{ old('start_date') }}">
                                 @error('start_date')
                                     <span class="invalid-feedback">{{ $message }}</span>
@@ -57,8 +58,9 @@
                             <!-- End Date -->
                             <div class="col-md-2 mb-3">
                                 <label for="end_date" class="form-label">End Date <span class="text-danger">*</span></label>
-                                <input type="date" class="form-control @error('end_date') is-invalid @enderror"
-                                    id="end_date" name="end_date" value="{{ old('end_date') }}">
+                                <input type="text"
+                                    class="form-control datepicker @error('end_date') is-invalid @enderror" id="end_date"
+                                    name="end_date" value="{{ old('end_date') }}">
                                 @error('end_date')
                                     <span class="invalid-feedback">{{ $message }}</span>
                                 @enderror
@@ -95,6 +97,7 @@
                                 @error('roi_max')
                                     <span class="invalid-feedback">{{ $message }}</span>
                                 @enderror
+                                <small id="roi_error" class="text-danger"></small>
                             </div>
 
                             <!-- Additional ROI -->
@@ -130,7 +133,7 @@
 
                             <!-- Min Tenure -->
                             <div class="col-md-2 mb-3">
-                                <label for="tenure_min" class="form-label">Minimum Tenure</label>
+                                <label for="tenure_min" id="min_tenure_label" class="form-label">Minimum Tenure</label>
                                 <input type="number"
                                     class="form-control onlydigit @error('tenure_min') is-invalid @enderror" id="tenure_min"
                                     name="tenure_min" value="{{ old('tenure_min') }}">
@@ -141,13 +144,14 @@
 
                             <!-- Max Tenure -->
                             <div class="col-md-2 mb-3">
-                                <label for="tenure_max" class="form-label">Maximum Tenure</label>
+                                <label for="tenure_max" id=max_tenure_label class="form-label">Maximum Tenure</label>
                                 <input type="number"
                                     class="form-control onlydigit @error('tenure_max') is-invalid @enderror"
                                     id="tenure_max" name="tenure_max" value="{{ old('tenure_max') }}">
                                 @error('tenure_max')
                                     <span class="invalid-feedback">{{ $message }}</span>
                                 @enderror
+                                <small id="tenure_error" class="text-danger"></small>
                             </div>
 
                             <!-- Frequency Dropdown -->
@@ -245,19 +249,33 @@
                                             @endforeach
                                         </td>
 
-                                        <td>
-                                            <a href="{{ route('investment.scheme.edit', $scheme->id) }}"
-                                                class="btn btn-sm btn-warning">Edit</a>
 
-                                            <form action="{{ route('investment.scheme.destroy', $scheme->id) }}"
-                                                method="POST" style="display:inline-block;">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button class="btn btn-sm btn-danger"
-                                                    onclick="return confirm('Delete this scheme?')">
-                                                    Delete
+                                        <td>
+                                            <div class="dropdown">
+                                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
+                                                    data-bs-toggle="dropdown">
+                                                    <i class="bx bx-dots-vertical-rounded"></i>
                                                 </button>
-                                            </form>
+
+                                                <div class="dropdown-menu">
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('investment.scheme.edit', $scheme->id) }}"><i
+                                                            class="bx bx-edit-alt me-1"></i> Edit</a>
+                                                    <form action="{{ route('investment.scheme.destroy', $scheme->id) }}"
+                                                        method="post" onsubmit="return confirmDelete()">
+
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit"
+                                                            class="dropdown-item text-danger delete-btn"
+                                                            data-id="{{ $scheme->id }}">
+                                                            <i class="bx bx-trash me-1"></i> Delete
+                                                        </button>
+
+                                                    </form>
+
+                                                </div>
+                                            </div>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -275,4 +293,44 @@
 @endsection
 
 @push('scripts')
+    <script>
+        $(document).ready(function() {
+
+            function validateMinMax(minSelector, maxSelector, errorSelector, message) {
+
+                let min = parseFloat($(minSelector).val());
+                let max = parseFloat($(maxSelector).val());
+
+                // clear error
+                $(errorSelector).text('');
+
+                if (!isNaN(min) && !isNaN(max)) {
+                    if (max < min) {
+                        $(errorSelector).text(message);
+                    }
+                }
+            }
+
+            // ROI validation
+            $('#roi_min, #roi_max').on('input', function() {
+                validateMinMax(
+                    '#roi_min',
+                    '#roi_max',
+                    '#roi_error',
+                    'Max ROI must be greater than Min ROI.'
+                );
+            });
+
+            // Tenure validation
+            $('#tenure_min, #tenure_max').on('input', function() {
+                validateMinMax(
+                    '#tenure_min',
+                    '#tenure_max',
+                    '#tenure_error',
+                    'Max Tenure must be greater than Min Tenure.'
+                );
+            });
+
+        });
+    </script>
 @endpush

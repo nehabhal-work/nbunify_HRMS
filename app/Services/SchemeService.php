@@ -25,8 +25,19 @@ class SchemeService
         return $scheme;
     }
 
-    public function deleteScheme(SchemesMaster $scheme): bool
+    // public function deleteScheme($id): bool
+    // {
+    //     return $SchemesMaster->delete();
+    // }
+
+    public function deleteScheme($id)
     {
+        $scheme = SchemesMaster::findOrFail($id);
         return $scheme->delete();
+    }
+
+    public function find($id)
+    {
+        return SchemesMaster::findOrFail($id);
     }
 }
