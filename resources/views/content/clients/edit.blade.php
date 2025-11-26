@@ -638,7 +638,7 @@
                                                 <label class="form-label">MICR Code</label>
                                                 <input type="text" name="banks[{{ $loop->index }}][micrcode]"
                                                     value="{{ old('banks.' . $loop->index . '.micrcode', $bank->micrcode) }}"
-                                                    class="form-control @error('banks.' . $loop->index . '.micrcode') is-invalid @enderror">
+                                                    class="form-control micrcode bg-secondary-subtle bg-gradient @error('banks.' . $loop->index . '.micrcode') is-invalid @enderror">
                                                 @error('banks.' . $loop->index . '.micrcode')
                                                     <span class="invalid-feedback">{{ $message }}</span>
                                                 @enderror
@@ -802,7 +802,7 @@
 
                                         <div class="col-md-6 holder_names d-none">
                                             <label class="form-label">Holder Name 1</label>
-                                            <input type="text" name="banks[0][holder_name_1]"
+                                            <input type="text" name="banks[0][holder_name_1]"  value="{{ old('banks.0.holder_name_1') }}"
                                                 class="form-control @error('banks.0.holder_name_1') is-invalid @enderror">
                                             @error('banks.0.holder_name_1')
                                                 <span class="invalid-feedback">{{ $message }}</span>
@@ -811,7 +811,7 @@
 
                                         <div class="col-md-6 holder_names d-none">
                                             <label class="form-label">Holder Name 2</label>
-                                            <input type="text" name="banks[0][holder_name_2]"
+                                            <input type="text" name="banks[0][holder_name_2]"  value="{{ old('banks.0.holder_name_2') }}"
                                                 class="form-control @error('banks.0.holder_name_2') is-invalid @enderror">
                                             @error('banks.0.holder_name_2')
                                                 <span class="invalid-feedback">{{ $message }}</span>
@@ -820,7 +820,7 @@
 
                                         <div class="col-md-6 holder_names d-none">
                                             <label class="form-label">Holder Name 3</label>
-                                            <input type="text" name="banks[0][holder_name_3]"
+                                            <input type="text" name="banks[0][holder_name_3]"  value="{{ old('banks.0.holder_name_3') }}"
                                                 class="form-control @error('banks.0.holder_name_3') is-invalid @enderror">
                                             @error('banks.0.holder_name_3')
                                                 <span class="invalid-feedback">{{ $message }}</span>
@@ -829,9 +829,9 @@
 
                                         <div class="col-md-6">
                                             <label class="form-label">MICR Code</label>
-                                            <input type="text" name="banks[0][micrcode]"
-                                                class="form-control @error('banks.0.micrcode') is-invalid @enderror"
-                                                placeholder="Enter MICR Code">
+                                            <input type="text" name="banks[0][micrcode]"  value="{{ old('banks.0.micrcode') }}"
+                                                class="form-control micrcode bg-secondary-subtle bg-gradient @error('banks.0.micrcode') is-invalid @enderror"
+                                                >
                                             @error('banks.0.micrcode')
                                                 <span class="invalid-feedback">{{ $message }}</span>
                                             @enderror

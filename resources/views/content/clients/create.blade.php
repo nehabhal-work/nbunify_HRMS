@@ -588,8 +588,8 @@
                                     <div class="col-md-6">
                                         <label class="form-label">MICR Code</label>
                                         <input type="text" name="banks[0][micrcode]"
-                                            class="form-control @error('banks.0.micrcode') is-invalid @enderror"
-                                            placeholder="Enter MICR Code">
+                                            class="form-control micrcode bg-secondary-subtle bg-gradient @error('banks.0.micrcode') is-invalid @enderror"
+                                         readonly>
                                         @error('banks.0.micrcode')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror

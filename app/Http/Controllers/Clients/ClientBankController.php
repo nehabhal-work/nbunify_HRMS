@@ -15,7 +15,8 @@ class ClientBankController extends Controller
         private ClientBankService $clientBankService,
         private ClientService $clientService,
         private FileStorageService $fileStorageService
-    ) {}
+    ) {
+    }
 
     public function index(Request $request)
     {
@@ -60,7 +61,7 @@ class ClientBankController extends Controller
 
     public function destroy($id, Request $request)
     {
-        if($client_id = $request->client_id) {
+        if ($client_id = $request->client_id) {
             $this->clientBankService->delete($id);
             return redirect()->route('client-banks.index', ['client_id' => $client_id])->with('success', 'Client bank account deleted successfully');
         } else {

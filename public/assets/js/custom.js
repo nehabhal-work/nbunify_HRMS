@@ -99,7 +99,7 @@ $(document).ready(function () {
         // Reset previous state
         errmsg.text('').removeClass('d-block');
         input.removeClass('is-invalid');
-        parent.find('.bank_name, .branch_name, .bank_code').val('');
+        parent.find('.micrcode, .bank_name, .branch_name, .bank_code').val('');
 
         // ✅ Validation check
         if (ifsc === '') return; // skip if empty
@@ -120,11 +120,12 @@ $(document).ready(function () {
             type: 'POST',
             data: { ifsc: ifsc },
             beforeSend: function () {
-                parent.find('.bank_name, .branch_name, .bank_code').val('Fetching...');
+                parent.find('.micrcode, .bank_name, .branch_name, .bank_code').val('Fetching...');
             },
             success: function (response) {
                 if (response.status === true && response.data) {
                     // ✅ Valid IFSC
+                    parent.find('.micrcode').val(response.data.MICR || '');
                     parent.find('.bank_name').val(response.data.BANK || '');
                     parent.find('.branch_name').val(response.data.BRANCH || '');
                     parent.find('.bank_code').val(response.data.BANKCODE || '');
@@ -135,7 +136,7 @@ $(document).ready(function () {
                     // errmsg.text('Invalid IFSC Code. Please check again.')
                     //     .addClass('d-block')
                     //     .show();
-                    parent.find('.bank_name, .branch_name, .bank_code').val('');
+                    parent.find('.micrcode, .bank_name, .branch_name, .bank_code').val('');
                 }
             },
             error: function () {
@@ -144,7 +145,7 @@ $(document).ready(function () {
                 errmsg.text('Error fetching IFSC details. Please try again.')
                     .addClass('d-block')
                     .show();
-                parent.find('.bank_name, .branch_name, .bank_code').val('');
+                parent.find('.micrcode, .bank_name, .branch_name, .bank_code').val('');
             }
         });
     });
@@ -154,24 +155,23 @@ $(document).ready(function () {
 
 
 
-
-
-
-
 // *************************
 //   Add More Bank Details
 // *************************
-
 $(document).ready(function () {
-    // let bankIndex = 0;
+
+    // Set correct initial index based on existing rows
     let bankIndex = $('.bank-details-row').length - 1;
 
-    // ✅ Add new bank row
+    // -------------------------------
+    // ✅ Add New Bank Row
+    // -------------------------------
     $('#addMoreBank').on('click', function () {
         bankIndex++;
+
         let clone = $('.bank-details-row:first').clone();
 
-        // Reset all values
+        // Reset all input values
         clone.find('input[type="text"]').val('');
         clone.find('.errmsg').text('').hide();
         clone.find('.removeBankRow').removeClass('d-none');
@@ -179,76 +179,109 @@ $(document).ready(function () {
 
         // Update input names with new index
         clone.find('input').each(function () {
-            let name = $(this).attr('name');
-            if (name) $(this).attr('name', name.replace(/\[\d+\]/, `[${bankIndex}]`));
+            const name = $(this).attr('name');
+            if (name) {
+                $(this).attr(
+                    'name',
+                    name.replace(/\[\d+\]/, `[${bankIndex}]`)
+                );
+            }
         });
 
         $('#bankDetailsWrapper').append(clone);
     });
 
-    // ✅ Remove row
+    // -------------------------------
+    // ✅ Remove Bank Row
+    // -------------------------------
     $(document).on('click', '.removeBankRow', function () {
         $(this).closest('.bank-details-row').remove();
 
-        // Re-index all rows
+        // Re-index all remaining rows
         $('#bankDetailsWrapper .bank-details-row').each(function (i, row) {
-            $(row).find('input').each(function () {
-                let name = $(this).attr('name');
-                if (name) $(this).attr('name', name.replace(/\[\d+\]/, `[${i}]`));
-            });
+            $(row)
+                .find('input')
+                .each(function () {
+                    const name = $(this).attr('name');
+                    if (name) {
+                        $(this).attr(
+                            'name',
+                            name.replace(/\[\d+\]/, `[${i}]`)
+                        );
+                    }
+                });
         });
     });
 
-    // ✅ Allow only one primary checkbox
+    // -------------------------------
+    // ✅ Only one "Primary" checkbox allowed
+    // -------------------------------
     $(document).on('change', '.setPrimary', function () {
         if ($(this).is(':checked')) {
             $('.setPrimary').not(this).prop('checked', false);
         }
     });
 
-    // ✅ IFSC AJAX Validation (per row)
+    // -------------------------------
+    // ✅ IFSC Validation + Autofill
+    // -------------------------------
     $(document).on('blur', '.ifsc_code', function () {
-        let $this = $(this);
-        let ifsc = $this.val().trim();
-        let parent = $this.closest('.bank-details-row');
-        let errmsg = parent.find('.errmsg');
+        const $this = $(this);
+        const ifsc = $this.val().trim();
+        const parent = $this.closest('.bank-details-row');
+        const errmsg = parent.find('.errmsg');
 
         errmsg.text('').hide();
         $this.removeClass('is-invalid');
 
+        // Validation: IFSC must be 11 chars
         if (ifsc.length === 11) {
+
             $.ajax({
                 url: "/api/validate-ifsc",
                 type: "POST",
                 data: { ifsc: ifsc },
+
                 beforeSend: function () {
-                    parent.find('.bank_name, .branch_name, .bank_code').val('Fetching...');
+                    parent.find('.micrcode, .bank_name, .branch_name, .bank_code')
+                        .val('Fetching...');
                 },
-                success: function (response) {
+
+                success: function (response) { 
+                    console.log("MICR from API:", response);
+                   
                     if (response.status === true && response.data) {
+
+                        parent.find('.micrcode').val(response.data.MICR || '');
                         parent.find('.bank_name').val(response.data.BANK || '');
                         parent.find('.branch_name').val(response.data.BRANCH || '');
                         parent.find('.bank_code').val(response.data.BANKCODE || '');
+
                     } else {
-                        parent.find('.bank_name, .branch_name, .bank_code').val('');
+                        parent.find('.micrcode, .bank_name, .branch_name, .bank_code').val('');
                         $this.addClass('is-invalid');
                         errmsg.text('Invalid IFSC Code. Please check again.').show();
                     }
                 },
+
                 error: function () {
-                    parent.find('.bank_name, .branch_name, .bank_code').val('');
+                    parent.find('.micrcode, .bank_name, .branch_name, .bank_code').val('');
                     $this.addClass('is-invalid');
                     errmsg.text('Error fetching IFSC details. Please try again.').show();
                 }
             });
-        } else if (ifsc !== '') {
-            parent.find('.bank_name, .branch_name, .bank_code').val('');
+
+        } else if (ifsc !== "") {
+            parent.find('.micrcode, .bank_name, .branch_name, .bank_code').val('');
             $this.addClass('is-invalid');
             errmsg.text('IFSC Code must be 11 characters long.').show();
+
         } else {
-            parent.find('.bank_name, .branch_name, .bank_code').val('');
+            // Empty IFSC → clear fields
+            parent.find('.micrcode, .bank_name, .branch_name, .bank_code').val('');
         }
     });
+
 });
 
 //  --------------END /Add More Bank Details ------------------
@@ -354,24 +387,24 @@ $('.datepicker').datepicker({
 // ------------------- End Datepicker END -----------------------
 // ------------------- operation mode for joint and anyone -----------------------
 
-        document.addEventListener("change", function(e) {
-            if (e.target.classList.contains("operation_mode")) {
-                let row = e.target.closest(".bank-details-row");
-                let holders = row.querySelectorAll(".holder_names");
+document.addEventListener("change", function (e) {
+    if (e.target.classList.contains("operation_mode")) {
+        let row = e.target.closest(".bank-details-row");
+        let holders = row.querySelectorAll(".holder_names");
 
-                // Always hide first
-                holders.forEach(h => h.classList.add("d-none"));
+        // Always hide first
+        holders.forEach(h => h.classList.add("d-none"));
 
-                if (e.target.value === "joint") {
-                    // Show all three
-                    holders.forEach(h => h.classList.remove("d-none"));
-                } else if (e.target.value === "anyone") {
-                    // Show only Holder 1
-                    holders[0].classList.remove("d-none");
-                }
-                // Single = hide all
-            }
-        });
+        if (e.target.value === "joint") {
+            // Show all three
+            holders.forEach(h => h.classList.remove("d-none"));
+        } else if (e.target.value === "anyone") {
+            // Show only Holder 1
+            holders[0].classList.remove("d-none");
+        }
+        // Single = hide all
+    }
+});
 // ------------------- End operation mode for joint and anyone-----------------------
 
 
