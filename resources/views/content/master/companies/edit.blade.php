@@ -617,7 +617,6 @@
             </div>
 
 
-
             {{-- Image Section --}}
             <div id="divImageSection" class="col-md-6 d-flex">
                 <div class="card mb-4">
@@ -653,8 +652,8 @@
 
                                         <!-- Remove (X) button -->
                                         <button type="button"
-                                            class="btn btn-sm btn-danger position-absolute bottom-0 start-100 translate-middle"
-                                            onclick="removeImage('logo_url')">
+                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                                            onclick="removeImage('logo')">
                                             ✕
                                         </button>
                                     </div>
@@ -664,8 +663,8 @@
 
                                         <!-- Remove (X) button -->
                                         <button type="button"
-                                            class="btn btn-sm btn-danger position-absolute bottom-0 start-100 translate-middle"
-                                            onclick="removeImage('logo_url')">
+                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                                            onclick="removeImage('logo')">
                                             ✕
                                         </button>
                                     </div>

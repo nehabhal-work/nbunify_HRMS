@@ -92,7 +92,7 @@ class CompanyController extends Controller
                     $this->companyBankDetailService->create($id, $bank);
                 }
             }
-            return redirect()->route('master.companies.index')->with('success', 'Company updated successfully.');
+            return redirect()->route('master.companies.index')->with('success', 'Company updated successfully. for id ' . $id . ' - ' . $company->name);
         } catch (\Exception $e) {
             return back()->withErrors(['error' => $e->getMessage()])->withInput();
         }

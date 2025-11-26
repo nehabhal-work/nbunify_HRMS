@@ -95,7 +95,7 @@ class ClientController extends Controller
             }
         });
 
-        return redirect()->route('clients.index')->with('success', 'Client updated successfully');
+        return redirect()->route('clients.edit', $id)->with('success', 'Client updated successfully');
     }
 
     public function destroy($id)
