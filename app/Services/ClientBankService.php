@@ -36,6 +36,11 @@ class ClientBankService
             'is_primary' => 'nullable|integer',
             'account_type' => 'nullable|in:savings,current,od_cc,nre,nri,nro,tem_deposit,ra',
             'attachment_cancelled_cheque_url' => 'nullable|string',
+            'operation_mode' => 'nullable|string',
+            'holder_name_1' => 'nullable|string',
+            'holder_name_2' => 'nullable|string',
+            'holder_name_3' => 'nullable|string',
+            'micrcode' => 'nullable|string',
         ]);
 
         $clientBank = ClientBank::create([
@@ -47,6 +52,11 @@ class ClientBankService
             'bank_code' => $data['bank_code'],
             'is_primary' => $data['is_primary'] ?? 0,
             'account_type' => $data['account_type'] ?? null,
+            'operation_mode' => $data['operation_mode'] ?? null,
+            'holder_name_1' => $data['holder_name_1'] ?? null,
+            'holder_name_2' => $data['holder_name_2'] ?? null,
+            'holder_name_3' => $data['holder_name_3'] ?? null,
+            'micrcode' => $data['micrcode'] ?? null,
         ]);
 
         if (isset($data['attachment_cancelled_cheque_url'])) {
@@ -72,6 +82,11 @@ class ClientBankService
             'is_primary' => 'boolean',
             'account_type' => 'nullable|in:savings,current,od_cc,nre,nri,nro,tem_deposit,ra',
             'attachment_cancelled_cheque_url' => 'nullable|string',
+            'operation_mode' => 'nullable|string',
+            'holder_name_1' => 'nullable|string',
+            'holder_name_2' => 'nullable|string',
+            'holder_name_3' => 'nullable|string',
+            'micrcode' => 'nullable|string',
         ]);
 
         $updateData = [
@@ -82,6 +97,11 @@ class ClientBankService
             'bank_code' => $data['bank_code'] ?? null,
             'is_primary' => $data['is_primary'] ?? 0,
             'account_type' => $data['account_type'] ?? null,
+            'operation_mode' => $data['operation_mode'] ?? null,
+            'holder_name_1' => $data['holder_name_1'] ?? null,
+            'holder_name_2' => $data['holder_name_2'] ?? null,
+            'holder_name_3' => $data['holder_name_3'] ?? null,
+            'micrcode' => $data['micrcode'] ?? null,
         ];
 
         if (isset($data['attachment_cancelled_cheque_url'])) {
