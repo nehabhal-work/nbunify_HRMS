@@ -516,50 +516,172 @@
                             <div id="bankDetailsWrapper">
 
                                 <div class="bank-details-row row g-3 mb-3 bg-light position-relative">
+
+                                    <!-- IFSC -->
                                     <div class="col-md-6">
                                         <label class="form-label">IFSC Code</label>
-                                        <input type="text" name="banks[0][ifsc_code]" class="form-control ifsc_code"
+                                        <input type="text" name="banks[0][ifsc_code]"
+                                            class="form-control ifsc_code @error('banks.0.ifsc_code') is-invalid @enderror"
                                             placeholder="Enter IFSC Code">
-                                        <span class="invalid-feedback errmsg"></span>
+                                        @error('banks.0.ifsc_code')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
 
+                                    <!-- Account No -->
                                     <div class="col-md-6">
                                         <label class="form-label">Account No</label>
                                         <input type="text" name="banks[0][account_number]"
-                                            class="form-control account_number" placeholder="Enter Account Number">
+                                            class="form-control account_number @error('banks.0.account_number') is-invalid @enderror"
+                                            placeholder="Enter Account Number">
+                                        @error('banks.0.account_number')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
 
+                                    <!-- Operation Mode -->
+                                    <div class="col-md-6">
+                                        <label class="form-label">Operation Mode</label>
+                                        <select name="banks[0][operation_mode]"
+                                            class="form-select operation_mode @error('banks.0.operation_mode') is-invalid @enderror">
+                                            <option value="">Select Mode</option>
+                                            <option value="single">Single</option>
+                                            <option value="joint">Joint</option>
+                                            <option value="anyone">Anyone</option>
+                                        </select>
+                                        @error('banks.0.operation_mode')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <!-- Holder 1 -->
+                                    <div class="col-md-6 holder_names d-none">
+                                        <label class="form-label">Holder Name 1</label>
+                                        <input type="text" name="banks[0][holder_name_1]"
+                                            class="form-control @error('banks.0.holder_name_1') is-invalid @enderror">
+                                        @error('banks.0.holder_name_1')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <!-- Holder 2 -->
+                                    <div class="col-md-6 holder_names d-none">
+                                        <label class="form-label">Holder Name 2</label>
+                                        <input type="text" name="banks[0][holder_name_2]"
+                                            class="form-control @error('banks.0.holder_name_2') is-invalid @enderror">
+                                        @error('banks.0.holder_name_2')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <!-- Holder 3 -->
+                                    <div class="col-md-6 holder_names d-none">
+                                        <label class="form-label">Holder Name 3</label>
+                                        <input type="text" name="banks[0][holder_name_3]"
+                                            class="form-control @error('banks.0.holder_name_3') is-invalid @enderror">
+                                        @error('banks.0.holder_name_3')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <!-- MICR -->
+                                    <div class="col-md-6">
+                                        <label class="form-label">MICR Code</label>
+                                        <input type="text" name="banks[0][micrcode]"
+                                            class="form-control @error('banks.0.micrcode') is-invalid @enderror"
+                                            placeholder="Enter MICR Code">
+                                        @error('banks.0.micrcode')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <!-- Bank Name -->
                                     <div class="col-md-6">
                                         <label class="form-label">Bank Name</label>
                                         <input type="text" name="banks[0][bank_name]"
-                                            class="form-control bank_name bg-secondary-subtle bg-gradient" readonly>
+                                            class="form-control bank_name bg-secondary-subtle bg-gradient @error('banks.0.bank_name') is-invalid @enderror"
+                                            readonly>
+                                        @error('banks.0.bank_name')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
 
+                                    <!-- Branch Name -->
                                     <div class="col-md-6">
                                         <label class="form-label">Branch Name</label>
                                         <input type="text" name="banks[0][branch_name]"
-                                            class="form-control branch_name bg-secondary-subtle bg-gradient" readonly>
+                                            class="form-control branch_name bg-secondary-subtle bg-gradient @error('banks.0.branch_name') is-invalid @enderror"
+                                            readonly>
+                                        @error('banks.0.branch_name')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
 
+                                    <!-- Bank Code -->
                                     <div class="col-md-6">
                                         <label class="form-label">Bank Code</label>
                                         <input type="text" name="banks[0][bank_code]"
-                                            class="form-control bank_code bg-secondary-subtle bg-gradient" readonly>
+                                            class="form-control bank_code bg-secondary-subtle bg-gradient @error('banks.0.bank_code') is-invalid @enderror"
+                                            readonly>
+                                        @error('banks.0.bank_code')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
 
+
+
+                                    <!-- Cheque Photo -->
+                                    <div class="col-md-6 mb-3">
+                                        <label class="form-label">Cheque Photo</label>
+                                        <div class="input-group">
+                                            <input type="file" onchange="uploadTempFile(this, 'attachment_cancelled_cheque_url')"
+                                                class="form-control @error('banks.0.attachment_cancelled_cheque_url') is-invalid @enderror"
+                                                id="attachment_cancelled_cheque_url" name="banks[0][attachment_cancelled_cheque_url]" accept=".pdf,.jpg,.jpeg,.png">
+                                            <button class="btn btn-outline-danger" type="button"
+                                                onclick="document.getElementById('attachment_cancelled_cheque_url').value = ''">✕</button>
+                                        </div>
+                                        @error('banks.0.attachment_cancelled_cheque_url')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+
+                                        <input type="hidden" id="attachment_cancelled_cheque_url_url"
+                                            value="{{ old('banks.0.attachment_cancelled_cheque_url_url') }}" name="banks[0][attachment_cancelled_cheque_url_url]">
+
+                                        @if (old('banks.0.attachment_cancelled_cheque_url_url'))
+                                            <div id="attachment_cancelled_cheque_url_preview" class="position-relative d-inline-block">
+                                                <img src="{{ old('banks.0.attachment_cancelled_cheque_url_url') }}" width="100"
+                                                    class="rounded">
+
+                                                <!-- Remove (X) button -->
+                                                <button type="button"
+                                                    class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                                                    onclick="removeImage('attachment_cancelled_cheque_url')">
+                                                    ✕
+                                                </button>
+                                            </div>
+                                        @endif
+                                    </div>
+
+                                    <!-- Primary -->
                                     <div class="col-md-6">
                                         <label class="form-label d-block">Primary a/c</label>
                                         <input type="hidden" name="banks[0][is_primary]" value="0">
                                         <input type="checkbox" name="banks[0][is_primary]" value="1"
-                                            class="form-check-input setPrimary">
+                                            class="form-check-input setPrimary @error('banks.0.is_primary') is-invalid @enderror">
+                                        @error('banks.0.is_primary')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
                                     </div>
 
+                                    <!-- Remove Row -->
                                     <div class="col-md-6 d-flex align-items-end">
                                         <button type="button" class="btn btn-danger btn-sm removeBankRow d-none">
                                             <i class="bx bx-minus"></i> Remove
                                         </button>
                                     </div>
+
                                 </div>
+
                             </div>
 
                             <!-- Add More Button -->

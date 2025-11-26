@@ -342,6 +342,7 @@ function removeImage(fieldName) {
 
 // ------------------- End Image Temporary Upload END -----------------------
 
+// -------------------  Datepicker -----------------------
 
 $('.datepicker').datepicker({
     format: "dd-mm-yyyy",
@@ -351,6 +352,27 @@ $('.datepicker').datepicker({
     endDate: new Date()   // disallow future dates
 });
 // ------------------- End Datepicker END -----------------------
+// ------------------- operation mode for joint and anyone -----------------------
+
+        document.addEventListener("change", function(e) {
+            if (e.target.classList.contains("operation_mode")) {
+                let row = e.target.closest(".bank-details-row");
+                let holders = row.querySelectorAll(".holder_names");
+
+                // Always hide first
+                holders.forEach(h => h.classList.add("d-none"));
+
+                if (e.target.value === "joint") {
+                    // Show all three
+                    holders.forEach(h => h.classList.remove("d-none"));
+                } else if (e.target.value === "anyone") {
+                    // Show only Holder 1
+                    holders[0].classList.remove("d-none");
+                }
+                // Single = hide all
+            }
+        });
+// ------------------- End operation mode for joint and anyone-----------------------
 
 
 
