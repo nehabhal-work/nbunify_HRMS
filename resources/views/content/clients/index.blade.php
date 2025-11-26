@@ -109,7 +109,8 @@
                                                         <i class="bx bxs-group me-1"></i>
                                                         Add Family
                                                     </a>
-                                                    <a class="dropdown-item" href="{{ route('clients.edit', $d->id) }}">
+                                                    <a class="dropdown-item edit-btn"
+                                                        href="{{ route('clients.edit', $d->id) }}">
                                                         <i class="bx bx-edit-alt me-1"></i> Edit
                                                     </a>
                                                     <a class="dropdown-item" href="{{ route('clients.show', $d->id) }}">
@@ -139,3 +140,6 @@
 
     </div>
 @endsection
+
+@push('scripts')
+@endpush
