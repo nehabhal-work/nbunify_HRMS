@@ -31,6 +31,11 @@ class ClientBankRequest extends FormRequest
             'is_primary' => 'boolean',
             'account_type' => 'nullable|in:savings,current,od_cc,nre,nri,nro,tem_deposit,ra',
             'attachment_cancelled_cheque_url' => 'nullable|string|url',
+            'operation_mode' => 'nullable|string|max:255',
+            'holder_name_1' => 'nullable|string|max:255',
+            'holder_name_2' => 'nullable|string|max:255',
+            'holder_name_3' => 'nullable|string|max:255',
+            'micrcode' => 'nullable|string|max:9',
         ];
     }
 }

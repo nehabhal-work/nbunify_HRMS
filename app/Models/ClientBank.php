@@ -17,6 +17,11 @@ class ClientBank extends Model
         'is_primary',
         'account_type',
         'attachment_cancelled_cheque',
+        'operation_mode',
+        'holder_name_1',
+        'holder_name_2',
+        'holder_name_3',
+        'micrcode',
     ];
 
     protected $casts = [
