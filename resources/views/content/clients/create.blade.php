@@ -633,34 +633,46 @@
                                     <!-- Cheque Photo -->
                                     <div class="col-md-6 mb-3">
                                         <label class="form-label">Cheque Photo</label>
+
                                         <div class="input-group">
-                                            <input type="file" onchange="uploadTempFile(this, 'attachment_cancelled_cheque_url')"
-                                                class="form-control @error('banks.0.attachment_cancelled_cheque_url') is-invalid @enderror"
-                                                id="attachment_cancelled_cheque_url" name="banks[0][attachment_cancelled_cheque_url]" accept=".pdf,.jpg,.jpeg,.png">
+                                            <input type="file"
+                                                class="form-control @error('banks.0.attachment_cancelled_cheque') is-invalid @enderror"
+                                                id="attachment_cancelled_cheque"
+                                                name="banks[0][attachment_cancelled_cheque]"
+                                                onchange="uploadTempFile(this, 'attachment_cancelled_cheque')"
+                                                accept=".jpg,.jpeg,.png,.pdf">
+
                                             <button class="btn btn-outline-danger" type="button"
-                                                onclick="document.getElementById('attachment_cancelled_cheque_url').value = ''">✕</button>
+                                                onclick="document.getElementById('attachment_cancelled_cheque').value = ''">
+                                                ✕
+                                            </button>
                                         </div>
-                                        @error('banks.0.attachment_cancelled_cheque_url')
+
+                                        @error('banks.0.attachment_cancelled_cheque')
                                             <div class="invalid-feedback">{{ $message }}</div>
                                         @enderror
 
-                                        <input type="hidden" id="attachment_cancelled_cheque_url_url"
-                                            value="{{ old('banks.0.attachment_cancelled_cheque_url_url') }}" name="banks[0][attachment_cancelled_cheque_url_url]">
+                                        <!-- Hidden URL -->
+                                        <input type="hidden" id="attachment_cancelled_cheque_url"
+                                            value="{{ old('banks.0.attachment_cancelled_cheque_url') }}"
+                                            name="banks[0][attachment_cancelled_cheque_url]">
 
-                                        @if (old('banks.0.attachment_cancelled_cheque_url_url'))
-                                            <div id="attachment_cancelled_cheque_url_preview" class="position-relative d-inline-block">
-                                                <img src="{{ old('banks.0.attachment_cancelled_cheque_url_url') }}" width="100"
-                                                    class="rounded">
+                                        <!-- Preview -->
+                                        @if (old('banks.0.attachment_cancelled_cheque_url'))
+                                            <div id="attachment_cancelled_cheque_preview"
+                                                class="position-relative d-inline-block mt-2">
+                                                <img src="{{ old('banks.0.attachment_cancelled_cheque_url') }}"
+                                                    width="100" class="rounded">
 
-                                                <!-- Remove (X) button -->
                                                 <button type="button"
                                                     class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
-                                                    onclick="removeImage('attachment_cancelled_cheque_url')">
+                                                    onclick="removeImage('attachment_cancelled_cheque')">
                                                     ✕
                                                 </button>
                                             </div>
                                         @endif
                                     </div>
+
 
                                     <!-- Primary -->
                                     <div class="col-md-6">
@@ -952,19 +964,12 @@
                 </div>
             </div>
 
-
-
-
-
-
         </div>
 
 
 
         <!-- Submit -->
         <!-- Info / Note -->
-
-
         <div class="text-end mt-3">
             <button type="submit" class="btn btn-primary px-4">Save</button>
 
