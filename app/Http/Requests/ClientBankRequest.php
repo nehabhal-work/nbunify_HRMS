@@ -23,10 +23,10 @@ class ClientBankRequest extends FormRequest
     {
         return [
             'client_id' => 'required|exists:clients,id',
-            'ifsc_code' => 'required|string|max:11|regex:/^[A-Z]{4}0[A-Z0-9]{6}$/',
+            'ifsc_code' => 'required|string|max:11',
             'account_number' => 'required|string|max:20',
-            'bank_name' => 'required|string|max:255',
-            'branch_name' => 'required|string|max:255',
+            'bank_name' => 'nullable|string|max:255',
+            'branch_name' => 'nullable|string|max:255',
             'bank_code' => 'nullable|string|max:255',
             'is_primary' => 'boolean',
             'account_type' => 'nullable|in:savings,current,od_cc,nre,nri,nro,tem_deposit,ra',

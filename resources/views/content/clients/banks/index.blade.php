@@ -42,6 +42,7 @@
         <form action="{{ route('client-banks.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('post')
+
             <input type="hidden" name="client_id" value="{{ $client->id }}">
 
             <div class="card-body" id="bankDetailsWrapper">
@@ -50,7 +51,7 @@
                     <!-- IFSC -->
                     <div class="col-md-4">
                         <label class="form-label">IFSC Code</label>
-                        <input type="text" name="ifsc_code"
+                        <input type="text" name="ifsc_code" value="{{ old('ifsc_code') }}"
                             class="form-control ifsc_code @error('ifsc_code') is-invalid @enderror"
                             placeholder="Enter IFSC Code">
                         @error('ifsc_code')
@@ -61,7 +62,7 @@
                     <!-- Account No -->
                     <div class="col-md-4">
                         <label class="form-label">Account No</label>
-                        <input type="text" name="account_number"
+                        <input type="text" name="account_number" value="{{ old('account_number') }}"
                             class="form-control account_number @error('account_number') is-invalid @enderror"
                             placeholder="Enter Account Number" maxlength="15">
                         @error('account_number')
@@ -74,10 +75,9 @@
                         <label class="form-label">Operation Mode</label>
                         <select name="operation_mode"
                             class="form-select operation_mode @error('operation_mode') is-invalid @enderror">
-                            <option value="">Select Mode</option>
-                            <option value="single">Single</option>
-                            <option value="joint">Joint</option>
-                            <option value="anyone">Anyone</option>
+                            <option value="single" {{ old('operation_mode') == 'single' ? 'selected' : '' }}>Single
+                            </option>
+                            <option value="joint" {{ old('operation_mode') == 'joint' ? 'selected' : '' }}>Joint</option>
                         </select>
                         @error('operation_mode')
                             <div class="invalid-feedback">{{ $message }}</div>
@@ -85,9 +85,9 @@
                     </div>
 
                     <!-- Holder 1 -->
-                    <div class="col-md-4 holder_names d-none">
+                    <div class="col-md-4 holder_names {{ old('operation_mode') != 'single' ? '' : 'd-none' }}">
                         <label class="form-label">Holder Name 1</label>
-                        <input type="text" name="holder_name_1"
+                        <input type="text" name="holder_name_1" value="{{ old('holder_name_1') }}"
                             class="form-control @error('holder_name_1') is-invalid @enderror">
                         @error('holder_name_1')
                             <div class="invalid-feedback">{{ $message }}</div>
@@ -95,9 +95,10 @@
                     </div>
 
                     <!-- Holder 2 -->
-                    <div class="col-md-4 holder_names d-none">
+                    <div
+                        class="col-md-4 holder_names {{ old('operation_mode') == 'joint' || old('operation_mode') == 'anyone' ? '' : 'd-none' }}">
                         <label class="form-label">Holder Name 2</label>
-                        <input type="text" name="holder_name_2"
+                        <input type="text" name="holder_name_2" value="{{ old('holder_name_2') }}"
                             class="form-control @error('holder_name_2') is-invalid @enderror">
                         @error('holder_name_2')
                             <div class="invalid-feedback">{{ $message }}</div>
@@ -105,9 +106,10 @@
                     </div>
 
                     <!-- Holder 3 -->
-                    <div class="col-md-4 holder_names d-none">
+                    <div
+                        class="col-md-4 holder_names {{ old('operation_mode') == 'joint' || old('operation_mode') == 'anyone' ? '' : 'd-none' }}">
                         <label class="form-label">Holder Name 3</label>
-                        <input type="text" name="holder_name_3"
+                        <input type="text" name="holder_name_3" value="{{ old('holder_name_3') }}"
                             class="form-control @error('holder_name_3') is-invalid @enderror">
                         @error('holder_name_3')
                             <div class="invalid-feedback">{{ $message }}</div>
@@ -117,7 +119,7 @@
                     <!-- MICR -->
                     <div class="col-md-4">
                         <label class="form-label">MICR Code</label>
-                        <input type="text" name="micrcode"
+                        <input type="text" name="micrcode" value="{{ old('micrcode') }}"
                             class="form-control micrcode bg-secondary-subtle bg-gradient @error('micrcode') is-invalid @enderror"
                             readonly>
                         @error('micrcode')
@@ -128,7 +130,7 @@
                     <!-- Bank Name -->
                     <div class="col-md-4">
                         <label class="form-label">Bank Name</label>
-                        <input type="text" name="bank_name"
+                        <input type="text" name="bank_name" value="{{ old('bank_name') }}"
                             class="form-control bank_name bg-secondary-subtle bg-gradient @error('bank_name') is-invalid @enderror"
                             readonly>
                         @error('bank_name')
@@ -139,7 +141,7 @@
                     <!-- Branch Name -->
                     <div class="col-md-4">
                         <label class="form-label">Branch Name</label>
-                        <input type="text" name="branch_name"
+                        <input type="text" name="branch_name" value="{{ old('branch_name') }}"
                             class="form-control branch_name bg-secondary-subtle bg-gradient @error('branch_name') is-invalid @enderror"
                             readonly>
                         @error('branch_name')
@@ -150,7 +152,7 @@
                     <!-- Bank Code -->
                     <div class="col-md-4">
                         <label class="form-label">Bank Code</label>
-                        <input type="text" name="bank_code"
+                        <input type="text" name="bank_code" value="{{ old('bank_code') }}"
                             class="form-control bank_code bg-secondary-subtle bg-gradient @error('bank_code') is-invalid @enderror"
                             readonly>
                         @error('bank_code')
@@ -178,14 +180,29 @@
 
                         <input type="hidden" id="attachment_cancelled_cheque_url" name="attachment_cancelled_cheque_url"
                             value="{{ old('attachment_cancelled_cheque_url') }}">
+
+                        @if (old('attachment_cancelled_cheque_url'))
+                            <div id="attachment_cancelled_cheque_preview" class="position-relative d-inline-block mt-2">
+                                <img src="{{ old('attachment_cancelled_cheque_url') }}" width="100" class="rounded">
+
+                                <button type="button"
+                                    class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                                    onclick="removeImage('attachment_cancelled_cheque')">
+                                    ✕
+                                </button>
+                            </div>
+                        @endif
                     </div>
 
                     <!-- Primary -->
                     <div class="col-md-4">
                         <label class="form-label d-block">Primary a/c</label>
+
                         <input type="hidden" name="is_primary" value="0">
-                        <input type="checkbox" name="is_primary" value="1"
-                            class="form-check-input setPrimary @error('is_primary') is-invalid @enderror">
+
+                        <input type="checkbox" name="is_primary"
+                            class="form-check-input setPrimary @error('is_primary') is-invalid @enderror" value="1"
+                            {{ old('is_primary') ? 'checked' : '' }}>
                         @error('is_primary')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -199,7 +216,9 @@
                 </div>
 
             </div>
+
         </form>
+
     </div>
 
     <div class="row">
