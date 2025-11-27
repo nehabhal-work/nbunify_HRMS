@@ -28,14 +28,14 @@
             <small class="text-muted float-end">Bank Information</small>
         </div>
 
-        <form action="{{ route('client-banks.update', $clientBank->id) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('company-banks.update', $companyBank->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('put')
 
-            <input type="hidden" name="client_id" value="{{ $client->id }}">
+            <input type="hidden" name="company_id" value="{{ $company->id }}">
             <div class="card-body" id="bankDetailsWrapper">
                 @php
-                    $op = old('operation_mode', $clientBank->operation_mode ?? 'single');
+                    $op = old('operation_mode', $companyBank->operation_mode ?? 'single');
                 @endphp
 
                 <div class="bank-details-row row g-4">
@@ -43,7 +43,7 @@
                     <!-- IFSC -->
                     <div class="col-md-3">
                         <label class="form-label">IFSC Code</label>
-                        <input type="text" name="ifsc_code" value="{{ old('ifsc_code', $clientBank->ifsc_code ?? '') }}"
+                        <input type="text" name="ifsc_code" value="{{ old('ifsc_code', $companyBank->ifsc_code ?? '') }}"
                             class="form-control ifsc_code @error('ifsc_code') is-invalid @enderror"
                             placeholder="Enter IFSC Code">
                     </div>
@@ -52,7 +52,7 @@
                     <div class="col-md-3">
                         <label class="form-label">Account No</label>
                         <input type="text" name="account_number"
-                            value="{{ old('account_number', $clientBank->account_number ?? '') }}"
+                            value="{{ old('account_number', $companyBank->account_number ?? '') }}"
                             class="form-control account_number @error('account_number') is-invalid @enderror" maxlength="18"
                             placeholder="Enter Account Number">
                     </div>
@@ -71,34 +71,34 @@
                     <div class="col-md-3 holder_names {{ in_array($op, ['joint', 'single']) ? '' : 'd-none' }}">
                         <label class="form-label">Holder Name 1</label>
                         <input type="text" name="holder_name_1"
-                            value="{{ old('holder_name_1', $clientBank->holder_name_1 ?? '') }}" class="form-control">
+                            value="{{ old('holder_name_1', $companyBank->holder_name_1 ?? '') }}" class="form-control">
                     </div>
 
                     <!-- Holder 2 -->
                     <div class="col-md-3 holder_names {{ $op === 'joint' ? '' : 'd-none' }}">
                         <label class="form-label">Holder Name 2</label>
                         <input type="text" name="holder_name_2"
-                            value="{{ old('holder_name_2', $clientBank->holder_name_2 ?? '') }}" class="form-control">
+                            value="{{ old('holder_name_2', $companyBank->holder_name_2 ?? '') }}" class="form-control">
                     </div>
 
                     <!-- Holder 3 -->
                     <div class="col-md-3 holder_names {{ $op === 'joint' ? '' : 'd-none' }}">
                         <label class="form-label">Holder Name 3</label>
                         <input type="text" name="holder_name_3"
-                            value="{{ old('holder_name_3', $clientBank->holder_name_3 ?? '') }}" class="form-control">
+                            value="{{ old('holder_name_3', $companyBank->holder_name_3 ?? '') }}" class="form-control">
                     </div>
 
                     <!-- MICR -->
                     <div class="col-md-3">
                         <label class="form-label">MICR Code</label>
-                        <input type="text" name="micrcode" value="{{ old('micrcode', $clientBank->micrcode ?? '') }}"
+                        <input type="text" name="micrcode" value="{{ old('micrcode', $companyBank->micrcode ?? '') }}"
                             class="form-control micrcode bg-secondary-subtle bg-gradient" readonly>
                     </div>
 
                     <!-- Bank Name -->
                     <div class="col-md-3">
                         <label class="form-label">Bank Name</label>
-                        <input type="text" name="bank_name" value="{{ old('bank_name', $clientBank->bank_name ?? '') }}"
+                        <input type="text" name="bank_name" value="{{ old('bank_name', $companyBank->bank_name ?? '') }}"
                             class="form-control bank_name bg-secondary-subtle bg-gradient" readonly>
                     </div>
 
@@ -106,14 +106,14 @@
                     <div class="col-md-3">
                         <label class="form-label">Branch Name</label>
                         <input type="text" name="branch_name"
-                            value="{{ old('branch_name', $clientBank->branch_name ?? '') }}"
+                            value="{{ old('branch_name', $companyBank->branch_name ?? '') }}"
                             class="form-control branch_name bg-secondary-subtle bg-gradient" readonly>
                     </div>
 
                     <!-- Bank Code -->
                     <div class="col-md-3">
                         <label class="form-label">Bank Code</label>
-                        <input type="text" name="bank_code" value="{{ old('bank_code', $clientBank->bank_code ?? '') }}"
+                        <input type="text" name="bank_code" value="{{ old('bank_code', $companyBank->bank_code ?? '') }}"
                             class="form-control bank_code bg-secondary-subtle bg-gradient" readonly>
                     </div>
 
@@ -140,13 +140,13 @@
 
                         {{-- Hidden URL field --}}
                         <input type="hidden" id="attachment_cancelled_cheque_url" name="attachment_cancelled_cheque_url"
-                            value="{{ old('attachment_cancelled_cheque_url', $clientBank->attachment_cancelled_cheque_url ?? '') }}">
+                            value="{{ old('attachment_cancelled_cheque_url', $companyBank->attachment_cancelled_cheque_url ?? '') }}">
 
                         {{-- Preview --}}
                         @php
                             $previewUrl = old(
                                 'attachment_cancelled_cheque_url',
-                                $clientBank->attachment_cancelled_cheque_url ?? '',
+                                $companyBank->attachment_cancelled_cheque_url ?? '',
                             );
                         @endphp
 
@@ -170,7 +170,7 @@
                         <input type="hidden" name="is_primary" value="0">
                         <input type="checkbox" name="is_primary"
                             class="form-check-input setPrimary @error('is_primary') is-invalid @enderror" value="1"
-                            {{ old('is_primary', $clientBank->is_primary ?? 0) == 1 ? 'checked' : '' }}>
+                            {{ old('is_primary', $companyBank->is_primary ?? 0) == 1 ? 'checked' : '' }}>
 
                         @error('is_primary')
                             <div class="invalid-feedback">{{ $message }}</div>
@@ -188,7 +188,7 @@
                         Update
                     </button>
 
-                    <a href="{{ route('client-banks.index', ['client_id' => $client->id]) }}"
+                    <a href="{{ route('company-banks.index', ['company_id' => $company->id]) }}"
                         class="btn btn-secondary px-4">
                         Back
                     </a>

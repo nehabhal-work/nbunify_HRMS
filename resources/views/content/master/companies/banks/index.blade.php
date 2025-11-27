@@ -26,12 +26,12 @@
     <div class="d-flex justify-content-between align-items-center">
         <h4 class="fw-bold py-3">
             <span class="text-muted fw-light">Master /</span> <a href="{{ route('master.companies.create') }}">Bank List of
-                <span class="text-uppercase">{{ $client->name }}</span></a>
+                <span class="text-uppercase">{{ $company->name }}</span></a>
         </h4>
     </div>
 
     <div class="div d-flex justify-content-end mb-3">
-        <a href="{{ route('clients.index') }}" class="btn btn-secondary px-4">Go back</a>
+        <a href="{{ route('companys.index') }}" class="btn btn-secondary px-4">Go back</a>
 
     </div>
     <div class="card mb-4">
@@ -39,11 +39,11 @@
             <h5 class="mb-0">Bank details</h5>
             <small class="text-muted float-end">Bank Information</small>
         </div>
-        <form action="{{ route('client-banks.store') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('company-banks.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('post')
 
-            <input type="hidden" name="client_id" value="{{ $client->id }}">
+            <input type="hidden" name="company_id" value="{{ $company->id }}">
 
             <div class="card-body" id="bankDetailsWrapper">
                 <div class="bank-details-row row g-3">
@@ -228,7 +228,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Bank List</h5>
-                    {{-- <a class="btn btn-primary" href="{{ route('client-banks.edit', ['client_id' => $client->id]) }}"
+                    {{-- <a class="btn btn-primary" href="{{ route('company-banks.edit', ['company_id' => $company->id]) }}"
                         role="button">Add Bank
                     </a> --}}
                 </div>
@@ -248,7 +248,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($clientBanks as $b)
+                                @foreach ($companyBanks as $b)
                                     <tr>
                                         <td>{{ $b->id ?? '-' }}</td>
                                         {{-- <td>{{ $b->ifsc_code ?? '-' }}</td> --}}
@@ -275,22 +275,22 @@
                                                 <div class="dropdown-menu">
                                                     <!-- Edit Button -->
                                                     {{-- <a class="dropdown-item edit-btn"
-                                                        href="{{ route('client-banks.edit', ['client_id' => $client->id]) }}">
+                                                        href="{{ route('company-banks.edit', ['company_id' => $company->id]) }}">
                                                         <i class="bx bx-edit-alt me-1"></i> Edit
                                                     </a> --}}
                                                     <a class="dropdown-item"
-                                                        href="{{ route('client-banks.edit', ['client_bank' => $b->id]) }}">
+                                                        href="{{ route('company-banks.edit', ['company_bank' => $b->id]) }}">
                                                         <i class="bx bx-edit-alt me-1"></i> Edit
                                                     </a>
 
 
                                                     <!-- Delete -->
-                                                    <form action="{{ route('client-banks.destroy', $b->id) }}"
+                                                    <form action="{{ route('company-banks.destroy', $b->id) }}"
                                                         method="post" onsubmit="return confirmDelete()">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <input type="hidden" name="client_id"
-                                                            value="{{ $client->id }}">
+                                                        <input type="hidden" name="company_id"
+                                                            value="{{ $company->id }}">
                                                         <button type="submit" class="dropdown-item text-danger">
                                                             <i class="bx bx-trash me-1"></i> Delete
                                                         </button>
@@ -305,7 +305,7 @@
                             </tbody>
                         </table>
                     </div>
-                    @foreach ($clientBanks as $b)
+                    @foreach ($companyBanks as $b)
                         <!-- Edit Bank Modal -->
                         <div class="modal fade" id="editBankModal{{ $b->id }}" tabindex="-1"
                             aria-hidden="true">
@@ -318,7 +318,7 @@
                                     </div>
 
 
-                                    <input type="hidden" name="client_id" value="{{ $client->id }}">
+                                    <input type="hidden" name="company_id" value="{{ $company->id }}">
 
                                     <div class="modal-body">
                                         <table class="table table-bordered">
