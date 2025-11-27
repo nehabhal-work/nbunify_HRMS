@@ -23,8 +23,8 @@
         </div>
     @endif
 
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h4 class="fw-bold py-3 mb-4">
+    <div class="d-flex justify-content-between align-items-center">
+        <h4 class="fw-bold py-3">
             <span class="text-muted fw-light">Master /</span> <a href="{{ route('master.companies.create') }}">Bank List of
                 <span class="text-uppercase">{{ $client->name }}</span></a>
         </h4>
@@ -34,6 +34,186 @@
         <a href="{{ route('clients.index') }}" class="btn btn-secondary px-4">Go back</a>
 
     </div>
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Bank details</h5>
+            <small class="text-muted float-end">Bank Information</small>
+        </div>
+        <div class="card-body" id="bankDetailsWrapper">
+            <div class="bank-details-row row" >
+                <!-- IFSC -->
+                <div class="col-md-4">
+                    <label class="form-label">IFSC Code</label>
+                    <input type="text" name="banks[0][ifsc_code]"
+                        class="form-control ifsc_code @error('banks.0.ifsc_code') is-invalid @enderror"
+                        placeholder="Enter IFSC Code">
+                    @error('banks.0.ifsc_code')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <!-- Account No -->
+                <div class="col-md-4">
+                    <label class="form-label">Account No</label>
+                    <input type="text" name="banks[0][account_number]"
+                        class="form-control account_number @error('banks.0.account_number') is-invalid @enderror"
+                        placeholder="Enter Account Number" maxlength="15">
+                    @error('banks.0.account_number')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <!-- Operation Mode -->
+                <div class="col-md-4">
+                    <label class="form-label">Operation Mode</label>
+                    <select name="banks[0][operation_mode]"
+                        class="form-select operation_mode @error('banks.0.operation_mode') is-invalid @enderror">
+                        <option value="">Select Mode</option>
+                        <option value="single">Single</option>
+                        <option value="joint">Joint</option>
+                        <option value="anyone">Anyone</option>
+                    </select>
+                    @error('banks.0.operation_mode')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <!-- Holder 1 -->
+                <div class="col-md-4 holder_names d-none">
+                    <label class="form-label">Holder Name 1</label>
+                    <input type="text" name="banks[0][holder_name_1]"
+                        class="form-control @error('banks.0.holder_name_1') is-invalid @enderror">
+                    @error('banks.0.holder_name_1')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <!-- Holder 2 -->
+                <div class="col-md-4 holder_names d-none">
+                    <label class="form-label">Holder Name 2</label>
+                    <input type="text" name="banks[0][holder_name_2]"
+                        class="form-control @error('banks.0.holder_name_2') is-invalid @enderror">
+                    @error('banks.0.holder_name_2')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <!-- Holder 3 -->
+                <div class="col-md-4 holder_names d-none">
+                    <label class="form-label">Holder Name 3</label>
+                    <input type="text" name="banks[0][holder_name_3]"
+                        class="form-control @error('banks.0.holder_name_3') is-invalid @enderror">
+                    @error('banks.0.holder_name_3')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <!-- MICR -->
+                <div class="col-md-4">
+                    <label class="form-label">MICR Code</label>
+                    <input type="text" name="banks[0][micrcode]"
+                        class="form-control micrcode bg-secondary-subtle bg-gradient @error('banks.0.micrcode') is-invalid @enderror"
+                        readonly>
+                    @error('banks.0.micrcode')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <!-- Bank Name -->
+                <div class="col-md-4">
+                    <label class="form-label">Bank Name</label>
+                    <input type="text" name="banks[0][bank_name]"
+                        class="form-control bank_name bg-secondary-subtle bg-gradient @error('banks.0.bank_name') is-invalid @enderror"
+                        readonly>
+                    @error('banks.0.bank_name')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <!-- Branch Name -->
+                <div class="col-md-4">
+                    <label class="form-label">Branch Name</label>
+                    <input type="text" name="banks[0][branch_name]"
+                        class="form-control branch_name bg-secondary-subtle bg-gradient @error('banks.0.branch_name') is-invalid @enderror"
+                        readonly>
+                    @error('banks.0.branch_name')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                <!-- Bank Code -->
+                <div class="col-md-4">
+                    <label class="form-label">Bank Code</label>
+                    <input type="text" name="banks[0][bank_code]"
+                        class="form-control bank_code bg-secondary-subtle bg-gradient @error('banks.0.bank_code') is-invalid @enderror"
+                        readonly>
+                    @error('banks.0.bank_code')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+
+
+
+                <!-- Cheque Photo -->
+                <div class="col-md-4 mb-3">
+                    <label class="form-label">Cheque Photo</label>
+
+                    <div class="input-group">
+                        <input type="file"
+                            class="form-control @error('banks.0.attachment_cancelled_cheque') is-invalid @enderror"
+                            id="attachment_cancelled_cheque" name="banks[0][attachment_cancelled_cheque]"
+                            onchange="uploadTempFile(this, 'attachment_cancelled_cheque')" accept=".jpg,.jpeg,.png,.pdf">
+
+                        <button class="btn btn-outline-danger" type="button"
+                            onclick="document.getElementById('attachment_cancelled_cheque').value = ''">
+                            ✕
+                        </button>
+                    </div>
+
+                    @error('banks.0.attachment_cancelled_cheque')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+
+                    <!-- Hidden URL -->
+                    <input type="hidden" id="attachment_cancelled_cheque_url"
+                        value="{{ old('banks.0.attachment_cancelled_cheque_url') }}"
+                        name="banks[0][attachment_cancelled_cheque_url]">
+
+                    <!-- Preview -->
+                    @if (old('banks.0.attachment_cancelled_cheque_url'))
+                        <div id="attachment_cancelled_cheque_preview" class="position-relative d-inline-block mt-2">
+                            <img src="{{ old('banks.0.attachment_cancelled_cheque_url') }}" width="100"
+                                class="rounded">
+
+                            <button type="button"
+                                class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                                onclick="removeImage('attachment_cancelled_cheque')">
+                                ✕
+                            </button>
+                        </div>
+                    @endif
+                </div>
+
+
+                <!-- Primary -->
+                <div class="col-md-4">
+                    <label class="form-label d-block">Primary a/c</label>
+                    <input type="hidden" name="banks[0][is_primary]" value="0">
+                    <input type="checkbox" name="banks[0][is_primary]" value="1"
+                        class="form-check-input setPrimary @error('banks.0.is_primary') is-invalid @enderror">
+                    @error('banks.0.is_primary')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+
+                 <!-- Submit -->
+                        <div class="text-end mt-3">
+                            <button type="submit" class="btn btn-primary px-4">Save</button>
+                        </div>
+            </div>
+        </div>
+    </div>
+
     <div class="row">
         <!-- TABLE SECTION -->
 
@@ -41,9 +221,9 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Bank List</h5>
-                    <a class="btn btn-primary" href="{{ route('client-banks.create', ['client_id' => $client->id]) }}"
+                    {{-- <a class="btn btn-primary" href="{{ route('client-banks.edit', ['client_id' => $client->id]) }}"
                         role="button">Add Bank
-                    </a>
+                    </a> --}}
                 </div>
                 <div class="card-body">
                     <div class="table-responsive text-nowrap ">
@@ -64,7 +244,14 @@
                                 @foreach ($clientBanks as $b)
                                     <tr>
                                         <td>{{ $b->id ?? '-' }}</td>
-                                        <td>{{ $b->ifsc_code ?? '-' }}</td>
+                                        {{-- <td>{{ $b->ifsc_code ?? '-' }}</td> --}}
+                                        <td>
+                                            <a href="javascript:void(0)" data-bs-toggle="modal"
+                                                data-bs-target="#editBankModal{{ $b->id }}">
+                                                {{ $b->ifsc_code ?? '-' }}
+                                            </a>
+                                        </td>
+
                                         <td>{{ $b->account_number ?? '-' }}</td>
                                         <td>{{ $b->bank_name ?? '-' }}</td>
                                         <td>{{ $b->branch_name ?? '-' }}</td>
@@ -79,19 +266,24 @@
                                                 </button>
 
                                                 <div class="dropdown-menu">
-
                                                     <!-- Edit Button -->
-                                                    <a class="dropdown-item" data-bs-toggle="modal"
-                                                        data-bs-target="#editBankModal{{ $b->id }}">
+                                                    {{-- <a class="dropdown-item edit-btn"
+                                                        href="{{ route('client-banks.edit', ['client_id' => $client->id]) }}">
+                                                        <i class="bx bx-edit-alt me-1"></i> Edit
+                                                    </a> --}}
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('client-banks.edit', ['client_bank' => $b->id]) }}">
                                                         <i class="bx bx-edit-alt me-1"></i> Edit
                                                     </a>
+
 
                                                     <!-- Delete -->
                                                     <form action="{{ route('client-banks.destroy', $b->id) }}"
                                                         method="post" onsubmit="return confirmDelete()">
                                                         @csrf
                                                         @method('DELETE')
-                                                        <input type="hidden" name="client_id" value="{{ $client->id }}">
+                                                        <input type="hidden" name="client_id"
+                                                            value="{{ $client->id }}">
                                                         <button type="submit" class="dropdown-item text-danger">
                                                             <i class="bx bx-trash me-1"></i> Delete
                                                         </button>
@@ -101,129 +293,120 @@
                                             </div>
                                         </td>
                                     </tr>
-
-
-                                    <!-- Edit Bank Modal -->
-                                    <div class="modal fade" id="editBankModal{{ $b->id }}" tabindex="-1"
-                                        aria-hidden="true">
-                                        <div class="modal-dialog modal-dialog-centered modal-xl">
-                                            <div class="modal-content">
-
-                                                <div class="modal-header">
-                                                    <h5 class="modal-title">Edit Bank Details</h5>
-                                                    <button type="button" class="btn-close"
-                                                        data-bs-dismiss="modal"></button>
-                                                </div>
-
-                                                <form action="{{ route('client-banks.update', $b->id) }}" method="POST">
-                                                    @csrf
-                                                    @method('PUT')
-                                                    <input type="hidden" name="client_id" value="{{ $client->id }}">
-
-                                                    <div class="modal-body">
-
-                                                        <div
-                                                            class="bank-details-row row g-3 mb-3 bg-light position-relative">
-
-                                                            {{-- IFSC --}}
-                                                            <div class="col-md-6">
-                                                                <label class="form-label">IFSC Code</label>
-                                                                <input type="text" name="ifsc_code"
-                                                                    value="{{ old('ifsc_code', $b->ifsc_code) }}"
-                                                                    class="form-control @error('ifsc_code') is-invalid @enderror"
-                                                                    placeholder="Enter IFSC Code">
-                                                                @error('ifsc_code')
-                                                                    <span class="invalid-feedback">{{ $message }}</span>
-                                                                @enderror
-                                                            </div>
-
-                                                            {{-- Account No --}}
-                                                            <div class="col-md-6">
-                                                                <label class="form-label">Account Number</label>
-                                                                <input type="text" name="account_number"
-                                                                    value="{{ old('account_number', $b->account_number) }}"
-                                                                    class="form-control @error('account_number') is-invalid @enderror"
-                                                                    maxlength="18" placeholder="Enter Account Number">
-                                                                @error('account_number')
-                                                                    <span class="invalid-feedback">{{ $message }}</span>
-                                                                @enderror
-                                                            </div>
-
-                                                            {{-- Bank Name --}}
-                                                            <div class="col-md-6">
-                                                                <label class="form-label">Bank Name</label>
-                                                                <input type="text" name="bank_name"
-                                                                    value="{{ old('bank_name', $b->bank_name) }}"
-                                                                    class="form-control bg-secondary-subtle bg-gradient
-                                        @error('bank_name') is-invalid @enderror"
-                                                                    readonly>
-                                                                @error('bank_name')
-                                                                    <span class="invalid-feedback">{{ $message }}</span>
-                                                                @enderror
-                                                            </div>
-
-                                                            {{-- Branch Name --}}
-                                                            <div class="col-md-6">
-                                                                <label class="form-label">Branch Name</label>
-                                                                <input type="text" name="branch_name"
-                                                                    value="{{ old('branch_name', $b->branch_name) }}"
-                                                                    class="form-control bg-secondary-subtle bg-gradient
-                                     @error('branch_name') is-invalid @enderror"
-                                                                    readonly>
-                                                                @error('branch_name')
-                                                                    <span class="invalid-feedback">{{ $message }}</span>
-                                                                @enderror
-                                                            </div>
-
-                                                            {{-- Bank Code --}}
-                                                            <div class="col-md-6">
-                                                                <label class="form-label">Bank Code</label>
-                                                                <input type="text" name="bank_code"
-                                                                    value="{{ old('bank_code', $b->bank_code) }}"
-                                                                    class="form-control bg-secondary-subtle bg-gradient
-                                @error('bank_code') is-invalid @enderror"
-                                                                    readonly>
-                                                                @error('bank_code')
-                                                                    <span class="invalid-feedback">{{ $message }}</span>
-                                                                @enderror
-                                                            </div>
-
-                                                            {{-- Primary Checkbox --}}
-                                                            <div class="col-md-6">
-                                                                <label class="form-label d-block">Primary a/c</label>
-                                                                <input type="hidden" name="is_primary" value="0">
-                                                                <input type="checkbox" name="is_primary" value="1"
-                                                                    class="form-check-input @error('is_primary') is-invalid @enderror"
-                                                                    {{ old('is_primary', $b->is_primary) ? 'checked' : '' }}>
-                                                                @error('is_primary')
-                                                                    <span class="invalid-feedback">{{ $message }}</span>
-                                                                @enderror
-                                                            </div>
-
-                                                        </div>
-
-                                                    </div>
-
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-light"
-                                                            data-bs-dismiss="modal">Close</button>
-                                                        <button type="submit" class="btn btn-primary">
-                                                            <i class="bx bx-save me-1"></i> Update
-                                                        </button>
-                                                    </div>
-
-                                                </form>
-
-                                            </div>
-                                        </div>
-                                    </div>
                                 @endforeach
 
                             </tbody>
                         </table>
                     </div>
+                    @foreach ($clientBanks as $b)
+                        <!-- Edit Bank Modal -->
+                        <div class="modal fade" id="editBankModal{{ $b->id }}" tabindex="-1"
+                            aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered modal-xl">
+                                <div class="modal-content">
+
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">Edit Bank Details</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
 
 
+                                    <input type="hidden" name="client_id" value="{{ $client->id }}">
+
+                                    <div class="modal-body">
+                                        <table class="table table-bordered">
+                                            <tr>
+                                                <th class="bg-secondary-subtle ">IFSC Code</th>
+                                                <td><b>{{ $b->ifsc_code }}</b></td>
+
+                                                <th class="bg-secondary-subtle ">Account Number</th>
+                                                <td><b>{{ $b->account_number }}</b></td>
+                                            </tr>
+
+
+
+                                            <tr>
+                                                <th class="bg-secondary-subtle ">MICR Code</th>
+                                                <td><b>{{ $b->micrcode }}</b></td>
+
+                                                <th class="bg-secondary-subtle ">Bank Name</th>
+                                                <td><b>{{ $b->bank_name }}</b></td>
+                                            </tr>
+
+                                            <tr>
+                                                <th class="bg-secondary-subtle ">Branch Name</th>
+                                                <td><b>{{ $b->branch_name }}</b></td>
+
+                                                <th class="bg-secondary-subtle ">Bank Code</th>
+                                                <td><b>{{ $b->bank_code }}</b></td>
+                                            </tr>
+                                            @php
+                                                $op = trim($b->operation_mode ?? '');
+                                            @endphp
+
+                                            <tr>
+                                                <th class="bg-secondary-subtle">Operation Mode</th>
+                                                <td><b>{{ $op ?: '-' }}</b></td>
+
+                                                {{-- Holder 1 --}}
+                                                <th
+                                                    class="bg-secondary-subtle {{ in_array($op, ['joint', 'anyone']) ? '' : 'd-none' }}">
+                                                    Holder Name 1
+                                                </th>
+                                                <td class="{{ in_array($op, ['joint', 'anyone']) ? '' : 'd-none' }}">
+                                                    <b>{{ in_array($op, ['joint', 'anyone']) ? $b->holder_name_1 : '' }}</b>
+                                                </td>
+                                            </tr>
+
+                                            <tr>
+                                                {{-- Holder 2 --}}
+                                                <th class="bg-secondary-subtle {{ $op == 'joint' ? '' : 'd-none' }}">
+                                                    Holder Name 2
+                                                </th>
+                                                <td class="{{ $op == 'joint' ? '' : 'd-none' }}">
+                                                    <b>{{ $op == 'joint' ? $b->holder_name_2 : '' }}</b>
+                                                </td>
+
+                                                {{-- Holder 3 --}}
+                                                <th class="bg-secondary-subtle {{ $op == 'joint' ? '' : 'd-none' }}">
+                                                    Holder Name 3
+                                                </th>
+                                                <td class="{{ $op == 'joint' ? '' : 'd-none' }}">
+                                                    <b>{{ $op == 'joint' ? $b->holder_name_3 : '' }}</b>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <th class="bg-secondary-subtle ">Primary A/c</th>
+                                                <td><b>{{ $b->is_primary ? 'Yes' : 'No' }}</b></td>
+
+                                                <th class="bg-secondary-subtle ">Cheque Photo</th>
+                                                <td>
+                                                    <b>
+                                                        @if ($b->attachment_cancelled_cheque_url_url)
+                                                            <img src="{{ $b->attachment_cancelled_cheque_url_url }}"
+                                                                width="120" class="rounded">
+                                                        @else
+                                                            -
+                                                        @endif
+                                                    </b>
+                                                </td>
+                                            </tr>
+                                        </table>
+
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-primary"
+                                            data-bs-dismiss="modal">Close</button>
+
+                                    </div>
+
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
 
                 </div>
             </div>

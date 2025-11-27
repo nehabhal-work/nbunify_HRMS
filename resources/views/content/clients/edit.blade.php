@@ -540,7 +540,7 @@
             </div>
 
             {{-- Bank details --}}
-            <div class="col-md-6 d-flex">
+            <div class="col-md-6 d-flex d-none">
                 <div class="card mb-4">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="mb-0">Bank details</h5>
@@ -638,7 +638,7 @@
                                                 <label class="form-label">MICR Code</label>
                                                 <input type="text" name="banks[{{ $loop->index }}][micrcode]"
                                                     value="{{ old('banks.' . $loop->index . '.micrcode', $bank->micrcode) }}"
-                                                    class="form-control micrcode bg-secondary-subtle bg-gradient @error('banks.' . $loop->index . '.micrcode') is-invalid @enderror">
+                                                    class="form-control micrcode bg-secondary-subtle bg-gradient @error('banks.' . $loop->index . '.micrcode') is-invalid @enderror" readonly>
                                                 @error('banks.' . $loop->index . '.micrcode')
                                                     <span class="invalid-feedback">{{ $message }}</span>
                                                 @enderror
@@ -954,7 +954,7 @@
 
 
             {{-- Image Section --}}
-            <div id="divImageSection" class="col-md-6 d-flex">
+            <div id="divImageSection" >
                 <div class="card mb-4">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="mb-0">Image Section</h5>
@@ -963,7 +963,7 @@
                     <div class="card-body">
                         <div class="row">
                             <!-- Profile Photo -->
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-4 mb-3">
                                 <label class="form-label">Client Photo</label>
                                 <div class="input-group">
                                     <input type="file"
@@ -1012,7 +1012,7 @@
 
 
                             <!-- pan Card -->
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-4 mb-3">
                                 <label class="form-label">pan Card</label>
                                 <div class="input-group">
                                     <input type="file" onchange="uploadTempFile(this, 'attachment_pan')"
@@ -1056,7 +1056,7 @@
 
 
                             <!-- aadhar Card front-->
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-4 mb-3">
                                 <label class="form-label">aadhar Card front</label>
                                 <div class="input-group">
                                     <input type="file" onchange="uploadTempFile(this, 'attachment_aadhar_front')"
@@ -1101,7 +1101,7 @@
 
 
                             <!-- aadhar Card back -->
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-4 mb-3">
                                 <label class="form-label">aadhar Card Back</label>
                                 <div class="input-group">
                                     <input type="file" onchange="uploadTempFile(this, 'attachment_aadhar_back')"
@@ -1147,7 +1147,7 @@
 
 
                             <!-- Signature -->
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-4 mb-3">
                                 <label class="form-label">Signature</label>
                                 <div class="input-group">
                                     <input type="file" onchange="uploadTempFile(this, 'attachment_signature')"
@@ -1191,7 +1191,7 @@
                             </div>
 
                             <!-- Resume -->
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-4 mb-3">
                                 <label class="form-label">ckyc</label>
                                 <div class="input-group">
                                     <input type="file" onchange="uploadTempFile(this, 'attachment_ckyc')"
@@ -1235,7 +1235,7 @@
                             </div>
 
                             <!-- Other Supporting Documents -->
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-4 mb-3">
                                 <label class="form-label">Other Documents (Optional)</label>
                                 <div class="input-group">
                                     <input type="file" onchange="uploadTempFile(this, 'attachment_other_documents')"

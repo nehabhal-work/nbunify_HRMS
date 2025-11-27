@@ -58,7 +58,12 @@
                                 @foreach ($clients as $d)
                                     <tr>
                                         <td>{{ $d->client_code }}</td>
-                                        <td>{{ strtoupper($d->name) }}</td>
+                                        <td>
+                                            <a href="{{ route('clients.show', $d->id) }}" class="">
+                                                <i class="bx bx-bank me-1"></i>
+                                                <b>{{ strtoupper($d->name) }}</b>
+                                            </a>
+                                        </td>
                                         <td>{{ $d->pan_no ?? '' }}</td>
                                         <td>{{ $d->aadhar_no ?? '' }}</td>
                                         <td>{{ $d->mobile_no ?? '' }}</td>
@@ -108,6 +113,12 @@
                                                         href="{{ route('client-families.index', ['client_id' => $d->id]) }}">
                                                         <i class="bx bxs-group me-1"></i>
                                                         Add Family
+                                                    </a>
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('client-banks.index', ['client_id' => $d->id]) }}">
+                                                        <i class="bx bxs-bank"></i>
+
+                                                        Add Banks
                                                     </a>
                                                     <a class="dropdown-item edit-btn"
                                                         href="{{ route('clients.edit', $d->id) }}">
