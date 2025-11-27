@@ -30,7 +30,7 @@
         </h4>
     </div>
 
-    <div class="div d-flex">
+    <div class="div d-flex justify-content-end mb-3">
         <a href="{{ route('clients.index') }}" class="btn btn-secondary px-4">Go back</a>
 
     </div>
@@ -46,7 +46,7 @@
                     </a>
                 </div>
                 <div class="card-body">
-                    <div class="table-responsive text-nowrap">
+                    <div class="table-responsive text-nowrap ">
                         <table class="table srkdataTable ">
                             <thead class="table-light">
                                 <tr>
@@ -63,13 +63,13 @@
                             <tbody>
                                 @foreach ($clientBanks as $b)
                                     <tr>
-                                        <td><b>{{ $b->id ?? '-' }}</b></td>
-                                        <td><b>{{ $b->ifsc_code ?? '-' }}</b></td>
-                                        <td><b>{{ $b->account_number ?? '-' }}</b></td>
-                                        <td><b>{{ $b->bank_name ?? '-' }}</b></td>
-                                        <td><b>{{ $b->branch_name ?? '-' }}</b></td>
-                                        <td><b>{{ $b->bank_code ?? '-' }}</b></td>
-                                        <td><b>{{ $b->is_primary ? 'Yes' : 'No' }}</b></td>
+                                        <td>{{ $b->id ?? '-' }}</td>
+                                        <td>{{ $b->ifsc_code ?? '-' }}</td>
+                                        <td>{{ $b->account_number ?? '-' }}</td>
+                                        <td>{{ $b->bank_name ?? '-' }}</td>
+                                        <td>{{ $b->branch_name ?? '-' }}</td>
+                                        <td>{{ $b->bank_code ?? '-' }}</td>
+                                        <td>{{ $b->is_primary ? 'Yes' : 'No' }}</td>
 
                                         <td>
                                             <div class="dropdown">
@@ -155,7 +155,7 @@
                                                                 <input type="text" name="bank_name"
                                                                     value="{{ old('bank_name', $b->bank_name) }}"
                                                                     class="form-control bg-secondary-subtle bg-gradient
-                                @error('bank_name') is-invalid @enderror"
+                                        @error('bank_name') is-invalid @enderror"
                                                                     readonly>
                                                                 @error('bank_name')
                                                                     <span class="invalid-feedback">{{ $message }}</span>
@@ -168,7 +168,7 @@
                                                                 <input type="text" name="branch_name"
                                                                     value="{{ old('branch_name', $b->branch_name) }}"
                                                                     class="form-control bg-secondary-subtle bg-gradient
-                                @error('branch_name') is-invalid @enderror"
+                                     @error('branch_name') is-invalid @enderror"
                                                                     readonly>
                                                                 @error('branch_name')
                                                                     <span class="invalid-feedback">{{ $message }}</span>
@@ -222,6 +222,9 @@
                             </tbody>
                         </table>
                     </div>
+
+
+
                 </div>
             </div>
         </div>
@@ -232,5 +235,4 @@
 @endsection
 
 @push('scripts')
-
 @endpush

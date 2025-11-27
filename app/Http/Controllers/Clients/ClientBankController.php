@@ -15,8 +15,7 @@ class ClientBankController extends Controller
         private ClientBankService $clientBankService,
         private ClientService $clientService,
         private FileStorageService $fileStorageService
-    ) {
-    }
+    ) {}
 
     public function index(Request $request)
     {
