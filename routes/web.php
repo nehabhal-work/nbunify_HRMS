@@ -40,6 +40,9 @@ Route::middleware(['auth', 'verified'])->prefix('master')->name('master.')->grou
     Route::resource('designations', DesignationController::class);
     Route::resource('sub-designations', SubDesignationController::class);
     Route::resource('employees', EmployeeController::class);
+    Route::get('employees-letter/{type}/{id}', [EmployeeController::class, 'hrLetter'])
+        ->name('employees.hr-letter');
+
     Route::resource('clients', ClientController::class);
 });
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Masters;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\EmployeeRequest;
 use App\Services\BranchService;
+use App\Services\CompanyService;
 use App\Services\DepartmentService;
 use App\Services\DesignationService;
 use App\Services\EmployeeService;
@@ -19,6 +20,7 @@ class EmployeeController extends Controller
         private BranchService $branchService,
         private DepartmentService $departmentService,
         private DesignationService $designationService,
+        private CompanyService $CompanyService,
     ) {}
 
     public function index()
@@ -36,7 +38,7 @@ class EmployeeController extends Controller
         $branches = $this->branchService->getAll();
         $departments = $this->departmentService->getAll();
         $designations = $this->designationService->getAll();
-        return view('content.master.employees.create', compact('country', 'states', 'cities','branches','departments','designations'));
+        return view('content.master.employees.create', compact('country', 'states', 'cities', 'branches', 'departments', 'designations'));
     }
 
     public function store(EmployeeRequest $request)
@@ -100,5 +102,33 @@ class EmployeeController extends Controller
         }
 
         return $employee;
+    }
+
+
+    public function hrLetter($type, $id)
+    {
+        $employee = $this->employeeService->find($id);
+        $company = $this->CompanyService->find($employee->company_id);
+
+
+        // allowed types for safety
+        $validTypes = [
+            'appointment',
+            'confirmation',
+            'experience',
+            'offer',
+            'relieving',
+            'salary-increment'
+        ];
+
+        // if invalid type – show 404
+        if (!in_array($type, $validTypes)) {
+            abort(404);
+        }
+
+        // dynamic view path 
+        $view = "content.master.employees.hr-letter.$type";
+
+        return view($view, compact('employee', 'company'));
     }
 }
