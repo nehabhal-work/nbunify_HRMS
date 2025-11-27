@@ -61,7 +61,7 @@
                                         <td>
                                             <a href="{{ route('clients.show', $d->id) }}" class="">
                                                 <i class="bx bx-bank me-1"></i>
-                                                <b>{{ strtoupper($d->name) }}</b>
+                                                {{ strtoupper($d->name) }}
                                             </a>
                                         </td>
                                         <td>{{ $d->pan_no ?? '' }}</td>

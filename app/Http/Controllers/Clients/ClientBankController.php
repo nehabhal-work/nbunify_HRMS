@@ -39,7 +39,9 @@ class ClientBankController extends Controller
     }
 
     public function store(ClientBankRequest $request)
+    // public function store(Request $request)
     {
+        // return $request;
         $this->clientBankService->create($request->validated());
         return redirect()->route('client-banks.index', ['client_id' => $request->client_id])->with('success', 'Client bank account created successfully');
     }

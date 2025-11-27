@@ -39,179 +39,186 @@
             <h5 class="mb-0">Bank details</h5>
             <small class="text-muted float-end">Bank Information</small>
         </div>
-        <div class="card-body" id="bankDetailsWrapper">
-            <div class="bank-details-row row" >
-                <!-- IFSC -->
-                <div class="col-md-4">
-                    <label class="form-label">IFSC Code</label>
-                    <input type="text" name="banks[0][ifsc_code]"
-                        class="form-control ifsc_code @error('banks.0.ifsc_code') is-invalid @enderror"
-                        placeholder="Enter IFSC Code">
-                    @error('banks.0.ifsc_code')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
+        <form action="{{ route('client-banks.store') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+            @method('post')
+            <input type="hidden" name="client_id" value="{{ $client->id }}">
 
-                <!-- Account No -->
-                <div class="col-md-4">
-                    <label class="form-label">Account No</label>
-                    <input type="text" name="banks[0][account_number]"
-                        class="form-control account_number @error('banks.0.account_number') is-invalid @enderror"
-                        placeholder="Enter Account Number" maxlength="15">
-                    @error('banks.0.account_number')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
-
-                <!-- Operation Mode -->
-                <div class="col-md-4">
-                    <label class="form-label">Operation Mode</label>
-                    <select name="banks[0][operation_mode]"
-                        class="form-select operation_mode @error('banks.0.operation_mode') is-invalid @enderror">
-                        <option value="">Select Mode</option>
-                        <option value="single">Single</option>
-                        <option value="joint">Joint</option>
-                        <option value="anyone">Anyone</option>
-                    </select>
-                    @error('banks.0.operation_mode')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
-
-                <!-- Holder 1 -->
-                <div class="col-md-4 holder_names d-none">
-                    <label class="form-label">Holder Name 1</label>
-                    <input type="text" name="banks[0][holder_name_1]"
-                        class="form-control @error('banks.0.holder_name_1') is-invalid @enderror">
-                    @error('banks.0.holder_name_1')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
-
-                <!-- Holder 2 -->
-                <div class="col-md-4 holder_names d-none">
-                    <label class="form-label">Holder Name 2</label>
-                    <input type="text" name="banks[0][holder_name_2]"
-                        class="form-control @error('banks.0.holder_name_2') is-invalid @enderror">
-                    @error('banks.0.holder_name_2')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
-
-                <!-- Holder 3 -->
-                <div class="col-md-4 holder_names d-none">
-                    <label class="form-label">Holder Name 3</label>
-                    <input type="text" name="banks[0][holder_name_3]"
-                        class="form-control @error('banks.0.holder_name_3') is-invalid @enderror">
-                    @error('banks.0.holder_name_3')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
-
-                <!-- MICR -->
-                <div class="col-md-4">
-                    <label class="form-label">MICR Code</label>
-                    <input type="text" name="banks[0][micrcode]"
-                        class="form-control micrcode bg-secondary-subtle bg-gradient @error('banks.0.micrcode') is-invalid @enderror"
-                        readonly>
-                    @error('banks.0.micrcode')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
-
-                <!-- Bank Name -->
-                <div class="col-md-4">
-                    <label class="form-label">Bank Name</label>
-                    <input type="text" name="banks[0][bank_name]"
-                        class="form-control bank_name bg-secondary-subtle bg-gradient @error('banks.0.bank_name') is-invalid @enderror"
-                        readonly>
-                    @error('banks.0.bank_name')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
-
-                <!-- Branch Name -->
-                <div class="col-md-4">
-                    <label class="form-label">Branch Name</label>
-                    <input type="text" name="banks[0][branch_name]"
-                        class="form-control branch_name bg-secondary-subtle bg-gradient @error('banks.0.branch_name') is-invalid @enderror"
-                        readonly>
-                    @error('banks.0.branch_name')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
-
-                <!-- Bank Code -->
-                <div class="col-md-4">
-                    <label class="form-label">Bank Code</label>
-                    <input type="text" name="banks[0][bank_code]"
-                        class="form-control bank_code bg-secondary-subtle bg-gradient @error('banks.0.bank_code') is-invalid @enderror"
-                        readonly>
-                    @error('banks.0.bank_code')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
-
-
-
-                <!-- Cheque Photo -->
-                <div class="col-md-4 mb-3">
-                    <label class="form-label">Cheque Photo</label>
-
-                    <div class="input-group">
-                        <input type="file"
-                            class="form-control @error('banks.0.attachment_cancelled_cheque') is-invalid @enderror"
-                            id="attachment_cancelled_cheque" name="banks[0][attachment_cancelled_cheque]"
-                            onchange="uploadTempFile(this, 'attachment_cancelled_cheque')" accept=".jpg,.jpeg,.png,.pdf">
-
-                        <button class="btn btn-outline-danger" type="button"
-                            onclick="document.getElementById('attachment_cancelled_cheque').value = ''">
-                            ✕
-                        </button>
+            <div class="card-body" id="bankDetailsWrapper">
+                <div class="bank-details-row row g-3">
+                    <!-- IFSC --> 
+                    <div class="col-md-4">
+                        <label class="form-label">IFSC Code</label>
+                        <input type="text" name="banks[ifsc_code]"
+                            class="form-control ifsc_code @error('banks[ifsc_code]') is-invalid @enderror"
+                            placeholder="Enter IFSC Code">
+                        @error('banks[ifsc_code]')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
 
-                    @error('banks.0.attachment_cancelled_cheque')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
+                    <!-- Account No -->
+                    <div class="col-md-4">
+                        <label class="form-label">Account No</label>
+                        <input type="text" name="banks[account_number]"
+                            class="form-control account_number @error('banks.account_number') is-invalid @enderror"
+                            placeholder="Enter Account Number" maxlength="15">
+                        @error('banks.account_number')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
 
-                    <!-- Hidden URL -->
-                    <input type="hidden" id="attachment_cancelled_cheque_url"
-                        value="{{ old('banks.0.attachment_cancelled_cheque_url') }}"
-                        name="banks[0][attachment_cancelled_cheque_url]">
+                    <!-- Operation Mode -->
+                    <div class="col-md-4">
+                        <label class="form-label">Operation Mode</label>
+                        <select name="banks[operation_mode]"
+                            class="form-select operation_mode @error('banks.operation_mode') is-invalid @enderror">
+                            <option value="">Select Mode</option>
+                            <option value="single">Single</option>
+                            <option value="joint">Joint</option>
+                            <option value="anyone">Anyone</option>
+                        </select>
+                        @error('banks.operation_mode')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
 
-                    <!-- Preview -->
-                    @if (old('banks.0.attachment_cancelled_cheque_url'))
-                        <div id="attachment_cancelled_cheque_preview" class="position-relative d-inline-block mt-2">
-                            <img src="{{ old('banks.0.attachment_cancelled_cheque_url') }}" width="100"
-                                class="rounded">
+                    <!-- Holder 1 -->
+                    <div class="col-md-4 holder_names d-none">
+                        <label class="form-label">Holder Name 1</label>
+                        <input type="text" name="banks[holder_name_1]"
+                            class="form-control @error('banks.holder_name_1') is-invalid @enderror">
+                        @error('banks.holder_name_1')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
 
-                            <button type="button"
-                                class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
-                                onclick="removeImage('attachment_cancelled_cheque')">
+                    <!-- Holder 2 -->
+                    <div class="col-md-4 holder_names d-none">
+                        <label class="form-label">Holder Name 2</label>
+                        <input type="text" name="banks[holder_name_2]"
+                            class="form-control @error('banks.holder_name_2') is-invalid @enderror">
+                        @error('banks.holder_name_2')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <!-- Holder 3 -->
+                    <div class="col-md-4 holder_names d-none">
+                        <label class="form-label">Holder Name 3</label>
+                        <input type="text" name="banks[holder_name_3]"
+                            class="form-control @error('banks.holder_name_3') is-invalid @enderror">
+                        @error('banks.holder_name_3')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <!-- MICR -->
+                    <div class="col-md-4">
+                        <label class="form-label">MICR Code</label>
+                        <input type="text" name="banks[micrcode]"
+                            class="form-control micrcode bg-secondary-subtle bg-gradient @error('banks.micrcode') is-invalid @enderror"
+                            readonly>
+                        @error('banks.micrcode')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <!-- Bank Name -->
+                    <div class="col-md-4">
+                        <label class="form-label">Bank Name</label>
+                        <input type="text" name="banks[bank_name]"
+                            class="form-control bank_name bg-secondary-subtle bg-gradient @error('banks.bank_name') is-invalid @enderror"
+                            readonly>
+                        @error('banks.bank_name')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <!-- Branch Name -->
+                    <div class="col-md-4">
+                        <label class="form-label">Branch Name</label>
+                        <input type="text" name="banks[branch_name]"
+                            class="form-control branch_name bg-secondary-subtle bg-gradient @error('banks.branch_name') is-invalid @enderror"
+                            readonly>
+                        @error('banks.branch_name')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <!-- Bank Code -->
+                    <div class="col-md-4">
+                        <label class="form-label">Bank Code</label>
+                        <input type="text" name="banks[bank_code]"
+                            class="form-control bank_code bg-secondary-subtle bg-gradient @error('banks.bank_code') is-invalid @enderror"
+                            readonly>
+                        @error('banks.bank_code')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+
+
+                    <!-- Cheque Photo -->
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Cheque Photo</label>
+
+                        <div class="input-group">
+                            <input type="file"
+                                class="form-control @error('banks.attachment_cancelled_cheque') is-invalid @enderror"
+                                id="attachment_cancelled_cheque" name="banks[attachment_cancelled_cheque]"
+                                onchange="uploadTempFile(this, 'attachment_cancelled_cheque')"
+                                accept=".jpg,.jpeg,.png,.pdf">
+
+                            <button class="btn btn-outline-danger" type="button"
+                                onclick="document.getElementById('attachment_cancelled_cheque').value = ''">
                                 ✕
                             </button>
                         </div>
-                    @endif
+
+                        @error('banks.attachment_cancelled_cheque')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+
+                        <!-- Hidden URL -->
+                        <input type="hidden" id="attachment_cancelled_cheque_url"
+                            value="{{ old('banks.attachment_cancelled_cheque_url') }}"
+                            name="banks[attachment_cancelled_cheque_url]">
+
+                        <!-- Preview -->
+                        @if (old('banks.attachment_cancelled_cheque_url'))
+                            <div id="attachment_cancelled_cheque_preview" class="position-relative d-inline-block mt-2">
+                                <img src="{{ old('banks.attachment_cancelled_cheque_url') }}" width="100"
+                                    class="rounded">
+
+                                <button type="button"
+                                    class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                                    onclick="removeImage('attachment_cancelled_cheque')">
+                                    ✕
+                                </button>
+                            </div>
+                        @endif
+                    </div>
+
+
+                    <!-- Primary -->
+                    <div class="col-md-4">
+                        <label class="form-label d-block">Primary a/c</label>
+                        <input type="hidden" name="banks[is_primary]" value="0">
+                        <input type="checkbox" name="banks[is_primary]" value="1"
+                            class="form-check-input setPrimary @error('banks.is_primary') is-invalid @enderror">
+                        @error('banks.is_primary')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <!-- Submit -->
+                    <div class="text-end mt-3">
+                        <button type="submit" class="btn btn-primary px-4">Save</button>
+                    </div>
                 </div>
-
-
-                <!-- Primary -->
-                <div class="col-md-4">
-                    <label class="form-label d-block">Primary a/c</label>
-                    <input type="hidden" name="banks[0][is_primary]" value="0">
-                    <input type="checkbox" name="banks[0][is_primary]" value="1"
-                        class="form-check-input setPrimary @error('banks.0.is_primary') is-invalid @enderror">
-                    @error('banks.0.is_primary')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
-
-                 <!-- Submit -->
-                        <div class="text-end mt-3">
-                            <button type="submit" class="btn btn-primary px-4">Save</button>
-                        </div>
             </div>
-        </div>
+        </form>
     </div>
 
     <div class="row">
