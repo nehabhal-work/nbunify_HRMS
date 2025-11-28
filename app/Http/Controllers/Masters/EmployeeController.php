@@ -2,15 +2,19 @@
 
 namespace App\Http\Controllers\Masters;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\EmployeeRequest;
+use PDF;
 use App\Services\BranchService;
 use App\Services\CompanyService;
-use App\Services\DepartmentService;
-use App\Services\DesignationService;
 use App\Services\EmployeeService;
-use App\Services\FileStorageService;
 use Illuminate\Support\Facades\DB;
+use App\Services\DepartmentService;
+use App\Http\Controllers\Controller;
+use App\Services\DesignationService;
+use App\Services\FileStorageService;
+use App\Http\Requests\EmployeeRequest;
+use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
+use Barryvdh\DomPDF\PDF as DomPDFPDF;
+use Dompdf\Adapter\PDFLib;
 
 class EmployeeController extends Controller
 {
@@ -107,9 +111,13 @@ class EmployeeController extends Controller
 
     public function hrLetter($type, $id)
     {
-        $employee = $this->employeeService->find($id);
-        $company = $this->CompanyService->find($employee->company_id);
+        // return  $id;
 
+        $employee = $this->employeeService->find($id);
+        // $company = $this->CompanyService->find($employee->company_id); #tanmay need company id in employee table
+        // return $employee;
+        $company = $this->CompanyService->find(1);
+        $type = strtolower($type);
 
         // allowed types for safety
         $validTypes = [
@@ -127,8 +135,63 @@ class EmployeeController extends Controller
         }
 
         // dynamic view path 
-        $view = "content.master.employees.hr-letter.$type";
+        $view = "content.master.employees.hr-letter." . $type;
 
-        return view($view, compact('employee', 'company'));
+        return view('content.master.employees.hr-letter.appointment', compact('employee', 'company', 'type'));
+    }
+
+
+
+    public function hrLetterPdf($type, $id)
+    {
+        $employee = $this->employeeService->find($id);
+
+        $validTypes = [
+            'appointment',
+            'confirmation',
+            'experience',
+            'offer',
+            'relieving',
+            'salary-increment'
+        ];
+
+        if (!in_array($type, $validTypes)) {
+            abort(404);
+        }
+
+        $pdf = PDF::loadView("content.master.employees.hr-letter." . $type . "-pdf", [
+            'employee' => $employee,
+            'type' => $type
+        ])->setPaper('A4', 'portrait');
+
+        // Open in browser
+        return $pdf->stream("{$type}_letter_{$employee->id}.pdf");
+
+        // Or force download
+        // return $pdf->download("{$type}_letter_{$employee->id}.pdf");
+    }
+
+
+
+
+    public function hrLetterEmail($type, $id)
+    {
+        $employee = $this->employeeService->find($id);
+
+        // $pdf = \PDF::loadView("content.master.employees.hr-letter.$type", [
+        //     'employee' => $employee,
+        //     'type' => $type
+        // ])->output();
+
+        // \Mail::send([], [], function ($message) use ($employee, $type, $pdf) {
+        //     $message->to($employee->email)
+        //         ->subject(ucfirst($type) . " Letter")
+        //         ->attachData($pdf, "{$type}_letter.pdf", [
+        //             'mime' => 'application/pdf',
+        //         ])
+        //         ->setBody("Dear {$employee->name},<br>Your {$type} letter is attached.", 'text/html');
+        // });
+
+        return back()->with('success', 'Email sent successfully.');
     }
 }

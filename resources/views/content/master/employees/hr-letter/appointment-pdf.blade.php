@@ -102,21 +102,7 @@
         </div>
     </div>
 
-    <div class="d-flex justify-content-end mb-3">
 
-        <!-- Print PDF button -->
-        <a href="{{ route('master.employees.hr-letter.pdf', ['type' => $type, 'id' => $employee->id]) }}"
-            class="btn btn-primary me-2" target="_blank">
-            <i class="bx bx-printer"></i> Print PDF
-        </a>
-
-        <!-- Send Email button -->
-        <a href="{{ route('master.employees.hr-letter.email', ['type' => $type, 'id' => $employee->id]) }}"
-            class="btn btn-success">
-            <i class="bx bx-mail-send"></i> Send Email
-        </a>
-
-    </div>
 
 </body>
 
