@@ -10,7 +10,7 @@ class CompanyRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'logo' => ['nullable', 'file', 'image', 'max:2048', 'mimes:jpeg,jpg,png,gif'],
+            'logo_url' => ['nullable', 'url'],
             'name' => ['required', 'string', 'max:255'],
             'company_type' => ['required', 'in:sole_proprietorship,partnership,pvt_ltd,public_ltd,llp,huf,ngo'],
             'code' => ['nullable', 'string', 'max:255', Rule::unique('companies')->ignore($this->company)],
@@ -84,14 +84,7 @@ class CompanyRequest extends FormRequest
             'corporate_pincode.regex' => 'Pincode must be 6 digits.',
             'additional_pincode.regex' => 'Pincode must be 6 digits.',
 
-            'logo.file' => 'Logo must be a file.',
-            'logo.image' => 'Logo must be an image.',
-            'logo.max' => 'Logo must not exceed 2MB.',
-            'logo.mimes' => 'Logo must be jpeg, jpg, png, or gif format.',
-
-            '*.file' => 'The :attribute must be a file.',
-            '*.max' => 'The :attribute must not exceed 5MB.',
-            '*.mimes' => 'The :attribute must be pdf, jpeg, jpg, or png format.',
+            '*.url' => 'The :attribute must be a valid URL.'
 
         ];
     }

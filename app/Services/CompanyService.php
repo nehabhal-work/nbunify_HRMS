@@ -74,7 +74,7 @@ class CompanyService
                             str_replace('attachment_', '', $field)
                         );
                     } else {
-                        $data[$field] = $client->$field ?? null;
+                        $data[$field] = $company->$field ?? null;
                     }
                 } else {
                     if ($company && $company->$field) {
