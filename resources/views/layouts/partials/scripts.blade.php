@@ -47,22 +47,5 @@
             fixedHeight: true
         });
 
-        // -----------------------------
-        // SAVE PAGE NUMBER ON EDIT CLICK
-        // -----------------------------
-        $(document).on("click", ".edit-btn", function() {
-            localStorage.setItem("client_dt_page", table.page);
-        });
-
-        // -----------------------------
-        // RESTORE PAGE AFTER REDIRECT
-        // -----------------------------
-        var storedPage = localStorage.getItem("client_dt_page");
-        if (storedPage !== null) {
-            table.page = parseInt(storedPage);
-            table.update();
-            localStorage.removeItem("client_dt_page");
-        }
-
     });
 </script>

@@ -90,7 +90,8 @@
                             <div class="col-md-2 mb-3">
                                 <label class="form-label">Phone</label>
                                 <input type="text" class="form-control onlyphone @error('phone') is-invalid @enderror"
-                                    name="phone" value="{{ old('phone') }}">
+                                    id="phone" name="phone" maxlength="10" value="{{ old('phone') }}">
+
                                 @error('phone')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -588,7 +589,7 @@
                             <!-- IFSC -->
                             <div class="col-md-2 mt-3">
                                 <label class="form-label">IFSC Code</label>
-                                <input type="text" name="ifsc_code" value="{{ old('ifsc_code') }}"
+                                <input type="text"id="ifsc_code" name="ifsc_code" value="{{ old('ifsc_code') }}"
                                     class="form-control ifsc_code @error('ifsc_code') is-invalid @enderror"
                                     placeholder="Enter IFSC Code">
                                 @error('ifsc_code')
@@ -599,7 +600,8 @@
                             <!-- Account No -->
                             <div class="col-md-2 mt-3">
                                 <label class="form-label">Account No</label>
-                                <input type="text" name="account_number" value="{{ old('account_number') }}"
+                                <input type="text" id="account_number" name="account_number"
+                                    value="{{ old('account_number') }}"
                                     class="form-control account_number @error('account_number') is-invalid @enderror"
                                     placeholder="Enter Account Number" maxlength="15">
                                 @error('account_number')

@@ -530,31 +530,31 @@ $(document).ready(function () {
 });
 
 // { { -- ------------date validation------------- --} }
-document.addEventListener("DOMContentLoaded", function () {
-    let startInput = document.getElementById("start_date");
-    let endInput = document.getElementById("end_date");
+// document.addEventListener("DOMContentLoaded", function () {
+//     let startInput = document.getElementById("start_date");
+//     let endInput = document.getElementById("end_date");
 
-    startInput.addEventListener("change", function () {
-        if (this.value) {
-            // Convert start_date → Date object
-            let startDate = new Date(this.value);
+//     startInput.addEventListener("change", function () {
+//         if (this.value) {
+//             // Convert start_date → Date object
+//             let startDate = new Date(this.value);
 
-            // Add 1 day
-            startDate.setDate(startDate.getDate() + 1);
+//             // Add 1 day
+//             startDate.setDate(startDate.getDate() + 1);
 
-            // Format back to yyyy-mm-dd
-            let minEndDate = startDate.toISOString().split("T")[0];
+//             // Format back to yyyy-mm-dd
+//             let minEndDate = startDate.toISOString().split("T")[0];
 
-            // Apply restriction
-            endInput.setAttribute("min", minEndDate);
+//             // Apply restriction
+//             endInput.setAttribute("min", minEndDate);
 
-            // Reset end_date if invalid
-            if (endInput.value && endInput.value < minEndDate) {
-                endInput.value = "";
-            }
-        }
-    });
-});
+//             // Reset end_date if invalid
+//             if (endInput.value && endInput.value < minEndDate) {
+//                 endInput.value = "";
+//             }
+//         }
+//     });
+// });
 
 // { { -- ----------edit min max tenure------------- --} }
 $(document).ready(function () {
