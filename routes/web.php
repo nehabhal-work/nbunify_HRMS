@@ -50,8 +50,8 @@ Route::middleware(['auth', 'verified'])->prefix('master')->name('master.')->grou
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('clients', ClientController::class);
     Route::resource('client-families', ClientFamilyController::class);
-    Route::post('client-families.create.existing', [ClientFamilyController::class, 'familiesCreateExisting']);
-    Route::post('client-families.store.existing', [ClientFamilyController::class, 'familiesStoreExisting']);
+    Route::get('client-families-create-from-existing', [ClientFamilyController::class, 'createFromExistingClient'])->name('client-families.create.existing');
+    Route::post('client-families.store-from-existing', [ClientFamilyController::class, 'storeFromExistingClient'])->name('client-families.store.existing');
     Route::resource('client-banks', ClientBankController::class);
 });
 

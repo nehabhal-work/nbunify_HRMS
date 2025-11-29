@@ -48,6 +48,63 @@ class ClientFamilyController extends Controller
         }
     }
 
+    public function createFromExistingClient(Request $request)
+    {
+        if ($client_id = $request->client_id) {
+            $clients = $this->clientService->getAllExcept([$client_id]);
+            $client = $this->clientService->find($client_id);
+            $relations = $this->familyRelationService->getByGender($client->gender);
+
+            return view('content.clients.families.create-existing', compact('client', 'relations', 'clients'));
+        } else {
+            abort(404);
+        }
+    }
+
+    public function storeFromExistingClient(Request $request)
+    {
+
+        $request->validate([
+            'existing_client_id' => 'required|exists:clients,id',
+            'existing_relation_id' => 'required|exists:family_relations,id',
+            'client_id' => 'required|exists:clients,id',
+        ]);
+
+        $client = $this->clientService->find($request->existing_client_id);
+
+        $familyData = [
+            'client_id' => $request->client_id,
+            'client_code' => $client->client_code,
+            'name' => $client->name,
+            'gender' => $client->gender,
+            'dob' => $client->dob,
+            'live_status' => $client->live_status,
+            'dod' => $client->dod,
+            'marital_status' => $client->marital_status,
+            'nationality' => $client->nationality,
+            'occupation' => $client->occupation,
+            'mobile_no' => $client->mobile_no,
+            'whatsapp_no' => $client->whatsapp_no,
+            'landline_no' => $client->landline_no,
+            'email' => $client->email,
+            'res_address' => $client->res_address,
+            'res_country' => $client->res_country,
+            'res_state' => $client->res_state,
+            'res_city' => $client->res_city,
+            'res_pincode' => $client->res_pincode,
+            'office_address' => $client->office_address,
+            'office_country' => $client->office_country,
+            'office_state' => $client->office_state,
+            'office_city' => $client->office_city,
+            'office_pincode' => $client->office_pincode,
+            'relation_id' => $request->existing_relation_id,
+            'remarks' => $client->remarks,
+        ];
+
+        $this->clientFamilyService->create($familyData);
+        return redirect()->route('client-families.index', ['client_id' => $request->client_id])->with('success', 'Client family member created successfully');
+    }
+
     public function store(ClientFamilyRequest $request)
     {
         if ($request->family_source == 'existing') {

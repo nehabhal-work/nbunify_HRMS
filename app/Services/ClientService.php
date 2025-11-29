@@ -16,6 +16,11 @@ class ClientService
         return Client::all();
     }
 
+    public function getAllExcept(array $clientIds = [])
+    {
+        return Client::whereNotIn('id', [$clientIds])->get();
+    }
+
     public function find($id) {
         return Client::findOrFail($id);
     }
