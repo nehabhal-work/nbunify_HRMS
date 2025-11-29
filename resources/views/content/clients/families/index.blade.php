@@ -47,7 +47,7 @@
                             new
                             Family Menber</a>
                         <a class="btn btn-primary"
-                            href="{{ route('client-families.create-existing', ['client_id' => $client->id]) }}"
+                            href="{{ route('client-families.create.existing', ['client_id' => $client->id]) }}"
                             role="button">Add
                             Family from existing list </a>
 
