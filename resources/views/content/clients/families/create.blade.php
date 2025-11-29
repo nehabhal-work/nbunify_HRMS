@@ -35,74 +35,6 @@
         @method('post')
         <input type="hidden" name="client_id" value="{{ $client->id }}">
 
-        <!-- RADIO OPTIONS -->
-        <div class="card p-5">
-            <div class="row mb-3">
-                <div class="col-auto">
-                    <div class="form-check">
-                        <input class="form-check-input sourceOption" type="radio" name="family_source"
-                            id="source_existing" value="existing" checked>
-                        <label class="form-check-label fw-semibold" for="source_existing">
-                            Add From Existing Client List
-                        </label>
-                    </div>
-                </div>
-
-                <div class="col-auto">
-                    <div class="form-check">
-                        <input class="form-check-input sourceOption" type="radio" name="family_source" id="source_new"
-                            value="new">
-                        <label class="form-check-label fw-semibold" for="source_new">
-                            Create New Family Data
-                        </label>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <hr>
-
-
-
-        <div id="existingSection">
-            <div class="card p-5">
-                <div class="row">
-
-                    <!-- Client Dropdown -->
-                    <div class="col-md-4 mb-3">
-                        <label for="existing_client_id" class="form-label">Select Existing Client</label>
-                        <select name="existing_client_id" id="existing_client_id"
-                            class="form-select select2 @error('name') is-invalid @enderror">
-                            <option value="">Select Client</option>
-                            @foreach ($clients as $c)
-                                <option value="{{ $c->id }}">{{ $c->name }}</option>
-                            @endforeach
-                        </select>
-                        @error('name')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                    <!-- Relation With Client -->
-                    <div class="col-md-3 mb-3">
-                        <label for="relation_id" class="form-label">Relation With Client</label>
-                        <select name="existing_relation_id" id="existing_relation_id" class="form-select select2">
-                            <option value="">Select Relation</option>
-                            @foreach ($relations as $d)
-                                <option value="{{ $d->id }}">{{ $d->main_relation }}</option>
-                            @endforeach
-                        </select>
-
-                        @error('relation_id')
-                            <div class="text-danger small">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                </div>
-            </div>
-        </div>
-
-
-
         <div id="newSection" class="d-none" class="row align-items-stretch">
             <div class="col-md-12">
                 <div class="card mb-4">
@@ -116,8 +48,7 @@
                             <div class="col-md-4 mb-3">
                                 <label class="form-label" for="name">Full Name</label>
                                 <input type="text" class="form-control onlyalpha @error('name') is-invalid @enderror"
-                                    id="name" name="name" maxlength="50" value="{{ old('name') }}"
-                                    maxlength="50">
+                                    id="name" name="name" maxlength="50" value="{{ old('name') }}" maxlength="50">
                                 @error('name')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -526,11 +457,6 @@
         </div>
 
 
-
-        <!-- Submit -->
-        <!-- Info / Note -->
-
-
         <div class="text-end mt-3">
             <button type="submit" class="btn btn-primary px-4">Save</button>
             <a href="{{ route('clients.index') }}" class="btn btn-secondary px-4">Cancel</a>
@@ -551,89 +477,6 @@
                     $('#whatsapp_no').val('');
                 }
             });
-        });
-    </script>
-
-
-    <script>
-        $(document).ready(function() {
-            function toggleSections() {
-                if ($("#source_existing").is(":checked")) {
-
-                    // Show existing section
-                    $("#existingSection").removeClass("d-none");
-                    $("#newSection").addClass("d-none");
-
-                    // Rename IDs (Existing selected)
-                    $("#existing_client_id")
-                        .attr("id", "existing_client_id_old")
-                        .attr("name", "existing_client_id_old");
-
-                    $("#existing_client_id_new")
-                        .attr("id", "existing_client_id")
-                        .attr("name", "existing_client_id");
-                } else {
-
-                    // Show new section
-                    $("#existingSection").addClass("d-none");
-                    $("#newSection").removeClass("d-none");
-
-                    // Rename IDs back (New selected)
-                    $("#existing_client_id_old")
-                        .attr("id", "existing_client_id")
-                        .attr("name", "existing_client_id");
-
-                    $("#existing_client_id")
-                        .attr("id", "existing_client_id_new")
-                        .attr("name", "existing_client_id_new");
-                }
-            }
-
-            $(".sourceOption").on("change", function() {
-                toggleSections();
-            });
-
-            toggleSections(); // Initial call
-        });
-    </script>
-
-
-    <script>
-        $(document).ready(function() {
-
-            // When selecting existing client
-            $('#existing_client_id').on('change', function() {
-
-                // Get selected option text (client name)
-                let selectedName = $("#existing_client_id option:selected").text();
-
-                // If "Select Client" is chosen, clear input
-                if ($(this).val() === "") {
-                    $('#name').val('');
-                } else {
-                    $('#name').val(selectedName);
-                }
-            });
-
-        });
-    </script>
-
-    <script>
-        $(document).ready(function() {
-
-            // autofill relation dropdown
-            $('#existing_relation_id').on('change', function() {
-                let selectedRelationId = $(this).val();
-
-                if (selectedRelationId === "") {
-                    // clear the target dropdown
-                    $('#relation_id').val('').trigger('change');
-                } else {
-                    // set selected relation in target dropdown
-                    $('#relation_id').val(selectedRelationId).trigger('change');
-                }
-            });
-
         });
     </script>
 @endpush

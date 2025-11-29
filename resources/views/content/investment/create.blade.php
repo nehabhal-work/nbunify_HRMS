@@ -75,12 +75,15 @@
                                 <select class="form-select select2 @error('client_id') is-invalid @enderror"
                                     name="client_id" id="client_id" required>
                                     <option value="">Select Holder</option>
-                                    {{-- @foreach ($profile as $d)
-                                        <option value="{{ $d->id }}" data-banks='@json($d->banking)'
-                                            data-family='@json($d->family)' data-dob="{{ $d->dob }}">
+                                    @foreach ($client as $d)
+                                        <option value="{{ $d->id }}">
                                             {{ ucfirst(strtolower($d->fname)) }}
                                         </option>
-                                    @endforeach --}}
+                                        {{-- <option value="{{ $d->id }}" data-banks='@json($d->banking)'
+                                            data-family='@json($d->family)' data-dob="{{ $d->dob }}">
+                                            {{ ucfirst(strtolower($d->fname)) }}
+                                        </option> --}}
+                                    @endforeach
                                 </select>
 
                                 @error('client_id')

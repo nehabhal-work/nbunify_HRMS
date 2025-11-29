@@ -3,6 +3,10 @@
 namespace App\Http\Controllers\Investment;
 
 use App\Http\Controllers\Controller;
+use App\Models\Client;
+use App\Models\ClientBank;
+use App\Models\ClientFamily;
+use App\Services\ClientService;
 use Illuminate\Http\Request;
 
 class ElsInvestmentController extends Controller
@@ -20,7 +24,10 @@ class ElsInvestmentController extends Controller
      */
     public function create()
     {
-        return view('content.investment.create');
+        $client = Client::with('ClientBank', 'ClientFamily')->get();
+
+        return $client;
+        return view('content.investment.create', compact('client'));
     }
 
     /**
