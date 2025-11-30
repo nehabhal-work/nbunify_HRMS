@@ -31,7 +31,7 @@
 
 
 
-    <form action="{{ route('client-families.store') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('client-families.store.existing') }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('post')
         <input type="hidden" name="client_id" value="{{ $client->id }}">

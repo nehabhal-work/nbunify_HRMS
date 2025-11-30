@@ -35,7 +35,7 @@
         @method('post')
         <input type="hidden" name="client_id" value="{{ $client->id }}">
 
-        <div id="newSection" class="d-none" class="row align-items-stretch">
+        <div id="newSection" class="" class="row align-items-stretch">
             <div class="col-md-12">
                 <div class="card mb-4">
                     <div class="card-header d-flex justify-content-between align-items-center">

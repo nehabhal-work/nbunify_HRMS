@@ -50,6 +50,7 @@ class ClientFamilyController extends Controller
 
     public function createFromExistingClient(Request $request)
     {
+        // return $request;
         if ($client_id = $request->client_id) {
             $clients = $this->clientService->getAllExcept([$client_id]);
             $client = $this->clientService->find($client_id);

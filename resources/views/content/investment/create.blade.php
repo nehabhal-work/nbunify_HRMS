@@ -75,15 +75,12 @@
                                 <select class="form-select select2 @error('client_id') is-invalid @enderror"
                                     name="client_id" id="client_id" required>
                                     <option value="">Select Holder</option>
-                                    @foreach ($client as $d)
+                                    {{-- @foreach ($client as $d)
                                         <option value="{{ $d->id }}">
                                             {{ ucfirst(strtolower($d->fname)) }}
                                         </option>
-                                        {{-- <option value="{{ $d->id }}" data-banks='@json($d->banking)'
-                                            data-family='@json($d->family)' data-dob="{{ $d->dob }}">
-                                            {{ ucfirst(strtolower($d->fname)) }}
-                                        </option> --}}
-                                    @endforeach
+                                        
+                                    @endforeach --}}
                                 </select>
 
                                 @error('client_id')
@@ -95,22 +92,26 @@
                             <div class="col-md-4">
                                 <label for="scheme_id" class="form-label">Scheme Name *</label>
                                 <select
-                                    class="form-select
+                                    class="form-select select2
                                     @error('scheme_id') is-invalid @enderror"
                                     name="scheme_id" id="scheme_id" required>
                                     <option value="">Select Scheme</option>
 
-                                    {{-- @forelse ($elsScheme as $s)
+
+                                    @forelse ($scheme as $s)
                                         <option value="{{ $s->id }}" data-tenure-type="{{ $s->tenure_type }}"
-                                            data-min-tenure="{{ $s->min_tenure }}" data-max-tenure="{{ $s->max_tenure }}"
-                                            data-frequencies="{{ $s->frequency }}" data-min-roi="{{ $s->min_roi }}"
-                                            data-max-roi="{{ $s->max_roi }}" data-addi-roi="{{ $s->additional_roi }}"
-                                            data-scheme-name="{{ $s->name }}">
-                                            {{ $s->name }}
+                                            data-min-tenure="{{ $s->tenure_min }}" data-max-tenure="{{ $s->tenure_max }}"
+                                            data-frequencies='@json($s->frequency)'
+                                            data-min-roi="{{ $s->roi_min }}" data-max-roi="{{ $s->roi_max }}"
+                                            data-addi-roi-min="{{ $s->roi_additional }}"
+                                            data-addi-roi-max="{{ $s->roi_additional }}"
+                                            data-scheme-name="{{ $s->scheme_name }}">
+                                            {{ $s->scheme_name }}
                                         </option>
                                     @empty
                                         <option value="">No Schemes Available</option>
-                                    @endforelse --}}
+                                    @endforelse
+
                                 </select>
 
                                 @error('scheme_id')
@@ -172,7 +173,7 @@
                                 @enderror
                             </div>
 
-                            <!-- ROI -->
+                            <!-- ROI  set min max roi and show im below message insert between min max. dont allow other value-->
                             <div class="col-md-2">
                                 <label for="roi" class="form-label">ROI *</label>
                                 <div class="input-group">
@@ -180,8 +181,6 @@
                                         name="roi" id="roi" maxlength="5" required>
                                     <span class="input-group-text">%</span>
                                 </div>
-
-                                <small class="text-muted d-block mt-1">Select a scheme to see allowed ROI range</small>
                                 <div id="roi-message"></div>
 
                                 @error('roi')
@@ -189,8 +188,8 @@
                                 @enderror
                             </div>
 
-                            <!-- Additional ROI -->
-                            <div class="col-md-2 d-none" id="addi_roi_box">
+                            <!-- Additional ROI set roi_additional same message info -->
+                            <div class="col-md-2 d-none1" id="addi_roi_box">
                                 <label for="addi_roi" class="form-label">Additional ROI</label>
                                 <div class="input-group">
                                     <input type="text"
@@ -198,6 +197,7 @@
                                         name="addi_roi" id="addi_roi" maxlength="5">
                                     <span class="input-group-text">%</span>
                                 </div>
+                                <div id="addi-roi-message"></div>
 
                                 @error('addi_roi')
                                     <small class="text-danger">{{ $message }}</small>
@@ -337,4 +337,106 @@
 @endsection
 
 @push('scripts')
+    <script>
+        $('#scheme_id').on('change', function() {
+
+            let selected = $(this).find(':selected');
+
+            // --- READ ALL DATA ATTRIBUTES ---
+            let tenureType = selected.data('tenure-type');
+            let minTenure = parseInt(selected.data('min-tenure'));
+            let maxTenure = parseInt(selected.data('max-tenure'));
+            let frequencies = selected.data('frequencies'); // array
+            let minRoi = parseFloat(selected.data('min-roi'));
+            let maxRoi = parseFloat(selected.data('max-roi'));
+            let addiMin = parseFloat(selected.data('addi-roi-min'));
+            let addiMax = parseFloat(selected.data('addi-roi-max'));
+
+            // *** SET TENURE TYPE ***
+            $('#tenure_type').val(tenureType);
+
+            // *** LOAD TENURE OPTIONS ***
+            let tenureSelect = $('#tenure');
+            tenureSelect.empty().append(`<option value="">Select</option>`);
+
+            for (let i = minTenure; i <= maxTenure; i++) {
+                tenureSelect.append(`<option value="${i}">${i}</option>`);
+            }
+
+            // *** LOAD FREQUENCY OPTIONS ***
+            let freqSelect = $('#frequency'); // make sure you have a frequency select!
+            if (freqSelect.length) {
+                freqSelect.empty().append(`<option value="">Select Frequency</option>`);
+                frequencies.forEach(f => {
+                    freqSelect.append(`<option value="${f}">${f}</option>`);
+                });
+            }
+
+            // *** SET ROI RULES ***
+            $('#roi').val('');
+            $('#roi-message').html(
+                `<small class="text-primary fw-bold">Allowed ROI Range: ${minRoi}% to ${maxRoi}%</small>`
+            );
+
+            $('#roi').data('min', minRoi);
+            $('#roi').data('max', maxRoi);
+
+            // SET ADDITIONAL ROI RANGE
+            $('#addi_roi').val('');
+            $('#addi-roi-message').html(
+                `<small class="text-primary fw-bold">Allowed Additional ROI: ${addiMin}% to ${addiMax}%</small>`
+            );
+
+            $('#addi_roi').data('min', addiMin);
+            $('#addi_roi').data('max', addiMax);
+
+        });
+
+        $('#roi').on('input', function() {
+            let min = parseFloat($(this).data('min'));
+            let max = parseFloat($(this).data('max'));
+            let val = parseFloat($(this).val());
+
+            if (!val) {
+                $('#roi-message').html(
+                    `<small class="text-primary fw-bold">Allowed ROI Range: ${min}% to ${max}%</small>`
+                );
+                return;
+            }
+
+            if (val < min || val > max) {
+                $('#roi-message').html(
+                    `<small class="text-danger fw-bold">ROI must be between ${min}% and ${max}%</small>`
+                );
+            } else {
+                $('#roi-message').html(
+                    `<small class="text-success fw-bold">Valid ROI</small>`
+                );
+            }
+        });
+
+        $('#addi_roi').on('input', function() {
+
+            let min = parseFloat($(this).data('min'));
+            let max = parseFloat($(this).data('max'));
+            let val = parseFloat($(this).val());
+
+            if (!val) {
+                $('#addi-roi-message').html(
+                    `<small class="text-primary fw-bold">Allowed Additional ROI: ${min}% to ${max}%</small>`
+                );
+                return;
+            }
+
+            if (val < min || val > max) {
+                $('#addi-roi-message').html(
+                    `<small class="text-danger fw-bold">Additional ROI must be between ${min}% and ${max}%</small>`
+                );
+            } else {
+                $('#addi-roi-message').html(
+                    `<small class="text-success fw-bold">Valid Additional ROI</small>`
+                );
+            }
+        });
+    </script>
 @endpush

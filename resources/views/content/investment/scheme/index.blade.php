@@ -59,8 +59,8 @@
                             <div class="col-md-2 mb-3">
                                 <label for="end_date" class="form-label">End Date <span class="text-danger">*</span></label>
                                 <input type="text"
-                                    class="form-control datepicker @error('end_date') is-invalid @enderror" id="end_date"
-                                    name="end_date" value="{{ old('end_date') }}">
+                                    class="form-control datepicker-next @error('end_date') is-invalid @enderror"
+                                    id="end_date" name="end_date" value="{{ old('end_date') }}">
                                 @error('end_date')
                                     <span class="invalid-feedback">{{ $message }}</span>
                                 @enderror
@@ -102,12 +102,24 @@
 
                             <!-- Additional ROI -->
                             <div class="col-md-2 mb-3">
-                                <label for="roi_additional" class="form-label">Additional ROI (%)</label>
+                                <label for="roi_additional" class="form-label">Min Additional ROI (%)</label>
                                 <input type="number"
                                     class="form-control onlydigit @error('roi_additional') is-invalid @enderror"
                                     id="roi_additional" name="roi_additional" step="0.01"
                                     value="{{ old('roi_additional') }}">
                                 @error('roi_additional')
+                                    <span class="invalid-feedback">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <!-- Additional ROI -->
+                            <div class="col-md-2 mb-3">
+                                <label for="roi_additional_max" class="form-label">Max Additional ROI (%)</label>
+                                <input type="number"
+                                    class="form-control onlydigit @error('roi_additional_max') is-invalid @enderror"
+                                    id="roi_additional_max" name="roi_additional_max" step="0.01"
+                                    value="{{ old('roi_additional_max') }}">
+                                @error('roi_additional_max')
                                     <span class="invalid-feedback">{{ $message }}</span>
                                 @enderror
                             </div>
@@ -135,8 +147,8 @@
                             <div class="col-md-2 mb-3">
                                 <label for="tenure_min" id="min_tenure_label" class="form-label">Minimum Tenure</label>
                                 <input type="number"
-                                    class="form-control onlydigit @error('tenure_min') is-invalid @enderror" id="tenure_min"
-                                    name="tenure_min" value="{{ old('tenure_min') }}">
+                                    class="form-control onlydigit @error('tenure_min') is-invalid @enderror"
+                                    id="tenure_min" name="tenure_min" value="{{ old('tenure_min') }}">
                                 @error('tenure_min')
                                     <span class="invalid-feedback">{{ $message }}</span>
                                 @enderror
@@ -194,8 +206,8 @@
 
 
 
+    <!-- TABLE SECTION -->
     <div class="row">
-        <!-- TABLE SECTION -->
         {{-- {{ $schemes }} --}}
         <div class="col-md-12">
             <div class="card">
@@ -331,6 +343,14 @@
                 );
             });
 
+        });
+
+        $('.datepicker-next').datepicker({
+            format: "dd-mm-yyyy",
+            autoclose: true,
+            todayHighlight: true,
+            clearBtn: true,
+            endDate: false // disallow future dates
         });
     </script>
 @endpush

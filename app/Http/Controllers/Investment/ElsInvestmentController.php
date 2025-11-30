@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Client;
 use App\Models\ClientBank;
 use App\Models\ClientFamily;
+use App\Models\SchemesMaster;
 use App\Services\ClientService;
 use Illuminate\Http\Request;
 
@@ -16,7 +17,8 @@ class ElsInvestmentController extends Controller
      */
     public function index()
     {
-        return view('content.investment.index');
+
+        return view('content.investment.index',);
     }
 
     /**
@@ -24,10 +26,10 @@ class ElsInvestmentController extends Controller
      */
     public function create()
     {
-        $client = Client::with('ClientBank', 'ClientFamily')->get();
 
-        return $client;
-        return view('content.investment.create', compact('client'));
+        $scheme = SchemesMaster::get();
+        // return $scheme;
+        return view('content.investment.create', compact('scheme'));
     }
 
     /**
