@@ -27,7 +27,7 @@ class InvestmentRequest extends FormRequest
             'client_id' => 'required|exists:clients,id',
             'other_holders' => 'nullable|array',
             'other_holders.*' => 'exists:clients,id',
-            'scheme_id' => 'required|exists:schemes_masters,id',
+            'scheme_id' => 'required|exists:schemes_master,id',
             'investment_amount' => 'required|numeric|min:0',
             'tenure_type' => 'required|string|max:255',
             'tenure_count' => 'required|integer|min:1',
