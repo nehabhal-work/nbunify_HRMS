@@ -4,33 +4,19 @@ namespace App\Http\Controllers\Investment;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SchemesMasterRequest;
-use App\Models\SchemesMaster;
 use App\Services\SchemeService;
 use Illuminate\Http\Request;
 
 class SchemeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    protected SchemeService $schemeService;
-    public function __construct(SchemeService $schemeService)
-    {
-        $this->schemeService = $schemeService;
-    }
+    public function __construct(
+        private SchemeService $schemeService
+    ) {}
 
     public function index()
     {
-
-        return view('content.investment.scheme.index', ['schemes' => SchemesMaster::all()]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        $schemes = $this->schemeService->getAll();
+        return view('content.investment.scheme.index', compact('schemes'));
     }
 
     /**
@@ -38,28 +24,23 @@ class SchemeController extends Controller
      */
     public function store(SchemesMasterRequest $request)
     {
-        $data = $request->validated();
-
-        // frequency is array → will auto-cast to JSON
-        $this->schemeService->createScheme($data);
-
-        return redirect()
-            ->route('investment.scheme.index')
-            ->with('success', 'Scheme created successfully.');
+        $this->schemeService->create($request->validated());
+        return redirect()->route('investment.scheme.index')->with('success', 'Scheme created successfully.');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $scheme = $this->schemeService->find($id);
+        return view('content.investment.scheme.view', compact('scheme'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
         $scheme = $this->schemeService->find($id);
         return view('content.investment.scheme.edit', compact('scheme'));
@@ -68,31 +49,20 @@ class SchemeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(SchemesMasterRequest $request, $id)
     {
         $scheme = $this->schemeService->find($id);
-        $data = $request->all();
-        $this->schemeService->updateScheme($scheme, $data);
-
-        return redirect()
-            ->route('investment.scheme.edit', $scheme->id)
-            ->with('success', 'Scheme updated successfully.');
+        $this->schemeService->update($scheme, $request->validated());
+        return redirect()->route('investment.scheme.edit', $id)->with('success', 'Scheme updated successfully.');
     }
-
-    // public function update(StoreBranchRequest $request, $id): RedirectResponse
-    // {
-    //     $branch = $this->branchService->find($id);
-    //     $this->branchService->updateBranch($branch->id, $request->validated());
-    //     return redirect()->route('master.branches.edit', $branch->id)->with('success', 'Branch updated successfully.');
-    // }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
         $scheme = $this->schemeService->find($id);
-        $this->schemeService->deleteScheme($scheme->id);
+        $this->schemeService->delete($scheme);
         return redirect()->route('investment.scheme.index')->with('success', 'Scheme deleted successfully.');
     }
 }
