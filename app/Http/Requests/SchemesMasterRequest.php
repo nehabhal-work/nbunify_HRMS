@@ -22,7 +22,8 @@ class SchemesMasterRequest extends FormRequest
 
             'roi_min'        => ['nullable', 'numeric', 'min:0'],
             'roi_max'        => ['nullable', 'numeric', 'min:0', 'gte:roi_min'],
-            'roi_additional' => ['nullable', 'numeric', 'min:0'],
+            'roi_min_additional' => ['nullable', 'numeric', 'min:0'],
+            'roi_max_additional' => ['nullable', 'numeric', 'min:0'],
 
             'tenure_type'    => ['required', 'in:days,months,years'],
             'tenure_min'     => ['nullable', 'integer', 'min:1'],
