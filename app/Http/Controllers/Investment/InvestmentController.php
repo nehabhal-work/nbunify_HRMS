@@ -10,7 +10,7 @@ use App\Services\SchemeService;
 class InvestmentController extends Controller
 {
     public function __construct(private InvestmentService $investmentService,
-        private SchemeService $schemesMaster){
+        private SchemeService $schemeService){
     }
 
     /**
