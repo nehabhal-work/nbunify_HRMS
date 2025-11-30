@@ -4,13 +4,15 @@ namespace App\Http\Controllers\Investment;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\InvestmentRequest;
+use App\Services\ClientService;
 use App\Services\InvestmentService;
 use App\Services\SchemeService;
 
 class InvestmentController extends Controller
 {
     public function __construct(private InvestmentService $investmentService,
-        private SchemeService $schemeService){
+        private SchemeService $schemeService,
+        private ClientService $clientService,){
     }
 
     /**
@@ -28,7 +30,8 @@ class InvestmentController extends Controller
     public function create()
     {
         $scheme = $this->schemeService->getAll();
-        return view('content.investment.create', compact('scheme'));
+        $clients = $this->clientService->getAll();
+        return view('content.investment.create', compact('scheme','clients'));
     }
 
     /**
