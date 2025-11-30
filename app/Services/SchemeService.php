@@ -22,6 +22,7 @@ class SchemeService
 
     public function create(array $data): SchemesMaster
     {
+        $data['scheme_code'] = $this->generateSchemeCode();
         return SchemesMaster::create($data);
     }
 
@@ -34,5 +35,18 @@ class SchemeService
     public function delete(SchemesMaster $scheme): bool
     {
         return $scheme->delete();
+    }
+
+    public function generateSchemeCode(): string
+    {
+        $baseCode = 'ELS-SC-';
+        $counter = 1;
+
+        do {
+            $code = $baseCode . str_pad($counter, 8, '0', STR_PAD_LEFT);
+            $counter++;
+        } while (SchemesMaster::where('scheme_code', $code)->exists());
+
+        return $code;
     }
 }

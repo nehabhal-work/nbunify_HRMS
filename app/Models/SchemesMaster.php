@@ -9,6 +9,7 @@ class SchemesMaster extends Model
     protected $table = 'schemes_master';  // your migration table name
 
     protected $fillable = [
+        'scheme_code',
         'start_date',
         'end_date',
         'scheme_name',
