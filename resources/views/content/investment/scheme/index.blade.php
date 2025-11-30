@@ -246,7 +246,7 @@
                                         <td>{{ $scheme->scheme_name }}</td>
 
                                         <td>{{ $scheme->roi_min }}% - {{ $scheme->roi_max }}%</td>
-                                        <td>{{ $scheme->roi_additional_min }}% - {{ $scheme->roi_max_additional }}%</td>
+                                        <td>{{ $scheme->roi_min_additional }}% - {{ $scheme->roi_max_additional }}%</td>
 
 
                                         <td>{{ ucfirst($scheme->tenure_type) }}</td>
@@ -271,6 +271,10 @@
                                                     <a class="dropdown-item"
                                                         href="{{ route('investment.scheme.edit', $scheme->id) }}"><i
                                                             class="bx bx-edit-alt me-1"></i> Edit</a>
+                                                    <a href="javascript:void(0);" class="dropdown-item ">
+                                                        <i class="bx bx-show me-1"></i> View
+                                                    </a>
+
                                                     <form action="{{ route('investment.scheme.destroy', $scheme->id) }}"
                                                         method="post" onsubmit="return confirmDelete()">
 
@@ -297,6 +301,8 @@
             </div>
         </div>
     </div>
+
+
 
 
 
