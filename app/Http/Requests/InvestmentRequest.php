@@ -34,8 +34,8 @@ class InvestmentRequest extends FormRequest
             'frequency' => 'required|string|max:255',
             'roi_percent' => 'required|numeric|min:0|max:100',
             'additional_roi_percent' => 'nullable|numeric|min:0|max:100',
-            'maturity_date' => 'required|date|after:investment_date',
-            'payout_amount' => 'required|numeric|min:0',
+            'maturity_date' => 'nullable|date|after:investment_date',
+            'payout_amount' => 'nullable|numeric|min:0',
             'has_tds' => 'boolean',
         ];
     }
