@@ -100,26 +100,26 @@
                                 <small id="roi_error" class="text-danger"></small>
                             </div>
 
-                            <!-- Additional ROI -->
+                            <!-- Additional ROI min -->
                             <div class="col-md-2 mb-3">
-                                <label for="roi_additional" class="form-label">Min Additional ROI (%)</label>
+                                <label for="roi_min_additional" class="form-label">Min Additional ROI (%)</label>
                                 <input type="number"
-                                    class="form-control onlydigit @error('roi_additional') is-invalid @enderror"
-                                    id="roi_additional" name="roi_additional" step="0.01"
-                                    value="{{ old('roi_additional') }}">
-                                @error('roi_additional')
+                                    class="form-control onlydigit @error('roi_min_additional') is-invalid @enderror"
+                                    id="roi_min_additional" name="roi_min_additional" step="0.01"
+                                    value="{{ old('roi_min_additional') }}">
+                                @error('roi_min_additional')
                                     <span class="invalid-feedback">{{ $message }}</span>
                                 @enderror
                             </div>
 
-                            <!-- Additional ROI -->
+                            <!-- Additional ROI max -->
                             <div class="col-md-2 mb-3">
-                                <label for="roi_additional_max" class="form-label">Max Additional ROI (%)</label>
+                                <label for="roi_max_additional" class="form-label">Max Additional ROI (%)</label>
                                 <input type="number"
-                                    class="form-control onlydigit @error('roi_additional_max') is-invalid @enderror"
-                                    id="roi_additional_max" name="roi_additional_max" step="0.01"
-                                    value="{{ old('roi_additional_max') }}">
-                                @error('roi_additional_max')
+                                    class="form-control onlydigit @error('roi_max_additional') is-invalid @enderror"
+                                    id="roi_max_additional" name="roi_max_additional" step="0.01"
+                                    value="{{ old('roi_max_additional') }}">
+                                @error('roi_max_additional')
                                     <span class="invalid-feedback">{{ $message }}</span>
                                 @enderror
                             </div>
@@ -219,7 +219,6 @@
                         <table class="table srkdataTable ">
                             <thead>
                                 <tr>
-                                    <th>#</th>
                                     <th>Scheme ID</th>
                                     <th>Date</th>
                                     <th>Name</th>
@@ -235,9 +234,8 @@
                             <tbody>
                                 @foreach ($schemes as $key => $scheme)
                                     <tr>
-                                        <td>{{ $key + 1 }}</td>
 
-                                        <td>{{ $scheme->id }}</td>
+                                        <td>{{ $scheme->scheme_code }}</td>
 
                                         <td>
                                             {{ \Carbon\Carbon::parse($scheme->start_date)->format('d-m-Y') }}
@@ -248,8 +246,8 @@
                                         <td>{{ $scheme->scheme_name }}</td>
 
                                         <td>{{ $scheme->roi_min }}% - {{ $scheme->roi_max }}%</td>
+                                        <td>{{ $scheme->roi_additional_min }}% - {{ $scheme->roi_max_additional }}%</td>
 
-                                        <td>{{ $scheme->roi_additional }}%</td>
 
                                         <td>{{ ucfirst($scheme->tenure_type) }}</td>
 

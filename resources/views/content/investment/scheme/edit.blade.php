@@ -101,14 +101,26 @@
                                 <small id="roi_error" class="text-danger"></small>
                             </div>
 
-                            {{-- Additional ROI --}}
+                            <!-- Additional ROI min -->
                             <div class="col-md-2 mb-3">
-                                <label class="form-label">Additional ROI (%)</label>
+                                <label for="roi_min_additional" class="form-label">Min Additional ROI (%)</label>
                                 <input type="number"
-                                    class="form-control onlydigit @error('roi_additional') is-invalid @enderror"
-                                    name="roi_additional" step="0.01"
-                                    value="{{ old('roi_additional', $scheme->roi_additional) }}">
-                                @error('roi_additional')
+                                    class="form-control onlydigit @error('roi_min_additional') is-invalid @enderror"
+                                    id="roi_min_additional" name="roi_min_additional" step="0.01"
+                                    value="{{ old('roi_min_additional', $scheme->roi_min_additional) }}">
+                                @error('roi_min_additional')
+                                    <span class="invalid-feedback">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <!-- Additional ROI max -->
+                            <div class="col-md-2 mb-3">
+                                <label for="roi_max_additional" class="form-label">Max Additional ROI (%)</label>
+                                <input type="number"
+                                    class="form-control onlydigit @error('roi_max_additional') is-invalid @enderror"
+                                    id="roi_max_additional" name="roi_max_additional" step="0.01"
+                                    value="{{ old('roi_max_additional', $scheme->roi_max_additional) }}">
+                                @error('roi_max_additional')
                                     <span class="invalid-feedback">{{ $message }}</span>
                                 @enderror
                             </div>
@@ -241,6 +253,13 @@
                 );
             });
 
+        });
+        $('.datepicker-next').datepicker({
+            format: "dd-mm-yyyy",
+            autoclose: true,
+            todayHighlight: true,
+            clearBtn: true,
+            endDate: false // disallow future dates
         });
     </script>
 @endpush

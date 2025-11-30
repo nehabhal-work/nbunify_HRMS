@@ -188,7 +188,7 @@
                                 @enderror
                             </div>
 
-                            <!-- Additional ROI set roi_additional same message info -->
+                            <!-- Additional ROI  -->
                             <div class="col-md-2 d-none1" id="addi_roi_box">
                                 <label for="addi_roi" class="form-label">Additional ROI</label>
                                 <div class="input-group">
