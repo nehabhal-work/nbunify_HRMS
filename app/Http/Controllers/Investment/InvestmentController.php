@@ -9,12 +9,8 @@ use App\Services\SchemeService;
 
 class InvestmentController extends Controller
 {
-    protected SchemeService $schemeService;
-    protected InvestmentService $investmentService;
-    public function __construct(InvestmentService $investmentService, SchemeService $schemesMaster)
-    {
-        $this->investmentService = $investmentService;
-        $this->schemesMaster = $schemesMaster;
+    public function __construct(private InvestmentService $investmentService,
+        private SchemeService $schemesMaster){
     }
 
     /**
