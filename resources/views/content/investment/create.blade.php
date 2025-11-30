@@ -60,8 +60,11 @@
                                 <label for="investment_type" class="form-label">Investment Type</label>
                                 <select class="form-select @error('investment_type') is-invalid @enderror"
                                     name="investment_type" id="investment_type">
-                                    <option value="single" selected>Single</option>
-                                    <option value="joined">Joined</option>
+                                    <option value="single" {{ old('investment_type') == 'single' ? 'selected' : '' }}>Single
+                                    </option>
+                                    <option value="joined" {{ old('investment_type') == 'joined' ? 'selected' : '' }}>Joined
+                                    </option>
+
                                 </select>
 
                                 @error('investment_type')
@@ -70,17 +73,17 @@
                             </div>
 
                             <!-- Investment Holder -->
-                            <div class="col-md-3 holderBox" id="holder_single">
+                            <div class="col-md-3 " id="holder_single">
                                 <label for="client_id" class="form-label">Investment 1st Holder</label>
                                 <select class="form-select select2 @error('client_id') is-invalid @enderror"
                                     name="client_id" id="client_id">
                                     <option value="">Select Holder</option>
-                                    {{-- @foreach ($client as $d)
-                                        <option value="{{ $d->id }}">
-                                            {{ ucfirst(strtolower($d->fname)) }}
+                                    @foreach ($clients as $d)
+                                        <option value="{{ $d->id }}"
+                                            {{ old('client_id') == $d->id ? 'selected' : '' }}>
+                                            {{ ucfirst(strtolower($d->name)) }}
                                         </option>
-                                        
-                                    @endforeach --}}
+                                    @endforeach
                                 </select>
 
                                 @error('client_id')
@@ -88,20 +91,19 @@
                                 @enderror
                             </div>
 
-                            <div class="col-md-5 holderBox" id="holder_single">
+                            <div class="col-md-5 d-none" id="holder_single">
                                 <label for="client_id" class="form-label">Investment 2nd Holder</label>
-                                <select class="form-select select2 @error('client_id') is-invalid @enderror"
-                                    name="client_id" id="client_id">
+                                <select class="form-select select2 @error('other_holders') is-invalid @enderror"
+                                    name="other_holders[]" id="other_holders" multiple>
                                     <option value="">Select Holder</option>
-                                    {{-- @foreach ($client as $d)
+                                    @foreach ($clients as $d)
                                         <option value="{{ $d->id }}">
-                                            {{ ucfirst(strtolower($d->fname)) }}
+                                            {{ ucfirst(strtolower($d->name)) }}
                                         </option>
-                                        
-                                    @endforeach --}}
+                                    @endforeach
                                 </select>
 
-                                @error('client_id')
+                                @error('other_holders')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
@@ -109,21 +111,22 @@
                             <!-- Scheme -->
                             <div class="col-md-4">
                                 <label for="scheme_id" class="form-label">Scheme Name *</label>
-                                <select
-                                    class="form-select select2
-                                    @error('scheme_id') is-invalid @enderror"
+                                <select class="form-select select2 @error('scheme_id') is-invalid @enderror"
                                     name="scheme_id" id="scheme_id">
+
                                     <option value="">Select Scheme</option>
 
-
                                     @forelse ($scheme as $s)
-                                        <option value="{{ $s->id }}" data-tenure-type="{{ $s->tenure_type }}"
+                                        <option value="{{ $s->id }}"
+                                            {{ old('scheme_id') == $s->id ? 'selected' : '' }}
+                                            data-tenure-type="{{ $s->tenure_type }}"
                                             data-min-tenure="{{ $s->tenure_min }}" data-max-tenure="{{ $s->tenure_max }}"
                                             data-frequencies='@json($s->frequency)'
                                             data-min-roi="{{ $s->roi_min }}" data-max-roi="{{ $s->roi_max }}"
                                             data-addi-roi-min="{{ $s->roi_min_additional }}"
                                             data-addi-roi-max="{{ $s->roi_max_additional }}"
                                             data-scheme-name="{{ $s->scheme_name }}">
+
                                             {{ $s->scheme_name }}
                                         </option>
                                     @empty
@@ -137,17 +140,19 @@
                                 @enderror
                             </div>
 
+
                             <!-- Total Invested Amount -->
                             <div class="col-md-2">
-                                <label for="invested_amount" class="form-label">Total Invested Amount *</label>
+                                <label for="investment_amount" class="form-label">Total Invested Amount *</label>
                                 <div class="input-group">
                                     <span class="input-group-text">₹</span>
                                     <input type="number"
-                                        class="form-control onlydigit @error('invested_amount') is-invalid @enderror"
-                                        name="invested_amount" id="invested_amount" value="{{ old('invested_amount') }}">
+                                        class="form-control onlydigit @error('investment_amount') is-invalid @enderror"
+                                        name="investment_amount" id="investment_amount"
+                                        value="{{ old('investment_amount') }}">
                                 </div>
 
-                                @error('invested_amount')
+                                @error('investment_amount')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
@@ -157,7 +162,7 @@
                                 <label for="tenure_type" class="form-label">Tenure Type</label>
                                 <input type="text"
                                     class="form-control bg-secondary-subtle @error('tenure_type') is-invalid @enderror"
-                                    name="tenure_type" id="tenure_type" readonly>
+                                    name="tenure_type" id="tenure_type" value="{{ old('tenure_type') }}" readonly>
 
                                 @error('tenure_type')
                                     <small class="text-danger">{{ $message }}</small>
@@ -167,12 +172,12 @@
                             <!-- Tenure -->
                             <div class="col-md-2">
                                 <label for="tenure" class="form-label">Tenure *</label>
-                                <select class="form-select @error('tenure') is-invalid @enderror" name="tenure"
+                                <select class="form-select @error('tenure_count') is-invalid @enderror" name="tenure_count"
                                     id="tenure">
                                     <!-- options loaded by JS -->
                                 </select>
 
-                                @error('tenure')
+                                @error('tenure_count')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
@@ -195,7 +200,7 @@
                                 <label for="roi" class="form-label">ROI *</label>
                                 <div class="input-group">
                                     <input type="text" class="form-control @error('roi') is-invalid @enderror"
-                                        name="roi" id="roi" maxlength="5">
+                                        name="roi_percent" id="roi" maxlength="5">
                                     <span class="input-group-text">%</span>
                                 </div>
                                 <div id="roi-message"></div>
@@ -211,7 +216,7 @@
                                 <div class="input-group">
                                     <input type="text"
                                         class="form-control onlydigit bg-info-subtle @error('addi_roi') is-invalid @enderror"
-                                        name="addi_roi" id="addi_roi" maxlength="5">
+                                        name="additional_roi_percent" id="addi_roi" maxlength="5">
                                     <span class="input-group-text">%</span>
                                 </div>
                                 <div id="addi-roi-message"></div>
@@ -227,14 +232,14 @@
 
                             <!-- TDS -->
                             <div class="col-md-2">
-                                <label for="tds" class="form-label">TDS</label>
-                                <select class="form-select @error('tds') is-invalid @enderror" name="tds"
-                                    id="tds">
-                                    <option value="no">No</option>
-                                    <option value="yes">Yes</option>
+                                <label for="has_tds" class="form-label">TDS</label>
+                                <select class="form-select @error('has_tds') is-invalid @enderror" name="has_tds"
+                                    id="has_tds">
+                                    <option value="0">No</option>
+                                    <option value="1">Yes</option>
                                 </select>
 
-                                @error('tds')
+                                @error('has_tds')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
