@@ -511,18 +511,18 @@ $(document).ready(function () {
         let type = $(this).val();
 
         if (type === 'days') {
-            $('#min_tenure_label').text('Minimum Tenure (in days)');
-            $('#max_tenure_label').text('Maximum Tenure (in days)');
+            $('#min_tenure_label').text('Min Tenure (in days)');
+            $('#max_tenure_label').text('Max Tenure (in days)');
             $('#min_tenure').attr('placeholder', 'e.g. 30 days').val('');
             $('#max_tenure').attr('placeholder', 'e.g. 365 days').val('');
         } else if (type === 'months') {
-            $('#min_tenure_label').text('Minimum Tenure (in months)');
-            $('#max_tenure_label').text('Maximum Tenure (in months)');
+            $('#min_tenure_label').text('Min Tenure (in months)');
+            $('#max_tenure_label').text('Max Tenure (in months)');
             $('#min_tenure').attr('placeholder', 'e.g. 6 months').val('');
             $('#max_tenure').attr('placeholder', 'e.g. 24 months').val('');
         } else if (type === 'years') {
-            $('#min_tenure_label').text('Minimum Tenure (in years)');
-            $('#max_tenure_label').text('Maximum Tenure (in years)');
+            $('#min_tenure_label').text('Min Tenure (in years)');
+            $('#max_tenure_label').text('Max Tenure (in years)');
             $('#min_tenure').attr('placeholder', 'e.g. 1 year').val('');
             $('#max_tenure').attr('placeholder', 'e.g. 5 years').val('');
         }

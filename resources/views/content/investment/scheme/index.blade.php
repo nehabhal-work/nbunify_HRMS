@@ -145,7 +145,7 @@
 
                             <!-- Min Tenure -->
                             <div class="col-md-2 mb-3">
-                                <label for="tenure_min" id="min_tenure_label" class="form-label">Minimum Tenure</label>
+                                <label for="tenure_min" id="min_tenure_label" class="form-label">Min Tenure</label>
                                 <input type="number"
                                     class="form-control onlydigit @error('tenure_min') is-invalid @enderror"
                                     id="tenure_min" name="tenure_min" value="{{ old('tenure_min') }}">
@@ -156,7 +156,7 @@
 
                             <!-- Max Tenure -->
                             <div class="col-md-2 mb-3">
-                                <label for="tenure_max" id=max_tenure_label class="form-label">Maximum Tenure</label>
+                                <label for="tenure_max" id=max_tenure_label class="form-label">Max Tenure</label>
                                 <input type="number"
                                     class="form-control onlydigit @error('tenure_max') is-invalid @enderror"
                                     id="tenure_max" name="tenure_max" value="{{ old('tenure_max') }}">

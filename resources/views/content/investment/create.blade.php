@@ -257,7 +257,6 @@
                         {{-- address section --}}
                         <div class="row">
                             <!-- Residential Address -->
-                            <h6 class="my-3">Residential Address</h6>
 
                             <!-- Company Bank (From) -->
                             <div class="col-md-4">
