@@ -20,14 +20,14 @@ class SchemesMasterRequest extends FormRequest
 
             'scheme_name'    => ['required', 'string', 'max:100'],
 
-            'roi_min'        => ['nullable', 'numeric', 'min:0'],
-            'roi_max'        => ['nullable', 'numeric', 'min:0', 'gte:roi_min'],
+            'roi_min'        => ['required', 'numeric', 'min:0'],
+            'roi_max'        => ['required', 'numeric', 'min:0', 'gte:roi_min'],
             'roi_min_additional' => ['nullable', 'numeric', 'min:0'],
             'roi_max_additional' => ['nullable', 'numeric', 'min:0'],
 
             'tenure_type'    => ['required', 'in:days,months,years'],
-            'tenure_min'     => ['nullable', 'integer', 'min:1'],
-            'tenure_max'     => ['nullable', 'integer', 'gte:tenure_min'],
+            'tenure_min'     => ['required', 'integer', 'min:1'],
+            'tenure_max'     => ['required', 'integer', 'gte:tenure_min'],
 
             // ⭐ MULTIPLE FREQUENCIES
             'frequency'      => ['required', 'array'],
