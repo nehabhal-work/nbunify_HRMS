@@ -22,7 +22,7 @@ class SchemeService
 
     public function create(array $data): SchemesMaster
     {
-        $data['scheme_code'] = $this->generateSchemeCode();
+        $data['scheme_code'] = $this->generateSchemeCode($data['scheme_name']);
         return SchemesMaster::create($data);
     }
 
@@ -37,13 +37,13 @@ class SchemeService
         return $scheme->delete();
     }
 
-    public function generateSchemeCode(): string
+    public function generateSchemeCode(string $schemeName): string
     {
-        $baseCode = 'ELS-SC-';
+        $baseCode = 'ELS-' . strtoupper(substr(preg_replace('/\s+/', '', $schemeName), 0, 3)) . '-';
         $counter = 1;
 
         do {
-            $code = $baseCode . str_pad($counter, 8, '0', STR_PAD_LEFT);
+            $code = $baseCode . str_pad($counter, 4, '0', STR_PAD_LEFT);
             $counter++;
         } while (SchemesMaster::where('scheme_code', $code)->exists());
 
