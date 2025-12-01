@@ -147,7 +147,7 @@ class InvestmentService
             if ($payoutDate->lessThanOrEqualTo($data['maturity_date'])) {
                 $data['payout_schedule'][] = [
                     'payout_date' => $payoutDate->toDateString(),
-                    'amount' => round($data['payout_per_period'], 2),
+                    'amount' => round($data['payout_per_period'], 0),
                     'actual_payout_date' => null,
                     'status' => 'pending',
                     'remarks' => null,
@@ -160,7 +160,7 @@ class InvestmentService
                 $returnPrincipalWithInterest = true;
                 $data['payout_schedule'][] = [
                     'payout_date' => $data['maturity_date']->toDateString(),
-                    'amount' => round($data['payout_per_period'] + $data['investment_amount'], 2),
+                    'amount' => round($data['payout_per_period'] + $data['investment_amount'], 0),
                     'actual_payout_date' => null,
                     'status' => 'pending',
                     'remarks' => null,
@@ -176,7 +176,7 @@ class InvestmentService
         if (!$returnPrincipalWithInterest) {
             $data['payout_schedule'][] = [
                 'payout_date' => $data['maturity_date']->toDateString(),
-                'amount' => round($data['investment_amount'], 2),
+                'amount' => round($data['investment_amount'], 0),
                 'actual_payout_date' => null,
                 'status' => 'pending',
                 'remarks' => null,
