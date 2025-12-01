@@ -527,12 +527,17 @@ $(document).ready(function () {
 function checkPanExists(pan) {
     pan = pan.trim().toUpperCase();
 
-    $("#errpancardno").text(""); // Clear previous error
+    $("#errpancardno").text("");
+
+    if (pan.length !== 10) {
+        $("#errpancardno").text("Invalid PAN number");
+        return;
+    }
 
     $.ajax({
         url: "/api/check-client-pan-exists",
         method: "POST",
-        data: { ipan_no: pan, },
+        data: { pan_no: pan, },
 
         success: function (response) {
             if (response.data.exists) {
