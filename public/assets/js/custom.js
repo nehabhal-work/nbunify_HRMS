@@ -522,3 +522,25 @@ $(document).ready(function () {
     });
 });
 // --------------------END Client family section -------------
+
+
+function checkPanExists(pan) {
+    pan = pan.trim().toUpperCase();
+
+    $("#errpancardno").text(""); // Clear previous error
+
+    $.ajax({
+        url: "/api/check-client-pan-exists",
+        method: "POST",
+        data: { ipan_no: pan, },
+
+        success: function (response) {
+            if (response.data.exists) {
+                $("#errpancardno").text("PAN already exists in the system!");
+                $("#pan_no").addClass("is-invalid");
+            } else {
+                $("#pan_no").removeClass("is-invalid");
+            }
+        }
+    });
+}
