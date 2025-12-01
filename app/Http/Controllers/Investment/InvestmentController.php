@@ -10,10 +10,11 @@ use App\Services\SchemeService;
 
 class InvestmentController extends Controller
 {
-    public function __construct(private InvestmentService $investmentService,
+    public function __construct(
+        private InvestmentService $investmentService,
         private SchemeService $schemeService,
-        private ClientService $clientService,){
-    }
+        private ClientService $clientService,
+    ) {}
 
     /**
      * Display a listing of the resource.
@@ -31,7 +32,7 @@ class InvestmentController extends Controller
     {
         $scheme = $this->schemeService->getAll();
         $clients = $this->clientService->getAll();
-        return view('content.investment.create', compact('scheme','clients'));
+        return view('content.investment.create', compact('scheme', 'clients'));
     }
 
     /**
@@ -41,8 +42,8 @@ class InvestmentController extends Controller
     {
         $result = $this->investmentService->create($request->validated());
 
-        return $result;
-        return redirect()->route('investment.els.index')->with('success', 'Investment created successfully.');
+        // return $result;
+        return view('content.investment.payout-schedule', compact('result'));
     }
 
     /**
