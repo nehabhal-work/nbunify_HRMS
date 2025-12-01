@@ -162,10 +162,10 @@ class InvestmentService
             }
         }
 
-        $totalToPay = $data['payout_per_period'] * $data['schedule_count'];
+        $data['actual_interest_amount'] = $data['payout_per_period'] * $data['schedule_count'];
         $data['paid_interest_amount'] = round($data['payout_per_period'],0) * $data['schedule_count'];
 
-        $data['rounding_off_amount'] = $totalToPay - $data['paid_interest_amount'];
+        $data['rounding_off_amount'] = $data['actual_interest_amount'] - $data['paid_interest_amount'];
 
         if ($returnPrincipalWithInterest) {
             $data['payout_schedule'][] = [
