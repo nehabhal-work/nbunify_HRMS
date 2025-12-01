@@ -39,7 +39,9 @@ class InvestmentController extends Controller
      */
     public function store(InvestmentRequest $request)
     {
-        $this->investmentService->create($request->validated());
+        $result = $this->investmentService->create($request->validated());
+
+        return $result;
         return redirect()->route('investment.els.index')->with('success', 'Investment created successfully.');
     }
 

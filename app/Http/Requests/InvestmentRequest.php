@@ -31,7 +31,7 @@ class InvestmentRequest extends FormRequest
             'investment_amount' => 'required|numeric|min:0',
             'tenure_type' => 'required|string|max:255',
             'tenure_count' => 'required|integer|min:1',
-            'frequency' => 'required|string|max:255',
+            'frequency' => 'required|string|max:255', // Payout frequency
             'roi_percent' => 'required|numeric|min:0|max:100',
             'additional_roi_percent' => 'nullable|numeric|min:0|max:100',
             'maturity_date' => 'nullable|date|after:investment_date',
