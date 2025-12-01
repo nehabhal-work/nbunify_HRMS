@@ -51,7 +51,7 @@ class InvestmentService
         $data['company_bank_id'] = '';
         $data['utr_no'] = '';
         $data['remarks'] = '';
-        $data['status'] = ['draft', 'active', 'closed', 'matured','cancelled','suspended','renewed'];
+        $data['status'] = ['draft', 'active', 'closed', 'matured', 'cancelled', 'suspended', 'renewed'];
 
         if ($data['frequency'] === 'monthly') {
             $data['payout_per_period'] = $data['annual_payout'] / 12;
@@ -144,7 +144,7 @@ class InvestmentService
                     break;
             }
 
-            if ($payoutDate->lessThanOrEqualTo($data['maturity_date'])) {
+            if ($payoutDate->lessThan($data['maturity_date'])) {
                 $data['payout_schedule'][] = [
                     'payout_date' => $payoutDate->toDateString(),
                     'amount' => round($data['payout_per_period'], 0),
@@ -158,25 +158,31 @@ class InvestmentService
                 ];
             } else {
                 $returnPrincipalWithInterest = true;
-                $data['payout_schedule'][] = [
-                    'payout_date' => $data['maturity_date']->toDateString(),
-                    'amount' => round($data['payout_per_period'] + $data['investment_amount'], 0),
-                    'actual_payout_date' => null,
-                    'status' => 'pending',
-                    'remarks' => null,
-                    'actual_payout_amount' => 0,
-                    'utr_no' => null,
-                    'company_bank_id' => null,
-                    'client_bank_id' => null,
-                ];
                 break;
             }
         }
 
-        if (!$returnPrincipalWithInterest) {
+        $totalToPay = $data['payout_per_period'] * $data['schedule_count'];
+        $data['paid_interest_amount'] = round($data['payout_per_period'],0) * $data['schedule_count'];
+
+        $data['rounding_off_amount'] = $totalToPay - $data['paid_interest_amount'];
+
+        if ($returnPrincipalWithInterest) {
             $data['payout_schedule'][] = [
                 'payout_date' => $data['maturity_date']->toDateString(),
-                'amount' => round($data['investment_amount'], 0),
+                'amount' => round($data['payout_per_period'] + $data['investment_amount'] + $data['rounding_off_amount'], 0),
+                'actual_payout_date' => null,
+                'status' => 'pending',
+                'remarks' => null,
+                'actual_payout_amount' => 0,
+                'utr_no' => null,
+                'company_bank_id' => null,
+                'client_bank_id' => null,
+            ];
+        } else {
+            $data['payout_schedule'][] = [
+                'payout_date' => $data['maturity_date']->toDateString(),
+                'amount' => round($data['investment_amount'] + $data['rounding_off_amount'], 0),
                 'actual_payout_date' => null,
                 'status' => 'pending',
                 'remarks' => null,
