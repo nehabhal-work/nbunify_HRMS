@@ -25,8 +25,8 @@ class Investment extends Model
     ];
 
     protected $casts = [
-        'investment_date' => 'date',
-        'maturity_date' => 'date',
+        'investment_date' => 'date:Y-m-d',
+        'maturity_date' => 'date:Y-m-d',
         'other_holders' => 'array',
         'has_tds' => 'boolean',
         'investment_amount' => 'decimal:2',
