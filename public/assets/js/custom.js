@@ -500,88 +500,25 @@ $(document).ready(function () {
 // ------------------- End Address Dropdowns END -----------------------
 
 
-// ******************************************************
-// Investment Scheme JS
-// ******************************************************
-
-
-// { { -- ----------create min max tenure------------- --} }
+// ------------------------------------------------------
+// Client family section
+// ------------------------------------------------------
 $(document).ready(function () {
-    $('#tenure_type').on('change', function () {
-        let type = $(this).val();
 
-        if (type === 'days') {
-            $('#min_tenure_label').text('Min Tenure (in days)');
-            $('#max_tenure_label').text('Max Tenure (in days)');
-            $('#min_tenure').attr('placeholder', 'e.g. 30 days').val('');
-            $('#max_tenure').attr('placeholder', 'e.g. 365 days').val('');
-        } else if (type === 'months') {
-            $('#min_tenure_label').text('Min Tenure (in months)');
-            $('#max_tenure_label').text('Max Tenure (in months)');
-            $('#min_tenure').attr('placeholder', 'e.g. 6 months').val('');
-            $('#max_tenure').attr('placeholder', 'e.g. 24 months').val('');
-        } else if (type === 'years') {
-            $('#min_tenure_label').text('Min Tenure (in years)');
-            $('#max_tenure_label').text('Max Tenure (in years)');
-            $('#min_tenure').attr('placeholder', 'e.g. 1 year').val('');
-            $('#max_tenure').attr('placeholder', 'e.g. 5 years').val('');
-        }
-    });
-});
-
-// { { -- ------------date validation------------- --} }
-// document.addEventListener("DOMContentLoaded", function () {
-//     let startInput = document.getElementById("start_date");
-//     let endInput = document.getElementById("end_date");
-
-//     startInput.addEventListener("change", function () {
-//         if (this.value) {
-//             // Convert start_date → Date object
-//             let startDate = new Date(this.value);
-
-//             // Add 1 day
-//             startDate.setDate(startDate.getDate() + 1);
-
-//             // Format back to yyyy-mm-dd
-//             let minEndDate = startDate.toISOString().split("T")[0];
-
-//             // Apply restriction
-//             endInput.setAttribute("min", minEndDate);
-
-//             // Reset end_date if invalid
-//             if (endInput.value && endInput.value < minEndDate) {
-//                 endInput.value = "";
-//             }
-//         }
-//     });
-// });
-
-// { { -- ----------edit min max tenure------------- --} }
-$(document).ready(function () {
-    function updateTenureLabels(modalId, type) {
-        if (type === 'days') {
-            $('#min_tenure_label_' + modalId).text('Minimum Tenure (in days)');
-            $('#max_tenure_label_' + modalId).text('Maximum Tenure (in days)');
-        } else if (type === 'months') {
-            $('#min_tenure_label_' + modalId).text('Minimum Tenure (in months)');
-            $('#max_tenure_label_' + modalId).text('Maximum Tenure (in months)');
+    function toggleDod() {
+        if ($('#live_status').val() === 'deceased') {
+            $('#dodBox').removeClass('d-none');
         } else {
-            $('#min_tenure_label_' + modalId).text('Minimum Tenure (in years)');
-            $('#max_tenure_label_' + modalId).text('Maximum Tenure (in years)');
+            $('#dodBox').addClass('d-none');
         }
     }
 
-    // On modal show → initialize labels
-    $('.modal').on('shown.bs.modal', function () {
-        let modalId = $(this).find('select[name="tenure_type"]').attr('id').split('_').pop();
-        let type = $('#tenure_type_' + modalId).val();
-        updateTenureLabels(modalId, type);
+    // Run on page load (handles old values)
+    toggleDod();
 
-        // On change inside modal
-        $('#tenure_type_' + modalId).off('change').on('change', function () {
-            updateTenureLabels(modalId, $(this).val());
-        });
+    // Run on change
+    $('#live_status').on('change', function () {
+        toggleDod();
     });
 });
-
-//-------------END Investment Scheme JS--------------------------
+// --------------------END Client family section -------------

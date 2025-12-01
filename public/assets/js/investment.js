@@ -132,3 +132,66 @@ $(document).ready(function () {
     });
 
 });
+
+
+
+// ******************************************************
+// Investment Scheme JS
+// ******************************************************
+
+
+// { { -- ----------create min max tenure------------- --} }
+$(document).ready(function () {
+    $('#tenure_type').on('change', function () {
+        let type = $(this).val();
+
+        if (type === 'days') {
+            $('#min_tenure_label').text('Min Tenure (in days)');
+            $('#max_tenure_label').text('Max Tenure (in days)');
+            $('#min_tenure').attr('placeholder', 'e.g. 30 days').val('');
+            $('#max_tenure').attr('placeholder', 'e.g. 365 days').val('');
+        } else if (type === 'months') {
+            $('#min_tenure_label').text('Min Tenure (in months)');
+            $('#max_tenure_label').text('Max Tenure (in months)');
+            $('#min_tenure').attr('placeholder', 'e.g. 6 months').val('');
+            $('#max_tenure').attr('placeholder', 'e.g. 24 months').val('');
+        } else if (type === 'years') {
+            $('#min_tenure_label').text('Min Tenure (in years)');
+            $('#max_tenure_label').text('Max Tenure (in years)');
+            $('#min_tenure').attr('placeholder', 'e.g. 1 year').val('');
+            $('#max_tenure').attr('placeholder', 'e.g. 5 years').val('');
+        }
+    });
+});
+
+
+
+// { { -- ----------edit min max tenure------------- --} }
+$(document).ready(function () {
+    function updateTenureLabels(modalId, type) {
+        if (type === 'days') {
+            $('#min_tenure_label_' + modalId).text('Min Tenure (in days)');
+            $('#max_tenure_label_' + modalId).text('Max Tenure (in days)');
+        } else if (type === 'months') {
+            $('#min_tenure_label_' + modalId).text('Min Tenure (in months)');
+            $('#max_tenure_label_' + modalId).text('Max Tenure (in months)');
+        } else {
+            $('#min_tenure_label_' + modalId).text('Min Tenure (in years)');
+            $('#max_tenure_label_' + modalId).text('Max Tenure (in years)');
+        }
+    }
+
+    // On modal show → initialize labels
+    $('.modal').on('shown.bs.modal', function () {
+        let modalId = $(this).find('select[name="tenure_type"]').attr('id').split('_').pop();
+        let type = $('#tenure_type_' + modalId).val();
+        updateTenureLabels(modalId, type);
+
+        // On change inside modal
+        $('#tenure_type_' + modalId).off('change').on('change', function () {
+            updateTenureLabels(modalId, $(this).val());
+        });
+    });
+});
+
+//-------------END Investment Scheme JS--------------------------
