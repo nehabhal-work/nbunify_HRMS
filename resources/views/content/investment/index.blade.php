@@ -53,7 +53,39 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                {{-- Example static row (replace with @foreach later) --}}
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
+                                                data-bs-toggle="dropdown">
+                                                <i class="bx bx-dots-vertical-rounded"></i>
+                                            </button>
+                                            <div class="dropdown-menu">
+                                                <a class="dropdown-item" href="#">
+                                                    <i class="bx bxs-group me-1"></i>
+                                                    Add instruction
+                                                </a>
+                                                <a class="dropdown-item" href="#">
+                                                    <i class="bx bxs-bank"></i>
+
+                                                    update payout
+                                                </a>
+
+                                                <a class="dropdown-item" href="#">
+                                                    <i class="bx bx-show me-1"></i> View
+                                                </a>
+
+
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
 
                             </tbody>
                         </table>
