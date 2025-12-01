@@ -12,6 +12,7 @@ $('#scheme_id').on('change', function () {
     let addiMin = parseFloat(selected.data('addi-roi-min'));
     let addiMax = parseFloat(selected.data('addi-roi-max'));
 
+
     // SET TENURE TYPE
     $('#tenure_type').val(tenureType);
 
@@ -33,7 +34,7 @@ $('#scheme_id').on('change', function () {
 
     // ROI RANGE
     $('#roi_percent').val('');
-    $('#roi_percent-message').html(
+    $('#roi-message').html(
         `<small class="text-primary fw-bold">Allowed ROI Range: ${minRoi}% to ${maxRoi}%</small>`
     );
 
