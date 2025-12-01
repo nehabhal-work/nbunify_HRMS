@@ -28,6 +28,9 @@
         <span class="text-muted fw-light">Master /</span>Scheme
     </h4>
 
+    <div class="div d-flex justify-content-end mb-3">
+        <a href="{{ route('investment.scheme.index') }}" class="btn btn-secondary px-4">Go back</a>
+    </div>
 
     <form action="{{ route('investment.scheme.update', $scheme->id) }}" method="POST" enctype="multipart/form-data">
         @csrf

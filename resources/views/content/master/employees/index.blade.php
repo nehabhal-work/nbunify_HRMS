@@ -28,7 +28,7 @@
             <span class="text-muted fw-light">Master /</span> Employees List
         </h4>
     </div>
-    {{ $employees }}
+    {{-- {{ $employees }} --}}
     <div class="row">
         <!-- TABLE SECTION -->
 
@@ -47,7 +47,7 @@
                                     <th>Name</th>
                                     <th>Branch</th>
                                     <th>Phone</th>
-                                    <th>Email</th>
+                                    {{-- <th>Email</th> --}}
                                     <th>designation</th>
                                     <th>login id</th>
                                     <th>status</th>
@@ -58,15 +58,19 @@
                             <tbody>
                                 @foreach ($employees as $index => $emp)
                                     <tr>
-                                        <td>{{ $index + 1 }}</td>
-
+                                        <td>
+                                            <a href="{{ route('master.employees.edit', $emp->id) }}"
+                                                class="text-decoration-none text-reset">
+                                                {{ $index + 1 }}
+                                            </a>
+                                        </td>
                                         <td>{{ $emp->name }}</td>
 
                                         <td>{{ $emp->branch->name ?? '-' }}</td>
 
                                         <td>{{ $emp->phone ?? '-' }}</td>
 
-                                        <td>{{ $emp->email ?? '-' }}</td>
+                                        {{-- <td>{{ $emp->email ?? '-' }}</td> --}}
 
                                         <td>{{ $emp->designation->name ?? '-' }}</td>
                                         <td>login id</td>
@@ -85,28 +89,36 @@
                                                         <i class="bx bx-edit-alt me-1"></i> Edit
                                                     </a>
                                                     <a class="dropdown-item"
+                                                        href="{{ route('master.employees.show', $emp->id) }}">
+                                                        <i class="bx bx-show-alt me-1"></i> view
+                                                    </a>
+                                                    <a class="dropdown-item"
                                                         href="{{ route('master.employees.hr-letter', ['type' => 'appointment', 'id' => $emp->id]) }}">
-                                                        <i class="bx bx-edit-alt me-1"></i> Appointment Letter
+                                                        <i class="bx bx-briefcase me-1"></i>
+                                                        Appointment Letter
                                                     </a>
                                                     <a class="dropdown-item"
                                                         href="{{ route('master.employees.hr-letter', ['type' => 'offer', 'id' => $emp->id]) }}">
-                                                        <i class="bx bx-edit-alt me-1"></i> Offer Letter
+                                                        <i class="bx bx-gift me-1"></i>
+                                                        Offer Letter
                                                     </a>
                                                     <a class="dropdown-item"
                                                         href="{{ route('master.employees.hr-letter', ['type' => 'confirmation', 'id' => $emp->id]) }}">
-                                                        <i class="bx bx-edit-alt me-1"></i> Confirmation Letter
+                                                        <i class="bx bx-check-shield me-1"></i>
+                                                        Confirmation Letter
                                                     </a>
                                                     <a class="dropdown-item"
                                                         href="{{ route('master.employees.hr-letter', ['type' => 'experience', 'id' => $emp->id]) }}">
-                                                        <i class="bx bx-edit-alt me-1"></i> experience Letter
+                                                        <i class="bx bx-book me-1"></i> Experience Letter
                                                     </a>
                                                     <a class="dropdown-item"
                                                         href="{{ route('master.employees.hr-letter', ['type' => 'relieving', 'id' => $emp->id]) }}">
-                                                        <i class="bx bx-edit-alt me-1"></i> relieving Letter
+                                                        <i class="bx bx-log-out me-1"></i>
+                                                        Relieving Letter
                                                     </a>
                                                     <a class="dropdown-item"
                                                         href="{{ route('master.employees.hr-letter', ['type' => 'salary-increment', 'id' => $emp->id]) }}">
-                                                        <i class="bx bx-edit-alt me-1"></i> salary-increment Letter
+                                                        <i class="bx bx-trending-up me-1"></i>Salary Increment Letter
                                                     </a>
 
 

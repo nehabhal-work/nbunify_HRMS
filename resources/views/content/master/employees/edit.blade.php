@@ -36,6 +36,9 @@
         <input type="hidden" name="res_state" id="res_state">
         <input type="hidden" name="res_city" id="res_city">
 
+        <div class="text-end">
+            <a href="{{ route('master.employees.index') }}" class="btn btn-secondary px-4 mb-3">Back</a>
+        </div>
 
         <div class="row align-items-stretch">
             <div class="col-md-12">
@@ -334,7 +337,7 @@
                             </div>
 
                             <!-- Previous Salary -->
-                            <div class="col-md-2 mb-3">
+                            <div class="col-md-2 mb-3 d-none">
                                 <label class="form-label">Previous Salary Amount</label>
                                 <input type="text" name="prev_salary" class="form-control"
                                     value="{{ old('prev_salary', $employee->prev_salary) }}">
@@ -689,22 +692,12 @@
                     </div>
                 </div>
             </div>
-
-
-
-
-
-
-
-
         </div>
-
-
 
         <!-- Submit -->
         <div class="text-end mt-3">
             <button type="submit" class="btn btn-primary px-4">Update</button>
-            <a href="{{ route('master.companies.index') }}" class="btn btn-secondary px-4">Back</a>
+            <a href="{{ route('master.employees.index') }}" class="btn btn-secondary px-4">Back</a>
         </div>
     </form>
 

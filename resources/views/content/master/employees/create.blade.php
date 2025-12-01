@@ -80,7 +80,7 @@
                             <div class="col-md-2 mb-3">
                                 <label class="form-label">Date of Birth</label>
                                 <input type="text" class="form-control datepicker @error('dob') is-invalid @enderror"
-                                    name="dob" value="{{ old('dob') }}" readonly placeholder="Select Date">
+                                    name="dob" value="{{ old('dob') }}"  placeholder="Select Date">
                                 @error('dob')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -293,7 +293,7 @@
                                 <label class="form-label">Probation Period in days</label>
                                 <input type="text"
                                     class="form-control onlydidigt @error('probation_date') is-invalid @enderror"
-                                    name="probation_date" value="{{ old('probation_date') }}">
+                                    name="probation_date" value="{{ old('probation_date') }}" maxlength="3">
                                 @error('probation_date')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -304,7 +304,7 @@
                                 <label class="form-label">Notice Period in days</label>
                                 <input type="text"
                                     class="form-control onlydigit @error('notice_date') is-invalid @enderror"
-                                    name="notice_date" value="{{ old('notice_date') }}">
+                                    name="notice_date" value="{{ old('notice_date') }}" maxlength="3">
                                 @error('notice_date')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -353,10 +353,11 @@
                                 @enderror
                             </div>
 
-                            <div class="col-md-2 mb-3">
+                            <div class="col-md-2 mb-3 d-none">
                                 <label for="status" class="form-label">Previous Salary Amount</label>
 
-                                <input type="text" name="prev_salary" id="prev_salary" class="form-control">
+                                <input type="text" name="prev_salary" id="prev_salary" class="form-control" maxlength="6"
+                                    value="{{ old('prev_salary') }}">
                                 @error('prev_salary')
                                     <div class="text-danger small">{{ $message }}</div>
                                 @enderror
@@ -385,7 +386,7 @@
                                 <input type="text"
                                     class="form-control onlydigit @error('basic_salary') is-invalid @enderror"
                                     name="basic_salary" id="basic_salary" value="{{ old('basic_salary') }}"
-                                    step="0.01" min="0">
+                                    step="0.01" min="0" maxlength="6">
                                 @error('basic_salary')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -396,7 +397,7 @@
                                 <label for="hra" class="form-label">HRA</label>
                                 <input type="text" class="form-control onlydigit @error('hra') is-invalid @enderror"
                                     name="hra" id="hra" value="{{ old('hra') }}" step="0.01"
-                                    min="0">
+                                    min="0" maxlength="5">
                                 @error('hra')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -407,8 +408,8 @@
                                 <label for="travel_allowance" class="form-label">travel allowance</label>
                                 <input type="text"
                                     class="form-control onlydigit @error('travel_allowance') is-invalid @enderror"
-                                    name="hra" id="travel_allowance" value="{{ old('travel_allowance') }}"
-                                    step="0.01" min="0">
+                                    name="travel_allowance" id="travel_allowance" value="{{ old('travel_allowance') }}"
+                                    step="0.01" min="0" maxlength="5">
                                 @error('travel_allowance')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -420,7 +421,7 @@
                                 <input type="text"
                                     class="form-control onlydigit @error('conveyance_allowance') is-invalid @enderror"
                                     name="conveyance_allowance" id="conveyance_allowance"
-                                    value="{{ old('conveyance_allowance') }}" step="0.01" min="0">
+                                    value="{{ old('conveyance_allowance') }}" step="0.01" min="0" maxlength="5">
                                 @error('conveyance_allowance')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -435,7 +436,7 @@
                                 <input type="text"
                                     class="form-control onlydigit @error('medical_allowance') is-invalid @enderror"
                                     name="medical_allowance" id="medical_allowance"
-                                    value="{{ old('medical_allowance') }}" step="0.01" min="0">
+                                    value="{{ old('medical_allowance') }}" step="0.01" min="0" maxlength="5">
                                 @error('medical_allowance')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -446,7 +447,7 @@
                                 <label for="bonus" class="form-label">bonus</label>
                                 <input type="text" class="form-control onlydigit @error('bonus') is-invalid @enderror"
                                     name="bonus" id="bonus" value="{{ old('bonus') }}" step="0.01"
-                                    min="0">
+                                    min="0" maxlength="5">
                                 @error('bonus')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -458,7 +459,7 @@
                                 <input type="text"
                                     class="form-control onlydigit @error('other_allowances') is-invalid @enderror"
                                     name="other_allowances" id="other_allowances" value="{{ old('other_allowances') }}"
-                                    step="0.01" min="0">
+                                    step="0.01" min="0" maxlength="5">
                                 @error('other_allowances')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -712,22 +713,12 @@
                     </div>
                 </div>
             </div>
-
-
-
-
-
-
-
-
         </div>
-
-
-
+        
         <!-- Submit -->
         <div class="text-end mt-3">
             <button type="submit" class="btn btn-primary px-4">Save</button>
-            <a href="{{ route('master.companies.index') }}" class="btn btn-secondary px-4">Cancel</a>
+            <a href="{{ route('master.employees.index') }}" class="btn btn-secondary px-4">Cancel</a>
         </div>
     </form>
 

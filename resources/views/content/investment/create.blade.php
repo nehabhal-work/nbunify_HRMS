@@ -29,7 +29,10 @@
         <span class="text-muted fw-light">Master /</span> <a href="{{ route('investment.els.index') }}">ELS-Investment</a>
     </h4>
 
+    <div class="div d-flex justify-content-end mb-3">
+        <a href="{{ route('investment.els.index') }}" class="btn btn-secondary px-4">Go back</a>
 
+    </div>
     <form action="{{ route('investment.els.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('post')
@@ -73,7 +76,7 @@
                             </div>
 
                             <!-- Investment Holder -->
-                            <div class="col-md-3 " id="holder_single">
+                            <div class="col-md-3 " id="div_holder_single">
                                 <label for="client_id" class="form-label">Investment 1st Holder</label>
                                 <select class="form-select select2 @error('client_id') is-invalid @enderror"
                                     name="client_id" id="client_id">
@@ -91,13 +94,14 @@
                                 @enderror
                             </div>
 
-                            <div class="col-md-5 d-none" id="holder_single">
-                                <label for="client_id" class="form-label">Investment 2nd Holder</label>
+                            <div class="col-md-5 d-none" id="div_other_holders">
+                                <label for="other_holders" class="form-label">Investment 2nd Holder</label>
                                 <select class="form-select select2 @error('other_holders') is-invalid @enderror"
                                     name="other_holders[]" id="other_holders" multiple>
                                     <option value="">Select Holder</option>
                                     @foreach ($clients as $d)
-                                        <option value="{{ $d->id }}">
+                                        <option value="{{ $d->id }}"
+                                            {{ is_array(old('other_holders')) && in_array($d->id, old('other_holders')) ? 'selected' : '' }}>
                                             {{ ucfirst(strtolower($d->name)) }}
                                         </option>
                                     @endforeach
@@ -111,7 +115,7 @@
                             <!-- Scheme -->
                             <div class="col-md-4">
                                 <label for="scheme_id" class="form-label">Scheme Name *</label>
-                                <select class="form-select select2 @error('scheme_id') is-invalid @enderror"
+                                <select class="form-select select21 @error('scheme_id') is-invalid @enderror"
                                     name="scheme_id" id="scheme_id">
 
                                     <option value="">Select Scheme</option>
@@ -172,8 +176,8 @@
                             <!-- Tenure -->
                             <div class="col-md-2">
                                 <label for="tenure" class="form-label">Tenure *</label>
-                                <select class="form-select @error('tenure_count') is-invalid @enderror" name="tenure_count"
-                                    id="tenure">
+                                <select class="form-select @error('tenure_count') is-invalid @enderror"
+                                    name="tenure_count" id="tenure_count">
                                     <!-- options loaded by JS -->
                                 </select>
 
@@ -195,17 +199,18 @@
                                 @enderror
                             </div>
 
-                            <!-- ROI  set min max roi and show im below message insert between min max. dont allow other value-->
+                            <!-- ROI  -->
                             <div class="col-md-2">
-                                <label for="roi" class="form-label">ROI *</label>
+                                <label for="roi_percent" class="form-label">ROI *</label>
                                 <div class="input-group">
                                     <input type="text" class="form-control @error('roi') is-invalid @enderror"
-                                        name="roi_percent" id="roi" maxlength="5">
+                                        name="roi_percent" id="roi_percent" maxlength="5"
+                                        value="{{ old('roi_percent') }}">
                                     <span class="input-group-text">%</span>
                                 </div>
                                 <div id="roi-message"></div>
 
-                                @error('roi')
+                                @error('roi_percent')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
@@ -235,8 +240,8 @@
                                 <label for="has_tds" class="form-label">TDS</label>
                                 <select class="form-select @error('has_tds') is-invalid @enderror" name="has_tds"
                                     id="has_tds">
-                                    <option value="0">No</option>
-                                    <option value="1">Yes</option>
+                                    <option value="0" {{ old('has_tds') == '0' ? 'selected' : '' }}>No</option>
+                                    <option value="1" {{ old('has_tds') == '1' ? 'selected' : '' }}>Yes</option>
                                 </select>
 
                                 @error('has_tds')
@@ -251,7 +256,6 @@
                         <!-- Submit -->
                         <div class="text-end mt-3">
                             <button type="submit" class="btn btn-primary px-4">Save</button>
-                            <a href="{{ route('investment.els.index') }}" class="btn btn-secondary px-4">Cancel</a>
                         </div>
                     </div>
                 </div>
