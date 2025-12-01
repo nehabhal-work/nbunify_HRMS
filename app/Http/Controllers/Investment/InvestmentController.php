@@ -44,7 +44,8 @@ class InvestmentController extends Controller
         $client = $this->clientService->find($request->client_id);
         $scheme = $this->schemeService->find($request->scheme_id);
 
-        return view('content.investment.payout-schedule', compact('result','client','scheme'));
+        // return $scheme;
+        return view('content.investment.payout-schedule', compact('result', 'client', 'scheme'));
     }
 
     /**
