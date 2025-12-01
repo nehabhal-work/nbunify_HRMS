@@ -16,7 +16,8 @@ class ClientController extends Controller
         private ClientService $clientService,
         private ClientBankService $clientBankService,
         private FileStorageService $fileStorageService,
-    ) {}
+    ) {
+    }
 
     public function index()
     {
@@ -26,12 +27,11 @@ class ClientController extends Controller
 
     public function create()
     {
-
         $data = getCountries();
         $country = $data['country'] ?? null;
         $states = $data['states'] ?? [];
-        $cities  = $data['cities'] ?? [];
-        // return $country;
+        $cities = $data['cities'] ?? [];
+        // return $data;
         return view('content.clients.create', compact('country', 'states', 'cities'));
     }
 
@@ -72,7 +72,7 @@ class ClientController extends Controller
         $data = getCountries();
         $country = $data['country'] ?? null;
         $states = $data['states'] ?? [];
-        $cities  = $data['cities'] ?? [];
+        $cities = $data['cities'] ?? [];
 
         return view('content.clients.edit', compact('client', 'country', 'states', 'cities'));
     }

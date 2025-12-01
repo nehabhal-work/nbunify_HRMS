@@ -25,7 +25,8 @@ class EmployeeController extends Controller
         private DepartmentService $departmentService,
         private DesignationService $designationService,
         private CompanyService $CompanyService,
-    ) {}
+    ) {
+    }
 
     public function index()
     {
@@ -69,6 +70,29 @@ class EmployeeController extends Controller
         $designations = $this->designationService->getAll();
 
         return view('content.master.employees.edit', compact('employee', 'country', 'states', 'cities', 'branches', 'departments', 'designations'));
+    }
+    public function show($id)
+    {
+        // fetch employee
+        $employee = $this->employeeService->find($id);
+        $employee = $this->addFileUrls($employee);
+
+        // fetch location data
+        $data = getCountries();
+        $country = $data['country'] ?? null;
+        $states = $data['states'] ?? [];
+        $cities = $data['cities'] ?? [];
+
+        // fetch master data
+        $branches = $this->branchService->getAll();
+        $departments = $this->departmentService->getAll();
+        $designations = $this->designationService->getAll();
+
+        // return show view
+        return view(
+            'content.master.employees.view',
+            compact('employee', 'country', 'states', 'cities', 'branches', 'departments', 'designations')
+        );
     }
 
     public function update(EmployeeRequest $request, $id)
