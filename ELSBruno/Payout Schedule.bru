@@ -4,10 +4,22 @@ meta {
   seq: 1
 }
 
-get {
-  url: hjgj
-  body: none
+post {
+  url: http://localhost:8000/api/calculate-investment-parameters
+  body: json
   auth: inherit
+}
+
+body:json {
+  {
+    "investment_amount" : 50000,
+    "roi_percent" : 12.5,
+    "additional_roi_percent" : 1,
+    "frequency" : "monthly",
+    "tenure_count" : 1,
+    "tenure_type" : "years",
+    "investment_date" : "2025-09-10"
+  }
 }
 
 settings {
