@@ -85,7 +85,7 @@
                                 <input type="date" class="form-control  @error('dob') is-invalid @enderror"
                                     id="dob" name="dob"
                                     value="{{ old('dob', isset($client->dob) ? \Carbon\Carbon::parse($client->dob)->format('d-m-Y') : '') }}"
-                                    max="{{ now()->toDateString() }}" readonly placeholder="Select Date">
+                                    max="{{ now()->toDateString() }}"  placeholder="Select Date">
 
                                 @error('dob')
                                     <div class="invalid-feedback">{{ $message }}</div>
