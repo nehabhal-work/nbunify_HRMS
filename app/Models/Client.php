@@ -52,8 +52,8 @@ class Client extends Model
     ];
 
     protected $casts = [
-        'dob' => 'date',
-        'dod' => 'date',
+        'dob' => 'date:Y-m-d',
+        'dod' => 'date:Y-m-d',
     ];
 
     public function families(): HasMany

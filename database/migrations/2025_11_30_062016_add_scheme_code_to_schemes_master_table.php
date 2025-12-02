@@ -11,6 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
+        if(Schema::hasColumn('schemes_master', 'scheme_code')) {
+            return;
+        }
         Schema::table('schemes_master', function (Blueprint $table) {
             $table->string('scheme_code')->unique()->after('id');
         });

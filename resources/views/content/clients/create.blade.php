@@ -86,7 +86,7 @@
                                 <label class="form-label" for="dob">Date of Birth</label>
                                 <input type="text" class="form-control datepicker @error('dob') is-invalid @enderror"
                                     id="dob" name="dob" value="{{ old('dob') }}"
-                                    max="{{ now()->toDateString() }}" readonly  placeholder="Select Date">
+                                    max="{{ now()->toDateString() }}" readonly placeholder="Select Date">
 
                                 @error('dob')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -220,11 +220,11 @@
                                 <label class="form-label" for="pan_no">PAN No.</label>
                                 <input type="text" class="form-control @error('pan_no') is-invalid @enderror"
                                     id="pan_no" name="pan_no" maxlength="10" value="{{ old('pan_no') }}"
-                                    oninput="this.value = this.value.toUpperCase()"
-                                    onblur="validatePAN(this.value,'errpancardno')">
+                                    oninput="this.value = this.value.toUpperCase()" onblur="checkPanExists(this.value)">
                                 @error('pan_no')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
+                                <span id="errpancardno" class="text-danger small"></span>
                             </div>
 
 
@@ -503,7 +503,7 @@
 
 
 
-           
+
 
 
 

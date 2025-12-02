@@ -1,6 +1,66 @@
-$('#scheme_id').on('change', function () {
+// $('#scheme_id').on('change', function () {
 
-    let selected = $(this).find(':selected');
+//     let selected = $(this).find(':selected');
+
+//     // READ DATA ATTRIBUTES
+//     let tenureType = selected.data('tenure-type');
+//     let minTenure = parseInt(selected.data('min-tenure'));
+//     let maxTenure = parseInt(selected.data('max-tenure'));
+//     let frequencies = selected.data('frequencies');
+//     let minRoi = parseFloat(selected.data('min-roi'));
+//     let maxRoi = parseFloat(selected.data('max-roi'));
+//     let addiMin = parseFloat(selected.data('addi-roi-min'));
+//     let addiMax = parseFloat(selected.data('addi-roi-max'));
+
+
+//     // SET TENURE TYPE
+//     $('#tenure_type').val(tenureType);
+
+//     // LOAD TENURE OPTIONS into #tenure_count
+//     let tenureSelect = $('#tenure_count');
+//     tenureSelect.empty().append(`<option value="">Select</option>`);
+
+//     for (let i = minTenure; i <= maxTenure; i++) {
+//         tenureSelect.append(`<option value="${i}">${i}</option>`);
+//     }
+
+//     // LOAD FREQUENCY OPTIONS into #frequency
+//     let freqSelect = $('#frequency');
+//     freqSelect.empty().append(`<option value="">Select Frequency</option>`);
+
+//     frequencies.forEach(f => {
+//         freqSelect.append(`<option value="${f}">${f}</option>`);
+//     });
+
+//     // ROI RANGE
+//     $('#roi_percent').val('');
+//     $('#roi-message').html(
+//         `<small class="text-primary fw-bold">Allowed ROI Range: ${minRoi}% to ${maxRoi}%</small>`
+//     );
+
+//     $('#roi_percent').data('min', minRoi);
+//     $('#roi_percent').data('max', maxRoi);
+
+//     // Additional ROI RANGE
+//     if (addiMin > 0) {
+//         $('#addi_roi_box').removeClass('d-none');
+//     } else {
+//         $('#addi_roi_box').addClass('d-none');
+//     }
+
+//     $('#addi_roi').val('');
+//     $('#addi-roi-message').html(
+//         `<small class="text-primary fw-bold">Allowed Additional ROI: ${addiMin}% to ${addiMax}%</small>`
+//     );
+
+//     $('#addi_roi').data('min', addiMin);
+//     $('#addi_roi').data('max', addiMax);
+
+// });
+
+function loadSchemeData() {
+
+    let selected = $('#scheme_id').find(':selected');
 
     // READ DATA ATTRIBUTES
     let tenureType = selected.data('tenure-type');
@@ -15,28 +75,25 @@ $('#scheme_id').on('change', function () {
     // SET TENURE TYPE
     $('#tenure_type').val(tenureType);
 
-    // LOAD TENURE OPTIONS into #tenure_count
+    // LOAD TENURE OPTIONS
     let tenureSelect = $('#tenure_count');
     tenureSelect.empty().append(`<option value="">Select</option>`);
-
     for (let i = minTenure; i <= maxTenure; i++) {
         tenureSelect.append(`<option value="${i}">${i}</option>`);
     }
 
-    // LOAD FREQUENCY OPTIONS into #frequency
+    // LOAD FREQUENCY OPTIONS
     let freqSelect = $('#frequency');
     freqSelect.empty().append(`<option value="">Select Frequency</option>`);
-
     frequencies.forEach(f => {
         freqSelect.append(`<option value="${f}">${f}</option>`);
     });
 
     // ROI RANGE
     $('#roi_percent').val('');
-    $('#roi_percent-message').html(
+    $('#roi-message').html(
         `<small class="text-primary fw-bold">Allowed ROI Range: ${minRoi}% to ${maxRoi}%</small>`
     );
-
     $('#roi_percent').data('min', minRoi);
     $('#roi_percent').data('max', maxRoi);
 
@@ -54,8 +111,13 @@ $('#scheme_id').on('change', function () {
 
     $('#addi_roi').data('min', addiMin);
     $('#addi_roi').data('max', addiMax);
+}
 
+$('#scheme_id').on('change', function () {
+    loadSchemeData();
 });
+
+
 
 
 $('#roi_percent').on('input', function () {
@@ -66,7 +128,7 @@ $('#roi_percent').on('input', function () {
 
     // If empty → show allowed range
     if (isNaN(val)) {
-        $('#roi_percent-message').html(
+        $('#roi-message').html(
             `<small class="text-primary fw-bold">Allowed ROI Range: ${min}% to ${max}%</small>`
         );
         return;
@@ -74,11 +136,11 @@ $('#roi_percent').on('input', function () {
 
     // Validation
     if (val < min || val > max) {
-        $('#roi_percent-message').html(
+        $('#roi-message').html(
             `<small class="text-danger fw-bold">ROI must be between ${min}% and ${max}%</small>`
         );
     } else {
-        $('#roi_percent-message').html(
+        $('#roi-message').html(
             `<small class="text-success fw-bold">Valid ROI</small>`
         );
     }
@@ -132,3 +194,66 @@ $(document).ready(function () {
     });
 
 });
+
+
+
+// ******************************************************
+// Investment Scheme JS
+// ******************************************************
+
+
+// { { -- ----------create min max tenure------------- --} }
+$(document).ready(function () {
+    $('#tenure_type').on('change', function () {
+        let type = $(this).val();
+
+        if (type === 'days') {
+            $('#min_tenure_label').text('Min Tenure (in days)');
+            $('#max_tenure_label').text('Max Tenure (in days)');
+            $('#min_tenure').attr('placeholder', 'e.g. 30 days').val('');
+            $('#max_tenure').attr('placeholder', 'e.g. 365 days').val('');
+        } else if (type === 'months') {
+            $('#min_tenure_label').text('Min Tenure (in months)');
+            $('#max_tenure_label').text('Max Tenure (in months)');
+            $('#min_tenure').attr('placeholder', 'e.g. 6 months').val('');
+            $('#max_tenure').attr('placeholder', 'e.g. 24 months').val('');
+        } else if (type === 'years') {
+            $('#min_tenure_label').text('Min Tenure (in years)');
+            $('#max_tenure_label').text('Max Tenure (in years)');
+            $('#min_tenure').attr('placeholder', 'e.g. 1 year').val('');
+            $('#max_tenure').attr('placeholder', 'e.g. 5 years').val('');
+        }
+    });
+});
+
+
+
+// { { -- ----------edit min max tenure------------- --} }
+$(document).ready(function () {
+    function updateTenureLabels(modalId, type) {
+        if (type === 'days') {
+            $('#min_tenure_label_' + modalId).text('Min Tenure (in days)');
+            $('#max_tenure_label_' + modalId).text('Max Tenure (in days)');
+        } else if (type === 'months') {
+            $('#min_tenure_label_' + modalId).text('Min Tenure (in months)');
+            $('#max_tenure_label_' + modalId).text('Max Tenure (in months)');
+        } else {
+            $('#min_tenure_label_' + modalId).text('Min Tenure (in years)');
+            $('#max_tenure_label_' + modalId).text('Max Tenure (in years)');
+        }
+    }
+
+    // On modal show → initialize labels
+    $('.modal').on('shown.bs.modal', function () {
+        let modalId = $(this).find('select[name="tenure_type"]').attr('id').split('_').pop();
+        let type = $('#tenure_type_' + modalId).val();
+        updateTenureLabels(modalId, type);
+
+        // On change inside modal
+        $('#tenure_type_' + modalId).off('change').on('change', function () {
+            updateTenureLabels(modalId, $(this).val());
+        });
+    });
+});
+
+//-------------END Investment Scheme JS--------------------------

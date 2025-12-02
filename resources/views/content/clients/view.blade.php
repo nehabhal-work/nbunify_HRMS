@@ -21,7 +21,7 @@
     <div class="container">
         <div class="text-end mb-3">
             <a href="{{ route('clients.index') }}" class="btn btn-secondary px-4">Go back</a>
-            <button type="button"  class="btn btn-primary px-4">
+            <button type="button" class="btn btn-primary px-4">
                 Download PDF
             </button>
 
@@ -55,7 +55,7 @@
                         <tr>
                             <th>Gender</th>
                             <td class="value">{{ ucfirst($client->gender) }}</td>
-                            <th>DOB</th>
+                            <th>DOB</th>abc
                             <td class="value">{{ $client->dob }}</td>
                         </tr>
 

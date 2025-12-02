@@ -156,7 +156,7 @@
                  <li class="menu-item {{ request()->routeIs('investment.els.*') ? 'active' : '' }}">
                      <a href="{{ route('investment.els.index') }}" class="menu-link">
                          <i class="menu-icon bx bx-wallet"></i>
-                         <div class="text-truncate">ELS Inevestment</div>
+                         <div class="text-truncate">ELS Investment</div>
                      </a>
                  </li>
 
