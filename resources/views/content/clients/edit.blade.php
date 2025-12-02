@@ -82,7 +82,7 @@
                             {{-- Date of Birth --}}
                             <div class="col-md-2 mb-3">
                                 <label class="form-label" for="dob">Date of Birth</label>
-                                <input type="text" class="form-control datepicker @error('dob') is-invalid @enderror"
+                                <input type="date" class="form-control  @error('dob') is-invalid @enderror"
                                     id="dob" name="dob"
                                     value="{{ old('dob', isset($client->dob) ? \Carbon\Carbon::parse($client->dob)->format('d-m-Y') : '') }}"
                                     max="{{ now()->toDateString() }}" readonly placeholder="Select Date">
