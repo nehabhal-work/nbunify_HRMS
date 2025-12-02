@@ -85,7 +85,7 @@
                                 <input type="date" class="form-control  @error('dob') is-invalid @enderror"
                                     id="dob" name="dob"
                                     value="{{ old('dob', isset($client->dob) ? \Carbon\Carbon::parse($client->dob)->format('d-m-Y') : '') }}"
-                                    max="{{ now()->toDateString() }}"  placeholder="Select Date">
+                                    max="{{ now()->toDateString() }}" placeholder="Select Date">
 
                                 @error('dob')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -383,7 +383,7 @@
 
                                     <option value="{{ $client->res_country_code }}"
                                         data-country-name="{{ $client->res_country }}"
-                                        {{ $client->res_country_code == $country['iso2'] ? 'selected' : '' }}>
+                                        {{ $client->res_country_code == $country['iso2'] ? 'selected' : 'IN' }}>
                                         {{ $client->res_country }}
                                     </option>
 
