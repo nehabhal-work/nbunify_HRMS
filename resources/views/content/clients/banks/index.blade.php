@@ -53,10 +53,11 @@
                         <label class="form-label">IFSC Code</label>
                         <input type="text" name="ifsc_code" value="{{ old('ifsc_code') }}"
                             class="form-control ifsc_code @error('ifsc_code') is-invalid @enderror"
-                            placeholder="Enter IFSC Code">
+                            placeholder="Enter IFSC Code" maxlength="11">
                         @error('ifsc_code')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
+                        <span class="errmsg text-danger"></span>
                     </div>
 
                     <!-- Account No -->

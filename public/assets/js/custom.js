@@ -104,50 +104,60 @@ $(document).ready(function () {
         // ✅ Validation check
         if (ifsc === '') return; // skip if empty
 
-        if (ifsc.length !== 11) {
-            // ❌ Invalid length
-            input.addClass('is-invalid');
-            parent.find('.errmsg').text('IFSC Code must be 11 characters long.');
-            // errmsg.text('')
-            //     .addClass('d-block')
-            //     .show();
-            return;
-        }
+        // if (ifsc.length !== 11) {
+        //     // ❌ Invalid length
+        //     input.addClass('is-invalid');
+        //     parent.find('.errmsg').text('IFSC Code must be 11 characters long.');
+        //     // errmsg.text('')
+        //     //     .addClass('d-block')
+        //     //     .show();
+        //     return;
+        // }
+
 
         // ✅ Call API
-        $.ajax({
-            url: '/api/validate-ifsc',
-            type: 'POST',
-            data: { ifsc: ifsc },
-            beforeSend: function () {
-                parent.find('.micrcode, .bank_name, .branch_name, .bank_code').val('Fetching...');
-            },
-            success: function (response) {
-                if (response.status === true && response.data) {
-                    // ✅ Valid IFSC
-                    parent.find('.micrcode').val(response.data.MICR || '');
-                    parent.find('.bank_name').val(response.data.BANK || '');
-                    parent.find('.branch_name').val(response.data.BRANCH || '');
-                    parent.find('.bank_code').val(response.data.BANKCODE || '');
-                } else {
-                    // ❌ Invalid IFSC
+        if (ifsc.length === 11) {
+            $.ajax({
+                url: '/api/validate-ifsc',
+                type: 'POST',
+                data: { ifsc: ifsc },
+                beforeSend: function () {
+                    parent.find('.micrcode, .bank_name, .branch_name, .bank_code').val('Fetching...');
+                },
+                success: function (response) {
+                    if (response.status === true && response.data) {
+                        // ✅ Valid IFSC
+                        parent.find('.micrcode').val(response.data.MICR || '');
+                        parent.find('.bank_name').val(response.data.BANK || '');
+                        parent.find('.branch_name').val(response.data.BRANCH || '');
+                        parent.find('.bank_code').val(response.data.BANKCODE || '');
+                    } else {
+                        // ❌ Invalid IFSC
+                        input.addClass('is-invalid');
+                        parent.find('.errmsg').text('Invalid IFSC Code. Please check again.');
+                        // errmsg.text('Invalid IFSC Code. Please check again.')
+                        //     .addClass('d-block')
+                        //     .show();
+                        parent.find('.micrcode, .bank_name, .branch_name, .bank_code').val('');
+                    }
+                },
+                error: function () {
+                    // ❌ API Error
                     input.addClass('is-invalid');
-                    parent.find('.errmsg').text('Invalid IFSC Code. Please check again.');
-                    // errmsg.text('Invalid IFSC Code. Please check again.')
-                    //     .addClass('d-block')
-                    //     .show();
+                    errmsg.text('Error fetching IFSC details. Please try again.')
+                        .addClass('d-block')
+                        .show();
                     parent.find('.micrcode, .bank_name, .branch_name, .bank_code').val('');
                 }
-            },
-            error: function () {
-                // ❌ API Error
-                input.addClass('is-invalid');
-                errmsg.text('Error fetching IFSC details. Please try again.')
-                    .addClass('d-block')
-                    .show();
-                parent.find('.micrcode, .bank_name, .branch_name, .bank_code').val('');
-            }
-        });
+            });
+
+        } else if (ifsc !== '') {
+            parent.find('.bank_name, .branch_name, .bank_code').val('');
+            $this.addClass('is-invalid');
+            errmsg.text('Invalid IFSC. It must be 11 characters..').show();
+        } else {
+            parent.find('.bank_name, .branch_name, .bank_code').val('');
+        }
     });
 });
 //  --------------END /IFSC Validation ------------------

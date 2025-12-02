@@ -145,6 +145,8 @@
                             </div>
 
 
+
+
                             <!-- Total Invested Amount -->
                             <div class="col-md-2">
                                 <label for="investment_amount" class="form-label">Total Invested Amount *</label>
@@ -268,6 +270,13 @@
         </div>
     </form>
 
+    @if ($errors->any() && old('scheme_id'))
+        <script>
+            $(document).ready(function() {
+                $('#scheme_id').trigger('change'); // this will call loadSchemeData()
+            });
+        </script>
+    @endif
 
 
 @endsection

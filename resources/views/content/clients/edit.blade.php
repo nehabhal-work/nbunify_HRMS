@@ -24,7 +24,8 @@
     @endif
 
     <h4 class="fw-bold py-3 mb-4">
-        <span class="text-muted fw-light">Master /</span> <a href="{{ route('master.companies.index') }}">Client</a>
+        <span class="text-muted fw-light">Master /</span> <a href="{{ route('master.companies.index') }}">Client edit
+            {{ $client->id }}</a>
     </h4>
 
 
@@ -82,15 +83,18 @@
                             {{-- Date of Birth --}}
                             <div class="col-md-2 mb-3">
                                 <label class="form-label" for="dob">Date of Birth</label>
-                                <input type="text" class="form-control datepicker @error('dob') is-invalid @enderror"
-                                    id="dob" name="dob"
-                                    value="{{ old('dob', isset($client->dob) ? \Carbon\Carbon::parse($client->dob)->format('d-m-Y') : '') }}"
-                                    max="{{ now()->toDateString() }}" readonly placeholder="Select Date">
+                                <input type="date" class="form-control @error('dob') is-invalid @enderror" id="dob"
+                                    name="dob"
+                                    value="{{ old('dob', isset($client->dob) ? \Carbon\Carbon::parse($client->dob)->format('Y-m-d') : '') }}"
+                                    max="{{ now()->toDateString() }}">
 
                                 @error('dob')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
+
+
+
 
                             {{-- Live Status --}}
                             <div class="col-md-2 mb-3">
@@ -383,7 +387,7 @@
 
                                     <option value="{{ $client->res_country_code }}"
                                         data-country-name="{{ $client->res_country }}"
-                                        {{ $client->res_country_code == $country['iso2'] ? 'selected' : '' }}>
+                                        {{ $client->res_country_code == $country['iso2'] ? 'selected' : 'IN' }}>
                                         {{ $client->res_country }}
                                     </option>
 
@@ -401,7 +405,7 @@
 
                                     @foreach ($states as $state)
                                         <option value="{{ $state['iso2'] }}" data-state-name="{{ $state['name'] }}"
-                                            {{ $client->res_state_code == $state['iso2'] ? 'selected' : '' }}>
+                                            {{ $client->res_state_code == $state['iso2'] ? 'selected' : 'MH' }}>
                                             {{ $state['name'] }}
                                         </option>
                                     @endforeach
