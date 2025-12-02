@@ -1,6 +1,66 @@
-$('#scheme_id').on('change', function () {
+// $('#scheme_id').on('change', function () {
 
-    let selected = $(this).find(':selected');
+//     let selected = $(this).find(':selected');
+
+//     // READ DATA ATTRIBUTES
+//     let tenureType = selected.data('tenure-type');
+//     let minTenure = parseInt(selected.data('min-tenure'));
+//     let maxTenure = parseInt(selected.data('max-tenure'));
+//     let frequencies = selected.data('frequencies');
+//     let minRoi = parseFloat(selected.data('min-roi'));
+//     let maxRoi = parseFloat(selected.data('max-roi'));
+//     let addiMin = parseFloat(selected.data('addi-roi-min'));
+//     let addiMax = parseFloat(selected.data('addi-roi-max'));
+
+
+//     // SET TENURE TYPE
+//     $('#tenure_type').val(tenureType);
+
+//     // LOAD TENURE OPTIONS into #tenure_count
+//     let tenureSelect = $('#tenure_count');
+//     tenureSelect.empty().append(`<option value="">Select</option>`);
+
+//     for (let i = minTenure; i <= maxTenure; i++) {
+//         tenureSelect.append(`<option value="${i}">${i}</option>`);
+//     }
+
+//     // LOAD FREQUENCY OPTIONS into #frequency
+//     let freqSelect = $('#frequency');
+//     freqSelect.empty().append(`<option value="">Select Frequency</option>`);
+
+//     frequencies.forEach(f => {
+//         freqSelect.append(`<option value="${f}">${f}</option>`);
+//     });
+
+//     // ROI RANGE
+//     $('#roi_percent').val('');
+//     $('#roi-message').html(
+//         `<small class="text-primary fw-bold">Allowed ROI Range: ${minRoi}% to ${maxRoi}%</small>`
+//     );
+
+//     $('#roi_percent').data('min', minRoi);
+//     $('#roi_percent').data('max', maxRoi);
+
+//     // Additional ROI RANGE
+//     if (addiMin > 0) {
+//         $('#addi_roi_box').removeClass('d-none');
+//     } else {
+//         $('#addi_roi_box').addClass('d-none');
+//     }
+
+//     $('#addi_roi').val('');
+//     $('#addi-roi-message').html(
+//         `<small class="text-primary fw-bold">Allowed Additional ROI: ${addiMin}% to ${addiMax}%</small>`
+//     );
+
+//     $('#addi_roi').data('min', addiMin);
+//     $('#addi_roi').data('max', addiMax);
+
+// });
+
+function loadSchemeData() {
+
+    let selected = $('#scheme_id').find(':selected');
 
     // READ DATA ATTRIBUTES
     let tenureType = selected.data('tenure-type');
@@ -12,22 +72,19 @@ $('#scheme_id').on('change', function () {
     let addiMin = parseFloat(selected.data('addi-roi-min'));
     let addiMax = parseFloat(selected.data('addi-roi-max'));
 
-
     // SET TENURE TYPE
     $('#tenure_type').val(tenureType);
 
-    // LOAD TENURE OPTIONS into #tenure_count
+    // LOAD TENURE OPTIONS
     let tenureSelect = $('#tenure_count');
     tenureSelect.empty().append(`<option value="">Select</option>`);
-
     for (let i = minTenure; i <= maxTenure; i++) {
         tenureSelect.append(`<option value="${i}">${i}</option>`);
     }
 
-    // LOAD FREQUENCY OPTIONS into #frequency
+    // LOAD FREQUENCY OPTIONS
     let freqSelect = $('#frequency');
     freqSelect.empty().append(`<option value="">Select Frequency</option>`);
-
     frequencies.forEach(f => {
         freqSelect.append(`<option value="${f}">${f}</option>`);
     });
@@ -37,7 +94,6 @@ $('#scheme_id').on('change', function () {
     $('#roi-message').html(
         `<small class="text-primary fw-bold">Allowed ROI Range: ${minRoi}% to ${maxRoi}%</small>`
     );
-
     $('#roi_percent').data('min', minRoi);
     $('#roi_percent').data('max', maxRoi);
 
@@ -55,8 +111,13 @@ $('#scheme_id').on('change', function () {
 
     $('#addi_roi').data('min', addiMin);
     $('#addi_roi').data('max', addiMax);
+}
 
+$('#scheme_id').on('change', function () {
+    loadSchemeData();
 });
+
+
 
 
 $('#roi_percent').on('input', function () {
@@ -67,7 +128,7 @@ $('#roi_percent').on('input', function () {
 
     // If empty → show allowed range
     if (isNaN(val)) {
-        $('#roi_percent-message').html(
+        $('#roi-message').html(
             `<small class="text-primary fw-bold">Allowed ROI Range: ${min}% to ${max}%</small>`
         );
         return;
@@ -75,11 +136,11 @@ $('#roi_percent').on('input', function () {
 
     // Validation
     if (val < min || val > max) {
-        $('#roi_percent-message').html(
+        $('#roi-message').html(
             `<small class="text-danger fw-bold">ROI must be between ${min}% and ${max}%</small>`
         );
     } else {
-        $('#roi_percent-message').html(
+        $('#roi-message').html(
             `<small class="text-success fw-bold">Valid ROI</small>`
         );
     }
