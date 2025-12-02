@@ -104,14 +104,17 @@ $(document).ready(function () {
         // ✅ Validation check
         if (ifsc === '') return; // skip if empty
 
-        if (ifsc.length !== 11) {
-            // ❌ Invalid length
-            input.addClass('is-invalid');
-            parent.find('.errmsg').text('IFSC Code must be 11 characters long.');
-            // errmsg.text('')
-            //     .addClass('d-block')
-            //     .show();
-            return;
+        // if (ifsc.length !== 11) {
+        //     // ❌ Invalid length
+        //     input.addClass('is-invalid');
+        //     parent.find('.errmsg').text('IFSC Code must be 11 characters long.');
+        //     // errmsg.text('')
+        //     //     .addClass('d-block')
+        //     //     .show();
+        //     return;
+        // }
+        if (ifsc.length != 11) {
+            $('.errmsg').text("Invalid IFSC. It must be 11 characters.");
         }
 
         // ✅ Call API
