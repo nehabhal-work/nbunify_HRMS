@@ -71,6 +71,35 @@
                         @enderror
                     </div>
 
+                    <!-- Account Type -->
+                    <div class="col-md-3">
+                        <label class="form-label">Account Type</label>
+                        <select name="account_type" class="form-select @error('account_type') is-invalid @enderror">
+                            <option value="">Select Type</option>
+                            <option value="savings" {{ old('account_type') == 'savings' ? 'selected' : '' }}>Saving
+                                Account</option>
+                            <option value="current" {{ old('account_type') == 'current' ? 'selected' : '' }}>
+                                Current
+                                Account</option>
+                            <option value="od_cc" {{ old('account_type') == 'od_cc' ? 'selected' : '' }}>
+                                Overdraft/CC
+                            </option>
+                            <option value="nre" {{ old('account_type') == 'nre' ? 'selected' : '' }}>NRE
+                            </option>
+                            <option value="nri" {{ old('account_type') == 'nri' ? 'selected' : '' }}>NRI
+                            </option>
+                            <option value="nro" {{ old('account_type') == 'nro' ? 'selected' : '' }}>NRO
+                            </option>
+                            <option value="tem_deposit" {{ old('account_type') == 'tem_deposit' ? 'selected' : '' }}>Term
+                                Deposit</option>
+                            <option value="ra" {{ old('account_type') == 'ra' ? 'selected' : '' }}>Recurring
+                            </option>
+                        </select>
+                        @error('account_type')
+                            <span class="invalid-feedback">{{ $message }}</span>
+                        @enderror
+                    </div>
+
                     <!-- Operation Mode -->
                     <div class="col-md-3">
                         <label class="form-label">Operation Mode</label>
