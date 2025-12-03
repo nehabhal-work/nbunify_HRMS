@@ -16,8 +16,7 @@ class ClientController extends Controller
         private ClientService $clientService,
         private ClientBankService $clientBankService,
         private FileStorageService $fileStorageService,
-    ) {
-    }
+    ) {}
 
     public function index()
     {
@@ -76,6 +75,7 @@ class ClientController extends Controller
         $states = $data['states'] ?? [];
         $cities = $data['cities'] ?? [];
 
+        // return $country;
         return view('content.clients.edit', compact('client', 'country', 'states', 'cities'));
     }
 
@@ -85,16 +85,16 @@ class ClientController extends Controller
         DB::transaction(function () use ($request, $client) {
             $this->clientService->update($client, $request->validated());
 
-            if ($request->has('banks')) {
-                $client->banks()->delete();
+            // if ($request->has('banks')) {
+            //     $client->banks()->delete();
 
-                foreach ($request->banks as $bankData) {
-                    if (!empty($bankData['ifsc_code']) && !empty($bankData['account_number'])) {
-                        $bankData['client_id'] = $client->id;
-                        $this->clientBankService->create($bankData);
-                    }
-                }
-            }
+            //     foreach ($request->banks as $bankData) {
+            //         if (!empty($bankData['ifsc_code']) && !empty($bankData['account_number'])) {
+            //             $bankData['client_id'] = $client->id;
+            //             $this->clientBankService->create($bankData);
+            //         }
+            //     }
+            // }
         });
 
         return redirect()->route('clients.edit', $id)->with('success', 'Client updated successfully');

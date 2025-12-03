@@ -146,9 +146,9 @@
                     </div>
 
                     <div>
-                        <a class="btn btn-primary " href="#">
-                            Confirm
-                        </a>
+                        {{-- <a class="btn btn-primary " href="{{ view('content.investment.standing-instruction.index') }}">
+                            Set Standing instruction
+                        </a> --}}
                     </div>
 
                 </div>

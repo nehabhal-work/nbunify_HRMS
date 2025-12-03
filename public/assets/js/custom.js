@@ -502,6 +502,7 @@ $(document).ready(function () {
     initAddressDropdowns('res');        // For office section
     initAddressDropdowns('office');        // For office section
     initAddressDropdowns('additional');    // For additional GST address
+    initAddressDropdowns('res_country_code');    // For additional GST address
 
 });
 

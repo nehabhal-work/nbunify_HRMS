@@ -385,10 +385,10 @@
                                 <select name="res_country_code" id="res_country_code"
                                     class="form-select select2 @error('res_country_code') is-invalid @enderror">
 
-                                    <option value="{{ $client->res_country_code }}"
-                                        data-country-name="{{ $client->res_country }}"
-                                        {{ $client->res_country_code == $country['iso2'] ? 'selected' : 'IN' }}>
-                                        {{ $client->res_country }}
+                                    <option value="{{ $country['iso2'] }}"
+                                        {{ old('res_country_code', 'IND') == $country['iso2'] ? 'selected' : '' }}
+                                        data-country-name="{{ $country['name'] }}">
+                                        {{ $country['name'] }}
                                     </option>
 
                                 </select>
@@ -404,9 +404,11 @@
                                     class="form-select select2 @error('res_state_code') is-invalid @enderror">
 
                                     @foreach ($states as $state)
-                                        <option value="{{ $state['iso2'] }}" data-state-name="{{ $state['name'] }}"
-                                            {{ $client->res_state_code == $state['iso2'] ? 'selected' : 'MH' }}>
+                                        <option value="{{ $state['iso2'] }}"
+                                            {{ old('res_state_code', 'MH') == $state['iso2'] ? 'selected' : '' }}
+                                            data-state-name="{{ $state['name'] }}">
                                             {{ $state['name'] }}
+                                        </option>
                                         </option>
                                     @endforeach
 
@@ -471,9 +473,10 @@
                                 <select name="office_country_code" id="office_country_code"
                                     class="form-select select2 @error('office_country_code') is-invalid @enderror">
 
-                                    <option value="{{ $client->office_country_code }}"
-                                        data-country-name="{{ $client->office_country }}">
-                                        {{ $client->office_country }}
+                                    <option value="{{ $country['iso2'] }}"
+                                        {{ old('res_country_code', 'IND') == $country['iso2'] ? 'selected' : '' }}
+                                        data-country-name="{{ $country['name'] }}">
+                                        {{ $country['name'] }}
                                     </option>
 
                                 </select>
@@ -489,8 +492,9 @@
                                     class="form-select select2 @error('office_state_code') is-invalid @enderror">
 
                                     @foreach ($states as $state)
-                                        <option value="{{ $state['iso2'] }}" data-state-name="{{ $state['name'] }}"
-                                            {{ $client->office_state_code == $state['iso2'] ? 'selected' : '' }}>
+                                        <option value="{{ $state['iso2'] }}"
+                                            {{ old('res_state_code', 'MH') == $state['iso2'] ? 'selected' : '' }}
+                                            data-state-name="{{ $state['name'] }}">
                                             {{ $state['name'] }}
                                         </option>
                                     @endforeach
