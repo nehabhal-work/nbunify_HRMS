@@ -12,7 +12,7 @@ class ClientBank extends Model
         'ifsc_code',
         'account_number',
         'bank_name',
-        'branch_n58ame',
+        'branch_name',
         'bank_code',
         'is_primary',
         'account_type',
