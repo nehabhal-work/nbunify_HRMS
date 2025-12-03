@@ -252,23 +252,308 @@
                             </div>
 
                         </div>
-
-
-
-                        <!-- Submit -->
-                        <div class="text-end mt-3">
-                            <button type="submit" class="btn btn-primary px-4">Save</button>
-                        </div>
                     </div>
                 </div>
             </div>
+        </div>
+
+
+        {{-- Bank / Instrument Details --}}
+        <div class="row align-items-stretch">
+            <div class="col-md-12">
+                <div class="card mb-4">
+
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Bank / Instrument Details</h5>
+                        <small class="text-muted float-end">Bank / Instrument Details</small>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="row g-3">
+
+                            <!-- Instrument -->
+                            <div class="col-md-2 mt-3">
+                                <label class="form-label">
+                                    Instrument <span class="text-danger">*</span>
+                                </label>
+                                <select class="form-select @error('instrument') is-invalid @enderror" name="instrument"
+                                    required>
+                                    <option value="">Select</option>
+                                    <option value="rtgs" {{ old('instrument') == 'rtgs' ? 'selected' : '' }}>RTGS
+                                    </option>
+                                    <option value="cheque" {{ old('instrument') == 'cheque' ? 'selected' : '' }}>CHEQUE
+                                    </option>
+                                    <option value="upi" {{ old('instrument') == 'upi' ? 'selected' : '' }}>UPI</option>
+                                    <option value="neft" {{ old('instrument') == 'neft' ? 'selected' : '' }}>NEFT
+                                    </option>
+                                    <option value="imps" {{ old('instrument') == 'imps' ? 'selected' : '' }}>IMPS
+                                    </option>
+                                </select>
+                                @error('instrument')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- Instrument Date -->
+                            <div class="col-md-2 mt-3">
+                                <label class="form-label">
+                                    Instrument Date <span class="text-danger">*</span>
+                                </label>
+                                <input type="date" class="form-control @error('instrument_date') is-invalid @enderror"
+                                    name="instrument_date" value="{{ old('instrument_date') }}"
+                                    max="{{ date('Y-m-d') }}" required>
+                                @error('instrument_date')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- Reference No -->
+                            <div class="col-md-3 mt-3">
+                                <label class="form-label">
+                                    Reference No <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" class="form-control @error('reference_no') is-invalid @enderror"
+                                    name="reference_no" value="{{ old('reference_no') }}" maxlength="20" required>
+                                @error('reference_no')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- Instrument Amount -->
+                            <div class="col-md-2 mt-3">
+                                <label class="form-label">
+                                    Instrument Amount <span class="text-danger">*</span>
+                                </label>
+                                <div class="input-group">
+                                    <span class="input-group-text">&#8377;</span>
+                                    <input type="number"
+                                        class="form-control bg-secondary-subtle onlydigit instrument_amt @error('instrument_amt') is-invalid @enderror"
+                                        name="instrument_amt" value="{{ old('instrument_amt') }}" required>
+                                </div>
+                                @error('instrument_amt')
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- Client Output Bank -->
+                            <div class="col-md-3 mt-3">
+                                <label class="form-label">
+                                    Client Output Bank <span class="text-danger">*</span>
+                                </label>
+                                <select
+                                    class="form-select clientOutputBank @error('client_output_bank') is-invalid @enderror"
+                                    name="client_output_bank" required>
+                                    <option value="">Select Bank</option>
+                                    <!-- You will populate banks using JS -->
+                                </select>
+                                @error('client_output_bank')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- Company Bank -->
+                            <div class="col-md-3 mt-3">
+                                <label class="form-label">
+                                    Company Bank <span class="text-danger">*</span>
+                                </label>
+                                <select class="form-select @error('company_bank_id') is-invalid @enderror"
+                                    name="company_bank_id" required>
+                                    <option value="">Select Company Bank</option>
+                                </select>
+                                @error('company_bank_id')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- Instrument Image -->
+                            <div class="col-md-3 mt-3">
+                                <label class="form-label">
+                                    Instrument Image <span class="text-danger">*</span>
+                                </label>
+                                <input type="file"
+                                    class="form-control fileInput instrumentImage @error('instrumentImage') is-invalid @enderror"
+                                    name="instrumentImage" accept="image/*,application/pdf">
+                                <img src="" class="imgPreview mt-1" style="width:100px; display:none;">
+                                @error('instrumentImage')
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <!-- Effective / Credit Date -->
+                            <div class="col-md-2 mt-3">
+                                <label class="form-label">
+                                    Effective / Credit Date <span class="text-danger">*</span>
+                                </label>
+                                <input type="date" class="form-control @error('effective_date') is-invalid @enderror"
+                                    name="effective_date" value="{{ old('effective_date') }}" max="{{ date('Y-m-d') }}"
+                                    required>
+                                @error('effective_date')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
 
 
 
+        {{-- Set standing instruction --}}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card shadow-sm">
+
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Set Standing Instruction</h5>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="row g-3">
+
+                            <!-- Reference No -->
+                            <div class="col-md-3">
+                                <label class="form-label">
+                                    Reference No <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" name="reference_no"
+                                    class="form-control @error('reference_no') is-invalid @enderror"
+                                    placeholder="Enter reference no" value="{{ old('reference_no') }}">
+
+                                @error('reference_no')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <!-- Company Bank -->
+                            <div class="col-md-3">
+                                <label class="form-label">
+                                    Company Bank <span class="text-danger">*</span>
+                                </label>
+                                <select name="company_bank"
+                                    class="form-select @error('company_bank') is-invalid @enderror">
+                                    <option value="">Select Company Bank</option>
+
+                                    {{-- @foreach ($companyBanks as $bank)
+                                <option value="{{ $bank->id }}"
+                                    {{ old('company_bank') == $bank->id ? 'selected' : '' }}>
+                                    {{ $bank->bank_name }} — {{ $bank->account_no }}
+                                </option>
+                            @endforeach --}}
+                                </select>
+
+                                @error('company_bank')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <!-- Client Bank -->
+                            <div class="col-md-3">
+                                <label class="form-label">
+                                    Client Bank <span class="text-danger">*</span>
+                                </label>
+                                <select name="client_bank"
+                                    class="form-select @error('client_bank') is-invalid @enderror">
+                                    <option value="">Select Client Bank</option>
+
+                                    {{-- @foreach ($clientBanks as $bank)
+                                <option value="{{ $bank->id }}"
+                                    {{ old('client_bank') == $bank->id ? 'selected' : '' }}>
+                                    {{ $bank->bank_name }} — {{ $bank->account_no }}
+                                </option>
+                            @endforeach --}}
+                                </select>
+
+                                @error('client_bank')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <!-- Payment Start Date -->
+                            <div class="col-md-3">
+                                <label class="form-label">
+                                    Payment Start Date <span class="text-danger">*</span>
+                                </label>
+                                <input type="date" name="payment_start_date"
+                                    class="form-control bg-secondary-subtle @error('payment_start_date') is-invalid @enderror"
+                                    value="{{ old('payment_start_date') }}" readonly>
+
+                                @error('payment_start_date')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <!-- Amount -->
+                            <div class="col-md-3">
+                                <label class="form-label">
+                                    Amount <span class="text-danger">*</span>
+                                </label>
+                                <input type="number" step="0.01" name="amount"
+                                    class="form-control @error('amount') is-invalid @enderror" placeholder="Enter amount"
+                                    value="{{ old('amount') }}">
+
+                                @error('amount')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <!-- Instruction Image -->
+                            <div class="col-md-3">
+                                <label class="form-label">
+                                    Instruction Image <span class="text-danger">*</span>
+                                </label>
+                                <input type="file" name="instruction_image"
+                                    class="form-control @error('instruction_image') is-invalid @enderror">
+
+                                @error('instruction_image')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <!-- Notes Image -->
+                            <div class="col-md-3">
+                                <label class="form-label">
+                                    Notes Image <span class="text-danger">*</span>
+                                </label>
+                                <input type="file" name="notes_image"
+                                    class="form-control @error('notes_image') is-invalid @enderror">
+
+                                @error('notes_image')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <!-- Remarks -->
+                            <div class="col-md-6">
+                                <label class="form-label">
+                                    Remarks <span class="text-danger">*</span>
+                                </label>
+                                <textarea name="remarks" rows="3" class="form-control @error('remarks') is-invalid @enderror"
+                                    placeholder="Write remarks">{{ old('remarks') }}</textarea>
+
+                                @error('remarks')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
 
 
+
+        <!-- Submit -->
+        <div class="text-end mt-4">
+            <button type="submit" class="btn btn-primary px-4">Save</button>
         </div>
     </form>
+
+
 
     @if ($errors->any() && old('scheme_id'))
         <script>
