@@ -67,6 +67,32 @@
                         </select>
                     </div>
 
+                       <!-- Account Type -->
+                    <div class="col-md-3">
+                        <label class="form-label">Account Type</label>
+                        <select name="account_type" class="form-select @error('account_type') is-invalid @enderror">
+                            <option value="">Select Type</option>
+                            @php
+                                $selected = old('account_type', $clientBank->account_type ?? '');
+                            @endphp
+
+                            <option value="savings" {{ $selected === 'savings' ? 'selected' : '' }}>Saving Account</option>
+                            <option value="current" {{ $selected === 'current' ? 'selected' : '' }}>Current Account</option>
+                            <option value="od_cc" {{ $selected === 'od_cc' ? 'selected' : '' }}>Overdraft/CC</option>
+                            <option value="nre" {{ $selected === 'nre' ? 'selected' : '' }}>NRE</option>
+                            <option value="nri" {{ $selected === 'nri' ? 'selected' : '' }}>NRI</option>
+                            <option value="nro" {{ $selected === 'nro' ? 'selected' : '' }}>NRO</option>
+                            <option value="tem_deposit" {{ $selected === 'tem_deposit' ? 'selected' : '' }}>Term Deposit
+                            </option>
+                            <option value="ra" {{ $selected === 'ra' ? 'selected' : '' }}>Recurring</option>
+                        </select>
+
+
+                        @error('account_type')
+                            <span class="invalid-feedback">{{ $message }}</span>
+                        @enderror
+                    </div>
+
                     <!-- Holder 1 -->
                     <div class="col-md-3 holder_names {{ in_array($op, ['joint', 'single']) ? '' : 'd-none' }}">
                         <label class="form-label">Holder Name 1</label>
