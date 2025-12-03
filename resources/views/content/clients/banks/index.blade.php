@@ -390,7 +390,7 @@
                                                 <th class="bg-secondary-subtle ">Cheque Photo</th>
                                                 <td>
                                                     @php
-                                                        $previewUrl = $bank->attachment_cancelled_cheque_url ?? null;
+                                                        $previewUrl = $b->attachment_cancelled_cheque_url ?? null;
                                                     @endphp
 
                                                     @if ($previewUrl)

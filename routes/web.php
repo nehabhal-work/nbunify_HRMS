@@ -67,6 +67,8 @@ Route::middleware(['auth', 'verified'])->prefix('accounts')->name('accounts.')->
 Route::middleware(['auth', 'verified'])->prefix('investment')->name('investment.')->group(function () {
     Route::resource('scheme', SchemeController::class)->names('scheme');
     Route::resource('els', InvestmentController::class)->names('els');
+    Route::get('els-bank-instrument', [InvestmentController::class, 'bankInstrument'])->name('bank-instrument');
+    Route::get('els-standing-instrument', [InvestmentController::class, 'standingInstruction'])->name('standing-instruction');
 });
 
 Route::post('/logout', function () {

@@ -2,7 +2,6 @@
 @section('title', 'Investment')
 
 @section('content')
-
     <div>
         @if (session('success'))
             <x-alert-sweet type="success" :message="session('success')" />
@@ -26,18 +25,17 @@
     @endif
 
     <h4 class="fw-bold py-3 mb-4">
-        <span class="text-muted fw-light">Master /</span> <a href="{{ route('investment.els.create') }}">ELS-Investment</a>
+        <span class="text-muted fw-light">Masterkk /</span> <a href="{{ route('investment.els.create') }}">ELS-Investment</a>
     </h4>
 
-
-
     <div class="row">
-        <!-- TABLE SECTION -->
-        <div class="col-12">
+
+        <div class="col-md-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Investment List</h5>
-                    <a class="btn btn-primary" href="{{ route('investment.els.create') }}" role="button">Add New</a>
+                    <a class="btn btn-primary" href="{{ route('investment.els.create') }}" role="button">Add
+                        New</a>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive text-nowrap">
@@ -63,8 +61,10 @@
                                     <th>Actions</th>
                                 </tr>
                             </thead>
+
                             <tbody>
 
+                                <!-- Record 1 -->
                                 <tr>
                                     <td>1</td>
                                     <td>15 Jan 2025</td>
@@ -74,7 +74,7 @@
                                     <td>1 Year</td>
                                     <td>Monthly</td>
                                     <td>12.5%</td>
-                                    <td><span class="badge bg-secondary">INACTIVE</span></td>
+                                    <td><span class="badge bg-success">Active</span></td>
                                     <td>Neha Bhalerao</td>
                                     <td>13.5%</td>
                                     <td><span class="badge bg-primary">View Bank Instrument</span></td>
@@ -86,11 +86,12 @@
                                                 <i class="bx bx-dots-vertical-rounded"></i>
                                             </button>
                                             <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="{{ route('investment.bank-instrument') }}"><i
+                                                <a class="dropdown-item"
+                                                    href="{{ view('content.investment.bank-instrument') }}"><i
                                                         class="bx bx-book-add me-1"></i>
                                                     Add Bank Instruction</a>
                                                 <a class="dropdown-item"
-                                                    href="{{ route('investment.standing-instruction') }}"><i
+                                                    href="{{ view('content.investment.standing-instruction') }}"><i
                                                         class="bx bx-book-add me-1"></i>
                                                     Add Standing Instruction</a>
                                                 <a class="dropdown-item" href="#"><i class="bx bx-edit-alt me-1"></i>
@@ -100,6 +101,7 @@
                                         </div>
                                     </td>
                                 </tr>
+
                                 <tr>
                                     <td>2</td>
                                     <td>01 Feb 2025</td>
@@ -109,7 +111,7 @@
                                     <td>3 Years</td>
                                     <td>Quarterly</td>
                                     <td>10.0%</td>
-                                    <td><span class="badge bg-secondary">INACTIVE</span></td>
+                                    <td><span class="badge bg-success">Active</span></td>
                                     <td>Arjun Patil</td>
                                     <td>11.0%</td>
                                     <td><span class="badge bg-secondary">Not Set</span></td>
@@ -205,7 +207,7 @@
                                     <td>18 Months</td>
                                     <td>Monthly</td>
                                     <td>12.0%</td>
-                                    <td><span class="badge bg-secondary">INACTIVE</span></td>
+                                    <td><span class="badge bg-success">Active</span></td>
                                     <td>—</td>
                                     <td>12.5%</td>
                                     <td><span class="badge bg-secondary">Not Set</span></td>
@@ -227,16 +229,22 @@
                                         </div>
                                     </td>
                                 </tr>
+
+
                             </tbody>
                         </table>
+
+
+
                     </div>
                 </div>
             </div>
-
         </div>
-
-
     </div>
 
 
+
 @endsection
+
+@push('scripts')
+@endpush

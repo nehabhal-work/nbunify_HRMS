@@ -152,7 +152,7 @@
                      </a>
                  </li>
 
-                 <!-- Purchase -->
+                 <!-- ELS Investment -->
                  <li class="menu-item {{ request()->routeIs('investment.els.*') ? 'active' : '' }}">
                      <a href="{{ route('investment.els.index') }}" class="menu-link">
                          <i class="menu-icon bx bx-wallet"></i>

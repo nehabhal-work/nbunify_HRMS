@@ -114,10 +114,7 @@
                 <div class="card-body">
 
                     <!-- Info Message -->
-                    <div class="alert alert-warning mb-4" role="alert">
-                        <strong>Note:</strong> Review your payout data carefully.
-                        <br>Once confirmed, you will <strong>not be able to make any changes.</strong>
-                    </div>
+
 
                     <div class="table-responsive text-nowrap">
                         <table class="table table-bordered table-striped srkdataTable">

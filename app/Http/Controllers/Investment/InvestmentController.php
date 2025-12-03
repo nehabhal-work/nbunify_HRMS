@@ -87,4 +87,13 @@ class InvestmentController extends Controller
         $this->investmentService->delete($investment);
         return redirect()->route('investment.els.index')->with('success', 'Investment deleted successfully.');
     }
+
+    public function bankInstrument()
+    {
+        return view('content.investment.bank-instrument');
+    }
+    public function standingInstruction()
+    {
+        return view('content.investment.standing-instruction');
+    }
 }
