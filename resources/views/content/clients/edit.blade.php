@@ -139,8 +139,8 @@
                                     <option value="divorcee"
                                         {{ old('marital_status', $client->marital_status ?? '') == 'divorcee' ? 'selected' : '' }}>
                                         Divorcee</option>
-                                    <option value="widow"
-                                        {{ old('marital_status', $client->marital_status ?? '') == 'widow' ? 'selected' : '' }}>
+                                    <option value="widowed"
+                                        {{ old('marital_status', $client->marital_status ?? '') == 'widowed' ? 'selected' : '' }}>
                                         Widow</option>
                                     <option value="other"
                                         {{ old('marital_status', $client->marital_status ?? '') == 'other' ? 'selected' : '' }}>
