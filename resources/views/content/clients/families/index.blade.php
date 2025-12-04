@@ -45,7 +45,7 @@
                         <a class="btn btn-primary"
                             href="{{ route('client-families.create', ['client_id' => $client->id]) }}" role="button">Add
                             new
-                            Family Menber</a>
+                            Family Member</a>
                         <a class="btn btn-primary"
                             href="{{ route('client-families.create.existing', ['client_id' => $client->id]) }}"
                             role="button">Add

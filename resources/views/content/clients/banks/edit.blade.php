@@ -67,7 +67,7 @@
                         </select>
                     </div>
 
-                       <!-- Account Type -->
+                    <!-- Account Type -->
                     <div class="col-md-3">
                         <label class="form-label">Account Type</label>
                         <select name="account_type" class="form-select @error('account_type') is-invalid @enderror">
@@ -143,44 +143,47 @@
                             class="form-control bank_code bg-secondary-subtle bg-gradient" readonly>
                     </div>
 
-                    <!-- Cancelled Cheque Upload -->
+                    <!-- Cancelled Cheque Upload -->               
                     <div class="col-md-4 mb-3">
                         <label class="form-label">Cheque Photo</label>
-
                         <div class="input-group">
                             <input type="file"
                                 class="form-control @error('attachment_cancelled_cheque') is-invalid @enderror"
                                 id="attachment_cancelled_cheque" name="attachment_cancelled_cheque"
-                                onchange="uploadTempFile(this, 'attachment_cancelled_cheque')"
-                                accept=".jpg,.jpeg,.png,.pdf">
-
+                                onchange="uploadTempFile(this, 'attachment_cancelled_cheque')" accept=".jpg,.jpeg,.png">
                             <button class="btn btn-outline-danger" type="button"
-                                onclick="document.getElementById('attachment_cancelled_cheque').value = ''">
-                                ✕
-                            </button>
+                                onclick="document.getElementById('attachment_cancelled_cheque').value = ''">✕</button>
                         </div>
 
                         @error('attachment_cancelled_cheque')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
 
-                        {{-- Hidden URL field --}}
-                        <input type="hidden" id="attachment_cancelled_cheque_url" name="attachment_cancelled_cheque_url"
-                            value="{{ old('attachment_cancelled_cheque_url', $clientBank->attachment_cancelled_cheque_url ?? '') }}">
+                        <input type="hidden" id="attachment_cancelled_cheque_url"
+                            value="{{ old('attachment_cancelled_cheque_url', $client->attachment_cancelled_cheque_url) }}"
+                            name="attachment_cancelled_cheque_url">
 
-                        {{-- Preview --}}
-                        @php
-                            $previewUrl = old(
-                                'attachment_cancelled_cheque_url',
-                                $clientBank->attachment_cancelled_cheque_url ?? '',
-                            );
-                        @endphp
 
-                        @if ($previewUrl)
-                            <div id="attachment_cancelled_cheque_preview" class="position-relative d-inline-block mt-2">
+                        @if ($client->attachment_cancelled_cheque_url)
+                            <div id="attachment_cancelled_cheque_previews" class="position-relative d-inline-block">
+                                {{-- <img src="{{ $client->attachment_cancelled_cheque_url }}" class="rounded"> --}}
+                                <a href="{{ $client->attachment_cancelled_cheque_url }}" target="_blank">
+                                    <img src="{{ $client->attachment_cancelled_cheque_url }}" class="rounded">
+                                </a>
 
-                                <img src="{{ $previewUrl }}" width="100" class="rounded">
 
+                                <!-- Remove (X) button -->
+                                <button type="button"
+                                    class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                                    onclick="removeImage('attachment_cancelled_cheque')">
+                                    ✕
+                                </button>
+                            </div>
+                        @elseif (old('attachment_cancelled_cheque_url'))
+                            <div id="attachment_cancelled_cheque_preview" class="position-relative d-inline-block">
+                                <img src="{{ old('attachment_cancelled_cheque_url') }}" class="rounded">
+
+                                <!-- Remove (X) button -->
                                 <button type="button"
                                     class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
                                     onclick="removeImage('attachment_cancelled_cheque')">
@@ -188,9 +191,10 @@
                                 </button>
                             </div>
                         @endif
+
                     </div>
 
-                     <!-- Primary a/c -->
+                    <!-- Primary a/c -->
                     <div class="col-md-2">
                         <label class="form-label d-block">Primary a/c</label>
                         <input type="hidden" name="is_primary" value="0">

@@ -296,10 +296,7 @@
                             <!-- Residential Address -->
                             <div class="row">
                                 <h6 class="my-3">Residential Address</h6>
-                                <div class="col-md-12 mb-2">
-                                    <input type="checkbox" id="same_as_client" />
-                                    <label for="same_as_client">Same as Client Residential Address</label>
-                                </div>
+
                                 <div class="col-md-4 mb-3">
                                     <label class="form-label">Address</label>
                                     <input type="text" name="res_address" id="res_address"
@@ -308,6 +305,10 @@
                                     @error('res_address')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
+                                 
+                                <input type="checkbox" id="same_as_client" />
+                                <label for="same_as_client">Same as Client Residential Address</label>
+                           
                                 </div>
 
                                 {{-- Country --}}
@@ -377,10 +378,7 @@
                                 </div>
 
                             </div>
-                            {{-- <div class="col-md-12 mb-2">
-                                <input type="checkbox" id="same_as_client" />
-                                <label for="same_as_client">Same as Client Residential Address</label>
-                            </div> --}}
+                           
 
                             <!-- Office Address -->
                             <div class="row">
