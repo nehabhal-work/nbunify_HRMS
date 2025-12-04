@@ -198,77 +198,6 @@ $(document).ready(function () {
 
 
 
-$(document).ready(function () {
-
-    function initSelect2() {
-        $('.select2').select2({
-            width: '100%',
-            dropdownAutoWidth: true
-        });
-    }
-
-    initSelect2();
-
-    function calculateTotal() {
-        let total = 0;
-        $('.nominee_percentage').each(function () {
-            let val = parseFloat($(this).val());
-            if (!isNaN(val)) total += val;
-        });
-        return total;
-    }
-
-    // When user enters percentage
-    $(document).on('focusout', '.nominee_percentage', function () {
-
-        let total = calculateTotal();
-
-        if (total < 100) {
-            $('#add_nominee_btn').removeClass('d-none'); // show add button
-        } else {
-            $('#add_nominee_btn').addClass('d-none'); // hide when total = 100
-        }
-    });
-
-    // Add More Nominee
-    $('#add_nominee_btn').on('click', function () {
-
-        let total = calculateTotal();
-        let remaining = 100 - total;
-
-        if (remaining <= 0) {
-            alert("Total percentage cannot exceed 100%");
-            return;
-        }
-
-        let clone = $('.nominee-row:first').clone();
-
-        // Reset Clone Fields
-        clone.find('.select2').select2('destroy'); // remove select2 to avoid double
-        clone.find('.nominee_name').val('');
-        clone.find('.nominee_percentage').val(remaining); // auto set remaining %
-        clone.find('.removeRow').removeClass('d-none'); // show remove button
-
-        $('#nominee_wrapper').append(clone);
-
-        initSelect2(); // reinitialize select2
-
-        if (remaining === 0) {
-            $('#add_nominee_btn').addClass('d-none');
-        }
-    });
-
-    // Remove nominee row
-    $(document).on('click', '.removeRow', function () {
-        $(this).closest('.nominee-row').remove();
-
-        let total = calculateTotal();
-        if (total < 100) {
-            $('#add_nominee_btn').removeClass('d-none');
-        }
-    });
-
-});
 
 
 
@@ -334,3 +263,99 @@ $(document).ready(function () {
 //-------------END Investment Scheme JS--------------------------
 
 
+
+
+
+//--------------------------------------
+// ===== Generic clone function=====
+// ------------------------------------------
+$(document).ready(function () {
+    function handleClone(container, rowClass, addBtn, removeBtn) {
+
+        // ADD New Row
+        $(document).on("click", addBtn, function () {
+
+            let $lastRow = $(container).find(rowClass).last();
+            let $newRow = $lastRow.clone(false, false); // clone simple
+
+            // REMOVE existing Select2 wrappers from clone
+            $newRow.find(".select2-container").remove();
+
+            // RESET select fields to blank
+            $newRow.find("select").each(function () {
+                $(this).val("");              // reset value
+                $(this).removeClass("select2-hidden-accessible"); // remove old select2 markers
+                $(this).removeAttr("data-select2-id");            // remove old select2 instance id
+            });
+
+            // RESET input fields
+            $newRow.find("input").val("");
+
+            // Append new row
+            $(container).append($newRow);
+
+            // Re-initialize Select2 ONLY inside the new row
+            $newRow.find("select").select2();
+        });
+
+        // REMOVE Row
+        $(document).on("click", removeBtn, function () {
+            let $rows = $(container).find(rowClass);
+            if ($rows.length > 1) {
+                $(this).closest(rowClass).remove();
+            } else {
+                alert("At least one nominee must remain.");
+            }
+        });
+    }
+
+    handleClone("#nomineeContainer", ".nomineeRow", "#addNomineeRow", ".removeNomineeRow");
+    handleClone("#instrumentContainer", ".instrumentRow", ".addInstrumentRow", ".removeInstrumentRow");
+
+
+    // ------------------------------
+    //     PERCENTAGE CALCULATION
+    // ------------------------------
+
+    function recalcPercentages() {
+        let total = 0;
+
+        $(".nominee_percentage").each(function () {
+            let v = parseFloat($(this).val());
+            if (!isNaN(v)) total += v;
+        });
+
+        // Prevent more than 100%
+        if (total > 100) {
+            alert("Total percentage cannot exceed 100%");
+            return false;
+        }
+
+        // Enable/Disable Add Button
+        if (total >= 100) {
+            $("#addNomineeRow").prop("disabled", true);
+        } else {
+            $("#addNomineeRow").prop("disabled", false);
+        }
+
+        return total;
+    }
+
+    // Auto-update after user enters value
+    $(document).on("keyup change", ".nominee_percentage", function () {
+        let total = recalcPercentages();
+
+        if (total > 100) {
+            $(this).val("");
+            recalcPercentages();
+            return;
+        }
+
+        // Auto-fill remaining for NEXT row only when user finishes typing
+        if (total < 100) {
+            let remaining = 100 - total;
+
+            let $rows = $(".nominee_percentages");
+        }
+    });
+});

@@ -86,13 +86,6 @@
                                                 <i class="bx bx-dots-vertical-rounded"></i>
                                             </button>
                                             <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="{{ route('investment.bank-instrument') }}"><i
-                                                        class="bx bx-book-add me-1"></i>
-                                                    Add Bank Instrument</a>
-                                                <a class="dropdown-item"
-                                                    href="{{ route('investment.standing-instruction') }}"><i
-                                                        class="bx bx-book-add me-1"></i>
-                                                    Add Standing Instruction</a>
                                                 <a class="dropdown-item" href="#"><i class="bx bx-edit-alt me-1"></i>
                                                     View </a>
                                                 <a class="dropdown-item" href="#"><i class="bx bx-edit-alt me-1"></i>
