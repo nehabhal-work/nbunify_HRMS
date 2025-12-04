@@ -57,10 +57,13 @@
                             <tbody>
                                 @foreach ($clients as $d)
                                     <tr>
-                                        <td>{{ $d->client_code }}</td>
+                                        <td>
+                                             <a href="{{ route('clients.edit', $d->id) }}" class="text-reset">
+                                               {{ $d->client_code }}
+                                            </a>
+                                        </td>
                                         <td>
                                             <a href="{{ route('clients.show', $d->id) }}" class="">
-                                                <i class="bx bx-bank me-1"></i>
                                                 {{ strtoupper($d->name) }}
                                             </a>
                                         </td>
