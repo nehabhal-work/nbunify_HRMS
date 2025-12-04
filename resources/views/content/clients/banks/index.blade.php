@@ -199,7 +199,6 @@
                                 id="attachment_cancelled_cheque" name="attachment_cancelled_cheque"
                                 onchange="uploadTempFile(this, 'attachment_cancelled_cheque')"
                                 accept=".jpg,.jpeg,.png,.pdf">
-
                             <button class="btn btn-outline-danger" type="button"
                                 onclick="document.getElementById('attachment_cancelled_cheque').value = ''">✕</button>
                         </div>
@@ -208,13 +207,14 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
 
-                        <input type="hidden" id="attachment_cancelled_cheque_url" name="attachment_cancelled_cheque_url"
-                            value="{{ old('attachment_cancelled_cheque_url') }}">
+                        <input type="hidden" id="attachment_cancelled_cheque_url"
+                            value="{{ old('attachment_cancelled_cheque_url') }}" name="attachment_cancelled_cheque_url">
 
                         @if (old('attachment_cancelled_cheque_url'))
-                            <div id="attachment_cancelled_cheque_preview" class="position-relative d-inline-block mt-2">
+                            <div id="attachment_cancelled_cheque_preview" class="position-relative d-inline-block">
                                 <img src="{{ old('attachment_cancelled_cheque_url') }}" width="100" class="rounded">
 
+                                <!-- Remove (X) button -->
                                 <button type="button"
                                     class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
                                     onclick="removeImage('attachment_cancelled_cheque')">
@@ -222,6 +222,7 @@
                                 </button>
                             </div>
                         @endif
+
                     </div>
 
                     <!-- Primary -->
@@ -417,27 +418,15 @@
                                                 <td><b>{{ $b->is_primary ? 'Yes' : 'No' }}</b></td>
 
                                                 <th class="bg-secondary-subtle ">Cheque Photo</th>
-                                                <td>
-                                                    @php
-                                                        $previewUrl = $b->attachment_cancelled_cheque_url ?? null;
-                                                    @endphp
-
-                                                    @if ($previewUrl)
-                                                        <div class="mt-1">
-                                                            <img src="{{ $previewUrl }}" width="140"
-                                                                class="rounded border shadow-sm">
-                                                        </div>
-
-                                                        {{-- If file is PDF, show an open link --}}
-                                                        @if (Str::endsWith($previewUrl, ['.pdf', '.PDF']))
-                                                            <a href="{{ $previewUrl }}" target="_blank"
-                                                                class="btn btn-outline-primary btn-sm mt-2">
-                                                                View PDF
+                                                <td>                                          
+                                                    @if ($b->attachment_cancelled_cheque_url)
+                                                        <div class="text-center">
+                                                            <a href="{{ $client->attachment_cancelled_cheque_url }}"
+                                                                target="_blank">
+                                                                <img src="{{ $client->attachment_cancelled_cheque_url }}"
+                                                                    class="attach-img">
                                                             </a>
-                                                        @endif
-                                                    @else
-                                                        <p class="text-muted fst-italic">No cheque image uploaded.
-                                                        </p>
+                                                        </div>
                                                     @endif
                                                 </td>
                                             </tr>
