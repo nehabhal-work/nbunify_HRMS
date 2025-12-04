@@ -87,6 +87,8 @@
                                 <input type="date" class="form-control  @error('dob') is-invalid @enderror"
                                     id="dob" name="dob" value="{{ old('dob') }}"
                                     max="{{ now()->toDateString() }}" placeholder="Select Date">
+
+                                    max="{{ now()->toDateString() }}" placeholder="Select Date">
                                 @error('dob')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -133,7 +135,8 @@
                                         Married</option>
                                     <option value="divorcee" {{ old('marital_status') == 'divorcee' ? 'selected' : '' }}>
                                         Divorcee</option>
-                                    <option value="widow" {{ old('marital_status') == 'widow' ? 'selected' : '' }}>Widow
+                                    <option value="widowed" {{ old('marital_status') == 'widowed' ? 'selected' : '' }}>
+                                        Widow
                                     </option>
                                     <option value="other" {{ old('marital_status') == 'other' ? 'selected' : '' }}>Other
                                     </option>

@@ -88,13 +88,21 @@
                                             <div class="dropdown-menu">
                                                 <a class="dropdown-item" href="{{ route('investment.bank-instrument') }}"><i
                                                         class="bx bx-book-add me-1"></i>
-                                                    Add Bank Instruction</a>
+                                                    Add Bank Instrument</a>
                                                 <a class="dropdown-item"
                                                     href="{{ route('investment.standing-instruction') }}"><i
                                                         class="bx bx-book-add me-1"></i>
                                                     Add Standing Instruction</a>
                                                 <a class="dropdown-item" href="#"><i class="bx bx-edit-alt me-1"></i>
-                                                    View Payout</a>
+                                                    View </a>
+                                                <a class="dropdown-item" href="#"><i class="bx bx-edit-alt me-1"></i>
+                                                    Renewal </a>
+                                                <a class="dropdown-item" href="#"><i class="bx bx-edit-alt me-1"></i>
+                                                    Merge </a>
+                                                <a class="dropdown-item" href="#"><i class="bx bx-edit-alt me-1"></i>
+                                                    Claim </a>
+                                                <a class="dropdown-item" href="#"><i class="bx bx-edit-alt me-1"></i>
+                                                    Maturity </a>
 
                                             </div>
                                         </div>
@@ -189,7 +197,8 @@
                                                     Add Instruction</a>
                                                 <a class="dropdown-item" href="#"><i class="bx bx-edit-alt me-1"></i>
                                                     Update Payout</a>
-                                                <a class="dropdown-item" href="#"><i class="bx bx-show me-1"></i> View
+                                                <a class="dropdown-item" href="#"><i class="bx bx-show me-1"></i>
+                                                    View
                                                     Details</a>
                                             </div>
                                         </div>
