@@ -496,49 +496,48 @@
         });
     </script>
 
-   <script>
-$(document).ready(function() {
+    <script>
+        $(document).ready(function() {
 
-    $('#same_as_client').on('change', function() {
+            $('#same_as_client').on('change', function() {
 
-        let citySelect = $('#res_city_code');
-        let clientCityId = '{{ $client->res_city_code ?? '' }}';
-        let clientCityName = '{{ $client->res_city ?? '' }}';
+                let citySelect = $('#res_city_code');
+                let clientCityId = '{{ $client->res_city_code ?? '' }}';
+                let clientCityName = '{{ $client->res_city ?? '' }}';
 
-        if ($(this).is(':checked')) {
-            // copy client fields
-            $('#res_address').val('{{ $client->res_address ?? '' }}');
-            $('#res_country_code').val('{{ $client->res_country_code ?? 'IND' }}').trigger('change');
-            $('#res_state_code').val('{{ $client->res_state_code ?? 'MH' }}').trigger('change');
+                if ($(this).is(':checked')) {
+                    // copy client fields
+                    $('#res_address').val('{{ $client->res_address ?? '' }}');
+                    $('#res_country_code').val('{{ $client->res_country_code ?? 'IND' }}').trigger(
+                        'change');
+                    $('#res_state_code').val('{{ $client->res_state_code ?? 'MH' }}').trigger('change');
 
-            // handle city select for Select2
-            if(citySelect.find("option[value='" + clientCityId + "']").length === 0) {
-                // append the city if it doesn't exist
-                let newOption = new Option(clientCityName, clientCityId, true, true);
-                citySelect.append(newOption).trigger('change');
-            } else {
-                // select existing city
-                citySelect.val(clientCityId).trigger('change');
-            }
+                    // handle city select for Select2
+                    if (citySelect.find("option[value='" + clientCityId + "']").length === 0) {
+                        // append the city if it doesn't exist
+                        let newOption = new Option(clientCityName, clientCityId, true, true);
+                        citySelect.append(newOption).trigger('change');
+                    } else {
+                        // select existing city
+                        citySelect.val(clientCityId).trigger('change');
+                    }
 
-            $('#res_pincode').val('{{ $client->res_pincode ?? '' }}');
+                    $('#res_pincode').val('{{ $client->res_pincode ?? '' }}');
 
-        } else {
-            // clear fields
-            $('#res_address').val('');
-            $('#res_country_code').val('').trigger('change');
-            $('#res_state_code').val('').trigger('change');
+                } else {
+                    // clear fields
+                    $('#res_address').val('');
+                    $('#res_country_code').val('').trigger('change');
+                    $('#res_state_code').val('').trigger('change');
 
-            // clear city select
-            citySelect.val('').trigger('change');
+                    // clear city select
+                    citySelect.val('').trigger('change');
 
-            $('#res_pincode').val('');
-        }
+                    $('#res_pincode').val('');
+                }
 
-    });
+            });
 
-});
-</script>
-
-
+        });
+    </script>
 @endpush
