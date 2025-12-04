@@ -29,6 +29,10 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('/bday', function () {
+    return view('content.clients.bday-list');
+})->middleware(['auth', 'verified'])->name('bday');
+
 
 
 Route::middleware(['auth', 'verified'])->prefix('master')->name('master.')->group(function () {
