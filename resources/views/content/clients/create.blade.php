@@ -86,8 +86,7 @@
                                 <label class="form-label" for="dob">Date of Birth</label>
                                 <input type="date" class="form-control  @error('dob') is-invalid @enderror"
                                     id="dob" name="dob" value="{{ old('dob') }}"
-                                    max="{{ now()->toDateString() }}"  placeholder="Select Date">
-
+                                    max="{{ now()->toDateString() }}" placeholder="Select Date">
                                 @error('dob')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -786,4 +785,53 @@
 
         });
     </script>
+
+   <script>
+$(document).ready(function () {
+    $('#dob').on('change', function () {
+
+        let dob = $(this).val();
+        let $input = $(this);
+        let $container = $input.closest('div');
+
+        // Remove old error
+        $container.find('.invalid-feedback').remove();
+        $input.removeClass('is-invalid');
+
+        if (!dob) return;
+
+        let selected = new Date(dob);
+        let today = new Date();
+
+        let year = selected.getFullYear();
+        let currentYear = today.getFullYear();
+
+        let message = "";
+
+        // ❌ Year too old (not realistic)
+        if (year < 1900) {
+            message = "Please select a valid year.";
+        }
+        // ❌ Year ahead of current year
+        else if (year > currentYear) {
+            message = "Year cannot be greater than the current year.";
+        }
+        // ❌ Month greater (same year)
+        else if (year === currentYear && selected.getMonth() > today.getMonth()) {
+            message = "Month cannot be greater than the current month.";
+        }
+        // ❌ Full date in future
+        else if (selected > today) {
+            message = "Date cannot be in the future.";
+        }
+
+        // show message if needed
+        if (message !== "") {
+            $input.addClass('is-invalid');
+            $container.append(`<div class="invalid-feedback">${message}</div>`);
+        }
+    });
+});
+</script>
+
 @endpush

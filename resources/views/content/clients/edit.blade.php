@@ -998,7 +998,11 @@
 
                                 @if ($client->attachment_client_photo_url)
                                     <div id="attachment_client_photo_previews" class="position-relative d-inline-block">
-                                        <img src="{{ $client->attachment_client_photo_url }}" class="rounded">
+                                        {{-- <img src="{{ $client->attachment_client_photo_url }}" class="rounded"> --}}
+                                        <a href="{{ $client->attachment_client_photo_url }}" target="_blank">
+                                            <img src="{{ $client->attachment_client_photo_url }}" class="rounded">
+                                        </a>
+
 
                                         <!-- Remove (X) button -->
                                         <button type="button"
@@ -1043,7 +1047,11 @@
 
                                 @if ($client->attachment_pan_url)
                                     <div id="attachment_pan_previews" class="position-relative d-inline-block">
-                                        <img src="{{ $client->attachment_pan_url }}" class="rounded">
+                                        {{-- <img src="{{ $client->attachment_pan_url }}" class="rounded"> --}}
+                                        <a href="{{ $client->attachment_pan_url }}" target="_blank">
+                                            <img src="{{ $client->attachment_pan_url }}" class="rounded">
+                                        </a>
+
 
                                         <!-- Remove (X) button -->
                                         <button type="button"
@@ -1088,7 +1096,10 @@
 
                                 @if ($client->attachment_aadhar_front_url)
                                     <div id="attachment_aadhar_front_previews" class="position-relative d-inline-block">
-                                        <img src="{{ $client->attachment_aadhar_front_url }}" class="rounded">
+                                        {{-- <img src="{{ $client->attachment_aadhar_front_url }}" class="rounded"> --}}
+                                        <a href="{{ $client->attachment_aadhar_front_url }}" target="_blank">
+                                            <img src="{{ $client->attachment_aadhar_front_url }}" class="rounded">
+                                        </a>
 
                                         <!-- Remove (X) button -->
                                         <button type="button"
@@ -1133,7 +1144,10 @@
 
                                 @if ($client->attachment_aadhar_back_url)
                                     <div id="attachment_aadhar_back_previews" class="position-relative d-inline-block">
-                                        <img src="{{ $client->attachment_aadhar_back_url }}" class="rounded">
+                                        {{-- <img src="{{ $client->attachment_aadhar_back_url }}" class="rounded"> --}}
+                                        <a href="{{ $client->attachment_aadhar_back_url }}" target="_blank">
+                                            <img src="{{ $client->attachment_aadhar_back_url }}" class="rounded">
+                                        </a>
 
                                         <!-- Remove (X) button -->
                                         <button type="button"
@@ -1179,7 +1193,10 @@
 
                                 @if ($client->attachment_signature_url)
                                     <div id="attachment_signature_previews" class="position-relative d-inline-block">
-                                        <img src="{{ $client->attachment_signature_url }}" class="rounded">
+                                        {{-- <img src="{{ $client->attachment_signature_url }}" class="rounded"> --}}
+                                        <a href="{{ $client->attachment_signature_url }}" target="_blank">
+                                            <img src="{{ $client->attachment_signature_url }}" class="rounded">
+                                        </a>
 
                                         <!-- Remove (X) button -->
                                         <button type="button"
@@ -1223,7 +1240,10 @@
 
                                 @if ($client->attachment_ckyc_url)
                                     <div id="attachment_ckyc_preview" class="position-relative d-inline-block">
-                                        <img src="{{ $client->attachment_ckyc_url }}" class="rounded">
+                                        {{-- <img src="{{ $client->attachment_ckyc_url }}" class="rounded"> --}}
+                                        <a href="{{ $client->attachment_ckyc_url }}" target="_blank">
+                                            <img src="{{ $client->attachment_ckyc_url }}" class="rounded">
+                                        </a>
 
                                         <!-- Remove (X) button -->
                                         <button type="button"
@@ -1268,8 +1288,10 @@
                                 @if ($client->attachment_other_documents_url)
                                     <div id="attachment_other_documents_previews"
                                         class="position-relative d-inline-block">
-                                        <img src="{{ $client->attachment_other_documents_url }}" class="rounded">
-
+                                        {{-- <img src="{{ $client->attachment_other_documents_url }}" class="rounded"> --}}
+                                        <a href="{{ $client->attachment_other_documents_url }}" target="_blank">
+                                            <img src="{{ $client->attachment_other_documents_url }}" class="rounded">
+                                        </a>
                                         <!-- Remove (X) button -->
                                         <button type="button"
                                             class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
@@ -1358,6 +1380,54 @@
                 }
             });
 
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('#dob').on('change', function() {
+
+                let dob = $(this).val();
+                let $input = $(this);
+                let $container = $input.closest('div');
+
+                // Remove old error
+                $container.find('.invalid-feedback').remove();
+                $input.removeClass('is-invalid');
+
+                if (!dob) return;
+
+                let selected = new Date(dob);
+                let today = new Date();
+
+                let year = selected.getFullYear();
+                let currentYear = today.getFullYear();
+
+                let message = "";
+
+                // ❌ Year too old (not realistic)
+                if (year < 1900) {
+                    message = "Please select a valid year.";
+                }
+                // ❌ Year ahead of current year
+                else if (year > currentYear) {
+                    message = "Year cannot be greater than the current year.";
+                }
+                // ❌ Month greater (same year)
+                else if (year === currentYear && selected.getMonth() > today.getMonth()) {
+                    message = "Month cannot be greater than the current month.";
+                }
+                // ❌ Full date in future
+                else if (selected > today) {
+                    message = "Date cannot be in the future.";
+                }
+
+                // show message if needed
+                if (message !== "") {
+                    $input.addClass('is-invalid');
+                    $container.append(`<div class="invalid-feedback">${message}</div>`);
+                }
+            });
         });
     </script>
 @endpush

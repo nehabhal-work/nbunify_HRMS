@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Carbon\Carbon;
+
 
 class ClientRequest extends FormRequest
 {
@@ -22,6 +24,7 @@ class ClientRequest extends FormRequest
     public function rules(): array
     {
         return [
+           
             'name' => 'required|string|max:50',
             'gender' => 'required|in:male,female,other',
             'dob' => 'required|date|before:today',
@@ -36,7 +39,8 @@ class ClientRequest extends FormRequest
             'mobile_no' => 'required|string|max:15',
             'whatsapp_no' => 'nullable|string|max:15',
             'landline_no' => 'nullable|string|max:15',
-            'email' => 'required|email',
+            // 'email' => 'required|email',
+            'email' => 'required|email:rfc,dns',
             'res_address' => 'nullable|string|max:255',
             'res_country' => 'nullable|string|max:255',
             'res_country_code' => 'nullable|string|max:255',
@@ -89,7 +93,7 @@ class ClientRequest extends FormRequest
             'errors' => $validator->errors()->toArray(),
             'input' => $this->all()
         ]);
-        
+
         parent::failedValidation($validator);
     }
 }
