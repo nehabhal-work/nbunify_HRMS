@@ -24,8 +24,9 @@
     @endif
 
     <h4 class="fw-bold py-3 mb-4">
-        <span class="text-muted fw-light">Master /</span> <a href="{{ route('master.companies.index') }}">Client edit
-            {{ $client->id }}</a>
+        <span class="text-muted fw-light">Master / Clients / </span>
+        <span class="text-dark">Edit</span>
+        <span class="text-primary text-uppercase"> — {{ $client->name }}</span>
     </h4>
 
 

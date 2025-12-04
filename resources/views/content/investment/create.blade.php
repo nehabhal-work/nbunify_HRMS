@@ -260,6 +260,217 @@
         </div>
 
 
+        {{-- Bank / Instrument Details --}}
+        <div class="row align-items-stretch">
+            <div class="col-md-12">
+                <div class="card mb-4">
+
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Bank / Instrument Details</h5>
+                        <small class="text-muted float-end">Bank - Instrument Details</small>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="row g-3">
+
+                            <!-- LEFT SIDE -->
+                            <div class="col-md-6">
+                                <h6 class="fw-bold mb-3 text-primary">Client Instrument Details</h6>
+
+                                <div class="row g-3">
+
+                                    <!-- Instrument -->
+                                    <div class="col-md-4">
+                                        <label class="form-label">Instrument <span class="text-danger">*</span></label>
+                                        <select class="form-select @error('instrument') is-invalid @enderror"
+                                            name="instrument" required>
+                                            <option value="">Select</option>
+                                            <option value="rtgs" {{ old('instrument') == 'rtgs' ? 'selected' : '' }}>
+                                                RTGS
+                                            </option>
+                                            <option value="cheque" {{ old('instrument') == 'cheque' ? 'selected' : '' }}>
+                                                CHEQUE</option>
+                                            <option value="upi" {{ old('instrument') == 'upi' ? 'selected' : '' }}>UPI
+                                            </option>
+                                            <option value="neft" {{ old('instrument') == 'neft' ? 'selected' : '' }}>
+                                                NEFT
+                                            </option>
+                                            <option value="imps" {{ old('instrument') == 'imps' ? 'selected' : '' }}>
+                                                IMPS
+                                            </option>
+                                        </select>
+                                        @error('instrument')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <!-- Instrument Date -->
+                                    <div class="col-md-4">
+                                        <label class="form-label">Instrument Date <span
+                                                class="text-danger">*</span></label>
+                                        <input type="date"
+                                            class="form-control @error('instrument_date') is-invalid @enderror"
+                                            name="instrument_date" value="{{ old('instrument_date') }}"
+                                            max="{{ date('Y-m-d') }}" required>
+                                        @error('instrument_date')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <!-- Reference No -->
+                                    <div class="col-md-4">
+                                        <label class="form-label">Reference No <span class="text-danger">*</span></label>
+                                        <input type="text"
+                                            class="form-control @error('reference_no') is-invalid @enderror"
+                                            name="reference_no" value="{{ old('reference_no') }}" maxlength="20"
+                                            required>
+                                        @error('reference_no')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <!-- Instrument Amount -->
+                                    <div class="col-md-4">
+                                        <label class="form-label">Instrument Amount <span
+                                                class="text-danger">*</span></label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">&#8377;</span>
+                                            <input type="number"
+                                                class="form-control bg-secondary-subtle onlydigit instrument_amt @error('instrument_amt') is-invalid @enderror"
+                                                name="instrument_amt" value="{{ old('instrument_amt') }}" required>
+                                        </div>
+                                        @error('instrument_amt')
+                                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <!-- Client Output Bank -->
+                                    <div class="col-md-8">
+                                        <label class="form-label">Client Output Bank <span
+                                                class="text-danger">*</span></label>
+                                        <select
+                                            class="form-select clientOutputBank @error('client_output_bank') is-invalid @enderror"
+                                            name="client_output_bank" required>
+                                            <option value="">Select Bank</option>
+                                        </select>
+                                        @error('client_output_bank')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <!-- Instrument Image -->
+                                    <div class="col-md-12">
+                                        <label class="form-label">Instrument Image <span
+                                                class="text-danger">*</span></label>
+                                        <input type="file"
+                                            class="form-control fileInput instrumentImage @error('instrumentImage') is-invalid @enderror"
+                                            name="instrumentImage" accept="image/*,application/pdf">
+                                        <img src="" class="imgPreview mt-2 rounded border"
+                                            style="width:100px; display:none;">
+                                        @error('instrumentImage')
+                                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <!-- RIGHT SIDE -->
+                            <div class="col-md-6 p-3 rounded" style="background:#f8f9fa;">
+
+                                <div class="row g-3">
+                                    <h6 class="fw-bold mb-3 text-success">Company Credit Details</h6>
+
+                                    <!-- Company Bank -->
+                                    <div class="col-md-6">
+                                        <label class="form-label">
+                                            Company Bank <span class="text-danger">*</span>
+                                        </label>
+                                        <select class="form-select @error('company_bank_id') is-invalid @enderror"
+                                            name="company_bank_id" required>
+                                            <option value="">Select Company Bank</option>
+                                        </select>
+                                        @error('company_bank_id')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <!-- Company Bank Reference No -->
+                                    <div class="col-md-4">
+                                        <label class="form-label">
+                                            Company Bank Reference No <span class="text-danger">*</span>
+                                        </label>
+                                        <input type="text"
+                                            class="form-control @error('company_reference_no') is-invalid @enderror"
+                                            name="company_reference_no" value="{{ old('company_reference_no') }}"
+                                            maxlength="20" required>
+                                        @error('company_reference_no')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <!-- Effective / Credit Date -->
+                                    <div class="col-md-4">
+                                        <label class="form-label">
+                                            Effective / Credit Date <span class="text-danger">*</span>
+                                        </label>
+                                        <input type="date"
+                                            class="form-control @error('effective_date') is-invalid @enderror"
+                                            name="effective_date" value="{{ old('effective_date') }}"
+                                            max="{{ date('Y-m-d') }}" required>
+                                        @error('effective_date')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- 🔹 NEW OUTWARD / PAYOUT DETAILS SECTION -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5>Outward Bank / Payout Details</h5>
+                <div id="outwardContainer" class="mb-2">
+                    <div class="row g-3 outwardRow mb-2">
+                        <!-- Company Bank (From) -->
+                        <div class="col-md-4">
+                            <label class="form-label text-danger">From Company Bank *</label>
+                            <select class="form-select" id="out_company_bank" name="out_company_bank" required>
+                                <option value="">Select Company Bank</option>
+                                {{-- @foreach ($elsBank as $cb)
+                                    <option value="{{ $cb->id }}" data-acctno="{{ $cb->acctno }}"
+                                        data-ifsc="{{ $cb->ifsc }}" data-name="{{ $cb->name }}">
+                                        {{ $cb->name . '-' . $cb->acctno }}
+                                    </option>
+                                @endforeach --}}
+                            </select>
+
+                        </div>
+
+                        <!-- Client Bank (To) -->
+                        <div class="col-md-4">
+                            <label class="form-label text-danger">To Client Bank *</label>
+                            <select class="form-select to_client_bank" name="to_client_bank" required>
+                                <option value="">Select Client Bank</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
 
         {{-- Nominee Information --}}
         <div class="row align-items-stretch">
@@ -269,154 +480,41 @@
                         <h5 class="mb-0">Nominee Information</h5>
                         <small class="text-muted float-end">Nominee Details</small>
                     </div>
+
                     <div class="card-body">
                         <div class="row g-3">
 
-                            <div class="col-md-3 " id="div_other_holders">
-                                <label for="other_holders" class="form-label">Nominees name #1 </label>
-                                <select class="form-select select2 @error('other_holders') is-invalid @enderror"
-                                    name="other_holders[]" id="other_holders">
-                                    <option value="">Select Holder</option>
-                                    @foreach ($clients as $d)
-                                        <option value="{{ $d->id }}"
-                                            {{ is_array(old('other_holders')) && in_array($d->id, old('other_holders')) ? 'selected' : '' }}>
-                                            {{ ucfirst(strtolower($d->name)) }}
-                                        </option>
-                                    @endforeach
-                                </select>
-
-                                @error('other_holders')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
-
-
-
-                            <div class="col-md-2" id="addi_roi_box">
-                                <label for="addi_roi" class="form-label">Nominee #1 % </label>
-                                <div class="input-group">
-                                    <input type="text"
-                                        class="form-control onlydigit bg-info-subtle @error('addi_roi') is-invalid @enderror"
-                                        name="" id="" maxlength="5">
-                                    <span class="input-group-text">%</span>
+                            @for ($i = 0; $i < 10; $i++)
+                                <div class="col-md-3">
+                                    <label class="form-label">Nominee Name #{{ $i + 1 }}</label>
+                                    <select class="form-select select2 nominee_name" name="other_holders[]">
+                                        <option value="">Select Holder</option>
+                                        @foreach ($clients as $d)
+                                            <option value="{{ $d->id }}">{{ ucfirst(strtolower($d->name)) }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                 </div>
-                                <div id="addi-roi-message"></div>
 
-                                @error('addi_roi')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
-                            <div class="col-md-3 " id="div_other_holders">
-                                <label for="other_holders" class="form-label">Nominees name #2 </label>
-                                <select class="form-select select2 @error('other_holders') is-invalid @enderror"
-                                    name="other_holders[]" id="other_holders">
-                                    <option value="">Select Holder</option>
-                                    @foreach ($clients as $d)
-                                        <option value="{{ $d->id }}"
-                                            {{ is_array(old('other_holders')) && in_array($d->id, old('other_holders')) ? 'selected' : '' }}>
-                                            {{ ucfirst(strtolower($d->name)) }}
-                                        </option>
-                                    @endforeach
-                                </select>
-
-                                @error('other_holders')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
-
-
-
-                            <div class="col-md-2" id="addi_roi_box">
-                                <label for="addi_roi" class="form-label">Nominee #2 % </label>
-                                <div class="input-group">
-                                    <input type="text"
-                                        class="form-control onlydigit bg-info-subtle @error('addi_roi') is-invalid @enderror"
-                                        name="" id="" maxlength="5">
-                                    <span class="input-group-text">%</span>
+                                <div class="col-md-2">
+                                    <label class="form-label">Percentage %</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control onlydigit nominee_percentage"
+                                            name="nominee_percentage[]" maxlength="5">
+                                        <span class="input-group-text">%</span>
+                                    </div>
                                 </div>
-                                <div id="addi-roi-message"></div>
-
-                                @error('addi_roi')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
-                            <div class="col-md-3 " id="div_other_holders">
-                                <label for="other_holders" class="form-label">Nominees name #3 </label>
-                                <select class="form-select select2 @error('other_holders') is-invalid @enderror"
-                                    name="other_holders[]" id="other_holders">
-                                    <option value="">Select Holder</option>
-                                    @foreach ($clients as $d)
-                                        <option value="{{ $d->id }}"
-                                            {{ is_array(old('other_holders')) && in_array($d->id, old('other_holders')) ? 'selected' : '' }}>
-                                            {{ ucfirst(strtolower($d->name)) }}
-                                        </option>
-                                    @endforeach
-                                </select>
-
-                                @error('other_holders')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
-
-
-
-                            <div class="col-md-2" id="addi_roi_box">
-                                <label for="addi_roi" class="form-label">Nominee #3 % </label>
-                                <div class="input-group">
-                                    <input type="text"
-                                        class="form-control onlydigit bg-info-subtle @error('addi_roi') is-invalid @enderror"
-                                        name="" id="" maxlength="5">
-                                    <span class="input-group-text">%</span>
-                                </div>
-                                <div id="addi-roi-message"></div>
-
-                                @error('addi_roi')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
-                            <div class="col-md-3 " id="div_other_holders">
-                                <label for="other_holders" class="form-label">Nominees name #4</label>
-                                <select class="form-select select2 @error('other_holders') is-invalid @enderror"
-                                    name="other_holders[]" id="other_holders">
-                                    <option value="">Select Holder</option>
-                                    @foreach ($clients as $d)
-                                        <option value="{{ $d->id }}"
-                                            {{ is_array(old('other_holders')) && in_array($d->id, old('other_holders')) ? 'selected' : '' }}>
-                                            {{ ucfirst(strtolower($d->name)) }}
-                                        </option>
-                                    @endforeach
-                                </select>
-
-                                @error('other_holders')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
-
-
-
-                            <div class="col-md-2" id="addi_roi_box">
-                                <label for="addi_roi" class="form-label">Nominee #4 % </label>
-                                <div class="input-group">
-                                    <input type="text"
-                                        class="form-control onlydigit bg-info-subtle @error('addi_roi') is-invalid @enderror"
-                                        name="" id="" maxlength="5">
-                                    <span class="input-group-text">%</span>
-                                </div>
-                                <div id="addi-roi-message"></div>
-
-                                @error('addi_roi')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
-
-
-
+                            @endfor
 
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+
+
+
+
 
 
         <div class="card shadow-sm mt-3" id="resultCard" style="display:none;">
@@ -515,7 +613,7 @@
 
         <!-- Submit -->
         <div class="text-end mt-4">
-            <button type="button" id="calculateBtn" class="btn btn-primary px-4">Go</button>
+            <button type="button" id="calculateBtn1" class="btn btn-primary px-4">Submit</button>
         </div>
 
     </form>

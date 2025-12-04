@@ -197,6 +197,81 @@ $(document).ready(function () {
 
 
 
+
+$(document).ready(function () {
+
+    function initSelect2() {
+        $('.select2').select2({
+            width: '100%',
+            dropdownAutoWidth: true
+        });
+    }
+
+    initSelect2();
+
+    function calculateTotal() {
+        let total = 0;
+        $('.nominee_percentage').each(function () {
+            let val = parseFloat($(this).val());
+            if (!isNaN(val)) total += val;
+        });
+        return total;
+    }
+
+    // When user enters percentage
+    $(document).on('focusout', '.nominee_percentage', function () {
+
+        let total = calculateTotal();
+
+        if (total < 100) {
+            $('#add_nominee_btn').removeClass('d-none'); // show add button
+        } else {
+            $('#add_nominee_btn').addClass('d-none'); // hide when total = 100
+        }
+    });
+
+    // Add More Nominee
+    $('#add_nominee_btn').on('click', function () {
+
+        let total = calculateTotal();
+        let remaining = 100 - total;
+
+        if (remaining <= 0) {
+            alert("Total percentage cannot exceed 100%");
+            return;
+        }
+
+        let clone = $('.nominee-row:first').clone();
+
+        // Reset Clone Fields
+        clone.find('.select2').select2('destroy'); // remove select2 to avoid double
+        clone.find('.nominee_name').val('');
+        clone.find('.nominee_percentage').val(remaining); // auto set remaining %
+        clone.find('.removeRow').removeClass('d-none'); // show remove button
+
+        $('#nominee_wrapper').append(clone);
+
+        initSelect2(); // reinitialize select2
+
+        if (remaining === 0) {
+            $('#add_nominee_btn').addClass('d-none');
+        }
+    });
+
+    // Remove nominee row
+    $(document).on('click', '.removeRow', function () {
+        $(this).closest('.nominee-row').remove();
+
+        let total = calculateTotal();
+        if (total < 100) {
+            $('#add_nominee_btn').removeClass('d-none');
+        }
+    });
+
+});
+
+
+
 // ******************************************************
 // Investment Scheme JS
 // ******************************************************
