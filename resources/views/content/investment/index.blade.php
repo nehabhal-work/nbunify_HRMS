@@ -88,13 +88,17 @@
                                             <div class="dropdown-menu">
                                                 <a class="dropdown-item" href="#"><i class="bx bx-edit-alt me-1"></i>
                                                     View </a>
-                                                <a class="dropdown-item" href="#"><i class="bx bx-edit-alt me-1"></i>
+                                                <a class="dropdown-item" href="{{ route('investment.renew') }}"><i
+                                                        class="bx bx-edit-alt me-1"></i>
                                                     Renewal </a>
-                                                <a class="dropdown-item" href="#"><i class="bx bx-edit-alt me-1"></i>
+                                                <a class="dropdown-item" href="{{ route('investment.merge') }}"><i
+                                                        class="bx bx-edit-alt me-1"></i>
                                                     Merge </a>
-                                                <a class="dropdown-item" href="#"><i class="bx bx-edit-alt me-1"></i>
+                                                <a class="dropdown-item" href="{{ route('investment.claim') }}"><i
+                                                        class="bx bx-edit-alt me-1"></i>
                                                     Claim </a>
-                                                <a class="dropdown-item" href="#"><i class="bx bx-edit-alt me-1"></i>
+                                                <a class="dropdown-item" href="{{ route('investment.maturity') }}"><i
+                                                        class="bx bx-edit-alt me-1"></i>
                                                     Maturity </a>
 
                                             </div>

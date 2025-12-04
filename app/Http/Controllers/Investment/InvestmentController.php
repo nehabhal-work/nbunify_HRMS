@@ -88,12 +88,21 @@ class InvestmentController extends Controller
         return redirect()->route('investment.els.index')->with('success', 'Investment deleted successfully.');
     }
 
-    public function bankInstrument()
+    public function renew()
     {
-        return view('content.investment.bank-instrument');
+        // $client = $this->clientService->find($id);
+        return view('content.investment.renew');
     }
-    public function standingInstruction()
+    public function claim()
     {
-        return view('content.investment.standing-instruction');
+        return view('content.investment.claim');
+    }
+    public function merge()
+    {
+        return view('content.investment.merge');
+    }
+    public function maturity()
+    {
+        return view('content.investment.maturity');
     }
 }
