@@ -1,63 +1,3 @@
-// $('#scheme_id').on('change', function () {
-
-//     let selected = $(this).find(':selected');
-
-//     // READ DATA ATTRIBUTES
-//     let tenureType = selected.data('tenure-type');
-//     let minTenure = parseInt(selected.data('min-tenure'));
-//     let maxTenure = parseInt(selected.data('max-tenure'));
-//     let frequencies = selected.data('frequencies');
-//     let minRoi = parseFloat(selected.data('min-roi'));
-//     let maxRoi = parseFloat(selected.data('max-roi'));
-//     let addiMin = parseFloat(selected.data('addi-roi-min'));
-//     let addiMax = parseFloat(selected.data('addi-roi-max'));
-
-
-//     // SET TENURE TYPE
-//     $('#tenure_type').val(tenureType);
-
-//     // LOAD TENURE OPTIONS into #tenure_count
-//     let tenureSelect = $('#tenure_count');
-//     tenureSelect.empty().append(`<option value="">Select</option>`);
-
-//     for (let i = minTenure; i <= maxTenure; i++) {
-//         tenureSelect.append(`<option value="${i}">${i}</option>`);
-//     }
-
-//     // LOAD FREQUENCY OPTIONS into #frequency
-//     let freqSelect = $('#frequency');
-//     freqSelect.empty().append(`<option value="">Select Frequency</option>`);
-
-//     frequencies.forEach(f => {
-//         freqSelect.append(`<option value="${f}">${f}</option>`);
-//     });
-
-//     // ROI RANGE
-//     $('#roi_percent').val('');
-//     $('#roi-message').html(
-//         `<small class="text-primary fw-bold">Allowed ROI Range: ${minRoi}% to ${maxRoi}%</small>`
-//     );
-
-//     $('#roi_percent').data('min', minRoi);
-//     $('#roi_percent').data('max', maxRoi);
-
-//     // Additional ROI RANGE
-//     if (addiMin > 0) {
-//         $('#addi_roi_box').removeClass('d-none');
-//     } else {
-//         $('#addi_roi_box').addClass('d-none');
-//     }
-
-//     $('#addi_roi').val('');
-//     $('#addi-roi-message').html(
-//         `<small class="text-primary fw-bold">Allowed Additional ROI: ${addiMin}% to ${addiMax}%</small>`
-//     );
-
-//     $('#addi_roi').data('min', addiMin);
-//     $('#addi_roi').data('max', addiMax);
-
-// });
-
 function loadSchemeData() {
 
     let selected = $('#scheme_id').find(':selected');
@@ -172,9 +112,8 @@ $('#addi_roi').on('input', function () {
 });
 
 
+// Function to toggle holder sections single/double
 $(document).ready(function () {
-
-    // Function to toggle holder sections
     function toggleInvestmentHolders() {
         let type = $('#investment_type').val();
 
@@ -196,7 +135,130 @@ $(document).ready(function () {
 });
 
 
+$(document).on("change", ".profile_id", function () {
+    let selectedOption = $(this).find(":selected");
+    let banksData = selectedOption.attr("data-banks");
+    let nomineeData = selectedOption.attr("data-family");
 
+    let dob = selectedOption.data("dob");
+
+    let isMinor = false;
+    let noBank = false;
+
+    // --- DOB / Age logic ---
+    if (dob) {
+        let dobDate = new Date(dob);
+        let today = new Date();
+        let age = today.getFullYear() - dobDate.getFullYear();
+        let m = today.getMonth() - dobDate.getMonth();
+
+        if (m < 0 || (m === 0 && today.getDate() < dobDate.getDate())) {
+            age--;
+        }
+
+        // 🚫 Minor check
+        if (age < 18) {
+            isMinor = true;
+        }
+
+        if (age > 60) {
+            $("#form15Label").text("Form 15H (For age > 60)");
+        } else {
+            $("#form15Label").text("Form 15G (For age ≤ 60)");
+        }
+    } else {
+        $("#form15Label").text("Form 15");
+    }
+
+    // --- Parse JSON safely ---
+    try {
+        banksData = JSON.parse(banksData);
+    } catch (e) {
+        banksData = [];
+    }
+
+    // ✅ Check if banks exist
+    if (!Array.isArray(banksData) || banksData.length === 0) {
+        noBank = true;
+    }
+
+    // --- Unified Alert Logic for Single + Joined ---
+    if (isMinor && noBank) {
+        alert("⚠️ No bank account is linked to this profile and 🚫 Investment is not allowed for minors (age below 18).");
+        $(this).val("").focus();
+        return;
+    } else if (isMinor) {
+        alert("🚫 Investment is not allowed for minors (age below 18).");
+        $(this).val("").focus();
+        return;
+    } else if (noBank) {
+        alert("⚠️ No bank account is linked to this profile.\nPlease go and add your bank first.");
+        $(this).val("").focus();
+        return;
+    }
+
+    try {
+        nomineeData = JSON.parse(nomineeData);
+    } catch (e) {
+        nomineeData = [];
+    }
+
+    // --- Closest section ---
+    let $section = $(this).closest(".card").parent();
+
+    let toClientBankDropdown = $section.find(".to_client_bank");         // "To Client Bank"
+    let clientOutputBankDropdown = $section.find(".clientOutputBank");    // "Client Output Bank"
+    let nomineeDropdown = $section.find(".nominee_name");
+
+    // --- Reset dropdowns ---
+    toClientBankDropdown.html('<option value="">Select Client Bank</option>');
+    clientOutputBankDropdown.html('<option value="">Select Bank</option>');
+    nomineeDropdown.html('<option value="">Select Nominee</option>');
+
+    // --- Populate Banks ---
+    if (Array.isArray(banksData) && banksData.length > 0) {
+        $.each(banksData, function (index, bank) {
+            if (bank.sys_bankname) {
+                let optionHtml = `
+                    <option value="${bank.id}"
+                            data-name="${bank.sys_bankname.name}"
+                            data-accountno="${bank.accountno}"
+                            data-ifsc="${bank.ifsccode}">
+                        ${bank.sys_bankname.name} - ${bank.accountno}
+                    </option>`;
+                toClientBankDropdown.append(optionHtml);
+                clientOutputBankDropdown.append(optionHtml);
+            }
+        });
+    } else {
+        let noBankOption = `<option value="" disabled>No bank accounts available</option>`;
+        toClientBankDropdown.append(noBankOption);
+        clientOutputBankDropdown.append(noBankOption);
+    }
+
+    // --- Populate Nominees ---
+    console.log('Nominee Data:', nomineeData); // Debug
+    if (Array.isArray(nomineeData) && nomineeData.length > 0) {
+        $.each(nomineeData, function (index, nominee) {
+            let fullName = [nominee.fname, nominee.mname, nominee.sname]
+                .filter(Boolean).join(" "); // skip blanks
+            let optionHtml = `
+            <option value="${nominee.id}" data-name="${fullName}">
+                ${fullName}
+            </option>`;
+            nomineeDropdown.append(optionHtml);
+        });
+
+        // ✅ Auto-select if only one nominee
+        if (nomineeData.length === 1) {
+            nomineeDropdown.val(nomineeData[0].id);
+        }
+    } else {
+        let noNomineeOption = `<option value="" disabled>No nominee available</option>`;
+        nomineeDropdown.append(noNomineeOption);
+    }
+
+});
 
 
 

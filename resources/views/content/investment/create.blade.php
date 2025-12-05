@@ -77,7 +77,7 @@
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
-
+                            {{-- {{ $clients }} --}}
                             <!-- Investment Holder -->
                             <div class="col-md-3 " id="div_holder_single">
                                 <label for="client_id" class="form-label">Investment 1st Holder</label>
@@ -86,7 +86,9 @@
                                     <option value="">Select Holder</option>
                                     @foreach ($clients as $d)
                                         <option value="{{ $d->id }}"
-                                            {{ old('client_id') == $d->id ? 'selected' : '' }}>
+                                            {{ old('client_id') == $d->id ? 'selected' : '' }}
+                                            data-banks='@json($d->banking)'
+                                            data-family='@json($d->family)'>
                                             {{ ucfirst(strtolower($d->name)) }}
                                         </option>
                                     @endforeach
@@ -287,7 +289,7 @@
                                                 <label class="form-label">Instrument <span
                                                         class="text-danger">*</span></label>
                                                 <select class="form-select @error('instrument') is-invalid @enderror"
-                                                    name="instrument" required>
+                                                    name="instrument">
                                                     <option value="">Select</option>
                                                     <option value="rtgs"
                                                         {{ old('instrument') == 'rtgs' ? 'selected' : '' }}>
@@ -320,7 +322,7 @@
                                                 <input type="date"
                                                     class="form-control @error('instrument_date') is-invalid @enderror"
                                                     name="instrument_date" value="{{ old('instrument_date') }}"
-                                                    max="{{ date('Y-m-d') }}" required>
+                                                    max="{{ date('Y-m-d') }}">
                                                 @error('instrument_date')
                                                     <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
@@ -332,8 +334,8 @@
                                                         class="text-danger">*</span></label>
                                                 <input type="text"
                                                     class="form-control @error('reference_no') is-invalid @enderror"
-                                                    name="reference_no" value="{{ old('reference_no') }}" maxlength="20"
-                                                    required>
+                                                    name="reference_no" value="{{ old('reference_no') }}"
+                                                    maxlength="20">
                                                 @error('reference_no')
                                                     <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
@@ -347,8 +349,7 @@
                                                     <span class="input-group-text">&#8377;</span>
                                                     <input type="number"
                                                         class="form-control bg-secondary-subtle onlydigit instrument_amt @error('instrument_amt') is-invalid @enderror"
-                                                        name="instrument_amt" value="{{ old('instrument_amt') }}"
-                                                        required>
+                                                        name="instrument_amt" value="{{ old('instrument_amt') }}">
                                                 </div>
                                                 @error('instrument_amt')
                                                     <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -361,7 +362,7 @@
                                                         class="text-danger">*</span></label>
                                                 <select
                                                     class="form-select clientOutputBank @error('client_output_bank') is-invalid @enderror"
-                                                    name="client_output_bank" required>
+                                                    name="client_output_bank">
                                                     <option value="">Select Bank</option>
                                                 </select>
                                                 @error('client_output_bank')
@@ -398,7 +399,7 @@
                                                     Company Bank <span class="text-danger">*</span>
                                                 </label>
                                                 <select class="form-select @error('company_bank_id') is-invalid @enderror"
-                                                    name="company_bank_id" required>
+                                                    name="company_bank_id">
                                                     <option value="">Select Company Bank</option>
                                                 </select>
                                                 @error('company_bank_id')
@@ -409,14 +410,29 @@
                                             <!-- Company Bank Reference No -->
                                             <div class="col-md-4">
                                                 <label class="form-label">
-                                                    Company Bank Reference No <span class="text-danger">*</span>
+                                                    Company Bank Ref No <span class="text-danger">*</span>
                                                 </label>
                                                 <input type="text"
                                                     class="form-control @error('company_reference_no') is-invalid @enderror"
                                                     name="company_reference_no" value="{{ old('company_reference_no') }}"
-                                                    maxlength="20" required>
+                                                    maxlength="20">
                                                 @error('company_reference_no')
                                                     <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+
+                                            <!-- Instrument Amount -->
+                                            <div class="col-md-4">
+                                                <label class="form-label">Instrument Amount <span
+                                                        class="text-danger">*</span></label>
+                                                <div class="input-group">
+                                                    <span class="input-group-text">&#8377;</span>
+                                                    <input type="number"
+                                                        class="form-control bg-secondary-subtle onlydigit instrument_amt @error('instrument_amt') is-invalid @enderror"
+                                                        name="instrument_amt" value="{{ old('instrument_amt') }}">
+                                                </div>
+                                                @error('instrument_amt')
+                                                    <div class="invalid-feedback d-block">{{ $message }}</div>
                                                 @enderror
                                             </div>
 
@@ -428,7 +444,7 @@
                                                 <input type="date"
                                                     class="form-control @error('effective_date') is-invalid @enderror"
                                                     name="effective_date" value="{{ old('effective_date') }}"
-                                                    max="{{ date('Y-m-d') }}" required>
+                                                    max="{{ date('Y-m-d') }}">
                                                 @error('effective_date')
                                                     <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
@@ -466,7 +482,7 @@
                         <!-- Company Bank (From) -->
                         <div class="col-md-4">
                             <label class="form-label text-danger">From Company Bank *</label>
-                            <select class="form-select" id="out_company_bank" name="out_company_bank" required>
+                            <select class="form-select" id="out_company_bank" name="out_company_bank">
                                 <option value="">Select Company Bank</option>
                                 {{-- @foreach ($elsBank as $cb)
                                     <option value="{{ $cb->id }}" data-acctno="{{ $cb->acctno }}"
@@ -481,7 +497,7 @@
                         <!-- Client Bank (To) -->
                         <div class="col-md-4">
                             <label class="form-label text-danger">To Client Bank *</label>
-                            <select class="form-select to_client_bank" name="to_client_bank" required>
+                            <select class="form-select to_client_bank" name="to_client_bank">
                                 <option value="">Select Client Bank</option>
                             </select>
                         </div>
@@ -643,7 +659,7 @@
 
         <!-- Submit -->
         <div class="text-end mt-4">
-            <button type="button" id="calculateBtn1" class="btn btn-primary px-4">Submit</button>
+            <button type="submit" id="calculateBtn1" class="btn btn-primary px-4">Submit</button>
         </div>
 
     </form>
