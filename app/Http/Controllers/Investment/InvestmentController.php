@@ -35,7 +35,7 @@ class InvestmentController extends Controller
         $scheme = $this->schemeService->getAll();
         $clients = $this->clientService->getAllWithFamilyAndBanks();
         $companyBanks = $this->companyService->getFirstCompanyBanks();
-        // return $clients;
+        // return $companyBanks;
         return view('content.investment.create', compact('scheme', 'clients', 'companyBanks'));
     }
 

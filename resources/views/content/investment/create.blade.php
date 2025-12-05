@@ -401,6 +401,10 @@
                                                 <select class="form-select @error('company_bank_id') is-invalid @enderror"
                                                     name="company_bank_id">
                                                     <option value="">Select Company Bank</option>
+                                                    @foreach ($companyBanks as $d)
+                                                        <option value="{{ $d->id }}">
+                                                            {{ $d->bank_name . '-' . $d->account_number }}</option>
+                                                    @endforeach
                                                 </select>
                                                 @error('company_bank_id')
                                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -484,12 +488,10 @@
                             <label class="form-label text-danger">From Company Bank *</label>
                             <select class="form-select" id="out_company_bank" name="out_company_bank">
                                 <option value="">Select Company Bank</option>
-                                {{-- @foreach ($elsBank as $cb)
-                                    <option value="{{ $cb->id }}" data-acctno="{{ $cb->acctno }}"
-                                        data-ifsc="{{ $cb->ifsc }}" data-name="{{ $cb->name }}">
-                                        {{ $cb->name . '-' . $cb->acctno }}
-                                    </option>
-                                @endforeach --}}
+                                @foreach ($companyBanks as $d)
+                                    <option value="{{ $d->id }}">
+                                        {{ $d->bank_name . '-' . $d->account_number }}</option>
+                                @endforeach
                             </select>
 
                         </div>
