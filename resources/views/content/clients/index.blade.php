@@ -58,8 +58,8 @@
                                 @foreach ($clients as $d)
                                     <tr>
                                         <td>
-                                             <a href="{{ route('clients.edit', $d->id) }}" class="text-reset">
-                                               {{ $d->client_code }}
+                                            <a href="{{ route('clients.edit', $d->id) }}" class="text-reset">
+                                                {{ $d->client_code }}
                                             </a>
                                         </td>
                                         <td>
@@ -130,7 +130,12 @@
                                                     <a class="dropdown-item" href="{{ route('clients.show', $d->id) }}">
                                                         <i class="bx bx-show me-1"></i> View
                                                     </a>
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('master.clients.welcomeLetter', $d->id) }}">
+                                                        <i class="bx bx-show me-1"></i> Welcome letter
+                                                    </a>
 
+                                                    <hr>
                                                     <form action="{{ route('clients.destroy', $d->id) }}" method="post"
                                                         onsubmit="return confirmDelete()">
                                                         @csrf

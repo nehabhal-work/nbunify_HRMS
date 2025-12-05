@@ -249,6 +249,31 @@
                             </div>
 
 
+                            {{-- PAN No. --}}
+                            <div class="col-md-2 mb-3">
+                                <label class="form-label" for="pan_no">PAN No.</label>
+                                <input type="text" class="form-control @error('pan_no') is-invalid @enderror"
+                                    id="pan_no" name="pan_no" maxlength="10" value="{{ old('pan_no') }}"
+                                    oninput="this.value = this.value.toUpperCase()" onblur1="checkPanExists(this.value)">
+                                @error('pan_no')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                                <span id="errpancardno" class="text-danger small"></span>
+                            </div>
+
+
+                            {{-- Aadhaar No. --}}
+                            <div class="col-md-2 mb-3">
+                                <label class="form-label" for="aadhar_no">Aadhaar No.</label>
+                                <input type="text"
+                                    class="form-control onlydigit @error('aadhar_no') is-invalid @enderror"
+                                    id="aadhar_no" name="aadhar_no" maxlength="12" value="{{ old('aadhar_no') }}">
+                                @error('aadhar_no')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+
                             {{-- Email --}}
                             <div class="col-md-3 mb-3">
                                 <label class="form-label" for="email">Email</label>
@@ -258,6 +283,7 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
+
 
 
                             {{-- Relation with client --}}
@@ -305,10 +331,10 @@
                                     @error('res_address')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
-                                 
-                                <input type="checkbox" id="same_as_client" />
-                                <label for="same_as_client">Same as Client Residential Address</label>
-                           
+
+                                    <input type="checkbox" id="same_as_client" />
+                                    <label for="same_as_client">Same as Client Residential Address</label>
+
                                 </div>
 
                                 {{-- Country --}}
@@ -378,7 +404,7 @@
                                 </div>
 
                             </div>
-                           
+
 
                             <!-- Office Address -->
                             <div class="row">

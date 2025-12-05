@@ -49,6 +49,7 @@ Route::middleware(['auth', 'verified'])->prefix('master')->name('master.')->grou
     Route::get('employees-letter-email/{type}/{id}', [EmployeeController::class, 'hrLetterEmail'])->name('employees.hr-letter.email');
 
     Route::resource('clients', ClientController::class);
+    Route::get('client-welcome-letter/{id}', [ClientController::class, 'welcomeLetter'])->name('clients.welcomeLetter');
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {

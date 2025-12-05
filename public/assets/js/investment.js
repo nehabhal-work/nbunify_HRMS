@@ -238,23 +238,6 @@ function loadGuardians(minorId, dropdown) {
 
 
 // -------------------------------
-// ADD NEW NOMINEE ROW
-// -------------------------------
-// $('#addNomineeRow').on('click', function () {
-
-//     let clone = $('.nomineeRow:first').clone();
-
-//     clone.find('input').val('');
-//     clone.find('select').val('');
-//     clone.find('.guardian_box').addClass('d-none');
-
-//     $('#nomineeContainer').append(clone);
-
-//     clone.find('.select21').select2();
-// });
-
-
-// -------------------------------
 // REMOVE ROW
 // -------------------------------
 $(document).on('click', '.removeNomineeRow', function () {

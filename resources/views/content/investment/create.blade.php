@@ -289,8 +289,7 @@
                                                 <label class="form-label">Instrument <span
                                                         class="text-danger">*</span></label>
                                                 <select class="form-select @error('instrument') is-invalid @enderror"
-                                                    name="instrument">
-                                                    <option value="">Select</option>
+                                                    name="instrument[]">
                                                     <option value="rtgs"
                                                         {{ old('instrument') == 'rtgs' ? 'selected' : '' }}>
                                                         RTGS
@@ -321,7 +320,7 @@
                                                         class="text-danger">*</span></label>
                                                 <input type="date"
                                                     class="form-control @error('instrument_date') is-invalid @enderror"
-                                                    name="instrument_date" value="{{ old('instrument_date') }}"
+                                                    name="instrument_date[]" value="{{ old('instrument_date') }}"
                                                     max="{{ date('Y-m-d') }}">
                                                 @error('instrument_date')
                                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -334,7 +333,7 @@
                                                         class="text-danger">*</span></label>
                                                 <input type="text"
                                                     class="form-control @error('reference_no') is-invalid @enderror"
-                                                    name="reference_no" value="{{ old('reference_no') }}"
+                                                    name="reference_no[]" value="{{ old('reference_no') }}"
                                                     maxlength="20">
                                                 @error('reference_no')
                                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -349,7 +348,7 @@
                                                     <span class="input-group-text">&#8377;</span>
                                                     <input type="number"
                                                         class="form-control bg-secondary-subtle onlydigit instrument_amt @error('instrument_amt') is-invalid @enderror"
-                                                        name="instrument_amt" value="{{ old('instrument_amt') }}">
+                                                        name="instrument_amt[]" value="{{ old('instrument_amt') }}">
                                                 </div>
                                                 @error('instrument_amt')
                                                     <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -362,7 +361,7 @@
                                                         class="text-danger">*</span></label>
                                                 <select
                                                     class="form-select clientOutputBank @error('client_output_bank') is-invalid @enderror"
-                                                    name="client_output_bank">
+                                                    name="client_output_bank[]">
                                                     <option value="">Select Bank</option>
                                                 </select>
                                                 @error('client_output_bank')
@@ -376,7 +375,7 @@
                                                         class="text-danger">*</span></label>
                                                 <input type="file"
                                                     class="form-control fileInput instrumentImage @error('instrumentImage') is-invalid @enderror"
-                                                    name="instrumentImage" accept="image/*,application/pdf">
+                                                    name="instrumentImage[]" accept="image/*,application/pdf">
                                                 <img src="" class="imgPreview mt-2 rounded border"
                                                     style="width:100px; display:none;">
                                                 @error('instrumentImage')
@@ -399,7 +398,7 @@
                                                     Company Bank <span class="text-danger">*</span>
                                                 </label>
                                                 <select class="form-select @error('company_bank_id') is-invalid @enderror"
-                                                    name="company_bank_id">
+                                                    name="company_bank_id[]">
                                                     <option value="">Select Company Bank</option>
                                                     @foreach ($companyBanks as $d)
                                                         <option value="{{ $d->id }}">
@@ -418,8 +417,8 @@
                                                 </label>
                                                 <input type="text"
                                                     class="form-control @error('company_reference_no') is-invalid @enderror"
-                                                    name="company_reference_no" value="{{ old('company_reference_no') }}"
-                                                    maxlength="20">
+                                                    name="company_reference_no[]"
+                                                    value="{{ old('company_reference_no') }}" maxlength="20">
                                                 @error('company_reference_no')
                                                     <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
@@ -433,7 +432,7 @@
                                                     <span class="input-group-text">&#8377;</span>
                                                     <input type="number"
                                                         class="form-control bg-secondary-subtle onlydigit instrument_amt @error('instrument_amt') is-invalid @enderror"
-                                                        name="instrument_amt" value="{{ old('instrument_amt') }}">
+                                                        name="" value="{{ old('instrument_amt') }}">
                                                 </div>
                                                 @error('instrument_amt')
                                                     <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -447,7 +446,7 @@
                                                 </label>
                                                 <input type="date"
                                                     class="form-control @error('effective_date') is-invalid @enderror"
-                                                    name="effective_date" value="{{ old('effective_date') }}"
+                                                    name="effective_date[]" value="{{ old('effective_date') }}"
                                                     max="{{ date('Y-m-d') }}">
                                                 @error('effective_date')
                                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -593,12 +592,12 @@
 
                     <div class="col-md-3">
                         <label class="fw-bold text-secondary">Additional ROI (%)</label>
-                        <div id="add_roi" class="fs-6 fw-semibold"></div>
+                        <div id="add_roi" name="add_roi" class="fs-6 fw-semibold"></div>
                     </div>
 
                     <div class="col-md-3">
                         <label class="fw-bold text-secondary">Frequency</label>
-                        <div id="frequency" class="fs-6 fw-semibold text-capitalize"></div>
+                        <div id="frequency" name="frequency" class="fs-6 fw-semibold text-capitalize"></div>
                     </div>
 
                     <div class="col-md-3">
@@ -608,7 +607,7 @@
 
                     <div class="col-md-3">
                         <label class="fw-bold text-secondary">Investment Date</label>
-                        <div id="inv_date" class="fs-6 fw-semibold"></div>
+                        <div id="inv_date" name="inv_date" class="fs-6 fw-semibold"></div>
                     </div>
 
                     <div class="col-md-3">

@@ -7,7 +7,9 @@ use App\Http\Requests\ClientRequest;
 use App\Models\Client;
 use App\Services\ClientService;
 use App\Services\ClientBankService;
+use App\Services\CompanyService;
 use App\Services\FileStorageService;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 
 class ClientController extends Controller
@@ -16,6 +18,7 @@ class ClientController extends Controller
         private ClientService $clientService,
         private ClientBankService $clientBankService,
         private FileStorageService $fileStorageService,
+        private CompanyService $companyService,
     ) {}
 
     public function index()
@@ -126,5 +129,24 @@ class ClientController extends Controller
         }
 
         return $client;
+    }
+
+    public function welcomeLetter($id)
+    {
+
+        $client = $this->clientService->find($id);
+        $company = $this->companyService->find(1);
+        // return $company;
+        return view('content.clients.welcome-letter', compact('client', 'company'));
+    }
+
+    public function welcomeLetterPdf($clientId)
+    {
+        $client = Client::findOrFail($clientId);
+
+        $pdf = Pdf::loadView('content.clients.welcome-letter', compact('client'))
+            ->setPaper('A4', 'portrait');
+
+        return $pdf->download('Welcome-Letter-' . $client->full_name . '.pdf');
     }
 }
