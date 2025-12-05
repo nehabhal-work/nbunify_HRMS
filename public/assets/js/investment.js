@@ -160,7 +160,7 @@ $('#client_id').on('change', function () {
 
     families.forEach(f => {
         nomineeSelect.append(
-            `<option value="${f.id}">${f.name}</option>`
+            `<option value="${f.id}"data-dob="${f.dob}">${f.name}</option>`
         );
     });
 
@@ -186,12 +186,80 @@ $('#client_id').on('change', function () {
         );
     });
 
+
     // If using Select2, refresh it
     nomineeSelect.trigger('change');
     // clientOutputBank.trigger('change');
     // toClientBank.trigger('change');
 });
 
+
+
+// When nominee (family member) is selected
+$(document).on('change', '.nominee_name', function () {
+
+    let selected = $(this).find(':selected');
+    let dobRaw = selected.data('dob');
+
+    if (!dobRaw) {
+        $('#guardian_box').addClass('d-none');
+        return;
+    }
+
+    // Extract YYYY-MM-DD from YYYY-MM-DDTHH:MM:SSZ
+    let dob = dobRaw.split('T')[0];
+
+    let age = getAge(dob);
+
+    console.log('age', age);
+    if (age < 18) {
+        $('#guardian_box').removeClass('d-none');
+        loadGuardians(selected.val());
+    } else {
+        $('#guardian_box').addClass('d-none');
+    }
+
+});
+
+
+
+function getAge(dob) {
+    let birth = new Date(dob);
+    let today = new Date();
+    let age = today.getFullYear() - birth.getFullYear();
+    let m = today.getMonth() - birth.getMonth();
+
+    if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) {
+        age--;
+    }
+    return age;
+}
+
+
+function loadGuardians(minorId) {
+
+    let selectedClient = $('#client_id').find(':selected');
+    let families = selectedClient.data('family');
+
+    // Fix JSON string
+    if (typeof families === "string") {
+        families = JSON.parse(families);
+    }
+
+    let guardianSelect = $('#guardian_id');
+
+    guardianSelect.empty().append(`<option value="">Select Guardian</option>`);
+
+    families.forEach(f => {
+        if (f.id != minorId) { // exclude the selected minor
+            guardianSelect.append(
+                `<option value="${f.id}">${f.name}</option>`
+            );
+        }
+    });
+
+    guardianSelect.trigger('change');
+}
 
 
 
