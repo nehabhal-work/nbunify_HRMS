@@ -9,6 +9,7 @@ use App\Services\CompanyService;
 use App\Services\InvestmentService;
 use App\Services\SchemeService;
 use Illuminate\Http\Request;
+use Illuminate\Http\Request;
 
 class InvestmentController extends Controller
 {
@@ -43,16 +44,14 @@ class InvestmentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    // public function store(InvestmentRequest $request)
-    public function store(Request $request)
+    public function store(InvestmentRequest $request)
+    // public function store(Request $request)
     {
-        return $request;
+
         $result = $this->investmentService->create($request->validated());
         $client = $this->clientService->find($request->client_id);
         $scheme = $this->schemeService->find($request->scheme_id);
-        // return $result;
 
-        // return $scheme;
         return view('content.investment.payout-schedule', compact('result', 'client', 'scheme'));
     }
 

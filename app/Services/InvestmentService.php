@@ -10,9 +10,29 @@ class InvestmentService
 {
     public function create(array $data)
     {
-        $data = $this->calculateInvestmentParameters($data);
-
-        return $data;
+        $calculatedData = $this->calculateInvestmentParameters($data);
+        
+        // Extract only fillable fields for Investment model
+        $investmentData = [
+            'investment_date' => $calculatedData['investment_date'],
+            'investment_type' => $calculatedData['investment_type'],
+            'client_id' => $calculatedData['client_id'],
+            'other_holders' => $calculatedData['other_holders'] ?? null,
+            'scheme_id' => $calculatedData['scheme_id'],
+            'investment_amount' => $calculatedData['investment_amount'],
+            'tenure_type' => $calculatedData['tenure_type'],
+            'tenure_count' => $calculatedData['tenure_count'],
+            'frequency' => $calculatedData['frequency'],
+            'roi_percent' => $calculatedData['roi_percent'],
+            'additional_roi_percent' => $calculatedData['additional_roi_percent'] ?? 0,
+            'maturity_date' => $calculatedData['maturity_date'],
+            'payout_amount' => $calculatedData['payout_per_period'],
+            'has_tds' => $calculatedData['has_tds'] ?? false,
+        ];
+        
+        $investment = Investment::create($investmentData);
+        
+        return array_merge($calculatedData, ['investment' => $investment]);
     }
 
     public function update(Investment $investment, array $data): Investment

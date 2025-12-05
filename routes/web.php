@@ -12,6 +12,7 @@ use App\Http\Controllers\Masters\EmployeeController;
 use App\Http\Controllers\Clients\ClientController;
 use App\Http\Controllers\Clients\ClientFamilyController;
 use App\Http\Controllers\Clients\ClientBankController;
+use App\Http\Controllers\Clients\ClientBDayController;
 use App\Http\Controllers\Investment\InvestmentController;
 use App\Http\Controllers\Investment\SchemeController;
 use App\Http\Controllers\Masters\SubDepartmentController;
@@ -28,10 +29,6 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::get('/bday', function () {
-    return view('content.clients.bday-list');
-})->middleware(['auth', 'verified'])->name('bday');
 
 
 
@@ -58,6 +55,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('client-families-create-from-existing', [ClientFamilyController::class, 'createFromExistingClient'])->name('client-families.create.existing');
     Route::post('client-families.store-from-existing', [ClientFamilyController::class, 'storeFromExistingClient'])->name('client-families.store.existing');
     Route::resource('client-banks', ClientBankController::class);
+    Route::get('/client-birthdays', [ClientBDayController::class, 'index'])->name('clients.birthdays');
 });
 
 Route::middleware(['auth', 'verified'])->prefix('accounts')->name('accounts.')->group(function () {

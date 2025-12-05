@@ -117,6 +117,67 @@ class ClientService
         }
     }
 
+    public function getBDayList($fromDate, $toDate)
+    {
+        $fromMonthDay = date('m-d', strtotime($fromDate));
+        $toMonthDay = date('m-d', strtotime($toDate));
+
+        $query = Client::whereNotNull('dob')->select('id', 'name', 'dob', 'mobile_no', 'email');
+
+        if ($fromMonthDay <= $toMonthDay) {
+            $query->whereRaw('DATE_FORMAT(dob, "%m-%d") BETWEEN ? AND ?', [$fromMonthDay, $toMonthDay]);
+        } else {
+            $query->whereRaw('DATE_FORMAT(dob, "%m-%d") >= ? OR DATE_FORMAT(dob, "%m-%d") <= ?', [$fromMonthDay, $toMonthDay]);
+        }
+        
+        if ($fromMonthDay <= $toMonthDay) {
+            $query->orderByRaw('MONTH(dob), DAY(dob)');
+        } else {
+            $query->orderByRaw('CASE WHEN MONTH(dob) >= ? THEN MONTH(dob) ELSE MONTH(dob) + 12 END, DAY(dob)', [date('m', strtotime($fromDate))]);
+        }
+
+        return $query->get()->map(function ($client) {
+            $today = now();
+            $birthDate = $client->dob;
+            $thisYearBirthday = $today->copy()->setMonth($birthDate->month)->setDay($birthDate->day);
+            $lastYearBirthday = $thisYearBirthday->copy()->subYear();
+            
+            $daysDiffThisYear = $today->diffInDays($thisYearBirthday, false);
+            $daysDiffLastYear = $today->diffInDays($lastYearBirthday, false);
+            
+            if (abs($daysDiffLastYear) < abs($daysDiffThisYear)) {
+                $daysDiff = $daysDiffLastYear;
+            } else {
+                $daysDiff = $daysDiffThisYear;
+            }
+            
+            if ($daysDiff == 0) {
+                $birthdayStatus = 'Today';
+            } elseif ($daysDiff == 1) {
+                $birthdayStatus = 'Tomorrow';
+            } elseif ($daysDiff == -1) {
+                $birthdayStatus = 'Yesterday';
+            } elseif ($daysDiff > 0) {
+                $birthdayStatus = "In {$daysDiff} days";
+            } elseif (abs($daysDiff) > 182) {
+                $nextBirthday = 365 + $daysDiff;
+                $birthdayStatus = "In {$nextBirthday} days";
+            } else {
+                $birthdayStatus = abs($daysDiff) . " days ago";
+            }
+
+            return [
+                'id' => $client->id,
+                'name' => $client->name,
+                'dob' => $client->dob->format('Y-m-d'),
+                'age' => abs($today->diffInYears($birthDate)),
+                'mobile' => $client->mobile_no,
+                'email' => $client->email,
+                'birthday_status' => $birthdayStatus
+            ];
+        });
+    }
+
     public function generateClientCode(): string
     {
         // $currentDate = now();
