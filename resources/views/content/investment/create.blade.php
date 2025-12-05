@@ -87,8 +87,8 @@
                                     @foreach ($clients as $d)
                                         <option value="{{ $d->id }}"
                                             {{ old('client_id') == $d->id ? 'selected' : '' }}
-                                            data-banks='@json($d->banking)'
-                                            data-family='@json($d->family)'>
+                                            data-banks='@json($d->banks)'
+                                            data-families='@json($d->families)'>
                                             {{ ucfirst(strtolower($d->name)) }}
                                         </option>
                                     @endforeach
@@ -526,9 +526,7 @@
                                     <label>Nominee Name</label>
                                     <select class="form-select select2 nominee_name" name="other_holders[]">
                                         <option value="">Select Holder</option>
-                                        @foreach ($clients as $d)
-                                            <option value="{{ $d->id }}">{{ $d->name }}</option>
-                                        @endforeach
+
                                     </select>
                                 </div>
 

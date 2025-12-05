@@ -135,130 +135,63 @@ $(document).ready(function () {
 });
 
 
-$(document).on("change", ".profile_id", function () {
-    let selectedOption = $(this).find(":selected");
-    let banksData = selectedOption.attr("data-banks");
-    let nomineeData = selectedOption.attr("data-family");
 
-    let dob = selectedOption.data("dob");
+$('#client_id').on('change', function () {
 
-    let isMinor = false;
-    let noBank = false;
+    let selected = $(this).find(':selected');
 
-    // --- DOB / Age logic ---
-    if (dob) {
-        let dobDate = new Date(dob);
-        let today = new Date();
-        let age = today.getFullYear() - dobDate.getFullYear();
-        let m = today.getMonth() - dobDate.getMonth();
+    // Read JSON attributes (they come as strings)
+    let families = selected.data('families');
+    let banks = selected.data('banks');
 
-        if (m < 0 || (m === 0 && today.getDate() < dobDate.getDate())) {
-            age--;
-        }
+    // Make sure they are arrays
+    if (typeof families === "string") families = JSON.parse(families);
+    if (typeof banks === "string") banks = JSON.parse(banks);
 
-        // 🚫 Minor check
-        if (age < 18) {
-            isMinor = true;
-        }
+    // TARGET DROPDOWNS
+    let nomineeSelect = $('.nominee_name');
+    let clientOutputBank = $('.clientOutputBank');
+    let toClientBank = $('.to_client_bank');
 
-        if (age > 60) {
-            $("#form15Label").text("Form 15H (For age > 60)");
-        } else {
-            $("#form15Label").text("Form 15G (For age ≤ 60)");
-        }
-    } else {
-        $("#form15Label").text("Form 15");
-    }
+    // -------------------------------
+    // LOAD FAMILY MEMBERS (Nominee)
+    // -------------------------------
+    nomineeSelect.empty().append(`<option value="">Select Holder</option>`);
 
-    // --- Parse JSON safely ---
-    try {
-        banksData = JSON.parse(banksData);
-    } catch (e) {
-        banksData = [];
-    }
+    families.forEach(f => {
+        nomineeSelect.append(
+            `<option value="${f.id}">${f.name}</option>`
+        );
+    });
 
-    // ✅ Check if banks exist
-    if (!Array.isArray(banksData) || banksData.length === 0) {
-        noBank = true;
-    }
+    // -------------------------------
+    // LOAD CLIENT BANKS (Output Bank)
+    // -------------------------------
+    clientOutputBank.empty().append(`<option value="">Select Bank</option>`);
 
-    // --- Unified Alert Logic for Single + Joined ---
-    if (isMinor && noBank) {
-        alert("⚠️ No bank account is linked to this profile and 🚫 Investment is not allowed for minors (age below 18).");
-        $(this).val("").focus();
-        return;
-    } else if (isMinor) {
-        alert("🚫 Investment is not allowed for minors (age below 18).");
-        $(this).val("").focus();
-        return;
-    } else if (noBank) {
-        alert("⚠️ No bank account is linked to this profile.\nPlease go and add your bank first.");
-        $(this).val("").focus();
-        return;
-    }
+    banks.forEach(b => {
+        clientOutputBank.append(
+            `<option value="${b.id}">${b.bank_name} - ${b.account_number}</option>`
+        );
+    });
 
-    try {
-        nomineeData = JSON.parse(nomineeData);
-    } catch (e) {
-        nomineeData = [];
-    }
+    // -------------------------------
+    // LOAD CLIENT BANKS in "to_client_bank"
+    // -------------------------------
+    toClientBank.empty().append(`<option value="">Select Client Bank</option>`);
 
-    // --- Closest section ---
-    let $section = $(this).closest(".card").parent();
+    banks.forEach(b => {
+        toClientBank.append(
+            `<option value="${b.id}">${b.bank_name} - ${b.account_number}</option>`
+        );
+    });
 
-    let toClientBankDropdown = $section.find(".to_client_bank");         // "To Client Bank"
-    let clientOutputBankDropdown = $section.find(".clientOutputBank");    // "Client Output Bank"
-    let nomineeDropdown = $section.find(".nominee_name");
-
-    // --- Reset dropdowns ---
-    toClientBankDropdown.html('<option value="">Select Client Bank</option>');
-    clientOutputBankDropdown.html('<option value="">Select Bank</option>');
-    nomineeDropdown.html('<option value="">Select Nominee</option>');
-
-    // --- Populate Banks ---
-    if (Array.isArray(banksData) && banksData.length > 0) {
-        $.each(banksData, function (index, bank) {
-            if (bank.sys_bankname) {
-                let optionHtml = `
-                    <option value="${bank.id}"
-                            data-name="${bank.sys_bankname.name}"
-                            data-accountno="${bank.accountno}"
-                            data-ifsc="${bank.ifsccode}">
-                        ${bank.sys_bankname.name} - ${bank.accountno}
-                    </option>`;
-                toClientBankDropdown.append(optionHtml);
-                clientOutputBankDropdown.append(optionHtml);
-            }
-        });
-    } else {
-        let noBankOption = `<option value="" disabled>No bank accounts available</option>`;
-        toClientBankDropdown.append(noBankOption);
-        clientOutputBankDropdown.append(noBankOption);
-    }
-
-    // --- Populate Nominees ---
-    console.log('Nominee Data:', nomineeData); // Debug
-    if (Array.isArray(nomineeData) && nomineeData.length > 0) {
-        $.each(nomineeData, function (index, nominee) {
-            let fullName = [nominee.fname, nominee.mname, nominee.sname]
-                .filter(Boolean).join(" "); // skip blanks
-            let optionHtml = `
-            <option value="${nominee.id}" data-name="${fullName}">
-                ${fullName}
-            </option>`;
-            nomineeDropdown.append(optionHtml);
-        });
-
-        // ✅ Auto-select if only one nominee
-        if (nomineeData.length === 1) {
-            nomineeDropdown.val(nomineeData[0].id);
-        }
-    } else {
-        let noNomineeOption = `<option value="" disabled>No nominee available</option>`;
-        nomineeDropdown.append(noNomineeOption);
-    }
-
+    // If using Select2, refresh it
+    nomineeSelect.trigger('change');
+    // clientOutputBank.trigger('change');
+    // toClientBank.trigger('change');
 });
+
 
 
 
