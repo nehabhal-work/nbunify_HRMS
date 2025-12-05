@@ -102,18 +102,38 @@
 
                                         <td>
                                             @php
-                                                $today = \Carbon\Carbon::today()->format('m-d');
-                                                $dob = \Carbon\Carbon::parse($d['dob'])->format('m-d');
+                                                // Extract MM-DD from DOB
+                                                $dob_md = \Carbon\Carbon::parse($d['dob'])->format('m-d');
+
+                                                // Today's MM-DD
+$today_md = now()->format('m-d');
+
+// Full next birthday date (this year or next year)
+$birthday = \Carbon\Carbon::parse($d['dob'])->year(now()->year);
+
+if ($birthday->isPast()) {
+    $birthday = $birthday->addYear(); // move to next year
+}
+
+// Check status
+if ($dob_md === $today_md) {
+    $status = 'today';
+} elseif ($birthday->isFuture()) {
+    $status = 'upcoming';
+} else {
+    $status = 'passed';
+                                                }
                                             @endphp
 
-                                            @if ($dob == $today)
+                                            @if ($status === 'today')
                                                 <span class="badge bg-success">Today 🎉</span>
-                                            @elseif (\Carbon\Carbon::parse($d['dob'])->isFuture())
+                                            @elseif ($status === 'upcoming')
                                                 <span class="badge bg-warning text-dark">Upcoming</span>
                                             @else
                                                 <span class="badge bg-secondary">Passed</span>
                                             @endif
                                         </td>
+
 
                                         <td>
                                             <button class="btn btn-sm btn-outline-primary">
