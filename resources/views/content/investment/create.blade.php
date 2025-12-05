@@ -528,20 +528,16 @@
                                     <label>Nominee Name</label>
                                     <select class="form-select select21 nominee_name" name="other_holders[]">
                                         <option value="">Select Holder</option>
-
                                     </select>
                                 </div>
 
-                                <div class="col-md-3 d-none" id="guardian_box">
-                                    <label for="guardian_id">Guardian Name</label>
-
-                                    <select class="form-select " name="guardian_id" id="guardian_id">
+                                <div class="col-md-3 guardian_box d-none">
+                                    <label>Guardian Name</label>
+                                    <select class="form-select guardian_select" name="guardian_id[]">
                                         <option value="">Select Guardian</option>
                                     </select>
-
                                     <small class="text-muted">Required because nominee is minor</small>
                                 </div>
-
 
                                 <div class="col-md-2">
                                     <label>Percentage %</label>
@@ -563,6 +559,7 @@
                         <div class="mt-2">
                             <button type="button" id="addNomineeRow" class="btn btn-primary">Add Nominee</button>
                         </div>
+
 
                     </div>
                 </div>

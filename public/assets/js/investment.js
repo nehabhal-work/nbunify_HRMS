@@ -135,94 +135,63 @@ $(document).ready(function () {
 });
 
 
-
+// -------------------------------
+// Load family & banks on client change
+// -------------------------------
 $('#client_id').on('change', function () {
 
     let selected = $(this).find(':selected');
-
-    // Read JSON attributes (they come as strings)
     let families = selected.data('families');
     let banks = selected.data('banks');
 
-    // Make sure they are arrays
     if (typeof families === "string") families = JSON.parse(families);
     if (typeof banks === "string") banks = JSON.parse(banks);
 
-    // TARGET DROPDOWNS
-    let nomineeSelect = $('.nominee_name');
-    let clientOutputBank = $('.clientOutputBank');
-    let toClientBank = $('.to_client_bank');
+    // Load nominee dropdowns inside ALL rows
+    $('.nominee_name').each(function () {
 
-    // -------------------------------
-    // LOAD FAMILY MEMBERS (Nominee)
-    // -------------------------------
-    nomineeSelect.empty().append(`<option value="">Select Holder</option>`);
+        let nomineeSelect = $(this);
+        nomineeSelect.empty().append(`<option value="">Select Holder</option>`);
 
-    families.forEach(f => {
-        nomineeSelect.append(
-            `<option value="${f.id}"data-dob="${f.dob}">${f.name}</option>`
-        );
+        families.forEach(f => {
+            nomineeSelect.append(
+                `<option value="${f.id}" data-dob="${f.dob}">${f.name}</option>`
+            );
+        });
     });
-
-    // -------------------------------
-    // LOAD CLIENT BANKS (Output Bank)
-    // -------------------------------
-    clientOutputBank.empty().append(`<option value="">Select Bank</option>`);
-
-    banks.forEach(b => {
-        clientOutputBank.append(
-            `<option value="${b.id}">${b.bank_name} - ${b.account_number}</option>`
-        );
-    });
-
-    // -------------------------------
-    // LOAD CLIENT BANKS in "to_client_bank"
-    // -------------------------------
-    toClientBank.empty().append(`<option value="">Select Client Bank</option>`);
-
-    banks.forEach(b => {
-        toClientBank.append(
-            `<option value="${b.id}">${b.bank_name} - ${b.account_number}</option>`
-        );
-    });
-
-
-    // If using Select2, refresh it
-    nomineeSelect.trigger('change');
-    // clientOutputBank.trigger('change');
-    // toClientBank.trigger('change');
 });
 
 
-
-// When nominee (family member) is selected
+// -------------------------------
+// When nominee is selected
+// -------------------------------
 $(document).on('change', '.nominee_name', function () {
+
+    let row = $(this).closest('.nomineeRow');
+    let guardianBox = row.find('.guardian_box');
+    let guardianSelect = row.find('.guardian_select');
 
     let selected = $(this).find(':selected');
     let dobRaw = selected.data('dob');
 
-    if (!dobRaw) {
-        $('#guardian_box').addClass('d-none');
-        return;
-    }
+    guardianBox.addClass('d-none');
+    guardianSelect.empty().append(`<option value="">Select Guardian</option>`);
 
-    // Extract YYYY-MM-DD from YYYY-MM-DDTHH:MM:SSZ
+    if (!dobRaw) return;
+
     let dob = dobRaw.split('T')[0];
-
     let age = getAge(dob);
 
-    console.log('age', age);
     if (age >= 1 && age < 18) {
-        $('#guardian_box').removeClass('d-none');
-        loadGuardians(selected.val());
-    } else {
-        $('#guardian_box').addClass('d-none');
+        guardianBox.removeClass('d-none');
+        loadGuardians(selected.val(), guardianSelect);
     }
-
 });
 
 
-
+// -------------------------------
+// Calculate age
+// -------------------------------
 function getAge(dob) {
     let birth = new Date(dob);
     let today = new Date();
@@ -236,38 +205,56 @@ function getAge(dob) {
 }
 
 
-function loadGuardians(minorId) {
+// -------------------------------
+// Load guardians (exclude minor)
+// -------------------------------
+function loadGuardians(minorId, dropdown) {
 
-    // Always read selected client here (important!)
     let selectedClient = $('#client_id').find(':selected');
+    let families = selectedClient.data('families');
 
-    let families = selectedClient.data('family');
-
-    // Fix JSON string
     if (typeof families === "string") {
         families = JSON.parse(families);
     }
 
-    // If still no families → stop
-    if (!families || families.length === 0) {
-        console.warn("No families found for client.");
-        return;
-    }
-
-    let guardianSelect = $('#guardian_id');
-
-    guardianSelect.empty().append(`<option value="">Select Guardian</option>`);
+    dropdown.empty().append(`<option value="">Select Guardian</option>`);
 
     families.forEach(f => {
-        if (f.id != minorId) { // exclude minor
-            guardianSelect.append(
+        if (f.id != minorId) {
+            dropdown.append(
                 `<option value="${f.id}">${f.name}</option>`
             );
         }
     });
-
-    guardianSelect.trigger('change');
 }
+
+
+// -------------------------------
+// Add Nominee Row
+// -------------------------------
+$('#addNomineeRow').click(function () {
+
+    let clone = $('.nomineeRow:first').clone();
+
+    clone.find('input').val('');
+    clone.find('select').val('');
+    clone.find('.guardian_box').addClass('d-none');
+    clone.find('.guardian_select').empty().append('<option value="">Select Guardian</option>');
+
+    $('#nomineeContainer').append(clone);
+
+    clone.find('.select21').select2(); // reinit select2
+});
+
+
+// -------------------------------
+// Remove Nominee Row
+// -------------------------------
+$(document).on('click', '.removeNomineeRow', function () {
+    if ($('.nomineeRow').length > 1) {
+        $(this).closest('.nomineeRow').remove();
+    }
+});
 
 
 $(document).on('input', '#investment_amount', function () {
