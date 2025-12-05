@@ -76,7 +76,7 @@
              </a>
          </li>
          <li class="menu-item {{ request()->routeIs('bday*') ? 'active' : '' }}">
-             <a href="{{ route('bday') }}" class="menu-link">
+             <a href="{{ route('clients.birthdays') }}" class="menu-link">
                  <i class="menu-icon bx bx-id-card"></i>
                  <div class="text-truncate">B'day list'</div>
              </a>
