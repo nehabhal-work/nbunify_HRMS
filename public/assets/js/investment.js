@@ -238,25 +238,24 @@ function loadGuardians(minorId, dropdown) {
 
 
 // -------------------------------
-// Add Nominee Row
+// ADD NEW NOMINEE ROW
 // -------------------------------
-$('#addNomineeRow').click(function () {
+// $('#addNomineeRow').on('click', function () {
 
-    let clone = $('.nomineeRow:first').clone();
+//     let clone = $('.nomineeRow:first').clone();
 
-    clone.find('input').val('');
-    clone.find('select').val('');
-    clone.find('.guardian_box').addClass('d-none');
-    clone.find('.guardian_select').empty().append('<option value="">Select Guardian</option>');
+//     clone.find('input').val('');
+//     clone.find('select').val('');
+//     clone.find('.guardian_box').addClass('d-none');
 
-    $('#nomineeContainer').append(clone);
+//     $('#nomineeContainer').append(clone);
 
-    clone.find('.select21').select2(); // reinit select2
-});
+//     clone.find('.select21').select2();
+// });
 
 
 // -------------------------------
-// Remove Nominee Row
+// REMOVE ROW
 // -------------------------------
 $(document).on('click', '.removeNomineeRow', function () {
     if ($('.nomineeRow').length > 1) {
