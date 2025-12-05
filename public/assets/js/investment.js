@@ -212,7 +212,7 @@ $(document).on('change', '.nominee_name', function () {
     let age = getAge(dob);
 
     console.log('age', age);
-    if (age < 18) {
+    if (age >= 1 && age < 18) {
         $('#guardian_box').removeClass('d-none');
         loadGuardians(selected.val());
     } else {
@@ -238,7 +238,9 @@ function getAge(dob) {
 
 function loadGuardians(minorId) {
 
+    // Always read selected client here (important!)
     let selectedClient = $('#client_id').find(':selected');
+
     let families = selectedClient.data('family');
 
     // Fix JSON string
@@ -246,12 +248,18 @@ function loadGuardians(minorId) {
         families = JSON.parse(families);
     }
 
+    // If still no families → stop
+    if (!families || families.length === 0) {
+        console.warn("No families found for client.");
+        return;
+    }
+
     let guardianSelect = $('#guardian_id');
 
     guardianSelect.empty().append(`<option value="">Select Guardian</option>`);
 
     families.forEach(f => {
-        if (f.id != minorId) { // exclude the selected minor
+        if (f.id != minorId) { // exclude minor
             guardianSelect.append(
                 `<option value="${f.id}">${f.name}</option>`
             );
@@ -261,6 +269,13 @@ function loadGuardians(minorId) {
     guardianSelect.trigger('change');
 }
 
+
+$(document).on('input', '#investment_amount', function () {
+    let val = $(this).val();
+
+    // Set value to all .instrument_amt fields
+    $('.instrument_amt').val(val);
+});
 
 
 
