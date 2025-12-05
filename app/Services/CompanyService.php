@@ -16,6 +16,15 @@ class CompanyService
         return Company::all();
     }
 
+    public function getFirstCompanyBanks() {
+        $company = Company::with('bankDetails')->firstOrFail();
+        if($company == null) {
+            return [];
+        } else {
+            return $company->bankDetails;
+        }
+    }
+
     public function find($id) {
         return Company::findOrFail($id);
     }

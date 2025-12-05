@@ -16,6 +16,10 @@ class ClientService
         return Client::all();
     }
 
+    public function getAllWithFamilyAndBanks() {
+        return Client::with(['families','banks'])->get();
+    }
+
     public function getAllExcept(array $clientIds = [])
     {
         return Client::whereNotIn('id', [$clientIds])->get();

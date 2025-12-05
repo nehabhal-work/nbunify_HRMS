@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Investment;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\InvestmentRequest;
 use App\Services\ClientService;
+use App\Services\CompanyService;
 use App\Services\InvestmentService;
 use App\Services\SchemeService;
 
@@ -14,6 +15,7 @@ class InvestmentController extends Controller
         private InvestmentService $investmentService,
         private SchemeService $schemeService,
         private ClientService $clientService,
+        private CompanyService $companyService,
     ) {}
 
     /**
@@ -31,8 +33,9 @@ class InvestmentController extends Controller
     public function create()
     {
         $scheme = $this->schemeService->getAll();
-        $clients = $this->clientService->getAll();
-        return view('content.investment.create', compact('scheme', 'clients'));
+        $clients = $this->clientService->getAllWithFamilyAndBanks();
+        $companyBanks = $this->companyService->getFirstCompanyBanks();
+        return view('content.investment.create', compact('scheme', 'clients','companyBanks'));
     }
 
     /**
