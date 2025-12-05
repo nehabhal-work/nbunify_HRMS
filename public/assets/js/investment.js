@@ -136,29 +136,37 @@ $(document).ready(function () {
 
 
 // -------------------------------
-// Load family & banks on client change
+// LOAD FAMILY & BANKS ON CLIENT CHANGE
 // -------------------------------
 $('#client_id').on('change', function () {
 
     let selected = $(this).find(':selected');
+
     let families = selected.data('families');
     let banks = selected.data('banks');
 
     if (typeof families === "string") families = JSON.parse(families);
     if (typeof banks === "string") banks = JSON.parse(banks);
 
-    // Load nominee dropdowns inside ALL rows
+    // Load nominees into ALL nominee dropdowns
     $('.nominee_name').each(function () {
-
-        let nomineeSelect = $(this);
-        nomineeSelect.empty().append(`<option value="">Select Holder</option>`);
-
+        let dd = $(this);
+        dd.empty().append(`<option value="">Select Holder</option>`);
         families.forEach(f => {
-            nomineeSelect.append(
-                `<option value="${f.id}" data-dob="${f.dob}">${f.name}</option>`
-            );
+            dd.append(`<option value="${f.id}" data-dob="${f.dob}">${f.name}</option>`);
+        });
+        dd.trigger('change');
+    });
+
+    // Load client banks
+    $('.clientOutputBank, .to_client_bank').each(function () {
+        let bankDD = $(this);
+        bankDD.empty().append(`<option value="">Select Bank</option>`);
+        banks.forEach(b => {
+            bankDD.append(`<option value="${b.id}">${b.bank_name} - ${b.account_number}</option>`);
         });
     });
+
 });
 
 

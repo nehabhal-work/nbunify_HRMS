@@ -23,7 +23,7 @@ class InvestmentController extends Controller
      */
     public function index()
     {
-        return 'inve index';
+        // return 'inve index';
         $investments = $this->investmentService->getAll();
         return view('content.investment.index', compact('investments'));
     }
@@ -36,7 +36,7 @@ class InvestmentController extends Controller
         $scheme = $this->schemeService->getAll();
         $clients = $this->clientService->getAllWithFamilyAndBanks();
         $companyBanks = $this->companyService->getFirstCompanyBanks();
-        return $clients;
+        // return $clients;
         return view('content.investment.create', compact('scheme', 'clients', 'companyBanks'));
     }
 
