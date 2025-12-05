@@ -23,7 +23,6 @@ class InvestmentController extends Controller
      */
     public function index()
     {
-        // return 'inve index';
         $investments = $this->investmentService->getAll();
         return view('content.investment.index', compact('investments'));
     }
