@@ -519,6 +519,23 @@
             });
         });
     </script>
+<script>
+    $(document).ready(function () {
+        function toggleDod() {
+            if ($('#live_status').val() === 'deceased') {
+                $('#dod').closest('.col-md-2').removeClass('d-none');
+            } else {
+                $('#dod').closest('.col-md-2').addClass('d-none');
+            }
+        }
+
+        toggleDod(); // run when page loads
+
+        $('#live_status').on('change', function () {
+            toggleDod();
+        });
+    });
+</script>
 
     <script>
         $(document).ready(function() {
