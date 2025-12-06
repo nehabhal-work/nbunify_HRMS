@@ -25,6 +25,7 @@ class FamilyRelationSeeder extends Seeder
             ['HUSBAND', 'OTHER', 'other'],
             ['WIFE', 'HUSBAND', 'male'],
             ['WIFE', 'OTHER', 'other'],
+            ['BROTHER', 'BROTHER', 'male'],
             ['BROTHER', 'SISTER', 'female'],
             ['BROTHER', 'OTHER', 'other'],
             ['SISTER', 'BROTHER', 'male'],
@@ -89,7 +90,7 @@ class FamilyRelationSeeder extends Seeder
                 'main_relation' => $relation[0],
                 'relative_relation' => $relation[1],
                 'gender' => $relation[2],
-            ],[
+            ], [
                 'created_at' => now(),
                 'updated_at' => now(),
             ]);
