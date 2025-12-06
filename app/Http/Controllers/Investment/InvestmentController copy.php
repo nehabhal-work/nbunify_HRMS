@@ -44,7 +44,6 @@ class InvestmentController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(InvestmentRequest $request)
-    // public function store(Request $request)
     {
 
         $result = $this->investmentService->create($request->validated());

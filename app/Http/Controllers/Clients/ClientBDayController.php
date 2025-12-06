@@ -21,17 +21,18 @@ class ClientBDayController extends Controller
         $fromDate = $request->from_date;
         $toDate = $request->to_date;
 
-        if($fromDate == null) {
+        if ($fromDate == null) {
             $fromDate = now()->subDays(7)->format('Y-m-d');
         }
 
-        if($toDate == null) {
+        if ($toDate == null) {
             $toDate = now()->addDays(7)->format('Y-m-d');
         }
 
         $clients = $this->clientService->getBDayList($fromDate, $toDate);
         $clientFamilies = $this->clientFamilyService->getBDayList($fromDate, $toDate);
 
+        // return $clients;
         return view('content.clients.bday-list', compact('clients', 'clientFamilies'));
     }
 }
