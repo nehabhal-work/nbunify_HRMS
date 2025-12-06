@@ -18,8 +18,10 @@ class ClientBDayController extends Controller
     // TODO: Complete this
     public function index(Request $request)
     {
-        $fromDate = $request->from_date;
-        $toDate = $request->to_date;
+        // $fromDate = $request->from_date;
+        // $toDate = $request->to_date;
+        $fromDate = $request->from_date ?? now()->format('Y-m-d');
+        $toDate   = $request->to_date ?? now()->addDays(30)->format('Y-m-d');
 
         if ($fromDate == null) {
             $fromDate = now()->subDays(7)->format('Y-m-d');
