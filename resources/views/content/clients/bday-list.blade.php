@@ -1,5 +1,5 @@
 @extends('layouts.master-layout')
-@section('title', 'Investment')
+@section('title', 'bday')
 
 @section('content')
 
@@ -35,7 +35,7 @@
         <div class="container my-5">
 
             <!-- Filter Section -->
-            <form method="GET" action="{{ route('clients.birthdays') }}">
+            <form method="GET" action="{{ route('birthday-client') }}">
                 <div class="card shadow-sm mb-4">
                     <div class="card-body">
                         <div class="row g-3 align-items-end">
