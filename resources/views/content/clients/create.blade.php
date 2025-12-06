@@ -88,7 +88,6 @@
                                     id="dob" name="dob" value="{{ old('dob') }}"
                                     max="{{ now()->toDateString() }}" placeholder="Select Date">
 
-                                    max="{{ now()->toDateString() }}" placeholder="Select Date">
                                 @error('dob')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror

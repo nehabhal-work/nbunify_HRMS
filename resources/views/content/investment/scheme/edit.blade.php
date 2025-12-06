@@ -1,5 +1,5 @@
 @extends('layouts.master-layout')
-@section('title', 'Investment Management')
+@section('title', 'Scheme Management')
 
 @section('content')
     <div>

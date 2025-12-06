@@ -64,6 +64,8 @@
                                     <th>DOB</th>
                                     <th>Number</th>
                                     <th>Email</th>
+                                     <th>Created By</th>
+                                    <th>Approved By</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -77,6 +79,23 @@
                                         <td>{{ $d->dob }}</td>
                                         <td>{{ $d->mobile_no }}</td>
                                         <td>{{ $d->email }}</td>
+                                         <td
+                                            class="{{ !empty($d->created_by) ? 'table-warning fw-semibold rounded px-2 py-1' : '' }}">
+                                            @if (!empty($d->created_by))
+                                                {{ $d->created_by . ' - ' . ($d->created_at ?? '-') }}
+                                            @else
+                                                -
+                                            @endif
+                                        </td>
+
+                                        <td
+                                            class="{{ !empty($d->approved_by) ? 'table-success fw-semibold rounded px-2 py-1' : '' }}">
+                                            @if (!empty($d->approved_by))
+                                                {{ $d->approved_by . ' - ' . ($d->approved_at ?? '-') }}
+                                            @else
+                                                -
+                                            @endif
+                                        </td>
                                         <td>
                                             <div class="dropdown">
                                                 <button type="button" class="btn p-0 dropdown-toggle hide-arrow"

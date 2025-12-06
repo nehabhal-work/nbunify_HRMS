@@ -275,6 +275,8 @@
                                     <th>Branch</th>
                                     <th>Bank Code</th>
                                     <th>Primary</th>
+                                    <th>Created By</th>
+                                    <th>Approved By</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -295,7 +297,23 @@
                                         <td>{{ $b->branch_name ?? '-' }}</td>
                                         <td>{{ $b->bank_code ?? '-' }}</td>
                                         <td>{{ $b->is_primary ? 'Yes' : 'No' }}</td>
+                                        <td
+                                            class="{{ !empty($d->created_by) ? 'table-warning fw-semibold rounded px-2 py-1' : '' }}">
+                                            @if (!empty($d->created_by))
+                                                {{ $d->created_by . ' - ' . ($d->created_at ?? '-') }}
+                                            @else
+                                                -
+                                            @endif
+                                        </td>
 
+                                        <td
+                                            class="{{ !empty($d->approved_by) ? 'table-success fw-semibold rounded px-2 py-1' : '' }}">
+                                            @if (!empty($d->approved_by))
+                                                {{ $d->approved_by . ' - ' . ($d->approved_at ?? '-') }}
+                                            @else
+                                                -
+                                            @endif
+                                        </td>
                                         <td>
                                             <div class="dropdown">
                                                 <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
@@ -418,7 +436,7 @@
                                                 <td><b>{{ $b->is_primary ? 'Yes' : 'No' }}</b></td>
 
                                                 <th class="bg-secondary-subtle ">Cheque Photo</th>
-                                                <td>                                          
+                                                <td>
                                                     @if ($b->attachment_cancelled_cheque_url)
                                                         <div class="text-center">
                                                             <a href="{{ $client->attachment_cancelled_cheque_url }}"

@@ -304,7 +304,15 @@
 
 
             </div>
+            <div class="p-3 text-end">
+
+                <button type="button" class="btn btn-success px-4 {{ $client->approved ? '' : 'disabled' }}"
+                    {{ $client->approved ? '' : 'disabled' }}>
+                    Approved
+                </button>
+            </div>
         </div>
+
     </div>
 @endsection
 @push('scripts')

@@ -1,5 +1,5 @@
 @extends('layouts.master-layout')
-@section('title', 'Investment Management')
+@section('title', 'Scheme Management')
 
 @section('content')
     <div>
@@ -227,6 +227,8 @@
                                     <th>Tenure Type</th>
                                     <th>Tenure</th>
                                     <th>Frequency</th>
+                                    <th>Created By</th>
+                                    <th>Approved By</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -252,7 +254,23 @@
                                                 <span class="badge bg-primary me-1">{{ ucfirst($freq) }}</span>
                                             @endforeach
                                         </td>
+                                        <td
+                                            class="{{ !empty($d->created_by) ? 'table-warning fw-semibold rounded px-2 py-1' : '' }}">
+                                            @if (!empty($d->created_by))
+                                                {{ $d->created_by . ' - ' . ($d->created_at ?? '-') }}
+                                            @else
+                                                -
+                                            @endif
+                                        </td>
 
+                                        <td
+                                            class="{{ !empty($d->approved_by) ? 'table-success fw-semibold rounded px-2 py-1' : '' }}">
+                                            @if (!empty($d->approved_by))
+                                                {{ $d->approved_by . ' - ' . ($d->approved_at ?? '-') }}
+                                            @else
+                                                -
+                                            @endif
+                                        </td>
                                         <td>
                                             <div class="dropdown">
                                                 <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
@@ -265,11 +283,12 @@
                                                         href="{{ route('investment.scheme.edit', $scheme->id) }}">
                                                         <i class="bx bx-edit-alt me-1"></i> Edit
                                                     </a>
-
-                                                    <a href="#" class="dropdown-item" data-bs-toggle="modal"
-                                                        data-bs-target="#viewSchemeModal{{ $scheme->id }}">
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('investment.scheme.show', $scheme->id) }}">
                                                         <i class="bx bx-show me-1"></i> View
                                                     </a>
+
+
 
                                                     <form action="{{ route('investment.scheme.destroy', $scheme->id) }}"
                                                         method="post" onsubmit="return confirmDelete()">
@@ -285,121 +304,6 @@
                                             </div>
                                         </td>
                                     </tr>
-
-                                    <!-- View Modal (NO JS) -->
-                                    <div class="modal fade" id="viewSchemeModal{{ $scheme->id }}" tabindex="-1">
-                                        <div class="modal-dialog modal-lg modal-dialog-centered">
-                                            <div class="modal-content">
-
-                                                <div class="modal-header">
-                                                    <h6 class="modal-title fw-bold">SCHEME DETAILS </h6>
-                                                    <button type="button" class="btn-close"
-                                                        data-bs-dismiss="modal"></button>
-                                                </div>
-
-                                                <div class="modal-body">
-
-                                                    <div class="p-4 border rounded-3 bg-light">
-
-                                                        <!-- Main Title -->
-                                                        <h5 class="fw-bold mb-4 text-center">Scheme Details</h5>
-
-                                                        <!-- Date Details -->
-                                                        <h6 class="fw-bold mt-3 mb-2">Date Details</h6>
-                                                        <div class="row gy-2 mb-3">
-                                                            <div class="col-md-6">
-                                                                <div class="small text-muted">Start Date</div>
-                                                                <div class="fw-semibold">
-                                                                    {{ \Carbon\Carbon::parse($scheme->start_date)->format('d-m-Y') }}
-                                                                </div>
-                                                            </div>
-
-                                                            <div class="col-md-6">
-                                                                <div class="small text-muted">End Date</div>
-                                                                <div class="fw-semibold">
-                                                                    {{ \Carbon\Carbon::parse($scheme->end_date)->format('d-m-Y') }}
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                        <!-- Basic Information -->
-                                                        <h6 class="fw-bold mt-3 mb-2">Basic Information</h6>
-                                                        <div class="row gy-2 mb-3">
-                                                            <div class="col-md-6">
-                                                                <div class="small text-muted">Scheme Code</div>
-                                                                <div class="fw-semibold">{{ $scheme->scheme_code }}</div>
-                                                            </div>
-
-                                                            <div class="col-md-6">
-                                                                <div class="small text-muted">Scheme Name</div>
-                                                                <div class="fw-semibold">{{ $scheme->scheme_name }}</div>
-                                                            </div>
-                                                        </div>
-
-                                                        <!-- ROI Details -->
-                                                        <h6 class="fw-bold mt-3 mb-2">ROI Details</h6>
-                                                        <div class="row gy-2 mb-3">
-                                                            <div class="col-md-6">
-                                                                <div class="small text-muted">Minimum ROI</div>
-                                                                <div class="fw-semibold">{{ $scheme->roi_min }}%</div>
-                                                            </div>
-
-                                                            <div class="col-md-6">
-                                                                <div class="small text-muted">Maximum ROI</div>
-                                                                <div class="fw-semibold">{{ $scheme->roi_max }}%</div>
-                                                            </div>
-
-                                                            <div class="col-md-6">
-                                                                <div class="small text-muted">Min Additional ROI</div>
-                                                                <div class="fw-semibold">
-                                                                    {{ $scheme->roi_min_additional }}%</div>
-                                                            </div>
-
-                                                            <div class="col-md-6">
-                                                                <div class="small text-muted">Max Additional ROI</div>
-                                                                <div class="fw-semibold">
-                                                                    {{ $scheme->roi_max_additional }}%</div>
-                                                            </div>
-                                                        </div>
-
-                                                        <!-- Tenure Details -->
-                                                        <h6 class="fw-bold mt-3 mb-2">Tenure Details</h6>
-                                                        <div class="row gy-2 mb-3">
-                                                            <div class="col-md-4">
-                                                                <div class="small text-muted">Tenure Type</div>
-                                                                <div class="fw-semibold">
-                                                                    {{ ucfirst($scheme->tenure_type) }}</div>
-                                                            </div>
-
-                                                            <div class="col-md-4">
-                                                                <div class="small text-muted">Minimum Tenure</div>
-                                                                <div class="fw-semibold">{{ $scheme->tenure_min }}</div>
-                                                            </div>
-
-                                                            <div class="col-md-4">
-                                                                <div class="small text-muted">Maximum Tenure</div>
-                                                                <div class="fw-semibold">{{ $scheme->tenure_max }}</div>
-                                                            </div>
-                                                        </div>
-
-                                                        <!-- Frequency -->
-                                                        <h6 class="fw-bold mt-3 mb-2">Payout Frequency</h6>
-                                                        <div class="fw-semibold">
-                                                            @foreach ($scheme->frequency as $freq)
-                                                                <span
-                                                                    class="badge bg-primary me-1">{{ ucfirst($freq) }}</span>
-                                                            @endforeach
-                                                        </div>
-
-                                                    </div>
-
-                                                </div>
-
-
-
-                                            </div>
-                                        </div>
-                                    </div>
                                 @endforeach
                             </tbody>
 

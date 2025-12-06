@@ -51,6 +51,8 @@
                                     <th>address</th>
                                     <th>Family info</th>
                                     <th>bank info</th>
+                                    <th>Created By</th>
+                                    <th>Approved By</th>
                                     <th>action</th>
                                 </tr>
                             </thead>
@@ -75,8 +77,6 @@
                                             title="{{ strtoupper($d->res_address) }}">
                                             {{ \Illuminate\Support\Str::limit(strtoupper($d->res_address), 200) }}
                                         </td>
-
-
                                         <td>
 
                                             @if ($d->families->count() > 0)
@@ -103,6 +103,26 @@
                                                     No Bank Info
                                                 </button>
                                             @endif
+                                        </td>
+                                        <td
+                                            class="{{ !empty($d->created_by) ? 'table-warning fw-semibold rounded px-2 py-1' : '' }}">
+                                            @if (!empty($d->created_by))
+                                                {{ $d->created_by . ' - ' . ($d->created_at ?? '-') }}
+                                            @else
+                                                -
+                                            @endif
+                                        </td>
+
+                                        <td
+                                            class="{{ !empty($d->approved_by) ? 'table-success fw-semibold rounded px-2 py-1' : '' }}">
+                                            @if (!empty($d->approved_by))
+                                                {{ $d->approved_by . ' - ' . ($d->approved_at ?? '-') }}
+                                            @else
+                                                -
+                                            @endif
+                                        </td>
+
+
                                         </td>
 
                                         <td>
