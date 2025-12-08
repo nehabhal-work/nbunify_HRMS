@@ -39,7 +39,7 @@
 
                         <!-- PERSONAL DETAILS -->
                         <tr>
-                           
+
                             <th colspan="4" class="text-center section-heading"
                                 style="background-color: #ede1f8 !important; position: relative;">
 
@@ -174,9 +174,22 @@
                                     @endif
 
                                     @if ($client->attachment_aadhar_front_url)
+                                        @php
+                                            $ext = strtolower(
+                                                pathinfo($client->attachment_aadhar_front_url, PATHINFO_EXTENSION),
+                                            );
+                                            $isImage = in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'webp']);
+                                        @endphp
                                         <div class="text-center">
                                             <a href="{{ $client->attachment_aadhar_front_url }}" target="_blank">
-                                                <img src="{{ $client->attachment_aadhar_front_url }}" class="attach-img">
+                                                @if ($isImage)
+                                                    <img src="{{ $client->attachment_aadhar_front_url }}"
+                                                        class="attach-img">
+                                                @else
+                                                    {{-- PDF preview --}}
+                                                    <i class="bi bi-file-earmark-pdf text-danger fs-1"></i>
+                                                    <div>View PDF</div>
+                                                @endif
                                             </a>
                                             <div class="doc-title">Aadhar Front</div>
                                         </div>
