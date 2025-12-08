@@ -75,12 +75,12 @@
                  <div class="text-truncate">Client</div>
              </a>
          </li>
-       <li class="menu-item {{ request()->routeIs('birthday-client') ? 'active' : '' }}">
-    <a href="{{ route('birthday-client') }}" class="menu-link">
-        <i class="menu-icon bx bx-id-card"></i>
-        <div class="text-truncate">B'day List</div>
-    </a>
-</li>
+         <li class="menu-item {{ request()->routeIs('birthday-client') ? 'active' : '' }}">
+             <a href="{{ route('birthday-client') }}" class="menu-link">
+                 <i class="menu-icon bx bx-id-card"></i>
+                 <div class="text-truncate">B'day List</div>
+             </a>
+         </li>
 
 
          {{-- accounts --}}
