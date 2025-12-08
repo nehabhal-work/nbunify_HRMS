@@ -34,7 +34,7 @@ class ClientBDayController extends Controller
         $clients = $this->clientService->getBDayList($fromDate, $toDate);
         $clientFamilies = $this->clientFamilyService->getBDayList($fromDate, $toDate);
 
-        return $clients;
+        // return $clients;
         return view('content.clients.bday-list', compact('clients', 'clientFamilies'));
     }
 }
