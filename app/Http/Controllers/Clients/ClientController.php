@@ -23,7 +23,8 @@ class ClientController extends Controller
 
     public function index()
     {
-        $clients = Client::with(['banks', 'families'])->get();
+        $clients = $this->clientService->getAll();
+        // return $clients;
         return view('content.clients.index', compact('clients'));
     }
 
@@ -42,7 +43,6 @@ class ClientController extends Controller
         $client = $this->clientService->find($id);
         $client->load(['banks', 'families']);
         $client = $this->addFileUrls($client);
-
         // return $client;
         return view('content.clients.view', compact('client'));
     }
@@ -148,5 +148,10 @@ class ClientController extends Controller
             ->setPaper('A4', 'portrait');
 
         return $pdf->download('Welcome-Letter-' . $client->full_name . '.pdf');
+    }
+
+    public function approve($id) {
+        $this->clientService->approve($id);
+        return redirect()->route('clients.index')->with('success', 'Client approved successfully');
     }
 }

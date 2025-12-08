@@ -13,11 +13,8 @@ class ClientService
 
     public function getAll()
     {
-        return Client::all();
-    }
-
-    public function getAllWithFamilyAndBanks() {
-        return Client::with(['families','banks'])->get();
+        return Client::with(['createdBy','approvedBy','families','banks'])
+        ->orderByDesc('id')->get();
     }
 
     public function getAllExcept(array $clientIds = [])
@@ -26,15 +23,33 @@ class ClientService
     }
 
     public function find($id) {
-        return Client::findOrFail($id);
+        $client = Client::findOrFail($id);
+        if(auth()->id() == $client->created_by) {
+            $client->is_approved = true;
+        } else {
+            $client->is_approved = $client->approved_by != null ? true : false;
+        }
+        return $client;
     }
     public function create(array $data): Client
     {
         $data['client_code'] = $this->generateClientCode();
+        $data['created_by'] = auth()->id();
         $client = Client::create($data);
         $data = $this->handleFileUploads($data, $client, 'A');
         $client->update($data);
         return $client;
+    }
+
+    public function approve($id) {
+        $client = Client::findOrFail($id);
+        if($client != null) {
+            $client->approved_by = auth()->id();
+            $client->approved_at = date('Y-m-d H:i:s');
+            $client->save();
+        } else {
+            return abort(404);
+        }
     }
 
     public function update(Client $client, array $data): Client
@@ -129,7 +144,7 @@ class ClientService
         } else {
             $query->whereRaw('DATE_FORMAT(dob, "%m-%d") >= ? OR DATE_FORMAT(dob, "%m-%d") <= ?', [$fromMonthDay, $toMonthDay]);
         }
-        
+
         if ($fromMonthDay <= $toMonthDay) {
             $query->orderByRaw('MONTH(dob), DAY(dob)');
         } else {
@@ -141,16 +156,16 @@ class ClientService
             $birthDate = $client->dob;
             $thisYearBirthday = $today->copy()->setMonth($birthDate->month)->setDay($birthDate->day);
             $lastYearBirthday = $thisYearBirthday->copy()->subYear();
-            
+
             $daysDiffThisYear = $today->diffInDays($thisYearBirthday, false);
             $daysDiffLastYear = $today->diffInDays($lastYearBirthday, false);
-            
+
             if (abs($daysDiffLastYear) < abs($daysDiffThisYear)) {
                 $daysDiff = $daysDiffLastYear;
             } else {
                 $daysDiff = $daysDiffThisYear;
             }
-            
+
             if ($daysDiff == 0) {
                 $birthdayStatus = 'Today';
             } elseif ($daysDiff == 1) {

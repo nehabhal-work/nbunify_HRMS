@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\User;
 
 class Client extends Model
 {
@@ -49,11 +51,15 @@ class Client extends Model
         'attachment_signature',
         'attachment_ckyc',
         'attachment_other_documents',
+        'created_by',
+        'approved_by',
+        'approved_at',
     ];
 
     protected $casts = [
         'dob' => 'date:Y-m-d',
         'dod' => 'date:Y-m-d',
+        'approved_at' => 'datetime',
     ];
 
     public function families(): HasMany
@@ -64,5 +70,15 @@ class Client extends Model
     public function banks(): HasMany
     {
         return $this->hasMany(ClientBank::class);
+    }
+
+    public function createdBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function approvedBy(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'approved_by');
     }
 }
