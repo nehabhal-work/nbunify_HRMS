@@ -107,7 +107,7 @@ class ClientController extends Controller
     {
         $client = $this->clientService->find($id);
         $this->clientService->delete($client);
-        return redirect()->route('master.clients.index')->with('success', 'Client deleted successfully');
+        return redirect()->route('clients.index')->with('success', 'Client deleted successfully');
     }
 
     private function addFileUrls($client)
@@ -153,15 +153,5 @@ class ClientController extends Controller
     public function approve($id) {
         $this->clientService->approve($id);
         return redirect()->route('clients.index')->with('success', 'Client approved successfully');
-    }
-
-    public function approve2($id) {
-        $this->clientService->approve2($id);
-        return redirect()->route('clients.index')->with('success', 'Client second approval completed successfully');
-    }
-
-    public function approve3($id) {
-        $this->clientService->approve3($id);
-        return redirect()->route('clients.index')->with('success', 'Client third approval completed successfully');
     }
 }

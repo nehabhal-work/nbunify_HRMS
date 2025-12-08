@@ -25,7 +25,7 @@
 
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h4 class="fw-bold py-3 mb-4">
-            <span class="text-muted fw-light">Master /</span> <a href="{{ route('master.clients.create') }}">Client</a>
+            <span class="text-muted fw-light">Master /</span> <a href="{{ route('clients.create') }}">Client</a>
         </h4>
     </div>
 
@@ -35,7 +35,7 @@
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Client List</h5>
-                    <a class="btn btn-primary" href="{{ route('master.clients.create') }}" role="button">Add New</a>
+                    <a class="btn btn-primary" href="{{ route('clients.create') }}" role="button">Add New</a>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive text-nowrap">
@@ -62,12 +62,12 @@
                                 @foreach ($clients as $d)
                                     <tr>
                                         <td>
-                                            <a href="{{ route('master.clients.edit', $d->id) }}" class="text-reset">
+                                            <a href="{{ route('clients.edit', $d->id) }}" class="text-reset">
                                                 {{ $d->client_code }}
                                             </a>
                                         </td>
                                         <td>
-                                            <a href="{{ route('master.clients.show', $d->id) }}" class="">
+                                            <a href="{{ route('clients.show', $d->id) }}" class="">
                                                 {{ strtoupper($d->name) }}
                                             </a>
                                         </td>
@@ -166,11 +166,11 @@
                                                         Add Banks
                                                     </a>
                                                     <a class="dropdown-item edit-btn"
-                                                        href="{{ route('master.clients.edit', $d->id) }}">
+                                                        href="{{ route('clients.edit', $d->id) }}">
                                                         <i class="bx bx-edit-alt me-1"></i> Edit
                                                     </a>
                                                     <a class="dropdown-item"
-                                                        href="{{ route('master.clients.show', $d->id) }}">
+                                                        href="{{ route('clients.show', $d->id) }}">
                                                         <i class="bx bx-show me-1"></i> View
                                                     </a>
                                                     <a class="dropdown-item"
@@ -179,7 +179,7 @@
                                                     </a>
 
                                                     <hr>
-                                                    <form action="{{ route('master.clients.destroy', $d->id) }}"
+                                                    <form action="{{ route('clients.destroy', $d->id) }}"
                                                         method="post" onsubmit="return confirmDelete()">
                                                         @csrf
                                                         @method('DELETE')
