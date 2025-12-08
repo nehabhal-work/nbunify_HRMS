@@ -28,7 +28,7 @@
         </div>
         <div class="card shadow-sm mb-4">
             <div class="card-header text-white text-center" style="background-color: #ead3ff;">
-                <h5 class="mb-0">Client Information</h5>
+                <h5 class="mb-0">Client Informations</h5>
             </div>
 
             <div class="card-body mt-3">
