@@ -186,9 +186,8 @@
                                                     <img src="{{ $client->attachment_aadhar_front_url }}"
                                                         class="attach-img">
                                                 @else
-                                                    {{-- PDF preview --}}
-                                                    <i class="bi bi-file-earmark-pdf text-danger fs-1"></i>
-                                                    <div>View PDF</div>
+                                                    <embed src="{{ $client->attachment_client_photo_url }}"
+                                                        type="application/pdf" width="100%" height="200px">
                                                 @endif
                                             </a>
                                             <div class="doc-title">Aadhar Front</div>
