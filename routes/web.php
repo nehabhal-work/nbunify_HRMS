@@ -44,13 +44,6 @@ Route::middleware(['auth', 'verified'])->prefix('master')->name('master.')->grou
     Route::get('employees-letter/{type}/{id}', [EmployeeController::class, 'hrLetter'])->name('employees.hr-letter');
     Route::get('employees-letter-pdf/{type}/{id}', [EmployeeController::class, 'hrLetterPdf'])->name('employees.hr-letter.pdf');
     Route::get('employees-letter-email/{type}/{id}', [EmployeeController::class, 'hrLetterEmail'])->name('employees.hr-letter.email');
-<<<<<<< HEAD
-
-    Route::resource('clients', ClientController::class);
-    Route::put('client-approve', [ClientController::class, 'approve'])->name('client.approve');
-    Route::get('client-welcome-letter/{id}', [ClientController::class, 'welcomeLetter'])->name('clients.welcomeLetter');
-=======
->>>>>>> 6477043f9045f8c281035d05e10379a0cf1817db
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
