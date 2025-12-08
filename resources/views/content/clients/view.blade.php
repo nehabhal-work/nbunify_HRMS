@@ -16,7 +16,7 @@
             <span class="text-muted fw-light">Master /</span> <a href="{{ route('master.clients.create') }}">Client view</a>
         </h4>
     </div>
-{{ $client }}
+{{-- {{ $client }} --}}
 
     <div class="container">
         <div class="text-end mb-3">
