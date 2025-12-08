@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Client;
+use App\Models\User;
 use Illuminate\Support\Str;
 
 class ClientService
@@ -13,7 +14,7 @@ class ClientService
 
     public function getAll()
     {
-        return Client::with(['createdBy','approvedBy','families','banks'])
+        return Client::with(['createdBy','approvedBy','families','banks','approved2By','approved3By'])
         ->orderByDesc('id')->get();
     }
 
@@ -27,7 +28,16 @@ class ClientService
         if(auth()->id() == $client->created_by) {
             $client->is_approved = true;
         } else {
-            $client->is_approved = $client->approved_by != null ? true : false;
+            $user = User::find(auth()->id());
+            if($user->level == 1) {
+                $client->is_approved = $client->approved_by != null ? true : false;
+            } else if($user->level == 2 && $client->approved_by != null) {
+                $client->is_approved = $client->approved2_by != null ? true : false;
+            } else if($user->level == 3 && $client->approved2_by != null) {
+                $client->is_approved = $client->approved3_by != null ? true : false;
+            } else {
+                $client->is_approved = true;
+            }
         }
         return $client;
     }
@@ -43,12 +53,25 @@ class ClientService
 
     public function approve($id) {
         $client = Client::findOrFail($id);
+        $user = User::find(auth()->id());
         if($client != null) {
-            $client->approved_by = auth()->id();
-            $client->approved_at = date('Y-m-d H:i:s');
-            $client->save();
+            if($user->level == 1) {
+                $client->approved_by = auth()->id();
+                $client->approved_at = now();
+                $client->save();
+            } else if($user->level == 2) {
+                $client->approved2_by = auth()->id();
+                $client->approved2_at = now();
+                $client->save();
+            } else if($user->level == 3) {
+                $client->approved3_by = auth()->id();
+                $client->approved3_at = now();
+                $client->save();
+            } else {
+                return abort(401, 'User level not found');
+            }
         } else {
-            return abort(404);
+            return abort(404,'Client Not Found');
         }
     }
 

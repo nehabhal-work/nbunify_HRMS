@@ -24,7 +24,7 @@ class ClientRequest extends FormRequest
     public function rules(): array
     {
         return [
-           
+
             'name' => 'required|string|max:50',
             'gender' => 'required|in:male,female,other',
             'dob' => 'required|date|before:today',

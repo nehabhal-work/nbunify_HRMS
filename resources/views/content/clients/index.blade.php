@@ -151,7 +151,7 @@
                                                         <i class="bx bx-show me-1"></i> View
                                                     </a>
                                                     <a class="dropdown-item"
-                                                        href="{{ route('master.clients.welcomeLetter', $d->id) }}">
+                                                        href="{{ route('clients.welcomeLetter', $d->id) }}">
                                                         <i class="bx bx-show me-1"></i> Welcome letter
                                                     </a>
 
