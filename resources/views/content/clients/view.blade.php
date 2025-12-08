@@ -13,14 +13,14 @@
     </style>
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h4 class="fw-bold py-3 mb-4">
-            <span class="text-muted fw-light">Master /</span> <a href="{{ route('clients.create') }}">Client view</a>
+            <span class="text-muted fw-light">Master /</span> <a href="{{ route('master.clients.create') }}">Client view</a>
         </h4>
     </div>
-
+{{ $client }}
 
     <div class="container">
         <div class="text-end mb-3">
-            <a href="{{ route('clients.index') }}" class="btn btn-secondary px-4">Go back</a>
+            <a href="{{ route('master.clients.index') }}" class="btn btn-secondary px-4">Go back</a>
             <button type="button" class="btn btn-primary px-4">
                 Download PDF
             </button>
@@ -306,10 +306,12 @@
             </div>
             <div class="p-3 text-end">
 
-                <button type="button" class="btn btn-success px-4 {{ $client->approved ? '' : 'disabled' }}"
-                    {{ $client->approved ? '' : 'disabled' }}>
-                    Approved
-                </button>
+               <button type="button"
+    class="btn btn-success px-4"
+    {{ $client->is_approved ? 'disabled' : '' }}>
+    Approve
+</button>
+
             </div>
         </div>
 
