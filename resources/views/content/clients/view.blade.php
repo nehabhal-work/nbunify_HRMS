@@ -42,6 +42,10 @@
                             <th colspan="4" class="text-center section-heading"
                                 style="background-color: #ede1f8 !important;">
                                 <b>Personal Details</b>
+                                 <span style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); ">
+                                    Created Date Time :
+                                    <b> {{ \Carbon\Carbon::parse($client->created_at)->format('d-M-Y H:i:s') }} </b>
+                                </span>
                             </th>
                         </tr>
 
@@ -56,7 +60,8 @@
                             <th>Gender</th>
                             <td class="value">{{ ucfirst($client->gender) }}</td>
                             <th>DOB</th>
-                            <td class="value">{{ $client->dob }}</td>
+                          <td class="value">{{ \Carbon\Carbon::parse($client->dob)->format('d-M-Y') }}
+                                -{{ $client->age_group }}</td>
                         </tr>
 
                         <tr>
@@ -132,7 +137,7 @@
 
 
                 <!-- ATTACHMENTS -->
-                {{-- <div class="table-responsive mt-4 clientViewAttachments">
+                <div class="table-responsive mt-4 clientViewAttachments">
                     <table class="table table-bordered align-middle">
 
                         <tr>
@@ -215,66 +220,7 @@
                             </td>
                         </tr>
                     </table>
-                </div> --}}
-<div class="table-responsive mt-4 clientViewAttachments">
-    <table class="table table-bordered align-middle">
-
-        <tr>
-            <th colspan="4" class="text-center section-heading"
-                style="background-color: #ede1f8 !important;">
-                <b>Attachments test</b>
-            </th>
-        </tr>
-
-        <tr>
-            <th>Documents :</th>
-            <td colspan="3">
-                <div class="d-flex flex-wrap gap-3">
-
-                    @php
-                        function showAttachment($url, $title) {
-                            if (!$url) return;
-
-                            // detect if url ends with .pdf
-                            $isPdf = Str::endsWith(strtolower(parse_url($url, PHP_URL_PATH)), '.pdf');
-                    @endphp
-
-                        <div class="text-center">
-                            @if($isPdf)
-                                {{-- PDF preview using Google Viewer (works in Chrome) --}}
-                                <a href="https://docs.google.com/gview?embedded=1&url={{ urlencode($url) }}" 
-                                   target="_blank">
-                                    <img src="/images/pdf-icon.png" class="attach-img">
-                                </a>
-                                <div class="doc-title">{{ $title }} (PDF)</div>
-                            @else
-                                {{-- Normal images --}}
-                                <a href="{{ $url }}" target="_blank">
-                                    <img src="{{ $url }}" class="attach-img">
-                                </a>
-                                <div class="doc-title">{{ $title }}</div>
-                            @endif
-                        </div>
-
-                    @php
-                        }
-                    @endphp
-
-                    {{-- Call function for each file --}}
-                    @php showAttachment($client->attachment_client_photo_url, 'Client Photo'); @endphp
-                    @php showAttachment($client->attachment_pan_url, 'PAN'); @endphp
-                    @php showAttachment($client->attachment_aadhar_front_url, 'Aadhar Front'); @endphp
-                    @php showAttachment($client->attachment_aadhar_back_url, 'Aadhar Back'); @endphp
-                    @php showAttachment($client->attachment_signature_url, 'Signature'); @endphp
-                    @php showAttachment($client->attachment_ckyc_url, 'CKYC'); @endphp
-                    @php showAttachment($client->attachment_other_documents_url, 'Other Document'); @endphp
-
                 </div>
-            </td>
-        </tr>
-
-    </table>
-</div>
 
 
                 <!-- FAMILY INFO -->
