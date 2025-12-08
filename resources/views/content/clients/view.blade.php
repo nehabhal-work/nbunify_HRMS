@@ -39,9 +39,12 @@
 
                         <!-- PERSONAL DETAILS -->
                         <tr>
+                           
                             <th colspan="4" class="text-center section-heading"
-                                style="background-color: #ede1f8 !important;">
+                                style="background-color: #ede1f8 !important; position: relative;">
+
                                 <b>Personal Details</b>
+
                                 <span style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); ">
                                     Created Date Time :
                                     <b> {{ \Carbon\Carbon::parse($client->created_at)->format('d-M-Y H:i:s') }} </b>
