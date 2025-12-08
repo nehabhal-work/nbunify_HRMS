@@ -61,11 +61,11 @@ class ClientService
                 $client->save();
             } else if($user->level == 2) {
                 $client->approved2_by = auth()->id();
-                $client->approved2_at = now();
+                $client->approved2_on = now();
                 $client->save();
             } else if($user->level == 3) {
                 $client->approved3_by = auth()->id();
-                $client->approved3_at = now();
+                $client->approved3_on = now();
                 $client->save();
             } else {
                 return abort(401, 'User level not found');
