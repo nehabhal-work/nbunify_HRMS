@@ -31,7 +31,7 @@
     </div>
 
     <div class="div d-flex">
-        <a href="{{ route('master.clients.index') }}" class="btn btn-secondary px-4">Go back</a>
+        <a href="{{ route('clients.index') }}" class="btn btn-secondary px-4">Go back</a>
 
     </div>
     <div class="row">
@@ -64,7 +64,7 @@
                                     <th>DOB</th>
                                     <th>Number</th>
                                     <th>Email</th>
-                                    
+
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -78,7 +78,7 @@
                                         <td>{{ $d->dob }}</td>
                                         <td>{{ $d->mobile_no }}</td>
                                         <td>{{ $d->email }}</td>
-                                       
+
                                         <td>
                                             <div class="dropdown">
                                                 <button type="button" class="btn p-0 dropdown-toggle hide-arrow"

@@ -30,8 +30,6 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-
-
 Route::middleware(['auth', 'verified'])->prefix('master')->name('master.')->group(function () {
     Route::resource('companies', CompanyController::class);
     Route::resource('head-offices', HeadOfficeController::class);
@@ -44,20 +42,19 @@ Route::middleware(['auth', 'verified'])->prefix('master')->name('master.')->grou
     Route::get('employees-letter/{type}/{id}', [EmployeeController::class, 'hrLetter'])->name('employees.hr-letter');
     Route::get('employees-letter-pdf/{type}/{id}', [EmployeeController::class, 'hrLetterPdf'])->name('employees.hr-letter.pdf');
     Route::get('employees-letter-email/{type}/{id}', [EmployeeController::class, 'hrLetterEmail'])->name('employees.hr-letter.email');
-
-    Route::resource('clients', ClientController::class);
-    Route::put('client-approve',[ClientController::class,'approve'])->name('client.approve');
-    Route::get('client-welcome-letter/{id}', [ClientController::class, 'welcomeLetter'])->name('clients.welcomeLetter');
 });
 
 Route::middleware(['auth', 'verified'])->group(function () {
+    Route::resource('clients', ClientController::class)->names('clients');
+    Route::put('client-approve',[ClientController::class,'approve'])->name('client.approve');
+    Route::get('client-welcome-letter/{id}', [ClientController::class, 'welcomeLetter'])->name('clients.welcomeLetter');
     Route::resource('client-families', ClientFamilyController::class);
     Route::get('client-families-create-from-existing', [ClientFamilyController::class, 'createFromExistingClient'])->name('client-families.create.existing');
     Route::post('client-families.store-from-existing', [ClientFamilyController::class, 'storeFromExistingClient'])->name('client-families.store.existing');
     Route::resource('client-banks', ClientBankController::class);
     // Route::get('/birthdays-client', [ClientBDayController::class, 'index'])->name('clients.birthdays');
-Route::get('/birthday-client', [ClientBDayController::class, 'index'])
-    ->name('birthday-client');
+    Route::get('/birthday-client', [ClientBDayController::class, 'index'])
+        ->name('birthday-client');
 
 
 });
@@ -76,9 +73,12 @@ Route::middleware(['auth', 'verified'])->prefix('investment')->name('investment.
     Route::resource('els', InvestmentController::class)->names('els');
 
     Route::get('els-renew', [InvestmentController::class, 'renew'])->name("renew");
-    Route::get('els-claim', [InvestmentController::class, 'claim'])->name("claim");;
-    Route::get('els-merge', [InvestmentController::class, 'merge'])->name("merge");;
-    Route::get('els-maturity', [InvestmentController::class, 'maturity'])->name("maturity");;
+    Route::get('els-claim', [InvestmentController::class, 'claim'])->name("claim");
+    ;
+    Route::get('els-merge', [InvestmentController::class, 'merge'])->name("merge");
+    ;
+    Route::get('els-maturity', [InvestmentController::class, 'maturity'])->name("maturity");
+    ;
 });
 
 Route::post('/logout', function () {
