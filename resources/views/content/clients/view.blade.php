@@ -188,6 +188,9 @@
                                                 @else
                                                     <embed src="{{ $client->attachment_aadhar_front_url }}"
                                                         type="application/pdf" width="100%" height="200px">
+                                                    <br>
+                                                    <a href="{{ $client->attachment_aadhar_front_url }}" target="_blank">
+                                                        view</a>
                                                 @endif
                                             </a>
                                             <div class="doc-title">Aadhar Front</div>
