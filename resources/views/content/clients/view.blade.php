@@ -13,14 +13,14 @@
     </style>
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h4 class="fw-bold py-3 mb-4">
-            <span class="text-muted fw-light">Master /</span> <a href="{{ route('clients.create') }}">Client view</a>
+            <span class="text-muted fw-light">Master /</span> <a href="{{ route('master.clients.create') }}">Client view</a>
         </h4>
     </div>
-
+    {{-- {{ $client }} --}}
 
     <div class="container">
         <div class="text-end mb-3">
-            <a href="{{ route('clients.index') }}" class="btn btn-secondary px-4">Go back</a>
+            <a href="{{ route('master.clients.index') }}" class="btn btn-secondary px-4">Go back</a>
             <button type="button" class="btn btn-primary px-4">
                 Download PDF
             </button>
@@ -28,7 +28,7 @@
         </div>
         <div class="card shadow-sm mb-4">
             <div class="card-header text-white text-center" style="background-color: #ead3ff;">
-                <h5 class="mb-0">Client Information</h5>
+                <h5 class="mb-0">Client Informations</h5>
             </div>
 
             <div class="card-body mt-3">
@@ -39,9 +39,16 @@
 
                         <!-- PERSONAL DETAILS -->
                         <tr>
+
                             <th colspan="4" class="text-center section-heading"
-                                style="background-color: #ede1f8 !important;">
+                                style="background-color: #ede1f8 !important; position: relative;">
+
                                 <b>Personal Details</b>
+
+                                <span style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); ">
+                                    Created Date Time :
+                                    <b> {{ \Carbon\Carbon::parse($client->created_at)->format('d-M-Y H:i:s') }} </b>
+                                </span>
                             </th>
                         </tr>
 
@@ -55,8 +62,9 @@
                         <tr>
                             <th>Gender</th>
                             <td class="value">{{ ucfirst($client->gender) }}</td>
-                            <th>DOB</th>abc
-                            <td class="value">{{ $client->dob }}</td>
+                            <th>DOB</th>
+                            <td class="value">{{ \Carbon\Carbon::parse($client->dob)->format('d-M-Y') }}
+                                -{{ $client->age_group }}</td>
                         </tr>
 
                         <tr>
@@ -166,9 +174,21 @@
                                     @endif
 
                                     @if ($client->attachment_aadhar_front_url)
+                                        @php
+                                            $ext = strtolower(
+                                                pathinfo($client->attachment_aadhar_front_url, PATHINFO_EXTENSION),
+                                            );
+                                            $isImage = in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'webp']);
+                                        @endphp
                                         <div class="text-center">
                                             <a href="{{ $client->attachment_aadhar_front_url }}" target="_blank">
-                                                <img src="{{ $client->attachment_aadhar_front_url }}" class="attach-img">
+                                                @if ($isImage)
+                                                    <img src="{{ $client->attachment_aadhar_front_url }}"
+                                                        class="attach-img">
+                                                @else
+                                                    <embed src="{{ $client->attachment_aadhar_front_url }}"
+                                                        type="application/pdf" width="100%" height="200px">
+                                                @endif
                                             </a>
                                             <div class="doc-title">Aadhar Front</div>
                                         </div>
@@ -179,7 +199,7 @@
                                             <a href="{{ $client->attachment_aadhar_back_url }}" target="_blank">
                                                 <img src="{{ $client->attachment_aadhar_back_url }}" class="attach-img">
                                             </a>
-                                            <div class="doc-title">Aadhar Back</div>
+                                            <div class="doc-title">Mask Adhar</div>
                                         </div>
                                     @endif
 
@@ -306,10 +326,19 @@
             </div>
             <div class="p-3 text-end">
 
-                <button type="button" class="btn btn-success px-4 {{ $client->approved ? '' : 'disabled' }}"
-                    {{ $client->approved ? '' : 'disabled' }}>
-                    Approved
-                </button>
+                @if (!$client->is_approved)
+                    {{-- show approve button --}}
+                    <button type="button" class="btn btn-success px-4">
+                        Approve
+                    </button>
+                @else
+                    {{-- hide button --}}
+                    <button type="button" class="btn btn-success px-4 d-none">
+                        Approve
+                    </button>
+                @endif
+
+
             </div>
         </div>
 

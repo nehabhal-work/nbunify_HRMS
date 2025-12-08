@@ -31,7 +31,7 @@
     </div>
 
     <div class="div d-flex justify-content-end mb-3">
-        <a href="{{ route('clients.index') }}" class="btn btn-secondary px-4">Go back</a>
+        <a href="{{ route('master.clients.index') }}" class="btn btn-secondary px-4">Go back</a>
 
     </div>
     <div class="card mb-4">
@@ -275,8 +275,7 @@
                                     <th>Branch</th>
                                     <th>Bank Code</th>
                                     <th>Primary</th>
-                                    <th>Created By</th>
-                                    <th>Approved By</th>
+                                    
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -297,23 +296,7 @@
                                         <td>{{ $b->branch_name ?? '-' }}</td>
                                         <td>{{ $b->bank_code ?? '-' }}</td>
                                         <td>{{ $b->is_primary ? 'Yes' : 'No' }}</td>
-                                        <td
-                                            class="{{ !empty($d->created_by) ? 'table-warning fw-semibold rounded px-2 py-1' : '' }}">
-                                            @if (!empty($d->created_by))
-                                                {{ $d->created_by . ' - ' . ($d->created_at ?? '-') }}
-                                            @else
-                                                -
-                                            @endif
-                                        </td>
-
-                                        <td
-                                            class="{{ !empty($d->approved_by) ? 'table-success fw-semibold rounded px-2 py-1' : '' }}">
-                                            @if (!empty($d->approved_by))
-                                                {{ $d->approved_by . ' - ' . ($d->approved_at ?? '-') }}
-                                            @else
-                                                -
-                                            @endif
-                                        </td>
+                                       
                                         <td>
                                             <div class="dropdown">
                                                 <button type="button" class="btn p-0 dropdown-toggle hide-arrow"

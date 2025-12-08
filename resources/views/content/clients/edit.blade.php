@@ -31,12 +31,12 @@
 
 
     <div class="text-end mt-3">
-        <a href="{{ route('clients.index') }}" class="btn btn-secondary px-4">Go back</a>
+        <a href="{{ route('master.clients.index') }}" class="btn btn-secondary px-4">Go back</a>
         <a href="{{ route('client-families.index', ['client_id' => $client->id]) }}"
             class="btn btn-warning px-4 text-dark">Show
             Families</a>
     </div>
-    <form action="{{ route('clients.update', $client->id) }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('master.clients.update', $client->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('put')
         <div class="row align-items-stretch">

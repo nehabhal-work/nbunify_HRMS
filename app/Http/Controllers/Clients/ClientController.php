@@ -107,7 +107,7 @@ class ClientController extends Controller
     {
         $client = $this->clientService->find($id);
         $this->clientService->delete($client);
-        return redirect()->route('clients.index')->with('success', 'Client deleted successfully');
+        return redirect()->route('master.clients.index')->with('success', 'Client deleted successfully');
     }
 
     private function addFileUrls($client)
