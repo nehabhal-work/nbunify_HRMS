@@ -42,7 +42,7 @@
                             <th colspan="4" class="text-center section-heading"
                                 style="background-color: #ede1f8 !important;">
                                 <b>Personal Details</b>
-                                 <span style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); ">
+                                <span style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); ">
                                     Created Date Time :
                                     <b> {{ \Carbon\Carbon::parse($client->created_at)->format('d-M-Y H:i:s') }} </b>
                                 </span>
@@ -60,7 +60,7 @@
                             <th>Gender</th>
                             <td class="value">{{ ucfirst($client->gender) }}</td>
                             <th>DOB</th>
-                          <td class="value">{{ \Carbon\Carbon::parse($client->dob)->format('d-M-Y') }}
+                            <td class="value">{{ \Carbon\Carbon::parse($client->dob)->format('d-M-Y') }}
                                 -{{ $client->age_group }}</td>
                         </tr>
 
@@ -171,22 +171,9 @@
                                     @endif
 
                                     @if ($client->attachment_aadhar_front_url)
-                                        @php
-                                            $ext = strtolower(
-                                                pathinfo($client->attachment_aadhar_front_url, PATHINFO_EXTENSION),
-                                            );
-                                            $isImage = in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'webp']);
-                                        @endphp
                                         <div class="text-center">
                                             <a href="{{ $client->attachment_aadhar_front_url }}" target="_blank">
-                                                @if ($isImage)
-                                                    <img src="{{ $client->attachment_aadhar_front_url }}"
-                                                        class="attach-img">
-                                                @else
-                                                    {{-- PDF preview --}}
-                                                    <i class="bi bi-file-earmark-pdf text-danger fs-1"></i>
-                                                    <div>View PDF</div>
-                                                @endif
+                                                <img src="{{ $client->attachment_aadhar_front_url }}" class="attach-img">
                                             </a>
                                             <div class="doc-title">Aadhar Front</div>
                                         </div>
@@ -197,7 +184,7 @@
                                             <a href="{{ $client->attachment_aadhar_back_url }}" target="_blank">
                                                 <img src="{{ $client->attachment_aadhar_back_url }}" class="attach-img">
                                             </a>
-                                            <div class="doc-title">Aadhar Back</div>
+                                            <div class="doc-title">Mask Adhar</div>
                                         </div>
                                     @endif
 
@@ -324,9 +311,18 @@
             </div>
             <div class="p-3 text-end">
 
-                <button type="button" class="btn btn-success px-4" {{ $client->is_approved ? 'disabled' : '' }}>
-                    Approve
-                </button>
+                @if (!$client->is_approved)
+                    {{-- show approve button --}}
+                    <button type="button" class="btn btn-success px-4">
+                        Approve
+                    </button>
+                @else
+                    {{-- hide button --}}
+                    <button type="button" class="btn btn-success px-4 d-none">
+                        Approve
+                    </button>
+                @endif
+
 
             </div>
         </div>
