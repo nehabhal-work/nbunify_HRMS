@@ -55,7 +55,7 @@
                         <tr>
                             <th>Gender</th>
                             <td class="value">{{ ucfirst($client->gender) }}</td>
-                            <th>DOB</th>abc
+                            <th>DOB</th>
                             <td class="value">{{ $client->dob }}</td>
                         </tr>
 
@@ -222,7 +222,7 @@
         <tr>
             <th colspan="4" class="text-center section-heading"
                 style="background-color: #ede1f8 !important;">
-                <b>Attachments</b>
+                <b>Attachments test</b>
             </th>
         </tr>
 
