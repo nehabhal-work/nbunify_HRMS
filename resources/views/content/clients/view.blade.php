@@ -186,7 +186,7 @@
                                                     <img src="{{ $client->attachment_aadhar_front_url }}"
                                                         class="attach-img">
                                                 @else
-                                                    <embed src="{{ $client->attachment_client_photo_url }}"
+                                                    <embed src="{{ $client->attachment_aadhar_front_url }}"
                                                         type="application/pdf" width="100%" height="200px">
                                                 @endif
                                             </a>
