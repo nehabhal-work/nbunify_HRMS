@@ -54,12 +54,18 @@ class Client extends Model
         'created_by',
         'approved_by',
         'approved_at',
+        'approved2_by',
+        'approved2_on',
+        'approved3_by',
+        'approved3_on',
     ];
 
     protected $casts = [
         'dob' => 'date:Y-m-d',
         'dod' => 'date:Y-m-d',
-        'approved_at' => 'datetime',
+        'approved_at' => 'datetime:d-m-Y h:i',
+        'approved2_on' => 'datetime:d-m-Y h:i',
+        'approved3_on' => 'datetime:d-m-Y h:i',
     ];
 
     public function families(): HasMany
@@ -80,5 +86,15 @@ class Client extends Model
     public function approvedBy(): BelongsTo
     {
         return $this->belongsTo(User::class, 'approved_by');
+    }
+
+    public function approved2By(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'approved2_by');
+    }
+
+    public function approved3By(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'approved3_by');
     }
 }

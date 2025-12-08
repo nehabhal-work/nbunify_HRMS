@@ -29,7 +29,7 @@
 
 
 
-    <form action="{{ route('master.clients.store') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('clients.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('post')
         <input type="hidden" name="res_country" id="res_country">
@@ -41,7 +41,7 @@
         <input type="hidden" name="office_city" id="office_city">
 
         <div class="d-flex justify-content-end">
-            <a href="{{ route('master.clients.index') }}" class="btn btn-secondary px-4">Go Back</a>
+            <a href="{{ route('clients.index') }}" class="btn btn-secondary px-4">Go Back</a>
         </div>
         <div class="row align-items-stretch">
             <div class="col-md-12">

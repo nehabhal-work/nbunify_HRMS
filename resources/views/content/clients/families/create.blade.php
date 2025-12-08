@@ -499,7 +499,7 @@
 
         <div class="text-end mt-3">
             <button type="submit" class="btn btn-primary px-4">Save</button>
-            <a href="{{ route('master.clients.index') }}" class="btn btn-secondary px-4">Cancel</a>
+            <a href="{{ route('clients.index') }}" class="btn btn-secondary px-4">Cancel</a>
         </div>
     </form>
 

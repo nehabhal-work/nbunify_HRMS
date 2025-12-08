@@ -70,7 +70,7 @@
          </li>
 
          <li class="menu-item {{ request()->routeIs('client*') ? 'active' : '' }}">
-             <a href="{{ route('master.clients.index') }}" class="menu-link">
+             <a href="{{ route('clients.index') }}" class="menu-link">
                  <i class="menu-icon bx bx-id-card"></i>
                  <div class="text-truncate">Client</div>
              </a>

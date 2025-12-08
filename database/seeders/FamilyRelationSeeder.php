@@ -83,6 +83,8 @@ class FamilyRelationSeeder extends Seeder
             ['COUSIN', 'COUSIN', 'male'],
             ['COUSIN', 'COUSIN', 'female'],
             ['COUSIN', 'COUSIN', 'other'],
+            ['BROTHER','BROTHER','male'],
+            ['SISTER','SISTER','female'],
         ];
 
         foreach ($relations as $relation) {
