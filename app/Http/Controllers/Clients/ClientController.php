@@ -150,7 +150,9 @@ class ClientController extends Controller
         return $pdf->download('Welcome-Letter-' . $client->full_name . '.pdf');
     }
 
-    public function approve($id) {
+    public function approve($id)
+    {
+        // return 'approve';
         $this->clientService->approve($id);
         return redirect()->route('clients.index')->with('success', 'Client approved successfully');
     }

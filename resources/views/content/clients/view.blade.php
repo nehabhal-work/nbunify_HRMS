@@ -239,7 +239,7 @@
                         </tr>
                     </table>
                 </div>
-
+                {{ $client }}
 
                 <!-- FAMILY INFO -->
                 <div class="table-responsive mt-4">
@@ -328,17 +328,17 @@
 
             </div>
             <div class="p-3 text-end">
-
                 @if (!$client->is_approved)
                     {{-- show approve button --}}
-                    <button type="button" class="btn btn-success px-4">
-                        Approve
-                    </button>
+                    <form action="{{ route('client.approve', $client->id) }}" method="post">
+                        @csrf
+                        @method('PUT')
+                        <button type="submit" class="btn btn-success px-4">
+                            Approve
+                        </button>
+                    </form>
                 @else
                     {{-- hide button --}}
-                    <button type="button" class="btn btn-success px-4 d-none">
-                        Approve
-                    </button>
                 @endif
 
 

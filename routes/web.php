@@ -46,7 +46,7 @@ Route::middleware(['auth', 'verified'])->prefix('master')->name('master.')->grou
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('clients', ClientController::class)->names('clients');
-    Route::put('client-approve',[ClientController::class,'approve'])->name('client.approve');
+    Route::put('client-approve/{id}', [ClientController::class, 'approve'])->name('client.approve');
     Route::get('client-welcome-letter/{id}', [ClientController::class, 'welcomeLetter'])->name('clients.welcomeLetter');
     Route::resource('client-families', ClientFamilyController::class);
     Route::get('client-families-create-from-existing', [ClientFamilyController::class, 'createFromExistingClient'])->name('client-families.create.existing');
@@ -55,8 +55,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Route::get('/birthdays-client', [ClientBDayController::class, 'index'])->name('clients.birthdays');
     Route::get('/birthday-client', [ClientBDayController::class, 'index'])
         ->name('birthday-client');
-
-
 });
 
 Route::middleware(['auth', 'verified'])->prefix('accounts')->name('accounts.')->group(function () {
@@ -73,12 +71,9 @@ Route::middleware(['auth', 'verified'])->prefix('investment')->name('investment.
     Route::resource('els', InvestmentController::class)->names('els');
 
     Route::get('els-renew', [InvestmentController::class, 'renew'])->name("renew");
-    Route::get('els-claim', [InvestmentController::class, 'claim'])->name("claim");
-    ;
-    Route::get('els-merge', [InvestmentController::class, 'merge'])->name("merge");
-    ;
-    Route::get('els-maturity', [InvestmentController::class, 'maturity'])->name("maturity");
-    ;
+    Route::get('els-claim', [InvestmentController::class, 'claim'])->name("claim");;
+    Route::get('els-merge', [InvestmentController::class, 'merge'])->name("merge");;
+    Route::get('els-maturity', [InvestmentController::class, 'maturity'])->name("maturity");;
 });
 
 Route::post('/logout', function () {

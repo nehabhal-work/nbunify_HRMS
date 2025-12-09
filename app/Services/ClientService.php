@@ -8,14 +8,12 @@ use Illuminate\Support\Str;
 
 class ClientService
 {
-    public function __construct(private FileStorageService $fileStorageService)
-    {
-    }
+    public function __construct(private FileStorageService $fileStorageService) {}
 
     public function getAll()
     {
-        return Client::with(['createdBy','approvedBy','families','banks','approved2By','approved3By'])
-        ->orderByDesc('id')->get();
+        return Client::with(['createdBy', 'approvedBy', 'families', 'banks', 'approved2By', 'approved3By'])
+            ->orderByDesc('id')->get();
     }
 
     public function getAllExcept(array $clientIds = [])
@@ -23,17 +21,18 @@ class ClientService
         return Client::whereNotIn('id', [$clientIds])->get();
     }
 
-    public function find($id) {
+    public function find($id)
+    {
         $client = Client::findOrFail($id);
-        if(auth()->id() == $client->created_by) {
+        if (auth()->id() == $client->created_by) {
             $client->is_approved = true;
         } else {
             $user = User::find(auth()->id());
-            if($user->level == 1) {
+            if ($user->level == 1) {
                 $client->is_approved = $client->approved_by != null ? true : false;
-            } else if($user->level == 2 && $client->approved_by != null) {
+            } else if ($user->level == 2 && $client->approved_by != null) {
                 $client->is_approved = $client->approved2_by != null ? true : false;
-            } else if($user->level == 3 && $client->approved2_by != null) {
+            } else if ($user->level == 3 && $client->approved2_by != null) {
                 $client->is_approved = $client->approved3_by != null ? true : false;
             } else {
                 $client->is_approved = true;
@@ -51,19 +50,20 @@ class ClientService
         return $client;
     }
 
-    public function approve($id) {
+    public function approve($id)
+    {
         $client = Client::findOrFail($id);
         $user = User::find(auth()->id());
-        if($client != null) {
-            if($user->level == 1) {
+        if ($client != null) {
+            if ($user->level == 1) {
                 $client->approved_by = auth()->id();
                 $client->approved_at = now();
                 $client->save();
-            } else if($user->level == 2) {
+            } else if ($user->level == 2) {
                 $client->approved2_by = auth()->id();
                 $client->approved2_on = now();
                 $client->save();
-            } else if($user->level == 3) {
+            } else if ($user->level == 3) {
                 $client->approved3_by = auth()->id();
                 $client->approved3_on = now();
                 $client->save();
@@ -71,7 +71,7 @@ class ClientService
                 return abort(401, 'User level not found');
             }
         } else {
-            return abort(404,'Client Not Found');
+            return abort(404, 'Client Not Found');
         }
     }
 
@@ -100,7 +100,7 @@ class ClientService
             'attachment_other_documents'
         ];
 
-        if($mode == 'A') {
+        if ($mode == 'A') {
             foreach ($fileFields as $field) {
                 if (isset($data[$field . '_url'])) {
                     $data[$field] = $this->fileStorageService->storeClientDocument(
@@ -110,10 +110,10 @@ class ClientService
                     );
                 }
             }
-        } else if($mode == 'E') {
+        } else if ($mode == 'E') {
             foreach ($fileFields as $field) {
                 if (isset($data[$field . '_url'])) {
-                    if(Str::contains($data[$field . '_url'], 'temp')) {
+                    if (Str::contains($data[$field . '_url'], 'temp')) {
                         if ($client && $client->$field) {
                             $this->fileStorageService->deleteFile($client->$field);
                         }

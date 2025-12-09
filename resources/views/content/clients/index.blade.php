@@ -106,6 +106,7 @@
                                                 </button>
                                             @endif
                                         </td>
+
                                         <td
                                             class="{{ !empty($d->createdBy) ? 'table-warning fw-semibold rounded px-2 py-1' : '' }}">
                                             @if (!empty($d->createdBy))
@@ -119,33 +120,34 @@
                                             @endif
                                         </td>
 
+
                                         <td
-                                            class="{{ !empty($d->approved_by) ? 'table-success fw-semibold rounded px-2 py-1' : '' }}">
-                                            @if (!empty($d->approved_by))
-                                                {{ $d->approved_by . ' - ' . ($d->approved_at ?? '-') }}
+                                            class="{{ !empty($d->approvedBy) ? 'table-success fw-semibold rounded px-2 py-1' : '' }}">
+                                            @if (!empty($d->approvedBy))
+                                                {{ $d->approvedBy->name }} <br>{{ $d->approved_at ?? '-' }}
+                                            @else
+                                                -
+                                            @endif
+                                        </td>
+
+                                        <td
+                                            class="{{ !empty($d->approved2By) ? 'table-success fw-semibold rounded px-2 py-1' : '' }}">
+                                            @if (!empty($d->approved2By))
+                                                {{ $d->approved2By->name }} <br>{{ $d->approved2_at ?? '-' }}
                                             @else
                                                 -
                                             @endif
                                         </td>
                                         <td
-                                            class="{{ !empty($d->approved_by) ? 'table-success fw-semibold rounded px-2 py-1' : '' }}">
-                                            @if (!empty($d->approved_by))
-                                                {{ $d->approved_by . ' - ' . ($d->approved_at ?? '-') }}
-                                            @else
-                                                -
-                                            @endif
-                                        </td>
-                                        <td
-                                            class="{{ !empty($d->approved_by) ? 'table-success fw-semibold rounded px-2 py-1' : '' }}">
-                                            @if (!empty($d->approved_by))
-                                                {{ $d->approved_by . ' - ' . ($d->approved_at ?? '-') }}
+                                            class="{{ !empty($d->approved3By) ? 'table-success fw-semibold rounded px-2 py-1' : '' }}">
+                                            @if (!empty($d->approved3By))
+                                                {{ $d->approved3By->name }} <br>{{ $d->approved3_at ?? '-' }}
                                             @else
                                                 -
                                             @endif
                                         </td>
 
 
-                                        </td>
 
                                         <td>
                                             <div class="dropdown">
@@ -169,8 +171,7 @@
                                                         href="{{ route('clients.edit', $d->id) }}">
                                                         <i class="bx bx-edit-alt me-1"></i> Edit
                                                     </a>
-                                                    <a class="dropdown-item"
-                                                        href="{{ route('clients.show', $d->id) }}">
+                                                    <a class="dropdown-item" href="{{ route('clients.show', $d->id) }}">
                                                         <i class="bx bx-show me-1"></i> View
                                                     </a>
                                                     <a class="dropdown-item"
@@ -179,8 +180,8 @@
                                                     </a>
 
                                                     <hr>
-                                                    <form action="{{ route('clients.destroy', $d->id) }}"
-                                                        method="post" onsubmit="return confirmDelete()">
+                                                    <form action="{{ route('clients.destroy', $d->id) }}" method="post"
+                                                        onsubmit="return confirmDelete()">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit" class="dropdown-item text-danger delete-btn">
