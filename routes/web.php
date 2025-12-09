@@ -22,6 +22,8 @@ use App\Http\Controllers\Masters\CompanyController;
 use App\Http\Controllers\Masters\HeadOfficeController;
 use App\Http\Controllers\Masters\BranchController;
 
+
+// MERGED
 Route::get('/', function () {
     return redirect()->route('dashboard');
 })->middleware(['auth', 'verified'])->name('home');
