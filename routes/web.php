@@ -52,7 +52,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('client-families-create-from-existing', [ClientFamilyController::class, 'createFromExistingClient'])->name('client-families.create.existing');
     Route::post('client-families.store-from-existing', [ClientFamilyController::class, 'storeFromExistingClient'])->name('client-families.store.existing');
     Route::resource('client-banks', ClientBankController::class);
-    // Route::get('/birthdays-client', [ClientBDayController::class, 'index'])->name('clients.birthdays');
     Route::get('/birthday-client', [ClientBDayController::class, 'index'])
         ->name('birthday-client');
 });
@@ -82,5 +81,4 @@ Route::post('/logout', function () {
     request()->session()->regenerateToken();
     return redirect('/');
 })->middleware('auth')->name('logout');
-
 require __DIR__ . '/settings.php';
