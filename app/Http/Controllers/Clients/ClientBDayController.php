@@ -24,11 +24,11 @@ class ClientBDayController extends Controller
         $toDate   = $request->to_date ?? now()->addDays(30)->format('Y-m-d');
 
         if ($fromDate == null) {
-            $fromDate = now()->subDays(7)->format('Y-m-d');
+            $fromDate = now()->format('Y-m-d');
         }
 
         if ($toDate == null) {
-            $toDate = now()->addDays(7)->format('Y-m-d');
+            $toDate = now()->addMonth()->format('Y-m-d');
         }
 
         $clients = $this->clientService->getBDayList($fromDate, $toDate);
