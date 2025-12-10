@@ -39,7 +39,7 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive text-nowrap">
-                        <table class="table srkdataTable">
+                        <table class="table table-bordered srkdataTable">
                             <thead class="table-light">
                                 <tr>
                                     <th>client-code</th>

@@ -28,6 +28,7 @@
             <small class="text-muted float-end">Bank Information</small>
         </div>
 
+        {{ $clientBank }}
         <form action="{{ route('client-banks.update', $clientBank->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('put')

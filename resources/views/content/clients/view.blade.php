@@ -67,14 +67,17 @@
                                 {{ $client->age_group ?? '' }}</td>
                         </tr>
 
-                        @if ($client->dod)
-                            <tr>
-                                <th>Live Status</th>
-                                <td class="value">{{ ucfirst($client->live_status) }}</td>
+                        <tr>
+                            <th>Live Status</th>
+                            <td class="value">{{ ucfirst($client->live_status) }}</td>
+                            @if ($client->live_status == 'alive')
+                                <th>-</th>
+                                <td class="value">-</td>
+                            @else
                                 <th>DOD</th>
                                 <td class="value">{{ $client->dod ?: '-' }}</td>
-                            </tr>
-                        @endif
+                            @endif
+                        </tr>
 
                         <tr>
                             <th>Marital Status</th>
@@ -135,23 +138,27 @@
                         <!-- RESIDENTIAL ADDRESS -->
                         <tr>
                             <th>Residential Address</th>
-                            <td colspan="3" class="value">
-                                {{ $client->res_address }},
-                                {{ $client->res_city }},
-                                {{ $client->res_state }},
-                                {{ $client->res_country }} - {{ $client->res_pincode }}
-                            </td>
+                            @if (!empty($client->res_address))
+                                <td colspan="3" class="value">
+                                    {{ $client->res_address }},
+                                    {{ $client->res_city }},
+                                    {{ $client->res_state }},
+                                    {{ $client->res_country }} - {{ $client->res_pincode }}
+                                </td>
+                            @endif
                         </tr>
 
                         <!-- OFFICE ADDRESS -->
                         <tr>
                             <th>Office Address</th>
-                            <td colspan="3" class="value">
-                                {{ $client->office_address }},
-                                {{ $client->office_city }},
-                                {{ $client->office_state }},
-                                {{ $client->office_country }} - {{ $client->office_pincode }}
-                            </td>
+                            @if (!empty($client->office_address))
+                                <td colspan="3" class="value">
+                                    {{ $client->office_address }},
+                                    {{ $client->office_city }},
+                                    {{ $client->office_state }},
+                                    {{ $client->office_country }} - {{ $client->office_pincode }}
+                                </td>
+                            @endif
                         </tr>
                     </table>
                 </div>
@@ -191,10 +198,22 @@
                                         </div>
                                     @endif
 
+                                    {{-- {{ $client->attachment_aadhar_front_url }} --}}
                                     @if ($client->attachment_aadhar_front_url)
+                                        @php
+                                            $url = $client->attachment_aadhar_front_url;
+                                            $isPdf = Str::contains(strtolower($url), 'pdf');
+                                        @endphp
+
                                         <div class="text-center">
                                             <a href="{{ $client->attachment_aadhar_front_url }}" target="_blank">
-                                                <img src="{{ $client->attachment_aadhar_front_url }}" class="attach-img">
+                                                {{-- <img src="{{ $client->attachment_aadhar_front_url }}" class="attach-img"> --}}
+                                                @if ($isPdf)
+                                                    <embed src="{{ $url }}" type="application/pdf"
+                                                        class="attach-pdf">
+                                                @else
+                                                    <img src="{{ $url }}" class="attach-img">
+                                                @endif
                                             </a>
                                             <div class="doc-title">Aadhar</div>
                                         </div>
