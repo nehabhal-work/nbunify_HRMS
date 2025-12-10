@@ -143,7 +143,8 @@
                             class="form-control bank_code bg-secondary-subtle bg-gradient" readonly>
                     </div>
 
-                    <!-- Cancelled Cheque Upload -->               
+                    <!-- Cancelled Cheque Upload -->
+                    {{-- {{ $clientBank->attachment_cancelled_cheque }} --}}
                     <div class="col-md-4 mb-3">
                         <label class="form-label">Cheque Photo</label>
                         <div class="input-group">
@@ -159,16 +160,16 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
 
-                        <input type="hidden" id="attachment_cancelled_cheque_url"
-                            value="{{ old('attachment_cancelled_cheque_url', $client->attachment_cancelled_cheque_url) }}"
-                            name="attachment_cancelled_cheque_url">
+                        <input type="hidden" id="attachment_cancelled_cheque"
+                            value="{{ old('attachment_cancelled_cheque', $client->attachment_cancelled_cheque) }}"
+                            name="attachment_cancelled_cheque">
 
 
-                        @if ($client->attachment_cancelled_cheque_url)
+                        @if ($client->attachment_cancelled_cheque)
                             <div id="attachment_cancelled_cheque_previews" class="position-relative d-inline-block">
                                 {{-- <img src="{{ $client->attachment_cancelled_cheque_url }}" class="rounded"> --}}
-                                <a href="{{ $client->attachment_cancelled_cheque_url }}" target="_blank">
-                                    <img src="{{ $client->attachment_cancelled_cheque_url }}" class="rounded">
+                                <a href="{{ $client->attachment_cancelled_cheque }}" target="_blank">
+                                    <img src="{{ $client->attachment_cancelled_cheque }}" class="rounded">
                                 </a>
 
 
@@ -179,9 +180,9 @@
                                     ✕
                                 </button>
                             </div>
-                        @elseif (old('attachment_cancelled_cheque_url'))
+                        @elseif (old('attachment_cancelled_cheque'))
                             <div id="attachment_cancelled_cheque_preview" class="position-relative d-inline-block">
-                                <img src="{{ old('attachment_cancelled_cheque_url') }}" class="rounded">
+                                <img src="{{ old('attachment_cancelled_cheque') }}" class="rounded">
 
                                 <!-- Remove (X) button -->
                                 <button type="button"

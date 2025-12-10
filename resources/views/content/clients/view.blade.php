@@ -239,7 +239,7 @@
                         </tr>
                     </table>
                 </div>
-                {{ $client }}
+                {{-- {{ $client }} --}}
 
                 <!-- FAMILY INFO -->
                 <div class="table-responsive mt-4">
@@ -307,6 +307,7 @@
                             </tr>
 
                             @foreach ($client->banks as $b)
+                                {{-- {{ $b }} --}}
                                 <tr>
                                     <td class="value">{{ $b->ifsc_code ?? '-' }}</td>
                                     <td class="value">{{ $b->account_number ?? '-' }}</td>
