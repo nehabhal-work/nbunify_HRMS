@@ -75,7 +75,10 @@
                                         <td>{{ $key + 1 }}</td>
                                         <td>{{ $d->name }}</td>
                                         <td>{{ $d->relation->relative_relation . '-' . $d->relation->main_relation }}</td>
-                                        <td>{{ $d->dob }}</td>
+                                        <td>
+                                            {{ $d->dob ? \Carbon\Carbon::parse($d->dob)->format('d-M-Y') : '-' }}
+                                        </td>
+
                                         <td>{{ $d->mobile_no }}</td>
                                         <td>{{ $d->email }}</td>
 
