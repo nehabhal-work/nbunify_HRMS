@@ -174,150 +174,68 @@
                                 <div class="d-flex flex-wrap gap-3">
 
                                     @if ($client->attachment_client_photo_url)
-                                        @php
-                                            $ext = strtolower(
-                                                pathinfo($client->attachment_client_photo_url, PATHINFO_EXTENSION),
-                                            );
-                                            $isImage = in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'webp']);
-                                        @endphp
-
                                         <div class="text-center">
                                             <a href="{{ $client->attachment_client_photo_url }}" target="_blank">
-                                                @if ($isImage)
-                                                    <img src="{{ $client->attachment_client_photo_url }}"
-                                                        class="attach-img">
-                                                @else
-                                                    <img src="{{ asset('assets/img/pdf.png') }}" class="attach-img">
-                                                @endif
+                                                <img src="{{ $client->attachment_client_photo_url }}" class="attach-img">
                                             </a>
-                                            <div class="doc-title mt-1">Client Photo</div>
+                                            <div class="doc-title">Client Photo</div>
                                         </div>
                                     @endif
 
                                     @if ($client->attachment_pan_url)
-                                        @php
-                                            $ext = strtolower(
-                                                pathinfo($client->attachment_pan_url, PATHINFO_EXTENSION),
-                                            );
-                                            $isImage = in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'webp']);
-                                        @endphp
-
                                         <div class="text-center">
                                             <a href="{{ $client->attachment_pan_url }}" target="_blank">
-                                                @if ($isImage)
-                                                    <img src="{{ $client->attachment_pan_url }}" class="attach-img">
-                                                @else
-                                                    <img src="{{ asset('assets/img/pdf.png') }}" class="attach-img">
-                                                @endif
+                                                <img src="{{ $client->attachment_pan_url }}" class="attach-img">
                                             </a>
-                                            <div class="doc-title mt-1">PAN</div>
+                                            <div class="doc-title">PAN</div>
                                         </div>
                                     @endif
 
-
                                     @if ($client->attachment_aadhar_front_url)
-                                        @php
-                                            $ext = strtolower(
-                                                pathinfo($client->attachment_aadhar_front_url, PATHINFO_EXTENSION),
-                                            );
-                                            $isImage = in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'webp']);
-                                        @endphp
                                         <div class="text-center">
                                             <a href="{{ $client->attachment_aadhar_front_url }}" target="_blank">
-                                                @if ($isImage)
-                                                    <img src="{{ $client->attachment_aadhar_front_url }}"
-                                                        class="attach-img">
-                                                @else
-                                                    <img src="{{ asset('assets/img/pdf.png') }}" class="attach-img">
-                                                @endif
+                                                <img src="{{ $client->attachment_aadhar_front_url }}" class="attach-img">
                                             </a>
                                             <div class="doc-title">Aadhar</div>
                                         </div>
                                     @endif
 
                                     @if ($client->attachment_aadhar_back_url)
-                                        @php
-                                            $ext = strtolower(
-                                                pathinfo($client->attachment_aadhar_back_url, PATHINFO_EXTENSION),
-                                            );
-                                            $isImage = in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'webp']);
-                                        @endphp
                                         <div class="text-center">
                                             <a href="{{ $client->attachment_aadhar_back_url }}" target="_blank">
-                                                @if ($isImage)
-                                                    <img src="{{ $client->attachment_aadhar_back_url }}"
-                                                        class="attach-img">
-                                                @else
-                                                    <img src="{{ asset('assets/img/pdf.png') }}" class="attach-img">
-                                                @endif
+                                                <img src="{{ $client->attachment_aadhar_back_url }}" class="attach-img">
                                             </a>
                                             <div class="doc-title">Mask Aadhar</div>
                                         </div>
                                     @endif
 
                                     @if ($client->attachment_signature_url)
-                                        @php
-                                            $ext = strtolower(
-                                                pathinfo($client->attachment_signature_url, PATHINFO_EXTENSION),
-                                            );
-                                            $isImage = in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'webp']);
-                                        @endphp
-
                                         <div class="text-center">
                                             <a href="{{ $client->attachment_signature_url }}" target="_blank">
-                                                @if ($isImage)
-                                                    <img src="{{ $client->attachment_signature_url }}" class="attach-img">
-                                                @else
-                                                    <img src="{{ asset('assets/img/pdf.png') }}" class="attach-img">
-                                                @endif
+                                                <img src="{{ $client->attachment_signature_url }}" class="attach-img">
                                             </a>
-                                            <div class="doc-title mt-1">Signature</div>
+                                            <div class="doc-title">Signature</div>
                                         </div>
                                     @endif
-
 
                                     @if ($client->attachment_ckyc_url)
-                                        @php
-                                            $ext = strtolower(
-                                                pathinfo($client->attachment_ckyc_url, PATHINFO_EXTENSION),
-                                            );
-                                            $isImage = in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'webp']);
-                                        @endphp
-
                                         <div class="text-center">
                                             <a href="{{ $client->attachment_ckyc_url }}" target="_blank">
-                                                @if ($isImage)
-                                                    <img src="{{ $client->attachment_ckyc_url }}" class="attach-img">
-                                                @else
-                                                    <img src="{{ asset('assets/img/pdf.png') }}" class="attach-img">
-                                                @endif
+                                                <img src="{{ $client->attachment_ckyc_url }}" class="attach-img">
                                             </a>
-                                            <div class="doc-title mt-1">CKYC Document</div>
+                                            <div class="doc-title">CKYC</div>
                                         </div>
                                     @endif
-
 
                                     @if ($client->attachment_other_documents_url)
-                                        @php
-                                            $ext = strtolower(
-                                                pathinfo($client->attachment_other_documents_url, PATHINFO_EXTENSION),
-                                            );
-                                            $isImage = in_array($ext, ['jpg', 'jpeg', 'png', 'gif', 'webp']);
-                                        @endphp
-
                                         <div class="text-center">
                                             <a href="{{ $client->attachment_other_documents_url }}" target="_blank">
-                                                @if ($isImage)
-                                                    <img src="{{ $client->attachment_other_documents_url }}"
-                                                        class="attach-img">
-                                                @else
-                                                    <img src="{{ asset('assets/img/pdf.png') }}" class="attach-img">
-                                                @endif
+                                                <img src="{{ $client->attachment_other_documents_url }}"
+                                                    class="attach-img">
                                             </a>
-                                            <div class="doc-title mt-1">Other Document</div>
+                                            <div class="doc-title">Other Document</div>
                                         </div>
                                     @endif
-
 
                                 </div>
                             </td>
