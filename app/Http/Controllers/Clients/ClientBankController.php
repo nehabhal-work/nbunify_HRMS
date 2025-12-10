@@ -22,6 +22,7 @@ class ClientBankController extends Controller
         if ($client_id = $request->client_id) {
             $client = $this->clientService->find($client_id);
             $clientBanks = $this->clientBankService->getByClientId($client_id);
+            // $clientBanks = $this->addFileUrls($clientBanks);
             return view('content.clients.banks.index', compact('clientBanks', 'client'));
         } else {
             abort(404);

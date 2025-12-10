@@ -118,8 +118,10 @@
                             <div
                                 class="col-md-2 mb-3 {{ old('live_status', $client->live_status ?? '') == 'deceased' ? '' : 'd-none' }}">
                                 <label for="dod" class="form-label">Date of Death</label>
-                                <input type="text" name="dod" id="dod" class="form-control datepicker"
-                                    value="{{ old('dod', $client->dod ?? '') }}" readonly placeholder="Select Date">
+                                <input type="date" name="dod" id="dod" class="form-control "
+                                    {{-- value="{{ old('dod', $client->dod ?? '') }}"  --}}
+                                    value="{{ old('dod', isset($client->dod) ? \Carbon\Carbon::parse($client->dod)->format('Y-m-d') : '') }}"
+                                    placeholder="Select Date">
                                 @error('dod')
                                     <div class="text-danger small">{{ $message }}</div>
                                 @enderror
@@ -1341,6 +1343,26 @@
 @endsection
 
 @push('scripts')
+    <script>
+        $(document).ready(function() {
+
+            function toggleDOD() {
+                if ($('#live_status').val() === 'deceased') {
+                    $('#dod').closest('.col-md-2').removeClass('d-none');
+                } else {
+                    $('#dod').closest('.col-md-2').addClass('d-none');
+                    $('#dod').val('');
+                }
+            }
+
+            // On page load
+            toggleDOD();
+
+            // On change
+            $('#live_status').on('change', toggleDOD);
+        });
+    </script>
+
     <script>
         $(document).ready(function() {
             $('.chkbox_fwapp_same_as_mobile').on('change', function() {

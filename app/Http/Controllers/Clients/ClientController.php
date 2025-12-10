@@ -43,7 +43,6 @@ class ClientController extends Controller
         $client = $this->clientService->find($id);
         $client->load(['banks', 'families']);
         $client = $this->addFileUrls($client);
-        // return $client;
         return view('content.clients.view', compact('client'));
     }
 
@@ -84,7 +83,10 @@ class ClientController extends Controller
 
     public function update(ClientRequest $request, $id)
     {
+        // return $request;
         $client = $this->clientService->find($id);
+        unset($client['is_approved']);
+        // return $client;
         DB::transaction(function () use ($request, $client) {
             $this->clientService->update($client, $request->validated());
 

@@ -30,7 +30,7 @@ class ClientBankRequest extends FormRequest
             'bank_code' => 'nullable|string|max:255',
             'is_primary' => 'boolean',
             'account_type' => 'nullable|in:savings,current,od_cc,nre,nri,nro,tem_deposit,ra',
-            'attachment_cancelled_cheque_url' => 'nullable|string|url',
+            'attachment_cancelled_cheque_url' => ['nullable', 'url'],
             'operation_mode' => 'nullable|string|max:255',
             'holder_name_1' => 'nullable|string|max:255',
             'holder_name_2' => 'nullable|string|max:255',

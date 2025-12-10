@@ -23,8 +23,8 @@ h6 {
 }
 
 #clientViewAttachments img,
-.clientViewAttachments img,
-.clientViewAttachments iframe {
+.clientViewAttachments,
+.clientViewAttachments img {
     width: 200px;
     height: 200px;
 }

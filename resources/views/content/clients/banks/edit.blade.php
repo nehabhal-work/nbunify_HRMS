@@ -28,7 +28,6 @@
             <small class="text-muted float-end">Bank Information</small>
         </div>
 
-        {{ $clientBank }}
         <form action="{{ route('client-banks.update', $clientBank->id) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('put')
@@ -146,7 +145,9 @@
 
                     <!-- Cancelled Cheque Upload -->
                     {{-- {{ $clientBank->attachment_cancelled_cheque }} --}}
-                    <div class="col-md-4 mb-3">
+
+
+                    <div class="col-md-4 mb-3 ">
                         <label class="form-label">Cheque Photo</label>
                         <div class="input-group">
                             <input type="file"
@@ -161,16 +162,22 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
 
-                        <input type="hidden" id="attachment_cancelled_cheque"
-                            value="{{ old('attachment_cancelled_cheque', $client->attachment_cancelled_cheque) }}"
-                            name="attachment_cancelled_cheque">
+                        <input type="hidden" id="attachment_cancelled_cheque_url"
+                            value="{{ old('attachment_cancelled_cheque_url', $clientBank->attachment_cancelled_cheque_url) }}"
+                            name="attachment_cancelled_cheque_url">
 
 
-                        @if ($client->attachment_cancelled_cheque)
-                            <div id="attachment_cancelled_cheque_previews" class="position-relative d-inline-block">
-                                {{-- <img src="{{ $client->attachment_cancelled_cheque_url }}" class="rounded"> --}}
-                                <a href="{{ $client->attachment_cancelled_cheque }}" target="_blank">
-                                    <img src="{{ $client->attachment_cancelled_cheque }}" class="rounded">
+                        @if ($clientBank->attachment_cancelled_cheque_url)
+                            @php
+                                $url = $clientBank->attachment_cancelled_cheque_url;
+                                $isPdf = Str::contains(strtolower($url), 'pdf');
+                            @endphp
+
+
+                            <div id="attachment_cancelled_cheque_previews" class="position-relative d-inline-block my-3">
+
+                                <a href="{{ $clientBank->attachment_cancelled_cheque_url }}" target="_blank">
+                                    Click to view image &nbsp;&nbsp;&nbsp;&nbsp;
                                 </a>
 
 
@@ -181,9 +188,10 @@
                                     ✕
                                 </button>
                             </div>
-                        @elseif (old('attachment_cancelled_cheque'))
+                        @elseif (old('attachment_cancelled_cheque_url'))
                             <div id="attachment_cancelled_cheque_preview" class="position-relative d-inline-block">
-                                <img src="{{ old('attachment_cancelled_cheque') }}" class="rounded">
+                                <img src="{{ old('attachment_cancelled_cheque_url') }}" class="rounded"
+                                    style="width:200px; height:200px;">
 
                                 <!-- Remove (X) button -->
                                 <button type="button"
@@ -195,6 +203,7 @@
                         @endif
 
                     </div>
+
 
                     <!-- Primary a/c -->
                     <div class="col-md-2">

@@ -56,7 +56,9 @@
                             <th>CLIENT CODE</th>
                             <td class="value">{{ $client->client_code }}</td>
                             <th>Name</th>
-                            <td class="value">{{ $client->name }}</td>
+                            <td class="value">{{ $client->name }}
+                                <img src="{{ $client->attachment_client_photo_url }}" alt="" srcset="">
+                            </td>
                         </tr>
 
                         <tr>
@@ -69,14 +71,17 @@
 
                         <tr>
                             <th>Live Status</th>
-                            <td class="value">{{ ucfirst($client->live_status) }}</td>
-                            @if ($client->live_status == 'alive')
-                                <th>-</th>
-                                <td class="value">-</td>
-                            @else
-                                <th>DOD</th>
-                                <td class="value">{{ $client->dod ?: '-' }}</td>
-                            @endif
+                            <td class="value">
+                                {{ ucfirst($client->live_status) }}
+                                @if ($client->live_status === 'deceased')
+                                    {{ $client->dod ? ' | ' . \Carbon\Carbon::parse($client->dod)->format('d-m-Y') : '' }}
+                                @endif
+                            </td>
+                            {{-- <th>DOD</th>
+                            <td class="value">{{ $client->dod ?: '-' }}</td> --}}
+                            <th>Email</th>
+                            <td class="value">{{ $client->email ? strtolower($client->email) : '-' }}</td>
+
                         </tr>
 
                         <tr>
@@ -126,14 +131,12 @@
                         <tr>
                             <th>Landline</th>
                             <td class="value">{{ $client->landline_no }}</td>
-                            <th>Email</th>
-                            <td class="value">{{ $client->email }}</td>
+
+                            <th>Relationship Manager</th>
+                            <td class="value">{{ $client->relation_manager_id }}</td>
                         </tr>
 
-                        <tr>
-                            <th>Relationship Manager</th>
-                            <td colspan="3" class="value">{{ $client->relation_manager_id }}</td>
-                        </tr>
+
 
                         <!-- RESIDENTIAL ADDRESS -->
                         <tr>
@@ -165,102 +168,112 @@
 
 
                 <!-- ATTACHMENTS -->
-                <div class="table-responsive mt-4 clientViewAttachments">
+
+                <div class="table-responsive mt-4">
                     <table class="table table-bordered align-middle">
 
                         <tr>
-                            <th colspan="4" class="text-center section-heading"
+                            <th colspan="6" class="text-center section-heading"
                                 style="background-color: #ede1f8 !important;">
                                 <b>Attachments</b>
                             </th>
                         </tr>
 
+                        <tr class="table-secondary">
+                            {{-- <th>Client Photo</th> --}}
+                            <th>PAN</th>
+                            <th>Aadhar</th>
+                            <th>Masked Aadhar</th>
+                            <th>CKYC</th>
+                            <th>Signature</th>
+                            <th>Other Document</th>
+                        </tr>
+
                         <tr>
-                            <th>Documents :</th>
-                            <td colspan="3">
-                                <div class="d-flex flex-wrap gap-3">
+                            {{-- <td class="value">
+                                @if ($client->attachment_client_photo_url)
+                                    <a href="{{ $client->attachment_client_photo_url }}" target="_blank"
+                                        class="text-primary text-decoration-underline">
+                                        Click to view
+                                    </a>
+                                @else
+                                    <span class="text-muted">Not available</span>
+                                @endif
+                            </td> --}}
 
-                                    @if ($client->attachment_client_photo_url)
-                                        <div class="text-center">
-                                            <a href="{{ $client->attachment_client_photo_url }}" target="_blank">
-                                                <img src="{{ $client->attachment_client_photo_url }}" class="attach-img">
-                                            </a>
-                                            <div class="doc-title">Client Photo</div>
-                                        </div>
-                                    @endif
+                            <td class="value">
+                                @if ($client->attachment_pan_url)
+                                    <a href="{{ $client->attachment_pan_url }}" target="_blank"
+                                        class="text-primary text-decoration-underline">
+                                        Click to view
+                                    </a>
+                                @else
+                                    <span class="text-muted">Not available</span>
+                                @endif
+                            </td>
 
-                                    @if ($client->attachment_pan_url)
-                                        <div class="text-center">
-                                            <a href="{{ $client->attachment_pan_url }}" target="_blank">
-                                                <img src="{{ $client->attachment_pan_url }}" class="attach-img">
-                                            </a>
-                                            <div class="doc-title">PAN</div>
-                                        </div>
-                                    @endif
+                            <td class="value">
+                                @if ($client->attachment_aadhar_front_url)
+                                    <a href="{{ $client->attachment_aadhar_front_url }}" target="_blank"
+                                        class="text-primary text-decoration-underline">
+                                        Click to view
+                                    </a>
+                                @else
+                                    <span class="text-muted">Not available</span>
+                                @endif
+                            </td>
 
-                                    {{-- {{ $client->attachment_aadhar_front_url }} --}}
-                                    @if ($client->attachment_aadhar_front_url)
-                                        @php
-                                            $url = $client->attachment_aadhar_front_url;
-                                            $isPdf = Str::contains(strtolower($url), 'pdf');
-                                        @endphp
+                            <td class="value">
+                                @if ($client->attachment_aadhar_back_url)
+                                    <a href="{{ $client->attachment_aadhar_back_url }}" target="_blank"
+                                        class="text-primary text-decoration-underline">
+                                        Click to view
+                                    </a>
+                                @else
+                                    <span class="text-muted">Not available</span>
+                                @endif
+                            </td>
 
-                                        <div class="text-center">
-                                            <a href="{{ $client->attachment_aadhar_front_url }}" target="_blank">
-                                                {{-- <img src="{{ $client->attachment_aadhar_front_url }}" class="attach-img"> --}}
-                                                @if ($isPdf)
-                                                    <embed src="{{ $url }}" type="application/pdf"
-                                                        class="attach-pdf">
-                                                @else
-                                                    <img src="{{ $url }}" class="attach-img">
-                                                @endif
-                                            </a>
-                                            <div class="doc-title">Aadhar</div>
-                                        </div>
-                                    @endif
+                            <td class="value">
+                                @if ($client->attachment_ckyc_url)
+                                    <a href="{{ $client->attachment_ckyc_url }}" target="_blank"
+                                        class="text-primary text-decoration-underline">
+                                        Click to view
+                                    </a>
+                                @else
+                                    <span class="text-muted">Not available</span>
+                                @endif
+                            </td>
 
-                                    @if ($client->attachment_aadhar_back_url)
-                                        <div class="text-center">
-                                            <a href="{{ $client->attachment_aadhar_back_url }}" target="_blank">
-                                                <img src="{{ $client->attachment_aadhar_back_url }}" class="attach-img">
-                                            </a>
-                                            <div class="doc-title">Mask Aadhar</div>
-                                        </div>
-                                    @endif
+                            <td class="value">
+                                @if ($client->attachment_signature_url)
+                                    <a href="{{ $client->attachment_signature_url }}" target="_blank"
+                                        class="text-primary text-decoration-underline">
+                                        Click to view
+                                    </a>
+                                @else
+                                    <span class="text-muted">Not available</span>
+                                @endif
+                            </td>
 
-                                    @if ($client->attachment_signature_url)
-                                        <div class="text-center">
-                                            <a href="{{ $client->attachment_signature_url }}" target="_blank">
-                                                <img src="{{ $client->attachment_signature_url }}" class="attach-img">
-                                            </a>
-                                            <div class="doc-title">Signature</div>
-                                        </div>
-                                    @endif
-
-                                    @if ($client->attachment_ckyc_url)
-                                        <div class="text-center">
-                                            <a href="{{ $client->attachment_ckyc_url }}" target="_blank">
-                                                <img src="{{ $client->attachment_ckyc_url }}" class="attach-img">
-                                            </a>
-                                            <div class="doc-title">CKYC</div>
-                                        </div>
-                                    @endif
-
-                                    @if ($client->attachment_other_documents_url)
-                                        <div class="text-center">
-                                            <a href="{{ $client->attachment_other_documents_url }}" target="_blank">
-                                                <img src="{{ $client->attachment_other_documents_url }}"
-                                                    class="attach-img">
-                                            </a>
-                                            <div class="doc-title">Other Document</div>
-                                        </div>
-                                    @endif
-
-                                </div>
+                            <td class="value">
+                                @if ($client->attachment_other_documents_url)
+                                    <a href="{{ $client->attachment_other_documents_url }}" target="_blank"
+                                        class="text-primary text-decoration-underline">
+                                        Click to view
+                                    </a>
+                                @else
+                                    <span class="text-muted">Not available</span>
+                                @endif
                             </td>
                         </tr>
+
+
+
                     </table>
                 </div>
+
+
                 {{-- {{ $client }} --}}
 
                 <!-- FAMILY INFO -->
@@ -312,7 +325,7 @@
                     <table class="table table-bordered align-middle">
 
                         <tr>
-                            <th colspan="6" class="text-center section-heading"
+                            <th colspan="7" class="text-center section-heading"
                                 style="background-color: #ede1f8 !important;">
                                 <b>Bank Information</b>
                             </th>
@@ -326,10 +339,10 @@
                                 <th>Branch</th>
                                 <th>Bank Code</th>
                                 <th>Primary</th>
+                                <th>cheque image</th>
                             </tr>
 
                             @foreach ($client->banks as $b)
-                                {{-- {{ $b }} --}}
                                 <tr>
                                     <td class="value">{{ $b->ifsc_code ?? '-' }}</td>
                                     <td class="value">{{ $b->account_number ?? '-' }}</td>
@@ -337,6 +350,7 @@
                                     <td class="value">{{ $b->branch_name ?? '-' }}</td>
                                     <td class="value">{{ $b->bank_code ?? '-' }}</td>
                                     <td class="value">{{ $b->is_primary ? 'Yes' : 'No' }}</td>
+                                    <td class="value"><a href="">view</a> <i>under process..</i> </td>
                                 </tr>
                             @endforeach
                         @else

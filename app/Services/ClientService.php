@@ -77,6 +77,7 @@ class ClientService
 
     public function update(Client $client, array $data): Client
     {
+        $data;
         $data = $this->handleFileUploads($data, $client, 'E');
         $client->update($data);
         return $client->fresh();
