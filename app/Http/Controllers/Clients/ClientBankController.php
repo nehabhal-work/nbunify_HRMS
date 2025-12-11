@@ -29,7 +29,7 @@ class ClientBankController extends Controller
             $clientBanks = $clientBank->map(function ($bank) {
                 return $this->clientBankService->addFileUrls($bank);
             });
-            return $clientBanks;
+            // return $clientBanks;
 
             // $clientBanks = $this->clientBankService->addFileUrls($clientBanks);
             return view('content.clients.banks.index', compact('clientBanks', 'client'));
