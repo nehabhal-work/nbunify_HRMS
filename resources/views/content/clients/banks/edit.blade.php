@@ -153,7 +153,8 @@
                             <input type="file"
                                 class="form-control @error('attachment_cancelled_cheque') is-invalid @enderror"
                                 id="attachment_cancelled_cheque" name="attachment_cancelled_cheque"
-                                onchange="uploadTempFile(this, 'attachment_cancelled_cheque')" accept=".jpg,.jpeg,.png">
+                                onchange="uploadTempFile(this, 'attachment_cancelled_cheque')"
+                                accept=".jpg,.jpeg,.png,.pdf">
                             <button class="btn btn-outline-danger" type="button"
                                 onclick="document.getElementById('attachment_cancelled_cheque').value = ''">✕</button>
                         </div>
