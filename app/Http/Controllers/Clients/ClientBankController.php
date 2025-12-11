@@ -24,7 +24,7 @@ class ClientBankController extends Controller
             $client = $this->clientService->find($client_id);
             $clientBanks = $this->clientBankService->getByClientId($client_id);
 
-            $clientBank = ClientBank::where('client_id', 14)->get();
+            $clientBank = ClientBank::where('client_id', $client_id)->get();
 
             $clientBanks = $clientBank->map(function ($bank) {
                 return $this->clientBankService->addFileUrls($bank);
