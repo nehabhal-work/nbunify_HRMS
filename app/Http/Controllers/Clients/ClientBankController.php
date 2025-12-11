@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Clients;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ClientBankRequest;
+use App\Models\ClientBank;
 use App\Services\ClientBankService;
 use App\Services\ClientService;
 use App\Services\FileStorageService;
@@ -22,7 +23,15 @@ class ClientBankController extends Controller
         if ($client_id = $request->client_id) {
             $client = $this->clientService->find($client_id);
             $clientBanks = $this->clientBankService->getByClientId($client_id);
-            // $clientBanks = $this->addFileUrls($clientBanks);
+
+            $clientBank = ClientBank::where('client_id', 14)->get();
+
+            $clientBanks = $clientBank->map(function ($bank) {
+                return $this->clientBankService->addFileUrls($bank);
+            });
+            // return $clientBanks;
+
+            // $clientBanks = $this->clientBankService->addFileUrls($clientBanks);
             return view('content.clients.banks.index', compact('clientBanks', 'client'));
         } else {
             abort(404);

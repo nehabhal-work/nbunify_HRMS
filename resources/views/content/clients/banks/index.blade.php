@@ -421,14 +421,15 @@
                                                 <th class="bg-secondary-subtle ">Cheque Photo</th>
                                                 <td>
                                                     @if ($b->attachment_cancelled_cheque_url)
-                                                        <div class="text-center">
-                                                            <a href="{{ $client->attachment_cancelled_cheque_url }}"
-                                                                target="_blank">
-                                                                <img src="{{ $client->attachment_cancelled_cheque_url }}"
-                                                                    class="attach-img">
-                                                            </a>
-                                                        </div>
+                                                        <a href="{{ $b->attachment_cancelled_cheque_url }}"
+                                                            target="_blank"
+                                                            class="text-primary text-decoration-underline">
+                                                            Click to view
+                                                        </a>
+                                                    @else
+                                                        <span class="text-muted">Not available</span>
                                                     @endif
+
                                                 </td>
                                             </tr>
                                         </table>
