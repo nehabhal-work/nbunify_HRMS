@@ -57,7 +57,8 @@
                             <td class="value">{{ $client->client_code }}</td>
                             <th>Name</th>
                             <td class="value">{{ $client->name }}
-                                <img src="{{ $client->attachment_client_photo_url }}" alt="" srcset="">
+                                <img src="{{ $client->attachment_client_photo_url }}" alt="" srcset=""
+                                    width="200" height="200">
                             </td>
                         </tr>
 
