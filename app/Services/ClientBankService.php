@@ -8,9 +8,7 @@ use Illuminate\Support\Str;
 
 class ClientBankService
 {
-    public function __construct(private FileStorageService $fileStorageService)
-    {
-    }
+    public function __construct(private FileStorageService $fileStorageService) {}
     public function getByClientId($clientId)
     {
         return ClientBank::where('client_id', $clientId)->get();
@@ -23,7 +21,7 @@ class ClientBankService
 
     public function create(array $data)
     {
-        if($data['account_number'] == null) {
+        if ($data['account_number'] == null) {
             return null;
         }
 
@@ -143,5 +141,20 @@ class ClientBankService
             }
         }
         ClientBank::where('client_id', $clientId)->delete();
+    }
+    public function addFileUrls($clientBank)
+    {
+        $fileFields = [
+            'attachment_cancelled_cheque'
+        ];
+
+        foreach ($fileFields as $field) {
+            if ($clientBank->$field) {
+                $clientBank->{$field . '_url'} =
+                    app(FileStorageService::class)->getTemporaryUrl($clientBank->$field);
+            }
+        }
+
+        return $clientBank;
     }
 }

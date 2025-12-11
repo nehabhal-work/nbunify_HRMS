@@ -51,7 +51,7 @@ class ClientBankController extends Controller
     {
         $clientBank = $this->clientBankService->getById($id);
         $client = $this->clientService->find($clientBank->client_id);
-        $clientBank = $this->addFileUrls($clientBank);
+        $clientBank = $this->clientBankService->addFileUrls($clientBank);
         // return $clientBank;
         return view('content.clients.banks.edit', compact('clientBank', 'client'));
     }
@@ -73,16 +73,16 @@ class ClientBankController extends Controller
         }
     }
 
-    private function addFileUrls($clientBank)
-    {
-        $fileFields = [
-            'attachment_cancelled_cheque',
-        ];
-        foreach ($fileFields as $field) {
-            if ($clientBank->$field) {
-                $clientBank->{$field . '_url'} = $this->fileStorageService->getTemporaryUrl($clientBank->$field);
-            }
-        }
-        return $clientBank;
-    }
+    // private function addFileUrls($clientBank)
+    // {
+    //     $fileFields = [
+    //         'attachment_cancelled_cheque',
+    //     ];
+    //     foreach ($fileFields as $field) {
+    //         if ($clientBank->$field) {
+    //             $clientBank->{$field . '_url'} = $this->fileStorageService->getTemporaryUrl($clientBank->$field);
+    //         }
+    //     }
+    //     return $clientBank;
+    // }
 }

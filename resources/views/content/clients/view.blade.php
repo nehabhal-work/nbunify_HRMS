@@ -21,9 +21,9 @@
     <div class="container">
         <div class="text-end mb-3">
             <a href="{{ route('clients.index') }}" class="btn btn-secondary px-4">Go back</a>
-            <button type="button" class="btn btn-primary px-4">
+            {{-- <button type="button" class="btn btn-primary px-4">
                 Download PDF
-            </button>
+            </button> --}}
 
         </div>
         <div class="card shadow-sm mb-4">
@@ -333,24 +333,44 @@
 
                         @if ($client->banks->count() > 0)
                             <tr class="table-secondary">
-                                <th>IFSC</th>
+                                <th>Holder Name</th>
+                                <th>Operation Mode</th>
+                                <th>Bank Name / IFSC</th>
                                 <th>Account No</th>
-                                <th>Bank Name</th>
-                                <th>Branch</th>
-                                <th>Bank Code</th>
+                                <th>Branch / Bank Code</th>
                                 <th>Primary</th>
                                 <th>cheque image</th>
+
                             </tr>
 
-                            @foreach ($client->banks as $b)
+                            @foreach ($clientBank as $b)
                                 <tr>
-                                    <td class="value">{{ $b->ifsc_code ?? '-' }}</td>
+                                    <td class="value">
+                                        @if ($b->operation_mode === 'single')
+                                            {{ $b->holder_name_1 ?? '-' }}
+                                        @else
+                                            {{ $b->holder_name_1 ?? '-' }} <br>
+                                            {{ $b->holder_name_2 ?? '-' }} <br>
+                                            {{ $b->holder_name_3 ?? '-' }}
+                                        @endif
+                                    </td>
+                                    <td class="value">{{ $b->operation_mode ?? '-' }}</td>
+                                    <td class="value">{{ $b->bank_name ?? '-' }} <br> {{ $b->ifsc_code ?? '-' }}
                                     <td class="value">{{ $b->account_number ?? '-' }}</td>
-                                    <td class="value">{{ $b->bank_name ?? '-' }}</td>
-                                    <td class="value">{{ $b->branch_name ?? '-' }}</td>
-                                    <td class="value">{{ $b->bank_code ?? '-' }}</td>
-                                    <td class="value">{{ $b->is_primary ? 'Yes' : 'No' }}</td>
-                                    <td class="value"><a href="">view</a> <i>under process..</i> </td>
+                                    <td class="value">{{ $b->branch_name ?? '-' }} <br> {{ $b->branch_code ?? '-' }}
+                                    <td class="value">{{ $b->is_primary ?? '-' }}</td>
+                                    <td class="value">
+                                        @if ($b->attachment_cancelled_cheque_url)
+                                            <a href="{{ $b->attachment_cancelled_cheque_url }}" target="_blank"
+                                                class="text-primary text-decoration-underline">
+                                                Click to view
+                                            </a>
+                                        @else
+                                            <span class="text-muted">Not available</span>
+                                        @endif
+                                    </td>
+
+
                                 </tr>
                             @endforeach
                         @else

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Clients;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ClientRequest;
 use App\Models\Client;
+use App\Models\ClientBank;
 use App\Services\ClientService;
 use App\Services\ClientBankService;
 use App\Services\CompanyService;
@@ -43,8 +44,23 @@ class ClientController extends Controller
         $client = $this->clientService->find($id);
         $client->load(['banks', 'families']);
         $client = $this->addFileUrls($client);
-        return view('content.clients.view', compact('client'));
+
+        // return $client;
+        $clientBank = ClientBank::where('client_id', $id)->get();
+
+        $clientBanks = $clientBank->map(function ($bank) {
+            return $this->clientBankService->addFileUrls($bank);
+        });
+        // return $clientBank;
+        // $client = $this->clientService->find($clientBank->client_id);
+        // return $clientBank;
+        return view('content.clients.view', compact('client', 'clientBank'));
     }
+
+    // $clientBank = $this->clientBankService->getById($id);
+    //         $client = $this->clientService->find($clientBank->client_id);
+    //         $clientBank = $this->clientBankService->addFileUrls($clientBank);
+
 
     public function store(ClientRequest $request)
     {
@@ -121,7 +137,7 @@ class ClientController extends Controller
             'attachment_aadhar_back',
             'attachment_signature',
             'attachment_ckyc',
-            'attachment_other_documents'
+            'attachment_other_documents',
         ];
 
         foreach ($fileFields as $field) {
