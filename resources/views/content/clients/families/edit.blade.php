@@ -87,7 +87,7 @@
                             </div>
 
                             {{-- Date of Birth --}}
-                            <div class="col-md-2 mb-3">
+                              <div class="col-md-2 mb-3">
                                 <label class="form-label" for="dob">Date of Birth</label>
                                 <input type="date" class="form-control  @error('dob') is-invalid @enderror"
                                     id="dob" name="dob" placeholder="Select Date"
