@@ -115,8 +115,8 @@
                             {{-- Date of Death --}}
                             <div class="col-md-2 mb-3 d-none">
                                 <label for="dod" class="form-label">Date of Death</label>
-                                <input type="text" name="dod" id="dod" class="form-control datepicker"
-                                    value="{{ old('dod') }}" readonly placeholder="Select Date">
+                                <input type="date" name="dod" id="dod" class="form-control "
+                                    value="{{ old('dod') }}"  placeholder="Select Date" max="{{ now()->toDateString() }}">
                                 @error('dod')
                                     <div class="text-danger small">{{ $message }}</div>
                                 @enderror

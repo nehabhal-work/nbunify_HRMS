@@ -121,7 +121,7 @@
                                 <input type="date" name="dod" id="dod" class="form-control "
                                     {{-- value="{{ old('dod', $client->dod ?? '') }}"  --}}
                                     value="{{ old('dod', isset($client->dod) ? \Carbon\Carbon::parse($client->dod)->format('Y-m-d') : '') }}"
-                                    placeholder="Select Date">
+                                    placeholder="Select Date" max="{{ now()->toDateString() }}">
                                 @error('dod')
                                     <div class="text-danger small">{{ $message }}</div>
                                 @enderror
