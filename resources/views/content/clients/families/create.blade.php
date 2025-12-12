@@ -24,6 +24,9 @@
     @endif
 
     <h4 class="fw-bold py-3 mb-4">
+           <a class="btn btn-warning me-2"
+                            href="{{ route('client-banks.index', ['client_id' => $client->id]) }}" role="button">
+                            Add client Banks</a>
         <span class="text-muted fw-light">Family /</span> <a href="{{ route('master.companies.index') }}">Add Family Member
             of <span class="text-uppercase">{{ $client->name }}</span></a>
     </h4>

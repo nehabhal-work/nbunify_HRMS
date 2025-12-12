@@ -42,6 +42,9 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Family List</h5>
                     <div>
+                           <a class="btn btn-warning me-2"
+                            href="{{ route('client-banks.index', ['client_id' => $client->id]) }}" role="button">
+                            Add client Banks</a>
                         <a class="btn btn-primary"
                             href="{{ route('client-families.create', ['client_id' => $client->id]) }}" role="button">Add
                             new
