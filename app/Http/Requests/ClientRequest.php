@@ -32,7 +32,7 @@ class ClientRequest extends FormRequest
             'dod' => 'nullable|date|after:dob',
             'marital_status' => 'nullable|in:single,married,divorced,widowed',
             'nationality' => 'nullable|in:ri,nro,nre,pio,oci,gch,trioc,fn,other',
-            'occupation' => 'nullable|in:private_sector,public_sector,government,business,eduation,professional,agriculture,student,doctor,housewife,retired,other',
+            'occupation' => 'nullable|in:private_sector,public_sector,government,business,education,professional,agriculture,student,doctor,housewife,retired,other',
             'pan_no' => 'required|string|max:10|regex:/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/',
             'aadhar_no' => 'required|string|max:12|regex:/^[0-9]{12}$/',
             'ckyc_no' => 'nullable|string|max:20',
