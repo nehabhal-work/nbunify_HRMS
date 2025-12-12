@@ -77,9 +77,7 @@
                                 @if ($client->live_status === 'deceased')
                                     {{ $client->dod ? ' | ' . \Carbon\Carbon::parse($client->dod)->format('d-m-Y') : '' }}
                                 @endif
-                            </td>
-                            {{-- <th>DOD</th>
-                            <td class="value">{{ $client->dod ?: '-' }}</td> --}}
+                            </td>    
                             <th>Email</th>
                             <td class="value">{{ $client->email ? strtolower($client->email) : '-' }}</td>
 
@@ -89,7 +87,7 @@
                             <th>Marital Status</th>
                             <td class="value">{{ ucfirst($client->marital_status) }}</td>
                             <th>Nationality</th>
-                            @php
+                            {{-- @php
                                 $nationalities = [
                                     'ri' => 'Residential Individual',
                                     'nro' => 'NRO',
@@ -104,6 +102,9 @@
 
                             <td class="value">
                                 {{ $nationalities[$client->nationality] ?? '-' }}
+                            </td> --}}
+                             <td class="value">
+                                {{ strtoupper(config('enum_client.nationality.' . $client->nationality) ?? $client->nationality) }}
                             </td>
 
                         </tr>
@@ -191,16 +192,7 @@
                         </tr>
 
                         <tr>
-                            {{-- <td class="value">
-                                @if ($client->attachment_client_photo_url)
-                                    <a href="{{ $client->attachment_client_photo_url }}" target="_blank"
-                                        class="text-primary text-decoration-underline">
-                                        Click to view
-                                    </a>
-                                @else
-                                    <span class="text-muted">Not available</span>
-                                @endif
-                            </td> --}}
+                           
 
                             <td class="value">
                                 @if ($client->attachment_pan_url)
