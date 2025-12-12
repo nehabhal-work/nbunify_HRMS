@@ -34,6 +34,13 @@
         @csrf
         @method('post')
         <input type="hidden" name="client_id" value="{{ $client->id }}">
+        <input type="hidden" name="res_country" id="res_country">
+        <input type="hidden" name="res_state" id="res_state">
+        <input type="hidden" name="res_city" id="res_city">
+
+        <input type="hidden" name="office_country" id="office_country">
+        <input type="hidden" name="office_state" id="office_state">
+        <input type="hidden" name="office_city" id="office_city">
 
         <div id="newSection" class="" class="row align-items-stretch">
             <div class="col-md-12">
@@ -421,58 +428,51 @@
 
                                 <div class="col-md-2 mb-3">
                                     <label class="form-label">Country</label>
-                                    <select name="office_country" id="office_country"
-                                        class="form-select select2 @error('office_country') is-invalid @enderror">
-                                        <option value="">Select Country</option>
-                                        <option value="India" {{ old('office_country') == 'India' ? 'selected' : '' }}>
-                                            India
+                                    <select name="office_country_code" id="office_country_code"
+                                        class="form-select select2 @error('office_country_code') is-invalid @enderror">
+                                        <option value="{{ $country['iso2'] }}"
+                                            {{ old('office_country_code', 'IND') == $country['iso2'] ? 'selected' : '' }}
+                                            data-country-name="{{ $country['name'] }}">
+                                            {{ $country['name'] }}
                                         </option>
-                                        <option value="USA" {{ old('office_country') == 'USA' ? 'selected' : '' }}>
-                                            United
-                                            States</option>
-                                        <option value="UK" {{ old('office_country') == 'UK' ? 'selected' : '' }}>
-                                            United
-                                            Kingdom</option>
+
                                     </select>
-                                    @error('office_country')
+                                    @error('office_country_code')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
                                 <div class="col-md-2 mb-3">
                                     <label class="form-label">State</label>
-                                    <select name="office_state" id="office_state"
-                                        class="form-select select2 @error('office_state') is-invalid @enderror">
-                                        <option value="">Select State</option>
-                                        <option value="Maharashtra"
-                                            {{ old('office_state') == 'Maharashtra' ? 'selected' : '' }}>Maharashtra
-                                        </option>
-                                        <option value="Gujarat" {{ old('office_state') == 'Gujarat' ? 'selected' : '' }}>
-                                            Gujarat</option>
-                                        <option value="Delhi" {{ old('office_state') == 'Delhi' ? 'selected' : '' }}>
-                                            Delhi
-                                        </option>
+                                    <select name="office_state_code" id="office_state_code"
+                                        class="form-select select2 @error('office_state_code') is-invalid @enderror">
+                                        @foreach ($states as $state)
+                                            <option value="{{ $state['iso2'] }}"
+                                                {{ old('office_state_code', 'MH') == $state['iso2'] ? 'selected' : '' }}
+                                                data-state-name="{{ $state['name'] }}">
+                                                {{ $state['name'] }}
+                                            </option>
+                                        @endforeach
                                     </select>
-                                    @error('office_state')
+                                    @error('office_state_code')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
 
                                 <div class="col-md-2 mb-3">
                                     <label class="form-label">City</label>
-                                    <select name="office_city" id="office_city"
-                                        class="form-select select2 @error('office_city') is-invalid @enderror">
+                                    <select name="office_city_code" id="office_city_code"
+                                        class="form-select select2 @error('office_city_code') is-invalid @enderror">
                                         <option value="">Select City</option>
-                                        <option value="Mumbai" {{ old('office_city') == 'Mumbai' ? 'selected' : '' }}>
-                                            Mumbai
-                                        </option>
-                                        <option value="Pune" {{ old('office_city') == 'Pune' ? 'selected' : '' }}>Pune
-                                        </option>
-                                        <option value="Ahmedabad"
-                                            {{ old('office_city') == 'Ahmedabad' ? 'selected' : '' }}>
-                                            Ahmedabad</option>
+                                        @foreach ($cities as $c)
+                                            <option value="{{ $c['id'] }}"
+                                                {{ old('office_city_code') == $c['id'] ? 'selected' : '' }}
+                                                data-city-name="{{ $c['name'] }}">
+                                                {{ $c['name'] }}
+                                            </option>
+                                        @endforeach
                                     </select>
-                                    @error('office_city')
+                                    @error('office_city_code')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -519,23 +519,23 @@
             });
         });
     </script>
-<script>
-    $(document).ready(function () {
-        function toggleDod() {
-            if ($('#live_status').val() === 'deceased') {
-                $('#dod').closest('.col-md-2').removeClass('d-none');
-            } else {
-                $('#dod').closest('.col-md-2').addClass('d-none');
+    <script>
+        $(document).ready(function() {
+            function toggleDod() {
+                if ($('#live_status').val() === 'deceased') {
+                    $('#dod').closest('.col-md-2').removeClass('d-none');
+                } else {
+                    $('#dod').closest('.col-md-2').addClass('d-none');
+                }
             }
-        }
 
-        toggleDod(); // run when page loads
+            toggleDod(); // run when page loads
 
-        $('#live_status').on('change', function () {
-            toggleDod();
+            $('#live_status').on('change', function() {
+                toggleDod();
+            });
         });
-    });
-</script>
+    </script>
 
     <script>
         $(document).ready(function() {
