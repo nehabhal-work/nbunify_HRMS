@@ -24,15 +24,26 @@
     @endif
 
     <h4 class="fw-bold py-3 mb-4">
-           <a class="btn btn-warning me-2"
-                            href="{{ route('client-banks.index', ['client_id' => $client->id]) }}" role="button">
-                            Add client Banks</a>
+          
         <span class="text-muted fw-light">Family /</span> <a href="{{ route('master.companies.index') }}">Add Family Member
             of <span class="text-uppercase">{{ $client->name }}</span></a>
     </h4>
 
 
 
+    <div class="mb-3 text-end">
+        <a class="btn btn-warning me-2" href="{{ route('client-banks.index', ['client_id' => $client->id]) }}"
+            role="button">
+            Add client Banks</a>
+
+        <a class="btn btn-info mx-2" href="{{ route('client-families.create.existing', ['client_id' => $client->id]) }}"
+            role="button">Add
+            Family from existing list </a>
+
+        <a class="btn btn-secondary mx-2" href="{{ route('client-families.index', ['client_id' => $client->id]) }}"
+            role="button">Back </a>
+
+    </div>
     <form action="{{ route('client-families.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('post')
