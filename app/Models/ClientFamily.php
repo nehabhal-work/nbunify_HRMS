@@ -22,6 +22,8 @@ class ClientFamily extends Model
         'whatsapp_no',
         'landline_no',
         'email',
+        'pan_no',
+        'aadhar_no',
         'res_address',
         'res_country',
         'res_state',

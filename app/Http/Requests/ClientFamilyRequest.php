@@ -36,6 +36,8 @@ class ClientFamilyRequest extends FormRequest
             'whatsapp_no' => 'nullable|string|max:15',
             'landline_no' => 'nullable|string|max:15',
             'email' => 'nullable|email',
+            'pan_no' => 'nullable|string|max:10|regex:/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/',
+            'aadhar_no' => 'nullable|string|max:12|regex:/^[0-9]{12}$/',
             'res_address' => 'nullable|string',
             'res_country' => 'nullable|string|max:255',
             'res_state' => 'nullable|string|max:255',
