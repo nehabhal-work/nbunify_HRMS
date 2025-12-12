@@ -9,9 +9,14 @@
         @if (session('error'))
             <x-alert-sweet type="danger" :message="session('error')" />
         @endif
-
-
     </div>
+      <style>
+        .primary-highlight {
+            outline: 2px solid #0d6efd;
+            border-radius: 4px;
+            padding: 10px;
+        }
+    </style>
 
     @if ($errors->any())
         <div class="alert alert-danger">
@@ -211,7 +216,7 @@
                         <label class="form-label d-block">Primary a/c</label>
                         <input type="hidden" name="is_primary" value="0">
                         <input type="checkbox" name="is_primary"
-                            class="form-check-input setPrimary @error('is_primary') is-invalid @enderror" value="1"
+                            class="form-check-input setPrimary primary-highlight @error('is_primary') is-invalid @enderror" value="1"
                             {{ old('is_primary', $clientBank->is_primary ?? 0) == 1 ? 'checked' : '' }}>
 
                         @error('is_primary')
