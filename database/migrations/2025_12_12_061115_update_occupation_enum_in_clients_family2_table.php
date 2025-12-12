@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('clients', function (Blueprint $table) {
+        Schema::table('client_families', function (Blueprint $table) {
             $table->enum('occupation', [
                 'private_sector',
                 'public_sector',

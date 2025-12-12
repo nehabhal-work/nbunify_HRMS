@@ -90,8 +90,8 @@
                             <div class="col-md-2 mb-3">
                                 <label class="form-label" for="dob">Date of Birth</label>
                                 <input type="date" class="form-control  @error('dob') is-invalid @enderror"
-                                    id="dob" name="dob"  placeholder="Select Date"
-                                    value="{{ old('dob', $clientFamily->dob) }}"   max="{{ now()->toDateString() }}" >
+                                    id="dob" name="dob" placeholder="Select Date"
+                                    value="{{ old('dob', $clientFamily->dob) }}" max="{{ now()->toDateString() }}">
                                 @error('dob')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -119,8 +119,8 @@
                                 id="dod_box">
                                 <label class="form-label" for="dod">Date of Death</label>
                                 <input type="date" class="form-control  @error('dod') is-invalid @enderror"
-                                    id="dod" name="dod"   max="{{ now()->toDateString() }}"  placeholder="Select Date"
-                                    value="{{ old('dod', $clientFamily->dod) }}">
+                                    id="dod" name="dod" max="{{ now()->toDateString() }}"
+                                    placeholder="Select Date" value="{{ old('dod', $clientFamily->dod) }}">
                                 @error('dod')
                                     <div class="text-danger small">{{ $message }}</div>
                                 @enderror
@@ -138,12 +138,12 @@
                                     <option value="married"
                                         {{ old('marital_status', $clientFamily->marital_status) == 'married' ? 'selected' : '' }}>
                                         Married</option>
-                                    <option value="divorcee"
-                                        {{ old('marital_status', $clientFamily->marital_status) == 'divorcee' ? 'selected' : '' }}>
-                                        Divorcee</option>
-                                    <option value="widow"
-                                        {{ old('marital_status', $clientFamily->marital_status) == 'widow' ? 'selected' : '' }}>
-                                        Widow</option>
+                                    <option value="divorced"
+                                        {{ old('marital_status', $clientFamily->marital_status) == 'divorced' ? 'selected' : '' }}>
+                                        divorced</option>
+                                    <option value="widowed"
+                                        {{ old('marital_status', $clientFamily->marital_status) == 'widowed' ? 'selected' : '' }}>
+                                        widowed</option>
                                     <option value="other"
                                         {{ old('marital_status', $clientFamily->marital_status) == 'other' ? 'selected' : '' }}>
                                         Other</option>
