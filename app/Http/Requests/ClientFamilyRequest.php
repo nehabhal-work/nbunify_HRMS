@@ -31,7 +31,7 @@ class ClientFamilyRequest extends FormRequest
             'dod' => 'nullable|date|after:dob',
             'marital_status' => 'required|in:single,married,divorced,widowed',
             'nationality' => 'nullable|in:ri,nro,nre,pio,oci,gch,trioc,fn,other',
-            'occupation' => 'nullable|in:private_sector,public_sector,government,business,eduation,professional,agriculture,student,doctor,housewife,retired,other',
+            'occupation' => 'nullable|in:private_sector,public_sector,government,business,education,professional,agriculture,student,doctor,housewife,retired,other',
             'mobile_no' => 'nullable|string|max:15',
             'whatsapp_no' => 'nullable|string|max:15',
             'landline_no' => 'nullable|string|max:15',

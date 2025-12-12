@@ -34,8 +34,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('clients', function (Blueprint $table) {
-
+        Schema::table('client_families', function (Blueprint $table) {
             $table->enum('occupation', [
                 'private_sector',
                 'public_sector',
