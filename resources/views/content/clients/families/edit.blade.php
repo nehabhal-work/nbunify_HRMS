@@ -91,7 +91,8 @@
                                 <label class="form-label" for="dob">Date of Birth</label>
                                 <input type="date" class="form-control  @error('dob') is-invalid @enderror"
                                     id="dob" name="dob" placeholder="Select Date"
-                                    value="{{ old('dob', $clientFamily->dob) }}" max="{{ now()->toDateString() }}">
+                                    value="{{ old('dob', isset($clientFamily->dob) ? \Carbon\Carbon::parse($clientFamily->dob)->format('Y-m-d') : '') }}"
+                                    max="{{ now()->toDateString() }}">
                                 @error('dob')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -119,8 +120,10 @@
                                 id="dod_box">
                                 <label class="form-label" for="dod">Date of Death</label>
                                 <input type="date" class="form-control  @error('dod') is-invalid @enderror"
-                                    id="dod" name="dod" max="{{ now()->toDateString() }}"
-                                    placeholder="Select Date" value="{{ old('dod', $clientFamily->dod) }}">
+                                    id="dod" name="dod"  placeholder="Select Date"
+                                    value="{{ old('dod', isset($clientFamily->dod) ? \Carbon\Carbon::parse($clientFamily->dod)->format('Y-m-d') : '') }}"
+                                    max="{{ now()->toDateString() }}">
+
                                 @error('dod')
                                     <div class="text-danger small">{{ $message }}</div>
                                 @enderror
