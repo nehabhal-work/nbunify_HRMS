@@ -57,10 +57,7 @@ class ClientController extends Controller
         return view('content.clients.view', compact('client', 'clientBank'));
     }
 
-    // $clientBank = $this->clientBankService->getById($id);
-    //         $client = $this->clientService->find($clientBank->client_id);
-    //         $clientBank = $this->clientBankService->addFileUrls($clientBank);
-
+  
 
     public function store(ClientRequest $request)
     {
