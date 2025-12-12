@@ -334,7 +334,7 @@
                             </div>
 
                             {{-- COUNTRY --}}
-                            <div class="col-md-3 mb-3">
+                            <div class="col-md-2 mb-3">
                                 <label class="form-label">Country</label>
                                 <select name="res_country_code"
                                     class="form-select select2 @error('res_country_code') is-invalid @enderror">
@@ -349,7 +349,7 @@
                             </div>
 
                             {{-- STATE --}}
-                            <div class="col-md-3 mb-3">
+                            <div class="col-md-2 mb-3">
                                 <label class="form-label">State</label>
                                 <select name="res_state_code"
                                     class="form-select select2 @error('res_state_code') is-invalid @enderror">
@@ -366,13 +366,13 @@
                             </div>
 
                             {{-- CITY --}}
-                            <div class="col-md-3 mb-3">
+                            <div class="col-md-2 mb-3">
                                 <label class="form-label">City</label>
                                 <select name="res_city_code"
                                     class="form-select select2 @error('res_city_code') is-invalid @enderror">
                                     @foreach ($cities as $c)
                                         <option value="{{ $c['id'] }}"
-                                            {{ old('res_city_code', $client->res_city_code) == $c['id'] ? 'selected' : '' }}>
+                                            {{ old('res_city_code', $clientFamily->res_city_code) == $c['id'] ? 'selected' : '' }}>
                                             {{ $c['name'] }}
                                         </option>
                                     @endforeach
@@ -388,7 +388,7 @@
                                 <label class="form-label">Pincode</label>
                                 <input type="text" name="res_pincode" id="res_pincode"
                                     class="form-control onlydigit @error('res_pincode') is-invalid @enderror"
-                                    value="{{ old('res_pincode', $client->res_pincode ?? '') }}" maxlength="6">
+                                    value="{{ old('res_pincode', $clientFamily->res_pincode ?? '') }}" maxlength="6">
                                 @error('res_pincode')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -407,56 +407,39 @@
                             {{-- COUNTRY --}}
                             <div class="col-md-2 mb-3">
                                 <label class="form-label">Country</label>
-                                <select name="office_country_code" id="office_country_code"
+                                <select name="office_country_code"
                                     class="form-select select2 @error('office_country_code') is-invalid @enderror">
-
                                     <option value="{{ $country['iso2'] }}"
-                                        {{ old('res_country_code', 'IND') == $country['iso2'] ? 'selected' : '' }}
-                                        data-country-name="{{ $country['name'] }}">
+                                        {{ old('office_country_code', $clientFamily->office_country_code ?? 'IND') == $country['iso2'] ? 'selected' : '' }}>
                                         {{ $country['name'] }}
                                     </option>
-
                                 </select>
-                                @error('office_country_code')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
                             </div>
 
-                            {{-- STATE --}}
                             <div class="col-md-2 mb-3">
                                 <label class="form-label">State</label>
-                                <select name="office_state_code" id="office_state_code"
+                                <select name="office_state_code"
                                     class="form-select select2 @error('office_state_code') is-invalid @enderror">
-
                                     @foreach ($states as $state)
                                         <option value="{{ $state['iso2'] }}"
-                                            {{ old('res_state_code', 'MH') == $state['iso2'] ? 'selected' : '' }}
-                                            data-state-name="{{ $state['name'] }}">
+                                            {{ old('office_state_code', $clientFamily->office_state_code ?? 'MH') == $state['iso2'] ? 'selected' : '' }}>
                                             {{ $state['name'] }}
                                         </option>
                                     @endforeach
-
                                 </select>
-                                @error('office_state_code')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
                             </div>
 
-                            {{-- CITY --}}
                             <div class="col-md-2 mb-3">
                                 <label class="form-label">City</label>
-                                <select name="office_city_code" id="office_city_code"
+                                <select name="office_city_code"
                                     class="form-select select2 @error('office_city_code') is-invalid @enderror">
-
-                                    <option value="{{ $client->office_city_code }}"
-                                        data-city-name="{{ $client->office_city }}">
-                                        {{ $client->office_city }}
-                                    </option>
-
+                                    @foreach ($cities as $c)
+                                        <option value="{{ $c['id'] }}"
+                                            {{ old('office_city_code', $clientFamily->office_city_code) == $c['id'] ? 'selected' : '' }}>
+                                            {{ $c['name'] }}
+                                        </option>
+                                    @endforeach
                                 </select>
-                                @error('office_city_code')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
                             </div>
 
 
@@ -465,7 +448,8 @@
                                 <label class="form-label">Pincode</label>
                                 <input type="text" name="office_pincode" id="office_pincode"
                                     class="form-control onlydigit @error('office_pincode') is-invalid @enderror"
-                                    value="{{ old('office_pincode', $client->office_pincode ?? '') }}" maxlength="6">
+                                    value="{{ old('office_pincode', $clientFamily->office_pincode ?? '') }}"
+                                    maxlength="6">
                                 @error('office_pincode')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
