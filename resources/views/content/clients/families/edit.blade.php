@@ -35,6 +35,15 @@
         @csrf
         @method('PUT')
         <input type="hidden" name="client_id" value="{{ $clientFamily->client_id }}">
+        {{-- Hidden (readable values) --}}
+        <input type="hidden1" name="res_country" id="res_country" value="{{ $client->res_country }}">
+        <input type="hidden1" name="res_state" id="res_state" value="{{ $client->res_state }}">
+        <input type="hidden1" name="res_city" id="res_city" value="{{ $client->res_city }}">
+
+        <input type="hidden1" name="office_country" id="office_country" value="{{ $client->office_country }}">
+        <input type="hidden1" name="office_state" id="office_state" value="{{ $client->office_state }}">
+        <input type="hidden1" name="office_city" id="office_city" value="{{ $client->office_city }}">
+
         <div class="row align-items-stretch">
             <div class="col-md-12">
                 <div class="card mb-4">
@@ -63,7 +72,8 @@
                                     name="gender">
                                     <option value="">Select</option>
                                     <option value="male"
-                                        {{ old('gender', $clientFamily->gender) == 'male' ? 'selected' : '' }}>Male</option>
+                                        {{ old('gender', $clientFamily->gender) == 'male' ? 'selected' : '' }}>Male
+                                    </option>
                                     <option value="female"
                                         {{ old('gender', $clientFamily->gender) == 'female' ? 'selected' : '' }}>Female
                                     </option>
@@ -323,49 +333,65 @@
                                     value="{{ old('res_address', $clientFamily->res_address) }}">
                             </div>
 
-                            <div class="col-md-2 mb-3">
+                            {{-- COUNTRY --}}
+                            <div class="col-md-3 mb-3">
                                 <label class="form-label">Country</label>
-                                <select class="form-select select2" name="res_country">
-                                    <option value="">Select</option>
-                                    @foreach (['India', 'USA', 'UK'] as $c)
-                                        <option value="{{ $c }}"
-                                            {{ old('res_country', $clientFamily->res_country) == $c ? 'selected' : '' }}>
-                                            {{ $c }}
-                                        </option>
-                                    @endforeach
+                                <select name="res_country_code"
+                                    class="form-select select2 @error('res_country_code') is-invalid @enderror">
+                                    <option value="{{ $country['iso2'] }}"
+                                        {{ old('res_country_code', $clientFamily->res_country_code ?? 'IND') == $country['iso2'] ? 'selected' : '' }}>
+                                        {{ $country['name'] }}
+                                    </option>
                                 </select>
+                                @error('res_country_code')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
 
-                            <div class="col-md-2 mb-3">
+                            {{-- STATE --}}
+                            <div class="col-md-3 mb-3">
                                 <label class="form-label">State</label>
-                                <select class="form-select select2" name="res_state">
-                                    <option value="">Select</option>
-                                    @foreach (['Maharashtra', 'Gujarat', 'Delhi'] as $s)
-                                        <option value="{{ $s }}"
-                                            {{ old('res_state', $clientFamily->res_state) == $s ? 'selected' : '' }}>
-                                            {{ $s }}
+                                <select name="res_state_code"
+                                    class="form-select select2 @error('res_state_code') is-invalid @enderror">
+                                    @foreach ($states as $state)
+                                        <option value="{{ $state['iso2'] }}"
+                                            {{ old('res_state_code', $clientFamily->res_state_code ?? 'MH') == $state['iso2'] ? 'selected' : '' }}>
+                                            {{ $state['name'] }}
                                         </option>
                                     @endforeach
                                 </select>
+                                @error('res_state_code')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
 
-                            <div class="col-md-2 mb-3">
+                            {{-- CITY --}}
+                            <div class="col-md-3 mb-3">
                                 <label class="form-label">City</label>
-                                <select class="form-select select2" name="res_city">
-                                    <option value="">Select</option>
-                                    @foreach (['Mumbai', 'Pune', 'Ahmedabad'] as $city)
-                                        <option value="{{ $city }}"
-                                            {{ old('res_city', $clientFamily->res_city) == $city ? 'selected' : '' }}>
-                                            {{ $city }}
+                                <select name="res_city_code"
+                                    class="form-select select2 @error('res_city_code') is-invalid @enderror">
+                                    @foreach ($cities as $c)
+                                        <option value="{{ $c['id'] }}"
+                                            {{ old('res_city_code', $client->res_city_code) == $c['id'] ? 'selected' : '' }}>
+                                            {{ $c['name'] }}
                                         </option>
                                     @endforeach
                                 </select>
+                                @error('res_city_code')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
 
+
+                            {{-- pincode --}}
                             <div class="col-md-2 mb-3">
                                 <label class="form-label">Pincode</label>
-                                <input type="text" name="res_pincode" class="form-control onlydigit" maxlength="6"
-                                    value="{{ old('res_pincode', $clientFamily->res_pincode) }}">
+                                <input type="text" name="res_pincode" id="res_pincode"
+                                    class="form-control onlydigit @error('res_pincode') is-invalid @enderror"
+                                    value="{{ old('res_pincode', $client->res_pincode ?? '') }}" maxlength="6">
+                                @error('res_pincode')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
 
 
@@ -378,51 +404,72 @@
                                     value="{{ old('office_address', $clientFamily->office_address) }}">
                             </div>
 
+                            {{-- COUNTRY --}}
                             <div class="col-md-2 mb-3">
                                 <label class="form-label">Country</label>
-                                <select class="form-select select2" name="office_country">
-                                    <option value="">Select</option>
-                                    @foreach (['India', 'USA', 'UK'] as $c)
-                                        <option value="{{ $c }}"
-                                            {{ old('office_country', $clientFamily->office_country) == $c ? 'selected' : '' }}>
-                                            {{ $c }}
-                                        </option>
-                                    @endforeach
+                                <select name="office_country_code" id="office_country_code"
+                                    class="form-select select2 @error('office_country_code') is-invalid @enderror">
+
+                                    <option value="{{ $country['iso2'] }}"
+                                        {{ old('res_country_code', 'IND') == $country['iso2'] ? 'selected' : '' }}
+                                        data-country-name="{{ $country['name'] }}">
+                                        {{ $country['name'] }}
+                                    </option>
+
                                 </select>
+                                @error('office_country_code')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
 
+                            {{-- STATE --}}
                             <div class="col-md-2 mb-3">
                                 <label class="form-label">State</label>
-                                <select class="form-select select2" name="office_state">
-                                    <option value="">Select</option>
-                                    @foreach (['Maharashtra', 'Gujarat', 'Delhi'] as $s)
-                                        <option value="{{ $s }}"
-                                            {{ old('office_state', $clientFamily->office_state) == $s ? 'selected' : '' }}>
-                                            {{ $s }}
+                                <select name="office_state_code" id="office_state_code"
+                                    class="form-select select2 @error('office_state_code') is-invalid @enderror">
+
+                                    @foreach ($states as $state)
+                                        <option value="{{ $state['iso2'] }}"
+                                            {{ old('res_state_code', 'MH') == $state['iso2'] ? 'selected' : '' }}
+                                            data-state-name="{{ $state['name'] }}">
+                                            {{ $state['name'] }}
                                         </option>
                                     @endforeach
+
                                 </select>
+                                @error('office_state_code')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
 
+                            {{-- CITY --}}
                             <div class="col-md-2 mb-3">
                                 <label class="form-label">City</label>
-                                <select class="form-select select2" name="office_city">
-                                    <option value="">Select</option>
-                                    @foreach (['Mumbai', 'Pune', 'Ahmedabad'] as $city)
-                                        <option value="{{ $city }}"
-                                            {{ old('office_city', $clientFamily->office_city) == $city ? 'selected' : '' }}>
-                                            {{ $city }}
-                                        </option>
-                                    @endforeach
+                                <select name="office_city_code" id="office_city_code"
+                                    class="form-select select2 @error('office_city_code') is-invalid @enderror">
+
+                                    <option value="{{ $client->office_city_code }}"
+                                        data-city-name="{{ $client->office_city }}">
+                                        {{ $client->office_city }}
+                                    </option>
+
                                 </select>
+                                @error('office_city_code')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
 
+
+                            {{-- pincode --}}
                             <div class="col-md-2 mb-3">
                                 <label class="form-label">Pincode</label>
-                                <input type="text" name="office_pincode" class="form-control onlydigit"
-                                    maxlength="6" value="{{ old('office_pincode', $clientFamily->office_pincode) }}">
+                                <input type="text" name="office_pincode" id="office_pincode"
+                                    class="form-control onlydigit @error('office_pincode') is-invalid @enderror"
+                                    value="{{ old('office_pincode', $client->office_pincode ?? '') }}" maxlength="6">
+                                @error('office_pincode')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
                             </div>
-
                         </div>
 
                     </div>
@@ -463,21 +510,52 @@
         });
     </script>
     <script>
-    $(document).ready(function () {
-        function toggleDod() {
-            if ($('#live_status').val() === 'deceased') {
-                $('#dod').closest('.col-md-2').removeClass('d-none');
-            } else {
-                $('#dod').closest('.col-md-2').addClass('d-none');
+        $(document).ready(function() {
+            function toggleDod() {
+                if ($('#live_status').val() === 'deceased') {
+                    $('#dod').closest('.col-md-2').removeClass('d-none');
+                } else {
+                    $('#dod').closest('.col-md-2').addClass('d-none');
+                }
             }
-        }
 
-        toggleDod(); // run when page loads
+            toggleDod(); // run when page loads
 
-        $('#live_status').on('change', function () {
-            toggleDod();
+            $('#live_status').on('change', function() {
+                toggleDod();
+            });
         });
-    });
-</script>
+    </script>
 
+
+
+    <script>
+        $(document).ready(function() {
+
+            // Trigger state change so cities load automatically
+            if ($("#office_state_code").val()) {
+                $("#office_state_code").trigger("change");
+            }
+            if ($("#res_state_code").val()) {
+                $("#res_state_code").trigger("change");
+            }
+
+            // After AJAX loads city options → set selected city
+            $(document).ajaxSuccess(function() {
+                let savedCityRes = "{{ $client->res_city_code }}";
+                let savedCity = "{{ $client->office_city_code }}";
+
+                // Residence city
+                if (savedCityRes) {
+                    $("#res_city_code").val(savedCityRes).trigger("change.select2");
+                }
+
+                // Office city
+                if (savedCity) {
+                    $("#office_city_code").val(savedCity).trigger("change.select2");
+                }
+            });
+
+        });
+    </script>
 @endpush

@@ -40,7 +40,7 @@ class ClientFamilyController extends Controller
             $data = getCountries();
             $country = $data['country'] ?? null;
             $states = $data['states'] ?? [];
-            $cities  = $data['cities'] ?? [];
+            $cities = $data['cities'] ?? [];
 
             return view('content.clients.families.create', compact('client', 'relations', 'clients', 'country', 'states', 'cities'));
         } else {
@@ -108,6 +108,7 @@ class ClientFamilyController extends Controller
 
     public function store(ClientFamilyRequest $request)
     {
+        // return $request;
         if ($request->family_source == 'existing') {
             $request->merge([
                 'name' => Client::find($request->existing_client_id)->name,
@@ -141,6 +142,7 @@ class ClientFamilyController extends Controller
 
     public function update(ClientFamilyRequest $request, $id)
     {
+        // return $request;
         $clientFamily = $this->clientFamilyService->find($id);
         $this->clientFamilyService->update($clientFamily, $request->validated());
         return redirect()->route('client-families.index', ['client_id' => $clientFamily->client_id])->with('success', 'Client family member updated successfully');
