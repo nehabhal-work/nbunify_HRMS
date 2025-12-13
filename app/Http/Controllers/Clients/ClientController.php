@@ -28,7 +28,7 @@ class ClientController extends Controller
         // return $clients;
         return view('content.clients.index', compact('clients'));
     }
-   
+
 
 
     public function create()
@@ -59,7 +59,7 @@ class ClientController extends Controller
         return view('content.clients.view', compact('client', 'clientBank'));
     }
 
-  
+
 
     public function store(ClientRequest $request)
     {
