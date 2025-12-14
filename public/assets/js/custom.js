@@ -516,79 +516,205 @@ $(document).ready(function () {
 
 $(document).ready(function () {
 
-    function initAddress(prefix) {
+    /* ================================
+       COUNTRY → STATE
+    ================================= */
+    $('#res_country_code').on('change', function () {
 
-        let country = $('#' + prefix + '_country_code');
-        let state = $('#' + prefix + '_state_code');
-        let city = $('#' + prefix + '_city_code');
+        let countryCode = $(this).val();
+        let stateSelect = $('#res_state_code');
+        let citySelect = $('#res_city_code');
 
-        let savedState = state.data('selected');
-        let savedCity = city.data('selected');
+        stateSelect
+            .prop('disabled', true)
+            .empty()
+            .append('<option value="">Loading states...</option>');
 
-        // ----------------------------
-        // COUNTRY → STATES
-        // ----------------------------
-        country.on('change', function () {
+        citySelect
+            .prop('disabled', true)
+            .empty()
+            .append('<option value="">Select City</option>');
 
-            let countryCode = $(this).val();
-            state.empty().append('<option value="">Loading states...</option>');
-            city.empty().append('<option value="">Select city</option>');
+        if (!countryCode) return;
 
-            if (!countryCode) return;
+        $.ajax({
+            url: `/api/get-states/${countryCode}`,
+            type: 'GET',
+            success: function (states) {
 
-            $.get(`/api/get-countries-states/${countryCode}`, function (states) {
+                stateSelect
+                    .prop('disabled', false)
+                    .empty()
+                    .append('<option value="">Select State</option>');
 
-                state.empty().append('<option value="">Select State</option>');
-
-                states.forEach(s => {
-                    state.append(`<option value="${s.iso2}">${s.name}</option>`);
+                $.each(states, function (index, state) {
+                    stateSelect.append(
+                        `<option value="${state.iso2}" data-state-name="${state.name}">
+                            ${state.name}
+                        </option>`
+                    );
                 });
 
-                // EDIT MODE: select saved state
-                if (savedState) {
-                    state.val(savedState).trigger('change');
-                }
-            });
+                stateSelect.trigger('change.select2');
+            },
+            error: function () {
+                stateSelect
+                    .prop('disabled', false)
+                    .empty()
+                    .append('<option value="">Failed to load states</option>');
+            }
         });
+    });
 
-        // ----------------------------
-        // STATE → CITIES
-        // ----------------------------
-        state.on('change', function () {
+    /* ================================
+       STATE → CITY
+    ================================= */
+    $('#res_state_code').on('change', function () {
 
-            let stateCode = $(this).val();
-            let countryCode = country.val();
+        let stateCode = $(this).val();
+        let countryCode = $('#res_country_code option:selected').val();
+        let citySelect = $('#res_city_code');
 
-            city.empty().append('<option value="">Loading cities...</option>');
+        citySelect
+            .prop('disabled', true)
+            .empty()
+            .append('<option value="">Loading cities...</option>');
 
-            if (!stateCode || !countryCode) return;
+        if (!countryCode || !stateCode) return;
+        console.log('countryCode', countryCode);
+        console.log('stateCode', stateCode);
+        $.ajax({
+            url: `/api/get-cities/${countryCode}/${stateCode}`,
+            type: 'GET',
+            success: function (cities) {
+                console.log('cities', cities)
+                citySelect
+                    .prop('disabled', false)
+                    .empty()
+                    .append('<option value="">Select City</option>');
 
-            $.get(`/api/get-cities/${countryCode}/${stateCode}`, function (cities) {
-
-                city.empty().append('<option value="">Select City</option>');
-
-                cities.forEach(c => {
-                    city.append(`<option value="${c.id}">${c.name}</option>`);
+                $.each(cities, function (index, city) {
+                    citySelect.append(
+                        `<option value="${city.id}" data-city-name="${city.name}">
+                            ${city.name}
+                        </option>`
+                    );
                 });
 
-                // EDIT MODE: select saved city
-                if (savedCity) {
-                    city.val(savedCity).trigger('change.select2');
-                }
-            });
+                citySelect.trigger('change.select2');
+            },
+            error: function () {
+                citySelect
+                    .prop('disabled', false)
+                    .empty()
+                    .append('<option value="">Failed to load cities</option>');
+            }
+        });
+    });
+
+
+
+
+    /* ================================
+       OFFICE : COUNTRY → STATE
+    ================================= */
+    $('#office_country_code').on('change', function () {
+
+        let countryCode = $(this).val();
+        let stateSelect = $('#office_state_code');
+        let citySelect = $('#office_city_code');
+
+        stateSelect
+            .prop('disabled', true)
+            .empty()
+            .append('<option value="">Loading states...</option>');
+
+        citySelect
+            .prop('disabled', true)
+            .empty()
+            .append('<option value="">Select City</option>');
+
+        if (!countryCode) return;
+
+        $.ajax({
+            url: `/api/get-states/${countryCode}`,
+            type: 'GET',
+            success: function (states) {
+
+                stateSelect
+                    .prop('disabled', false)
+                    .empty()
+                    .append('<option value="">Select State</option>');
+
+                $.each(states, function (index, state) {
+                    stateSelect.append(
+                        `<option value="${state.iso2}" data-state-name="${state.name}">
+                            ${state.name}
+                        </option>`
+                    );
+                });
+
+                stateSelect.trigger('change.select2');
+            },
+            error: function () {
+                stateSelect
+                    .prop('disabled', false)
+                    .empty()
+                    .append('<option value="">Failed to load states</option>');
+            }
+        });
+    });
+
+
+    /* ================================
+       OFFICE : STATE → CITY
+    ================================= */
+    $('#office_state_code').on('change', function () {
+
+        let stateCode = $(this).val();
+        let countryCode = $('#office_country_code').val();
+        let citySelect = $('#office_city_code');
+
+        citySelect
+            .prop('disabled', true)
+            .empty()
+            .append('<option value="">Loading cities...</option>');
+
+        if (!countryCode || !stateCode) return;
+
+        $.ajax({
+            url: `/api/get-cities/${countryCode}/${stateCode}`,
+            type: 'GET',
+            success: function (cities) {
+
+                citySelect
+                    .prop('disabled', false)
+                    .empty()
+                    .append('<option value="">Select City</option>');
+
+                $.each(cities, function (index, city) {
+                    citySelect.append(
+                        `<option value="${city.id}" data-city-name="${city.name}">
+                            ${city.name}
+                        </option>`
+                    );
+                });
+
+                citySelect.trigger('change.select2');
+            },
+            error: function () {
+                citySelect
+                    .prop('disabled', false)
+                    .empty()
+                    .append('<option value="">Failed to load cities</option>');
+            }
         });
 
-        // 🔥 AUTO LOAD ON EDIT
-        if (country.val()) {
-            country.trigger('change');
-        }
-    }
+    });
 
-    // INIT BOTH
-    initAddress('res');
-    initAddress('office');
 
 });
+
 
 
 

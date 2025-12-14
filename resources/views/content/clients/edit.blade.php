@@ -409,7 +409,7 @@
 
                                     @foreach ($country as $c)
                                         <option value="{{ $c['iso2'] }}"
-                                            {{ old('res_country_code', $client->res_country_code) == $c['iso2'] ? 'selected' : '' }}
+                                            {{ old('res_country_code', $client->res_country_code ?? 'IN') == $c['iso2'] ? 'selected' : '' }}
                                             data-country-name="{{ $c['name'] }}">
                                             {{ $c['name'] }}
                                         </option>
@@ -419,7 +419,6 @@
                                 @error('res_country_code')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
-
                             </div>
 
                             {{-- STATE --}}
@@ -432,7 +431,6 @@
                                 @error('res_state_code')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
-
                             </div>
 
                             {{-- CITY --}}

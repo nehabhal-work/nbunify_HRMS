@@ -37,7 +37,7 @@ class ClientController extends Controller
         $country = $data['country'] ?? null;
         $states = $data['states'] ?? [];
         $cities = $data['cities'] ?? [];
-        // return $data;
+        // return $cities;
         return view('content.clients.create', compact('country', 'states', 'cities'));
     }
 
