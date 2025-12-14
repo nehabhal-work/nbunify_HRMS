@@ -39,6 +39,15 @@
     <form action="{{ route('clients.update', $client->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('put')
+
+        <input type="hidden" name="res_country" id="res_country" value="{{ $client->res_country ?? 'India' }}">
+        <input type="hidden" name="res_state" id="res_state" value="{{ $client->res_state ?? 'Maharashtra' }}">
+        <input type="hidden" name="res_city" id="res_city" value="{{ $client->res_city ?? 'Thane' }}">
+
+        <input type="hidden" name="office_country" id="office_country" value="{{ $client->office_country ?? 'India' }}">
+        <input type="hidden" name="office_state" id="office_state" value="{{ $client->office_state ?? 'Maharashtra' }}">
+        <input type="hidden" name="office_city" id="office_city" value="{{ $client->office_city ?? 'Thane' }}">
+
         <div class="row align-items-stretch">
             <div class="col-md-12">
                 <div class="card mb-4">
@@ -68,7 +77,8 @@
                                     name="gender">
                                     <option value="">Select</option>
                                     <option value="male"
-                                        {{ old('gender', $client->gender ?? '') == 'male' ? 'selected' : '' }}>Male</option>
+                                        {{ old('gender', $client->gender ?? '') == 'male' ? 'selected' : '' }}>Male
+                                    </option>
                                     <option value="female"
                                         {{ old('gender', $client->gender ?? '') == 'female' ? 'selected' : '' }}>Female
                                     </option>
@@ -372,29 +382,12 @@
 
                             <!-- Residential Address -->
                             <h6 class="my-3">Residential Address</h6>
-                            <div class="col-md-12 mb-3">
-                                <div class="alert alert-warning border-0 shadow-sm">
-                                    <div class="fw-semibold mb-1">Current Location</div>
-                                    <div class=" text-dark">
-                                        <span class="me-3"><strong>Country:</strong> {{ $client->res_country }}</span>
-                                        <span class="me-3"><strong>State:</strong> {{ $client->res_state }}</span>
-                                        <span><strong>City:</strong> {{ $client->res_city }}</span>
-                                    </div>
-                                    <div class="mt-2 text-dark">
-                                        <i>
-                                            To update the location, please select a new country, state, or city from the
-                                            options
-                                            below.
-                                        </i>
-                                    </div>
-                                </div>
-                            </div>
 
                             <div class="col-md-4 mb-3">
                                 <label class="form-label">Address</label>
                                 <input type="text" name="res_address" id="res_address"
                                     class="form-control @error('res_address') is-invalid @enderror"
-                                    value="{{ old('res_address') }}">
+                                    value="{{ old('res_address', $client->res_address) }}">
                                 @error('res_address')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -447,7 +440,7 @@
                                     class="form-select select2 @error('res_city_code') is-invalid @enderror">
                                     @foreach ($cities as $c)
                                         <option value="{{ $c['id'] }}"
-                                            {{ old('res_city_code', $client->res_city_code ?? '134138') == $c['id'] ? 'selected' : '' }}
+                                            {{ old('res_city_code', $client->res_city_code) == $c['id'] ? 'selected' : '' }}
                                             data-city-name="{{ $c['name'] }}">
                                             {{ $c['name'] }}
                                         </option>
@@ -463,7 +456,7 @@
                                 <label class="form-label">Pincode</label>
                                 <input type="text" name="res_pincode" id="res_pincode"
                                     class="form-control onlydigit @error('res_pincode') is-invalid @enderror"
-                                    value="{{ old('res_pincode') }}" maxlength="6">
+                                    value="{{ old('res_pincode', $client->res_pincode) }}" maxlength="6">
                                 @error('res_pincode')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -479,7 +472,7 @@
                                 <label class="form-label">Address</label>
                                 <input type="text" name="office_address" id="office_address"
                                     class="form-control @error('office_address') is-invalid @enderror"
-                                    value="{{ old('office_address') }}">
+                                    value="{{ old('office_address', $client->office_address) }}">
                                 @error('office_address')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -531,7 +524,7 @@
                                 <label class="form-label">Pincode</label>
                                 <input type="text" name="office_pincode" id="office_pincode"
                                     class="form-control onlydigit @error('office_pincode') is-invalid @enderror"
-                                    value="{{ old('office_pincode') }}" maxlength="6">
+                                    value="{{ old('office_pincode', $client->office_pincode) }}" maxlength="6">
                                 @error('office_pincode')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -1421,19 +1414,34 @@
 
 
     <script>
-        $(document).ready(function() {
-            initAddress(
-                'res',
-                "{{ $client->res_state_code }}",
-                "{{ $client->res_city_code }}"
-            );
+        // $(document).ready(function() {
+        //     initAddress(
+        //         'res',
+        //         "{{ $client->res_state_code }}",
+        //         "{{ $client->res_city_code }}"
+        //     );
 
-            initAddress(
-                'office',
-                "{{ $client->office_state_code }}",
-                "{{ $client->office_city_code }}"
-            );
+        //     initAddress(
+        //         'office',
+        //         "{{ $client->office_state_code }}",
+        //         "{{ $client->office_city_code }}"
+        //     );
 
-        })
+        // })
+    </script>
+
+    <script>
+        window.editAddress = {
+            res: {
+                country: "{{ old('res_country_code', $client->res_country_code ?? '') }}",
+                state: "{{ old('res_state_code', $client->res_state_code ?? '') }}",
+                city: "{{ old('res_city_code', $client->res_city_code ?? '') }}"
+            },
+            office: {
+                country: "{{ old('office_country_code', $client->office_country_code ?? '') }}",
+                state: "{{ old('office_state_code', $client->office_state_code ?? '') }}",
+                city: "{{ old('office_city_code', $client->office_city_code ?? '') }}"
+            }
+        };
     </script>
 @endpush

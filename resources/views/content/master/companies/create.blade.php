@@ -32,17 +32,17 @@
         @csrf
         @method('post')
 
-        {{-- <input type="hidden" name="res_country" id="res_country">
-        <input type="hidden" name="res_state" id="res_state">
-        <input type="hidden" name="res_city" id="res_city">
+        <input type="hidden" name="res_country" id="res_country" value="India">
+        <input type="hidden" name="res_state" id="res_state" value="Maharashtra">
+        <input type="hidden" name="res_city" id="res_city" value="Thane">
 
-        <input type="hidden" name="office_country" id="office_country">
-        <input type="hidden" name="office_state" id="office_state">
-        <input type="hidden" name="office_city" id="office_city">
+        <input type="hidden" name="office_country" id="office_country" value="India">
+        <input type="hidden" name="office_state" id="office_state" value="Maharashtra">
+        <input type="hidden" name="office_city" id="office_city" value="Thane">
 
         <input type="hidden" name="additional_country" id="additional_country">
         <input type="hidden" name="additional_state" id="additional_state">
-        <input type="hidden" name="additional_city" id="additional_city"> --}}
+        <input type="hidden" name="additional_city" id="additional_city">
 
         <div class="row align-items-stretch">
             <div class="col-md-12">
@@ -156,7 +156,8 @@
                                 <label class="form-label" for="whatsapp_no">Contact Person WhatsApp Number</label>
                                 <input type="text"
                                     class="form-control onlyphone @error('whatsapp_no') is-invalid @enderror"
-                                    id="whatsapp_no" name="whatsapp_no" maxlength="15" value="{{ old('whatsapp_no') }}">
+                                    id="whatsapp_no" name="whatsapp_no" maxlength="15"
+                                    value="{{ old('whatsapp_no') }}">
                                 <label class="uk-margin-right"><input class="uk-checkbox chkbox_fwapp_same_as_mobile"
                                         type="checkbox" id="" value="ON">
                                     Same as mobile no.</label>
@@ -235,7 +236,7 @@
                         {{-- address section --}}
                         <div class="row">
                             <!-- Residential Address -->
-                            <h6 class="my-3">Residential Address</h6>
+                            <h6 class="my-3">Registered Address</h6>
                             <div class="col-md-4 mb-3">
                                 <label class="form-label">Address</label>
                                 <input type="text" name="registered_address" id="res_address"
@@ -254,7 +255,7 @@
 
                                     @foreach ($country as $c)
                                         <option value="{{ $c['iso2'] }}"
-                                            {{ old('registered_country_code', $client->registered_country_code ?? 'IN') == $c['iso2'] ? 'selected' : '' }}
+                                            {{ old('registered_country_code', 'IN') == $c['iso2'] ? 'selected' : '' }}
                                             data-country-name="{{ $c['name'] }}">
                                             {{ $c['name'] }}
                                         </option>
@@ -275,7 +276,7 @@
 
                                     @foreach ($states as $s)
                                         <option value="{{ $s['iso2'] }}"
-                                            {{ old('registered_state_code', $client->registered_state_code ?? 'MH') == $s['iso2'] ? 'selected' : '' }}
+                                            {{ old('registered_state_code', 'MH') == $s['iso2'] ? 'selected' : '' }}
                                             data-state-name="{{ $s['name'] }}">
                                             {{ $s['name'] }}
                                         </option>
@@ -296,7 +297,7 @@
 
                                     @foreach ($cities as $c)
                                         <option value="{{ $c['id'] }}"
-                                            {{ old('registered_city_code', $client->registered_city_code ?? '134138') == $c['id'] ? 'selected' : '' }}
+                                            {{ old('registered_city_code', '134138') == $c['id'] ? 'selected' : '' }}
                                             data-city-name="{{ $c['name'] }}">
                                             {{ $c['name'] }}
                                         </option>
@@ -344,7 +345,7 @@
 
                                     @foreach ($country as $c)
                                         <option value="{{ $c['iso2'] }}"
-                                            {{ old('corporate_country_code', $client->corporate_country_code ?? 'IN') == $c['iso2'] ? 'selected' : '' }}
+                                            {{ old('corporate_country_code', 'IN') == $c['iso2'] ? 'selected' : '' }}
                                             data-country-name="{{ $c['name'] }}">
                                             {{ $c['name'] }}
                                         </option>
@@ -365,7 +366,7 @@
 
                                     @foreach ($states as $s)
                                         <option value="{{ $s['iso2'] }}"
-                                            {{ old('corporate_state_code', $client->corporate_state_code ?? 'MH') == $s['iso2'] ? 'selected' : '' }}
+                                            {{ old('corporate_state_code', 'MH') == $s['iso2'] ? 'selected' : '' }}
                                             data-state-name="{{ $s['name'] }}">
                                             {{ $s['name'] }}
                                         </option>
@@ -386,7 +387,7 @@
 
                                     @foreach ($cities as $c)
                                         <option value="{{ $c['id'] }}"
-                                            {{ old('corporate_city_code', $client->corporate_city_code ?? '134138') == $c['id'] ? 'selected' : '' }}
+                                            {{ old('corporate_city_code', '134138') == $c['id'] ? 'selected' : '' }}
                                             data-city-name="{{ $c['name'] }}">
                                             {{ $c['name'] }}
                                         </option>
@@ -430,7 +431,7 @@
 
                                     @foreach ($country as $c)
                                         <option value="{{ $c['iso2'] }}"
-                                            {{ old('additional_country_code', $client->additional_country_code ?? 'IN') == $c['iso2'] ? 'selected' : '' }}
+                                            {{ old('additional_country_code', 'IN') == $c['iso2'] ? 'selected' : '' }}
                                             data-country-name="{{ $c['name'] }}">
                                             {{ $c['name'] }}
                                         </option>
@@ -451,7 +452,7 @@
 
                                     @foreach ($states as $s)
                                         <option value="{{ $s['iso2'] }}"
-                                            {{ old('additional_state_code', $client->additional_state_code ?? 'MH') == $s['iso2'] ? 'selected' : '' }}
+                                            {{ old('additional_state_code', 'MH') == $s['iso2'] ? 'selected' : '' }}
                                             data-state-name="{{ $s['name'] }}">
                                             {{ $s['name'] }}
                                         </option>
@@ -472,7 +473,7 @@
 
                                     @foreach ($cities as $c)
                                         <option value="{{ $c['id'] }}"
-                                            {{ old('additional_city_code', $client->additional_city_code ?? '134138') == $c['id'] ? 'selected' : '' }}
+                                            {{ old('additional_city_code', '134138') == $c['id'] ? 'selected' : '' }}
                                             data-city-name="{{ $c['name'] }}">
                                             {{ $c['name'] }}
                                         </option>

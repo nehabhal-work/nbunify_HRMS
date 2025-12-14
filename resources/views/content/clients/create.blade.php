@@ -33,13 +33,13 @@
     <form action="{{ route('clients.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('post')
-        <input type="hidden" name="res_country" id="res_country">
-        <input type="hidden" name="res_state" id="res_state">
-        <input type="hidden" name="res_city" id="res_city">
+        <input type="hidden" name="res_country" id="res_country" value="India">
+        <input type="hidden" name="res_state" id="res_state" value="Maharashtra">
+        <input type="hidden" name="res_city" id="res_city" value="Thane">
 
-        <input type="hidden" name="office_country" id="office_country">
-        <input type="hidden" name="office_state" id="office_state">
-        <input type="hidden" name="office_city" id="office_city">
+        <input type="hidden" name="office_country" id="office_country" value="India">
+        <input type="hidden" name="office_state" id="office_state" value="Maharashtra">
+        <input type="hidden" name="office_city" id="office_city" value="Thane">
 
         <div class="d-flex justify-content-end">
             <a href="{{ route('clients.index') }}" class="btn btn-secondary px-4">Go Back</a>
@@ -130,7 +130,8 @@
                                 <label class="form-label" for="marital_status">Marital Status</label>
                                 <select class="form-select @error('marital_status') is-invalid @enderror"
                                     id="marital_status" name="marital_status">
-                                    <option value="single" {{ old('marital_status') == 'single' ? 'selected' : '' }}>Single
+                                    <option value="single" {{ old('marital_status') == 'single' ? 'selected' : '' }}>
+                                        Single
                                     </option>
                                     <option value="married" {{ old('marital_status') == 'married' ? 'selected' : '' }}>
                                         Married</option>
@@ -361,7 +362,7 @@
 
                                     @foreach ($country as $c)
                                         <option value="{{ $c['iso2'] }}"
-                                            {{ old('res_country_code', $client->res_country_code ?? 'IN') == $c['iso2'] ? 'selected' : '' }}
+                                            {{ old('res_country_code', 'IN') == $c['iso2'] ? 'selected' : '' }}
                                             data-country-name="{{ $c['name'] }}">
                                             {{ $c['name'] }}
                                         </option>
@@ -375,15 +376,14 @@
 
                             {{-- STATE --}}
                             <div class="col-md-2 mb-3">
-                                <label class="form-label">State</label>
+                                <label class="form-label">State </label>
                                 <select name="res_state_code" id="res_state_code"
                                     class="form-select select2 @error('res_state_code') is-invalid @enderror">
                                     @foreach ($states as $s)
                                         <option value="{{ $s['iso2'] }}"
-                                            {{ old('res_state_code', $client->res_state_code ?? 'MH') == $s['iso2'] ? 'selected' : '' }}
-                                            data-state-name="{{ $s['name'] }}">
-                                            {{ $s['name'] }}
-                                        </option>
+                                            {{ old('res_state_code', 'MH') == $s['iso2'] ? 'selected' : '' }}
+                                            data-country-name="{{ $s['name'] }}">
+                                            {{ $s['name'] }} </option>
                                     @endforeach
 
                                 </select>
@@ -399,7 +399,7 @@
                                     class="form-select select2 @error('res_city_code') is-invalid @enderror">
                                     @foreach ($cities as $c)
                                         <option value="{{ $c['id'] }}"
-                                            {{ old('res_city_code', $client->res_city_code ?? '134138') == $c['id'] ? 'selected' : '' }}
+                                            {{ old('res_city_code', '134138') == $c['id'] ? 'selected' : '' }}
                                             data-city-name="{{ $c['name'] }}">
                                             {{ $c['name'] }}
                                         </option>
@@ -445,7 +445,7 @@
 
                                     @foreach ($country as $c)
                                         <option value="{{ $c['iso2'] }}"
-                                            {{ old('office_country_code', $client->office_country_code ?? 'IN') == $c['iso2'] ? 'selected' : '' }}
+                                            {{ old('office_country_code', 'IN') == $c['iso2'] ? 'selected' : '' }}
                                             data-country-name="{{ $c['name'] }}">
                                             {{ $c['name'] }}
                                         </option>
@@ -457,8 +457,6 @@
                                 @enderror
                             </div>
 
-
-
                             {{-- STATE --}}
                             <div class="col-md-2 mb-3">
                                 <label class="form-label">State</label>
@@ -466,7 +464,7 @@
                                     class="form-select select2 @error('office_state_code') is-invalid @enderror">
                                     @foreach ($states as $s)
                                         <option value="{{ $s['iso2'] }}"
-                                            {{ old('office_state_code', $client->office_state_code ?? 'MH') == $s['iso2'] ? 'selected' : '' }}
+                                            {{ old('office_state_code', 'MH') == $s['iso2'] ? 'selected' : '' }}
                                             data-state-name="{{ $s['name'] }}">
                                             {{ $s['name'] }}
                                         </option>
@@ -485,7 +483,7 @@
                                     class="form-select select2 @error('office_city_code') is-invalid @enderror">
                                     @foreach ($cities as $c)
                                         <option value="{{ $c['id'] }}"
-                                            {{ old('office_city_code', $client->office_city_code ?? '134138') == $c['id'] ? 'selected' : '' }}
+                                            {{ old('office_city_code', '134138') == $c['id'] ? 'selected' : '' }}
                                             data-city-name="{{ $c['name'] }}">
                                             {{ $c['name'] }}
                                         </option>

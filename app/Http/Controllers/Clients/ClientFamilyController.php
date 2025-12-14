@@ -106,9 +106,10 @@ class ClientFamilyController extends Controller
         return redirect()->route('client-families.index', ['client_id' => $request->client_id])->with('success', 'Client family member created successfully');
     }
 
+    // public function store(Request $request)
     public function store(ClientFamilyRequest $request)
     {
-        // return $request;
+        return $request;
         if ($request->family_source == 'existing') {
             $request->merge([
                 'name' => Client::find($request->existing_client_id)->name,

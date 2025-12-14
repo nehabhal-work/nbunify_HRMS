@@ -229,7 +229,7 @@
                         <div class="row">
 
                             <!-- Residential Address -->
-                            <h6 class="my-3">Residential Address</h6>
+                            <h6 class="my-3">Registered Address</h6>
 
                             <div class="col-md-4 mb-3">
                                 <label class="form-label">Address</label>
@@ -241,52 +241,64 @@
                                 @enderror
                             </div>
 
+                            {{-- COUNTRY --}}
                             <div class="col-md-2 mb-3">
                                 <label class="form-label">Country</label>
-                                <select name="registered_country" id="res_country_code"
-                                    class="form-select select2 @error('registered_country') is-invalid @enderror">
-                                    <option value="{{ $country['iso2'] }}"
-                                        {{ old('registered_country', $company->registered_country ?? 'IND') == $country['iso2'] ? 'selected' : '' }}
-                                        data-country-name="{{ $country['name'] }}">
-                                        {{ $country['name'] }}
-                                    </option>
-                                </select>
-                                @error('registered_country')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
+                                <select name="registered_country_code" id="registered_country_code"
+                                    class="form-select select2 @error('registered_country_code') is-invalid @enderror">
 
-                            <div class="col-md-2 mb-3">
-                                <label class="form-label">State</label>
-                                <select name="registered_state" id="registered_state"
-                                    class="form-select select2 @error('registered_state') is-invalid @enderror">
-                                    @foreach ($states as $state)
-                                        <option value="{{ $state['iso2'] }}"
-                                            {{ old('registered_state', $company->registered_state ?? 'MH') == $state['iso2'] ? 'selected' : '' }}
-                                            data-state-name="{{ $state['name'] }}">
-                                            {{ $state['name'] }}
+                                    @foreach ($country as $c)
+                                        <option value="{{ $c['iso2'] }}"
+                                            {{ old('registered_country_code', $client->registered_country_code ?? 'IN') == $c['iso2'] ? 'selected' : '' }}
+                                            data-country-name="{{ $c['name'] }}">
+                                            {{ $c['name'] }}
                                         </option>
                                     @endforeach
                                 </select>
-                                @error('registered_state')
+
+                                @error('registered_country_code')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
 
+
+                            {{-- STATE --}}
+                            <div class="col-md-2 mb-3">
+                                <label class="form-label">State</label>
+                                <select name="registered_state_code" id="registered_state_code"
+                                    class="form-select select2 @error('registered_state_code') is-invalid @enderror">
+
+                                    @foreach ($states as $s)
+                                        <option value="{{ $s['iso2'] }}"
+                                            {{ old('registered_state_code', $client->registered_state_code ?? 'MH') == $s['iso2'] ? 'selected' : '' }}
+                                            data-state-name="{{ $s['name'] }}">
+                                            {{ $s['name'] }}
+                                        </option>
+                                    @endforeach
+                                </select>
+
+                                @error('registered_state_code')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+
+                            {{-- CITY --}}
                             <div class="col-md-2 mb-3">
                                 <label class="form-label">City</label>
-                                <select name="registered_city" id="registered_city"
-                                    class="form-select select2 @error('registered_city') is-invalid @enderror">
-                                    <option value="">Select City</option>
+                                <select name="registered_city_code" id="registered_city_code"
+                                    class="form-select select2 @error('registered_city_code') is-invalid @enderror">
+
                                     @foreach ($cities as $c)
                                         <option value="{{ $c['id'] }}"
-                                            {{ old('registered_city', $company->registered_city ?? '') == $c['id'] ? 'selected' : '' }}
+                                            {{ old('registered_city_code', $client->registered_city_code ?? '134138') == $c['id'] ? 'selected' : '' }}
                                             data-city-name="{{ $c['name'] }}">
                                             {{ $c['name'] }}
                                         </option>
                                     @endforeach
                                 </select>
-                                @error('registered_city')
+
+                                @error('registered_city_code')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -315,52 +327,64 @@
                                 @enderror
                             </div>
 
+                            {{-- COUNTRY --}}
                             <div class="col-md-2 mb-3">
                                 <label class="form-label">Country</label>
-                                <select name="corporate_country" id="corporate_country"
-                                    class="form-select select2 @error('corporate_country') is-invalid @enderror">
-                                    <option value="{{ $country['iso2'] }}"
-                                        {{ old('corporate_country', $company->corporate_country ?? 'IND') == $country['iso2'] ? 'selected' : '' }}
-                                        data-country-name="{{ $country['name'] }}">
-                                        {{ $country['name'] }}
-                                    </option>
-                                </select>
-                                @error('corporate_country')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
+                                <select name="corporate_country_code" id="corporate_country_code"
+                                    class="form-select select2 @error('corporate_country_code') is-invalid @enderror">
 
-                            <div class="col-md-2 mb-3">
-                                <label class="form-label">State</label>
-                                <select name="corporate_state" id="corporate_state"
-                                    class="form-select select2 @error('corporate_state') is-invalid @enderror">
-                                    @foreach ($states as $state)
-                                        <option value="{{ $state['iso2'] }}"
-                                            {{ old('corporate_state', $company->corporate_state ?? 'MH') == $state['iso2'] ? 'selected' : '' }}
-                                            data-state-name="{{ $state['name'] }}">
-                                            {{ $state['name'] }}
+                                    @foreach ($country as $c)
+                                        <option value="{{ $c['iso2'] }}"
+                                            {{ old('corporate_country_code', $client->corporate_country_code ?? 'IN') == $c['iso2'] ? 'selected' : '' }}
+                                            data-country-name="{{ $c['name'] }}">
+                                            {{ $c['name'] }}
                                         </option>
                                     @endforeach
                                 </select>
-                                @error('corporate_state')
+
+                                @error('corporate_country_code')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
 
+
+                            {{-- STATE --}}
+                            <div class="col-md-2 mb-3">
+                                <label class="form-label">State</label>
+                                <select name="corporate_state_code" id="corporate_state_code"
+                                    class="form-select select2 @error('corporate_state_code') is-invalid @enderror">
+
+                                    @foreach ($states as $s)
+                                        <option value="{{ $s['iso2'] }}"
+                                            {{ old('corporate_state_code', $client->corporate_state_code ?? 'MH') == $s['iso2'] ? 'selected' : '' }}
+                                            data-state-name="{{ $s['name'] }}">
+                                            {{ $s['name'] }}
+                                        </option>
+                                    @endforeach
+                                </select>
+
+                                @error('corporate_state_code')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+
+                            {{-- CITY --}}
                             <div class="col-md-2 mb-3">
                                 <label class="form-label">City</label>
-                                <select name="corporate_city" id="corporate_city"
-                                    class="form-select select2 @error('corporate_city') is-invalid @enderror">
-                                    <option value="">Select City</option>
+                                <select name="corporate_city_code" id="corporate_city_code"
+                                    class="form-select select2 @error('corporate_city_code') is-invalid @enderror">
+
                                     @foreach ($cities as $c)
                                         <option value="{{ $c['id'] }}"
-                                            {{ old('corporate_city', $company->corporate_city ?? '') == $c['id'] ? 'selected' : '' }}
+                                            {{ old('corporate_city_code', $client->corporate_city_code ?? '134138') == $c['id'] ? 'selected' : '' }}
                                             data-city-name="{{ $c['name'] }}">
                                             {{ $c['name'] }}
                                         </option>
                                     @endforeach
                                 </select>
-                                @error('corporate_city')
+
+                                @error('corporate_city_code')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -389,74 +413,67 @@
                                 @enderror
                             </div>
 
+                            {{-- Country --}}
                             <div class="col-md-2 mb-3">
                                 <label class="form-label">Country</label>
-                                <select name="additional_country" id="additional_country"
-                                    class="form-select select2 @error('additional_country') is-invalid @enderror">
-                                    <option value="{{ $country['iso2'] }}"
-                                        {{ old('additional_country', $company->additional_country ?? 'IND') == $country['iso2'] ? 'selected' : '' }}
-                                        data-country-name="{{ $country['name'] }}">
-                                        {{ $country['name'] }}
-                                    </option>
-                                </select>
-                                @error('additional_country')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
+                                <select name="additional_country_code" id="additional_country_code"
+                                    class="form-select select2 @error('additional_country_code') is-invalid @enderror">
 
-                            <div class="col-md-2 mb-3">
-                                <label class="form-label">State</label>
-                                <select name="additional_state" id="additional_state"
-                                    class="form-select select2 @error('additional_state') is-invalid @enderror">
-                                    @foreach ($states as $state)
-                                        <option value="{{ $state['iso2'] }}"
-                                            {{ old('additional_state', $company->additional_state ?? 'MH') == $state['iso2'] ? 'selected' : '' }}
-                                            data-state-name="{{ $state['name'] }}">
-                                            {{ $state['name'] }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                                @error('additional_state')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            {{-- {{ $company }} --}}
-                            <div class="col-md-2 mb-3">
-                                <label class="form-label">City</label>
-                                <select name="additional_city" id="additional_city"
-                                    class="form-select select2 @error('additional_city') is-invalid @enderror">
-                                    <option value="">Select City</option>
-
-                                    @foreach ($cities as $c)
-                                        <option value="{{ $c['id'] }}"
-                                            {{ (string) old('additional_city', $company->additional_city ?? '') === (string) $c['id'] ? 'selected' : '' }}>
+                                    @foreach ($country as $c)
+                                        <option value="{{ $c['iso2'] }}"
+                                            {{ old('additional_country_code', $client->additional_country_code ?? 'IN') == $c['iso2'] ? 'selected' : '' }}
+                                            data-country-name="{{ $c['name'] }}">
                                             {{ $c['name'] }}
                                         </option>
                                     @endforeach
                                 </select>
-                                @error('additional_city')
+
+                                @error('additional_country_code')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-                            
-                            {{-- <div class="col-md-2 mb-3">
+
+
+                            {{-- STATE --}}
+                            <div class="col-md-2 mb-3">
+                                <label class="form-label">State</label>
+                                <select name="additional_state_code" id="additional_state_code"
+                                    class="form-select select2 @error('additional_state_code') is-invalid @enderror">
+
+                                    @foreach ($states as $s)
+                                        <option value="{{ $s['iso2'] }}"
+                                            {{ old('additional_state_code', $client->additional_state_code ?? 'MH') == $s['iso2'] ? 'selected' : '' }}
+                                            data-state-name="{{ $s['name'] }}">
+                                            {{ $s['name'] }}
+                                        </option>
+                                    @endforeach
+                                </select>
+
+                                @error('additional_state_code')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+
+                            {{-- CITY --}}
+                            <div class="col-md-2 mb-3">
                                 <label class="form-label">City</label>
-                                <select name="additional_city" id="additional_city"
-                                    class="form-select select2 @error('additional_city') is-invalid @enderror">
-                                    <option value="">Select City</option>
+                                <select name="additional_city_code" id="additional_city_code"
+                                    class="form-select select2 @error('additional_city_code') is-invalid @enderror">
+
                                     @foreach ($cities as $c)
                                         <option value="{{ $c['id'] }}"
-                                            {{ old('additional_city', $company->additional_city ?? '') == $c['id'] ? 'selected' : '' }}
+                                            {{ old('additional_city_code', $client->additional_city_code ?? '134138') == $c['id'] ? 'selected' : '' }}
                                             data-city-name="{{ $c['name'] }}">
                                             {{ $c['name'] }}
                                         </option>
                                     @endforeach
                                 </select>
-                                @error('additional_city')
+
+                                @error('additional_city_code')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
-                            </div> --}}
+                            </div>
 
 
                             <div class="col-md-2 mb-3">
@@ -1355,7 +1372,7 @@
             <button type="submit" class="btn btn-primary px-4">Update</button>
             <a href="{{ route('master.companies.index') }}" class="btn btn-secondary px-4">Cancel</a>
         </div>
-    </form>
+    </form>{{ $company->registered_state_code }}
 @endsection
 
 @push('scripts')
@@ -1386,29 +1403,23 @@
     <script>
         $(document).ready(function() {
 
-            // Trigger state change so cities load automatically
-            if ($("#office_state_code").val()) {
-                $("#office_state_code").trigger("change");
-            }
-            if ($("#res_state_code").val()) {
-                $("#res_state_code").trigger("change");
-            }
+            initAddress(
+                'registered',
+                "{{ $company->registered_state_code }}",
+                "{{ $company->registered_city_code }}"
+            );
 
-            // After AJAX loads city options → set selected city
-            $(document).ajaxSuccess(function() {
-                let savedCityRes = "{{ $company->res_city_code }}";
-                let savedCity = "{{ $company->office_city_code }}";
+            initAddress(
+                'corporate',
+                "{{ $company->corporate_state_code }}",
+                "{{ $company->corporate_city_code }}"
+            );
+            initAddress(
+                'additional',
+                "{{ $company->additional_state_code }}",
+                "{{ $company->additional_city_code }}"
+            );
 
-                // Residence city
-                if (savedCityRes) {
-                    $("#res_city_code").val(savedCityRes).trigger("change.select2");
-                }
-
-                // Office city
-                if (savedCity) {
-                    $("#office_city_code").val(savedCity).trigger("change.select2");
-                }
-            });
 
         });
     </script>

@@ -11,6 +11,7 @@ use App\Services\ClientBankService;
 use App\Services\CompanyService;
 use App\Services\FileStorageService;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ClientController extends Controller
@@ -61,10 +62,11 @@ class ClientController extends Controller
 
 
 
+    // public function store(Request $request)
     public function store(ClientRequest $request)
     {
 
-        // return $request;
+        return $request;
         $client = null;
         DB::transaction(function () use ($request, &$client) {
             $client = $this->clientService->create($request->validated());
