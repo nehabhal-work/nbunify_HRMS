@@ -24,7 +24,8 @@
     @endif
 
     <h4 class="fw-bold py-3 mb-4">
-        <span class="text-muted fw-light">Master /</span> <a href="{{ route('master.companies.index') }}">Client</a>
+        <span class="text-muted fw-light">Master /</span> <a href="{{ route('master.companies.index') }}">New Client
+            create</a>
     </h4>
 
 
@@ -455,6 +456,8 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
+
+
 
                             {{-- STATE --}}
                             <div class="col-md-2 mb-3">
