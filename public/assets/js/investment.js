@@ -458,3 +458,108 @@ $('#investment_amount, #roi_percent, #frequency').on('keyup change', function ()
     calculateROI();
 });
 
+// Trigger on investment date change
+$(document).on('change', '.invDate', function () {
+    let $row = $(this).closest('.row');
+    // Only calculate if tenure & type are already selected
+    if ($row.find('.tenure').val() && $row.find('.tenure_type').val()) {
+        calculateMaturity($row);
+    }
+});
+
+$(document).on('change', '.tenure, .tenure_type', function () {
+    let $row = $(this).closest('.row');
+    calculateMaturity($row);
+});
+
+function calculateMaturity($row) {
+    let invDate = $row.find('.invDate').val();
+    let tenure = parseInt($row.find('.tenure').val());
+    let tenureType = $row.find('.tenure_type').val()?.toLowerCase();
+
+    // console.log('Calculating maturity for:', { invDate, tenure, tenureType });
+    // if tenure or type not set yet, we can skip or set default
+    if (!invDate || !tenure || !tenureType) {
+        $row.find('.matdate').val(''); // clear if incomplete
+        return;
+    }
+
+    let dateObj = new Date(invDate);
+
+    if (tenureType === "months") {
+        dateObj.setMonth(dateObj.getMonth() + tenure);
+    } else if (tenureType === "years") {
+        console.log('Adding years:', tenure);
+        dateObj.setFullYear(dateObj.getFullYear() + tenure);
+    } else if (tenureType === "days") {
+        dateObj.setDate(dateObj.getDate() + tenure);
+    }
+
+    // always minus 1 day
+    dateObj.setDate(dateObj.getDate() - 1);
+
+    let yyyy = dateObj.getFullYear();
+    let mm = String(dateObj.getMonth() + 1).padStart(2, '0');
+    let dd = String(dateObj.getDate()).padStart(2, '0');
+
+    $row.find('.matdate').val(`${yyyy}-${mm}-${dd}`);
+}
+
+
+$(document).on("change", ".instrumentSelect", function () {
+
+    let $row = $(this).closest(".instrumentRow"); // current row
+    let instrument = $(this).val();
+    let investmentDate = $(".invDate").val();
+
+    let $instrumentDate = $row.find("input[name='instrument_date[]']");
+    let $creditDate = $row.find("input[name='effective_date[]']");
+    let $refNo = $row.find("input[name='reference_no[]']");
+    let $companyRef = $row.find("input[name='company_reference_no[]']");
+
+    /* ===============================
+       Auto set dates from Investment Date
+    =============================== */
+    if (investmentDate) {
+        $instrumentDate.val(investmentDate);
+        $creditDate.val(investmentDate);
+    }
+
+    /* ===============================
+       CHEQUE LOGIC
+    =============================== */
+    if (instrument === "cheque") {
+
+        // Reference no length
+        $refNo.attr("maxlength", 6);
+
+        // Lock company bank ref
+        $companyRef
+            .prop("readonly", true)
+            .addClass("bg-secondary-subtle");
+
+        // Sync reference → company reference
+        $refNo.off("input.syncRef").on("input.syncRef", function () {
+            $companyRef.val($(this).val());
+        });
+
+        // Sync immediately if value exists
+        if ($refNo.val()) {
+            $companyRef.val($refNo.val());
+        }
+
+    } else {
+
+        // Reset for other instruments
+        $refNo.removeAttr("maxlength");
+
+        $companyRef
+            .prop("readonly", false)
+            .removeClass("bg-secondary-subtle")
+            .val("");
+
+        // Remove listener
+        $refNo.off("input.syncRef");
+    }
+});
+
