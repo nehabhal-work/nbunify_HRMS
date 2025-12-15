@@ -344,8 +344,10 @@
                                             <div class="col-md-4">
                                                 <label class="form-label">Instrument <span
                                                         class="text-danger">*</span></label>
-                                                <select class="form-select @error('instrument') is-invalid @enderror"
+                                                <select
+                                                    class="form-select instrumentSelect @error('instrument') is-invalid @enderror"
                                                     name="instrument[]">
+
                                                     <option value="rtgs"
                                                         {{ old('instrument') == 'rtgs' ? 'selected' : '' }}>
                                                         RTGS
@@ -472,9 +474,10 @@
                                                     Company Bank Ref No <span class="text-danger">*</span>
                                                 </label>
                                                 <input type="text"
-                                                    class="form-control @error('company_reference_no.0') is-invalid @enderror"
+                                                    class="form-control companyBankRef @error('company_reference_no.0') is-invalid @enderror"
                                                     name="company_reference_no[]"
                                                     value="{{ old('company_reference_no.0') }}" maxlength="20">
+
                                                 @error('company_reference_no.0')
                                                     <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
@@ -744,6 +747,12 @@
 @push('scripts')
     <script src="{{ asset('assets/js/investment.js') }}?v={{ time() }}"></script>
     <script>
+        /*
+                                        Investment Date (#inv_date) to auto-update on keyup / change based on:
+                                        instrument_date[]
+                                        effective_date[]
+                                        */
+
         $(document).on('change', '.invDate', function() {
 
             let investmentDate = $(this).val();
@@ -818,6 +827,52 @@
                 }
             });
 
+        });
+    </script>
+    <script>
+        $(document).on("change", ".instrumentSelect", function() {
+
+            let $row = $(this).closest(".instrumentRow");
+            let instrument = $(this).val();
+            let investmentDate = $(".invDate").val();
+
+            let $instrumentDate = $row.find("input[name='instrument_date[]']");
+            let $creditDate = $row.find("input[name='effective_date[]']");
+            let $refNo = $row.find("input[name='reference_no[]']");
+            let $companyRef = $row.find("input[name='company_reference_no[]']");
+
+            /* ===============================
+               Auto set dates from investment date
+            =============================== */
+            if (investmentDate) {
+                $instrumentDate.val(investmentDate);
+                $creditDate.val(investmentDate);
+            }
+
+            /* ===============================
+               Readonly toggle
+            =============================== */
+            if (instrument === "cheque") {
+                $companyRef
+                    .prop("readonly", false)
+                    .removeClass("bg-secondary-subtle");
+            } else {
+                $companyRef
+                    .prop("readonly", true)
+                    .addClass("bg-secondary-subtle");
+            }
+
+            /* ===============================
+               ALWAYS sync Reference → Company Ref
+            =============================== */
+            $refNo.off("input.syncRef").on("input.syncRef", function() {
+                $companyRef.val($(this).val());
+            });
+
+            // Immediate sync if already filled
+            if ($refNo.val()) {
+                $companyRef.val($refNo.val());
+            }
         });
     </script>
 @endpush

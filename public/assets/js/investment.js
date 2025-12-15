@@ -506,36 +506,60 @@ function calculateMaturity($row) {
 }
 
 
+$(document).on("change", ".instrumentSelect", function () {
 
-/*
-Investment Date (#inv_date) to auto-update on keyup / change based on:
-instrument_date[]
-effective_date[]
-*/
+    let $row = $(this).closest(".instrumentRow"); // current row
+    let instrument = $(this).val();
+    let investmentDate = $(".invDate").val();
 
-$(document).on('change', '#investment_date', function () {
+    let $instrumentDate = $row.find("input[name='instrument_date[]']");
+    let $creditDate = $row.find("input[name='effective_date[]']");
+    let $refNo = $row.find("input[name='reference_no[]']");
+    let $companyRef = $row.find("input[name='company_reference_no[]']");
 
-    let selectedDate = $(this).val();
-    if (!selectedDate) return;
+    /* ===============================
+       Auto set dates from Investment Date
+    =============================== */
+    if (investmentDate) {
+        $instrumentDate.val(investmentDate);
+        $creditDate.val(investmentDate);
+    }
 
-    console.log('investment date', selectedDate)
-    let $row = $(this).closest('.instrumentRow');
+    /* ===============================
+       CHEQUE LOGIC
+    =============================== */
+    if (instrument === "cheque") {
 
-    // Set Instrument Date
-    $row.find('input[name="instrument_date[]"]').val(selectedDate);
+        // Reference no length
+        $refNo.attr("maxlength", 6);
 
-    // Set Effective / Credit Date
-    $row.find('input[name="effective_date[]"]').val(selectedDate);
+        // Lock company bank ref
+        $companyRef
+            .prop("readonly", true)
+            .addClass("bg-secondary-subtle");
 
-    // Format & show Investment Date
-    let dateObj = new Date(selectedDate);
-    let formattedDate = dateObj.toLocaleDateString('en-GB', {
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric'
-    });
+        // Sync reference → company reference
+        $refNo.off("input.syncRef").on("input.syncRef", function () {
+            $companyRef.val($(this).val());
+        });
 
-    $row.find('.inv_date').text(formattedDate);
+        // Sync immediately if value exists
+        if ($refNo.val()) {
+            $companyRef.val($refNo.val());
+        }
+
+    } else {
+
+        // Reset for other instruments
+        $refNo.removeAttr("maxlength");
+
+        $companyRef
+            .prop("readonly", false)
+            .removeClass("bg-secondary-subtle")
+            .val("");
+
+        // Remove listener
+        $refNo.off("input.syncRef");
+    }
 });
-
 
