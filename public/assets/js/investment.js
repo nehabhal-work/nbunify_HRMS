@@ -369,7 +369,7 @@ $(document).ready(function () {
 
 
     // ------------------------------
-    //     PERCENTAGE CALCULATION
+    //     nominee PERCENTAGE CALCULATION
     // ------------------------------
 
     function recalcPercentages() {
@@ -414,3 +414,47 @@ $(document).ready(function () {
         }
     });
 });
+
+
+
+
+function calculateROI() {
+
+    let amount = parseFloat($('#investment_amount').val()) || 0;
+    let roi = parseFloat($('#roi_percent').val()) || 0;
+    let frequency = $('#frequency').val();
+
+    if (!amount || !roi || !frequency) {
+        $('#roi_amount').val('');
+        return;
+    }
+
+    let yearlyInterest = (amount * roi) / 100;
+    let finalAmount = 0;
+
+    switch (frequency) {
+        case 'monthly':
+            finalAmount = yearlyInterest / 12;
+            break;
+
+        case 'quarterly':
+            finalAmount = yearlyInterest / 4;
+            break;
+
+        case 'half-yearly':
+            finalAmount = yearlyInterest / 2;
+            break;
+
+        case 'yearly':
+            finalAmount = yearlyInterest;
+            break;
+    }
+
+    $('#roi_amount').val(finalAmount.toFixed(2));
+}
+
+$('#investment_amount, #roi_percent, #frequency').on('keyup change', function () {
+    console.log("investment_amount")
+    calculateROI();
+});
+

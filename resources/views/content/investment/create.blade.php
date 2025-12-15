@@ -236,6 +236,19 @@
                                 @enderror
                             </div>
 
+                            <div class="col-md-2 mb-3">
+                                <label class="form-label fw-semibold">Interest Amount</label>
+
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        ₹
+                                    </span>
+
+                                    <input type="text" class="form-control text-end fw-semibold bg-info-subtle"
+                                        id="roi_amount" readonly placeholder="0.00">
+                                </div>
+                            </div>
+
 
 
 
@@ -686,7 +699,7 @@
 @endsection
 
 @push('scripts')
-    <script src="{{ asset('assets/js/investment.js') }}"></script>
+    <script src="{{ asset('assets/js/investment.js') }}?v={{ time() }}"></script>
 
     <script>
         $('#calculateBtn').on('click', function() {
