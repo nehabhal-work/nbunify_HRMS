@@ -12,7 +12,7 @@ if (!function_exists('getCountries')) {
         ];
 
         $responseCountry = Http::withHeaders($headers)
-            ->get("https://api.countrystatecity.in/v1/countries/{$countryCode}");
+            ->get("https://api.countrystatecity.in/v1/countries");
 
         $responseStates = Http::withHeaders($headers)
             ->get("https://api.countrystatecity.in/v1/countries/{$countryCode}/states");

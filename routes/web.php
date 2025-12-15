@@ -72,9 +72,9 @@ Route::middleware(['auth', 'verified'])->prefix('investment')->name('investment.
     Route::resource('els', InvestmentController::class)->names('els');
 
     Route::get('els-renew', [InvestmentController::class, 'renew'])->name("renew");
-    Route::get('els-claim', [InvestmentController::class, 'claim'])->name("claim");;
-    Route::get('els-merge', [InvestmentController::class, 'merge'])->name("merge");;
-    Route::get('els-maturity', [InvestmentController::class, 'maturity'])->name("maturity");;
+    Route::get('els-claim', [InvestmentController::class, 'claim'])->name("claim");
+    Route::get('els-merge', [InvestmentController::class, 'merge'])->name("merge");
+    Route::get('els-maturity', [InvestmentController::class, 'maturity'])->name("maturity");
 });
 
 Route::post('/logout', function () {

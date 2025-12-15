@@ -11,6 +11,7 @@ use App\Services\ClientBankService;
 use App\Services\CompanyService;
 use App\Services\FileStorageService;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ClientController extends Controller
@@ -28,7 +29,7 @@ class ClientController extends Controller
         // return $clients;
         return view('content.clients.index', compact('clients'));
     }
-   
+
 
 
     public function create()
@@ -37,7 +38,7 @@ class ClientController extends Controller
         $country = $data['country'] ?? null;
         $states = $data['states'] ?? [];
         $cities = $data['cities'] ?? [];
-        // return $data;
+        // return $cities;
         return view('content.clients.create', compact('country', 'states', 'cities'));
     }
 
@@ -59,12 +60,13 @@ class ClientController extends Controller
         return view('content.clients.view', compact('client', 'clientBank'));
     }
 
-  
 
+
+    // public function store(Request $request)
     public function store(ClientRequest $request)
     {
 
-        // return $request;
+        return $request;
         $client = null;
         DB::transaction(function () use ($request, &$client) {
             $client = $this->clientService->create($request->validated());

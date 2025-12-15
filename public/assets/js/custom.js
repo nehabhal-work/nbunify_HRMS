@@ -408,103 +408,376 @@ $(document).ready(function () {
 
 
 
+// ------------------------------------------------------
+// UNIVERSAL FUNCTION FOR ANY ADDRESS SECTION
+// ------------------------------------------------------
+
+// $(document).ready(function () {
+
+//     /* ================================
+//        Res: COUNTRY → STATE
+//     ================================= */
+//     $('#res_country_code').on('change', function () {
+//         let countryCode = $(this).val();
+
+//         let stateSelect = $('#res_state_code');
+//         let citySelect = $('#res_city_code');
+
+//         // ✅ set hidden country name
+//         let countryName = $(this).find(':selected').data('country-name') || '';
+//         $('#res_country').val(countryName);
+
+
+//         stateSelect
+//             .prop('disabled', true)
+//             .empty()
+//             .append('<option value="">Loading states...</option>');
+
+//         citySelect
+//             .prop('disabled', true)
+//             .empty()
+//             .append('<option value="">Select City</option>');
+
+//         if (!countryCode) return;
+
+//         $.ajax({
+//             url: `/api/get-states/${countryCode}`,
+//             type: 'GET',
+//             success: function (states) {
+
+//                 stateSelect
+//                     .prop('disabled', false)
+//                     .empty()
+//                     .append('<option value="">Select State</option>');
+
+//                 $.each(states, function (index, state) {
+//                     stateSelect.append(
+//                         `<option value="${state.iso2}" data-state-name="${state.name}">
+//                             ${state.name}
+//                         </option>`
+//                     );
+//                 });
+
+//                 stateSelect.trigger('change.select2');
+//             },
+//             error: function () {
+//                 stateSelect
+//                     .prop('disabled', false)
+//                     .empty()
+//                     .append('<option value="">Failed to load states</option>');
+//             }
+//         });
+//     });
+
+//     /* ================================
+//        Res: STATE → CITY
+//     ================================= */
+//     $('#res_state_code').on('change', function () {
+//         let stateCode = $(this).val();
+
+//         let countryCode = $('#res_country_code option:selected').val();
+//         let citySelect = $('#res_city_code');
+
+//         // ✅ set hidden country name
+//         let stateName = $(this).find(':selected').data('state-name') || '';
+//         $('#res_state').val(stateName);
+
+//         citySelect
+//             .prop('disabled', true)
+//             .empty()
+//             .append('<option value="">Loading cities...</option>');
+
+//         if (!countryCode || !stateCode) return;
+//         console.log('countryCode', countryCode);
+//         console.log('stateCode', stateCode);
+//         $.ajax({
+//             url: `/api/get-cities/${countryCode}/${stateCode}`,
+//             type: 'GET',
+//             success: function (cities) {
+//                 console.log('cities', cities)
+//                 citySelect
+//                     .prop('disabled', false)
+//                     .empty()
+//                     .append('<option value="">Select City</option>');
+
+//                 $.each(cities, function (index, city) {
+//                     citySelect.append(
+//                         `<option value="${city.id}" data-city-name="${city.name}">
+//                             ${city.name}
+//                         </option>`
+//                     );
+//                 });
+
+//                 citySelect.trigger('change.select2');
+//             },
+//             error: function () {
+//                 citySelect
+//                     .prop('disabled', false)
+//                     .empty()
+//                     .append('<option value="">Failed to load cities</option>');
+//             }
+//         });
+//     });
+
+
+//     /* ================================
+//       Res: CITY
+//    ================================= */
+//     $('#res_city_code').on('change', function () {
+//         let cityName = $(this).find(':selected').data('city-name') || '';
+//         $('#res_city').val(cityName);
+//     });
+
+
+
+//     /* ================================
+//        OFFICE : COUNTRY → STATE
+//     ================================= */
+//     $('#office_country_code').on('change', function () {
+
+//         let countryCode = $(this).val();
+//         let stateSelect = $('#office_state_code');
+//         let citySelect = $('#office_city_code');
+
+//         // ✅ set hidden country name
+//         let countryName = $(this).find(':selected').data('country-name') || '';
+//         $('#office_country').val(countryName);
+
+//         stateSelect
+//             .prop('disabled', true)
+//             .empty()
+//             .append('<option value="">Loading states...</option>');
+
+//         citySelect
+//             .prop('disabled', true)
+//             .empty()
+//             .append('<option value="">Select City</option>');
+
+//         if (!countryCode) return;
+
+//         $.ajax({
+//             url: `/api/get-states/${countryCode}`,
+//             type: 'GET',
+//             success: function (states) {
+
+//                 stateSelect
+//                     .prop('disabled', false)
+//                     .empty()
+//                     .append('<option value="">Select State</option>');
+
+//                 $.each(states, function (index, state) {
+//                     stateSelect.append(
+//                         `<option value="${state.iso2}" data-state-name="${state.name}">
+//                             ${state.name}
+//                         </option>`
+//                     );
+//                 });
+
+//                 stateSelect.trigger('change.select2');
+//             },
+//             error: function () {
+//                 stateSelect
+//                     .prop('disabled', false)
+//                     .empty()
+//                     .append('<option value="">Failed to load states</option>');
+//             }
+//         });
+//     });
+
+
+//     /* ================================
+//        OFFICE : STATE → CITY
+//     ================================= */
+//     $('#office_state_code').on('change', function () {
+
+//         let stateCode = $(this).val();
+//         let countryCode = $('#office_country_code').val();
+//         let citySelect = $('#office_city_code');
+
+//         // ✅ set hidden country name
+//         let stateName = $(this).find(':selected').data('state-name') || '';
+//         $('#office_state').val(stateName);
+
+//         citySelect
+//             .prop('disabled', true)
+//             .empty()
+//             .append('<option value="">Loading cities...</option>');
+
+//         if (!countryCode || !stateCode) return;
+
+//         $.ajax({
+//             url: `/api/get-cities/${countryCode}/${stateCode}`,
+//             type: 'GET',
+//             success: function (cities) {
+
+//                 citySelect
+//                     .prop('disabled', false)
+//                     .empty()
+//                     .append('<option value="">Select City</option>');
+
+//                 $.each(cities, function (index, city) {
+//                     citySelect.append(
+//                         `<option value="${city.id}" data-city-name="${city.name}">
+//                             ${city.name}
+//                         </option>`
+//                     );
+//                 });
+
+//                 citySelect.trigger('change.select2');
+//             },
+//             error: function () {
+//                 citySelect
+//                     .prop('disabled', false)
+//                     .empty()
+//                     .append('<option value="">Failed to load cities</option>');
+//             }
+//         });
+
+//     });
+
+//     /* ================================
+//      OFFICE: CITY
+//   ================================= */
+//     $('#office_city_code').on('change', function () {
+//         let cityName = $(this).find(':selected').data('city-name') || '';
+//         $('#office_city').val(cityName);
+//     });
+
+
+// });
+
+
+
 $(document).ready(function () {
 
-    // ------------------------------------------------------
-    // UNIVERSAL FUNCTION FOR ANY ADDRESS SECTION
-    // ------------------------------------------------------
-    function initAddressDropdowns(prefix) {
+    function initAddress(prefix) {
 
-        let countryCode = $('#' + prefix + '_country_code');
-        let stateCode = $('#' + prefix + '_state_code');
-        let cityCode = $('#' + prefix + '_city_code');
+        let countrySel = $('#' + prefix + '_country_code');
+        let stateSel = $('#' + prefix + '_state_code');
+        let citySel = $('#' + prefix + '_city_code');
 
-        let countryName = $('#' + prefix + '_country');
-        let stateName = $('#' + prefix + '_state');
-        let cityName = $('#' + prefix + '_city');
+        let countryHid = $('#' + prefix + '_country');
+        let stateHid = $('#' + prefix + '_state');
+        let cityHid = $('#' + prefix + '_city');
 
+        let edit = window.editAddress?.[prefix] || null;
 
-        // ----------------------------
-        // SET DEFAULT VALUES ON LOAD
-        // ----------------------------
-        if (countryCode.length) {
-            countryName.val(countryCode.find('option:selected').data('country-name') || '');
-        }
+        /* ================================
+           COUNTRY → STATE
+        ================================= */
+        countrySel.on('change', function () {
 
-        if (stateCode.length) {
-            stateName.val(stateCode.find('option:selected').data('state-name') || '');
-        }
+            let countryCode = $(this).val();
+            let countryName = $(this).find(':selected').data('country-name') || '';
 
-        if (cityCode.length) {
-            cityName.val(cityCode.find('option:selected').data('city-name') || '');
-        }
+            countryHid.val(countryName);
+            stateHid.val('');
+            cityHid.val('');
 
+            stateSel.prop('disabled', true).empty().append('<option>Loading states...</option>');
+            citySel.prop('disabled', true).empty().append('<option>Select City</option>');
 
-        // ----------------------------
-        // ON COUNTRY CHANGE
-        // ----------------------------
-        countryCode.on('change', function () {
-            let name = $(this).find('option:selected').data('country-name');
-            countryName.val(name || '');
-        });
-
-
-        // ----------------------------
-        // ON STATE CHANGE → LOAD CITIES
-        // ----------------------------
-        stateCode.on('change', function () {
-
-            let stateVal = $(this).val();
-            let countryVal = countryCode.val();
-
-            // Set readable state name
-            let selectedState = $(this).find('option:selected').data('state-name') || '';
-            stateName.val(selectedState);
-
-            if (!stateVal || !countryVal) return;
+            if (!countryCode) return;
 
             $.ajax({
-                url: `/api/get-cities/${countryVal}/${stateVal}`,
+                url: `/api/get-states/${countryCode}`,
                 type: 'GET',
-                success: function (res) {
+                success: function (states) {
 
-                    cityCode.empty().append('<option value="">Select City</option>');
+                    stateSel.prop('disabled', false).empty()
+                        .append('<option value="">Select State</option>');
 
-                    res.forEach(function (city) {
-                        cityCode.append(
-                            `<option value="${city.id}" data-city-name="${city.name}">${city.name}</option>`
+                    $.each(states, function (i, state) {
+                        stateSel.append(
+                            `<option value="${state.iso2}" data-state-name="${state.name}">
+                            ${state.name}
+                        </option>`
                         );
                     });
 
-                    cityCode.trigger('change.select2');
-                },
-                error: function () {
-                    cityCode.empty().append('<option>No Cities Found</option>');
+                    // ✅ EDIT AUTO SELECT STATE
+                    if (edit?.state) {
+                        stateSel.val(edit.state).trigger('change');
+                    }
+
+                    stateSel.trigger('change.select2');
                 }
             });
         });
 
+        /* ================================
+           STATE → CITY
+        ================================= */
+        stateSel.on('change', function () {
 
-        // ----------------------------
-        // ON CITY CHANGE
-        // ----------------------------
-        cityCode.on('change', function () {
-            let name = $(this).find('option:selected').data('city-name');
-            cityName.val(name || '');
+            let stateCode = $(this).val();
+            let countryCode = countrySel.val();
+            let stateName = $(this).find(':selected').data('state-name') || '';
+
+            stateHid.val(stateName);
+            cityHid.val('');
+
+            citySel.prop('disabled', true).empty().append('<option>Loading cities...</option>');
+
+            if (!countryCode || !stateCode) return;
+
+            $.ajax({
+                url: `/api/get-cities/${countryCode}/${stateCode}`,
+                type: 'GET',
+                success: function (cities) {
+
+                    citySel.prop('disabled', false).empty()
+                        .append('<option value="">Select City</option>');
+
+                    $.each(cities, function (i, city) {
+                        citySel.append(
+                            `<option value="${city.id}" data-city-name="${city.name}">
+                            ${city.name}
+                        </option>`
+                        );
+                    });
+
+                    // ✅ EDIT AUTO SELECT CITY
+                    if (edit?.city) {
+                        citySel.val(edit.city).trigger('change');
+                    }
+
+                    citySel.trigger('change.select2');
+                }
+            });
         });
+
+        /* ================================
+           CITY
+        ================================= */
+        citySel.on('change', function () {
+            cityHid.val($(this).find(':selected').data('city-name') || '');
+        });
+
+        /* ================================
+           🔥 INIT EDIT MODE
+        ================================= */
+        if (edit?.country) {
+            countrySel.val(edit.country).trigger('change');
+        }
     }
 
 
-    // ------------------------------------------------------
-    // INITIALIZE FOR MULTIPLE SECTIONS
-    // ------------------------------------------------------
-
-    initAddressDropdowns('res');        // For office section
-    initAddressDropdowns('office');        // For office section
-    initAddressDropdowns('additional');    // For additional GST address
-    initAddressDropdowns('res_country_code');    // For additional GST address
+    /* ================================
+       INIT ADDRESSES
+    ================================= */
+    initAddress('res');
+    initAddress('office');
+    initAddress('registered');
+    initAddress('additional');
 
 });
+
+
+
+
+
+
 
 
 
