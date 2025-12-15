@@ -51,7 +51,7 @@
                             <div class="col-md-2">
                                 <label for="investment_date" class="form-label">Investment Date</label>
                                 <input type="date" class="form-control @error('investment_date') is-invalid @enderror"
-                                    name="investment_date" id="investment_date"
+                                    name="investment_date" id="investment_date"  max="{{ now()->toDateString() }}"
                                     value="{{ old('investment_date', date('Y-m-d')) }}" max="{{ date('Y-m-d') }}">
 
                                 @error('investment_date')
@@ -98,7 +98,7 @@
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
-                            <div id="div_other_holders" class="row d-none">
+                            <div id="div_other_holders" class="row d-none mt-3">
 
                                 <div class="col-md-3">
                                     <label for="other_holders2" class="form-label">Investment 2nd Holder</label>
@@ -367,10 +367,10 @@
                                                 <label class="form-label">Instrument Date <span
                                                         class="text-danger">*</span></label>
                                                 <input type="date"
-                                                    class="form-control @error('instrument_date') is-invalid @enderror"
-                                                    name="instrument_date[]" value="{{ old('instrument_date') }}"
+                                                    class="form-control @error('instrument_date.0') is-invalid @enderror"
+                                                    name="instrument_date[]" value="{{ old('instrument_date.0') }}"
                                                     max="{{ date('Y-m-d') }}">
-                                                @error('instrument_date')
+                                                @error('instrument_date.0')
                                                     <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
                                             </div>
@@ -380,10 +380,10 @@
                                                 <label class="form-label">Reference No <span
                                                         class="text-danger">*</span></label>
                                                 <input type="text"
-                                                    class="form-control @error('reference_no') is-invalid @enderror"
-                                                    name="reference_no[]" value="{{ old('reference_no') }}"
+                                                    class="form-control @error('reference_no.0') is-invalid @enderror"
+                                                    name="reference_no[]" value="{{ old('reference_no.0') }}"
                                                     maxlength="20">
-                                                @error('reference_no')
+                                                @error('reference_no.0')
                                                     <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
                                             </div>
@@ -395,10 +395,10 @@
                                                 <div class="input-group">
                                                     <span class="input-group-text">&#8377;</span>
                                                     <input type="number"
-                                                        class="form-control bg-secondary-subtle onlydigit instrument_amt @error('instrument_amt') is-invalid @enderror"
-                                                        name="instrument_amt[]" value="{{ old('instrument_amt') }}">
+                                                        class="form-control bg-secondary-subtle onlydigit instrument_amt @error('instrument_amt.0') is-invalid @enderror"
+                                                        name="instrument_amt[]" value="{{ old('instrument_amt.0') }}">
                                                 </div>
-                                                @error('instrument_amt')
+                                                @error('instrument_amt.0')
                                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                                 @enderror
                                             </div>
@@ -408,11 +408,11 @@
                                                 <label class="form-label">Client Output Bank <span
                                                         class="text-danger">*</span></label>
                                                 <select
-                                                    class="form-select clientOutputBank @error('client_output_bank') is-invalid @enderror"
+                                                    class="form-select clientOutputBank @error('client_output_bank.0') is-invalid @enderror"
                                                     name="client_output_bank[]">
                                                     <option value="">Select Bank</option>
                                                 </select>
-                                                @error('client_output_bank')
+                                                @error('client_output_bank.0')
                                                     <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
                                             </div>
@@ -422,11 +422,11 @@
                                                 <label class="form-label">Instrument Image <span
                                                         class="text-danger">*</span></label>
                                                 <input type="file"
-                                                    class="form-control fileInput instrumentImage @error('instrumentImage') is-invalid @enderror"
+                                                    class="form-control fileInput instrumentImage @error('instrumentImage.0') is-invalid @enderror"
                                                     name="instrumentImage[]" accept="image/*,application/pdf">
                                                 <img src="" class="imgPreview mt-2 rounded border"
                                                     style="width:100px; display:none;">
-                                                @error('instrumentImage')
+                                                @error('instrumentImage.0')
                                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                                 @enderror
                                             </div>
@@ -464,10 +464,10 @@
                                                     Company Bank Ref No <span class="text-danger">*</span>
                                                 </label>
                                                 <input type="text"
-                                                    class="form-control @error('company_reference_no') is-invalid @enderror"
+                                                    class="form-control @error('company_reference_no.0') is-invalid @enderror"
                                                     name="company_reference_no[]"
-                                                    value="{{ old('company_reference_no') }}" maxlength="20">
-                                                @error('company_reference_no')
+                                                    value="{{ old('company_reference_no.0') }}" maxlength="20">
+                                                @error('company_reference_no.0')
                                                     <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
                                             </div>
@@ -479,10 +479,10 @@
                                                 <div class="input-group">
                                                     <span class="input-group-text">&#8377;</span>
                                                     <input type="number"
-                                                        class="form-control bg-secondary-subtle onlydigit instrument_amt @error('instrument_amt') is-invalid @enderror"
-                                                        name="" value="{{ old('instrument_amt') }}">
+                                                        class="form-control bg-secondary-subtle onlydigit instrument_amt @error('instrument_amt.0') is-invalid @enderror"
+                                                        name="instrument_amt[]" value="{{ old('instrument_amt.0') }}">
                                                 </div>
-                                                @error('instrument_amt')
+                                                @error('instrument_amt.0')
                                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                                 @enderror
                                             </div>
@@ -493,10 +493,10 @@
                                                     Effective / Credit Date <span class="text-danger">*</span>
                                                 </label>
                                                 <input type="date"
-                                                    class="form-control @error('effective_date') is-invalid @enderror"
-                                                    name="effective_date[]" value="{{ old('effective_date') }}"
+                                                    class="form-control @error('effective_date.0') is-invalid @enderror"
+                                                    name="effective_date[]" value="{{ old('effective_date.0') }}"
                                                     max="{{ date('Y-m-d') }}">
-                                                @error('effective_date')
+                                                @error('effective_date.0')
                                                     <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
                                             </div>
