@@ -50,7 +50,8 @@
                             <!-- Investment Date -->
                             <div class="col-md-2">
                                 <label for="investment_date" class="form-label">Investment Date</label>
-                                <input type="date" class="form-control @error('investment_date') is-invalid @enderror"
+                                <input type="date"
+                                    class="form-control invDate @error('investment_date') is-invalid @enderror"
                                     name="investment_date" id="investment_date"
                                     value="{{ old('investment_date', date('Y-m-d')) }}" max="{{ date('Y-m-d') }}">
 
@@ -205,7 +206,7 @@
                             <div class="col-md-2">
                                 <label for="tenure_type" class="form-label">Tenure Type</label>
                                 <input type="text"
-                                    class="form-control bg-secondary-subtle @error('tenure_type') is-invalid @enderror"
+                                    class="form-control bg-secondary-subtle tenure_type @error('tenure_type') is-invalid @enderror"
                                     name="tenure_type" id="tenure_type" value="{{ old('tenure_type') }}" readonly>
 
                                 @error('tenure_type')
@@ -216,7 +217,7 @@
                             <!-- Tenure -->
                             <div class="col-md-2">
                                 <label for="tenure" class="form-label">Tenure *</label>
-                                <select class="form-select @error('tenure_count') is-invalid @enderror"
+                                <select class="form-select tenure @error('tenure_count') is-invalid @enderror"
                                     name="tenure_count" id="tenure_count">
                                     <!-- options loaded by JS -->
                                 </select>
@@ -253,6 +254,13 @@
                                 @error('roi_percent')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
+                            </div>
+
+                            <!-- Maturity Date -->
+                            <div class="col-md-2">
+                                <label class="form-label">Maturity Date</label>
+                                <input type="date" class="form-control matdate bg-secondary-subtle"
+                                    name="maturity_date" id="matdate" readonly required />
                             </div>
 
                             <!-- Additional ROI  -->
@@ -735,7 +743,19 @@
 
 @push('scripts')
     <script src="{{ asset('assets/js/investment.js') }}?v={{ time() }}"></script>
+    <script>
+        $(document).on('change', '.invDate', function() {
 
+            let investmentDate = $(this).val();
+            if (!investmentDate) return;
+
+            // Set all Instrument Dates
+            $('input[name="instrument_date[]"]').val(investmentDate);
+
+            // Set all Effective / Credit Dates
+            $('input[name="effective_date[]"]').val(investmentDate);
+        });
+    </script>
     <script>
         $('#calculateBtn').on('click', function() {
 

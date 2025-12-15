@@ -458,3 +458,84 @@ $('#investment_amount, #roi_percent, #frequency').on('keyup change', function ()
     calculateROI();
 });
 
+// Trigger on investment date change
+$(document).on('change', '.invDate', function () {
+    let $row = $(this).closest('.row');
+    // Only calculate if tenure & type are already selected
+    if ($row.find('.tenure').val() && $row.find('.tenure_type').val()) {
+        calculateMaturity($row);
+    }
+});
+
+$(document).on('change', '.tenure, .tenure_type', function () {
+    let $row = $(this).closest('.row');
+    calculateMaturity($row);
+});
+
+function calculateMaturity($row) {
+    let invDate = $row.find('.invDate').val();
+    let tenure = parseInt($row.find('.tenure').val());
+    let tenureType = $row.find('.tenure_type').val()?.toLowerCase();
+
+    // console.log('Calculating maturity for:', { invDate, tenure, tenureType });
+    // if tenure or type not set yet, we can skip or set default
+    if (!invDate || !tenure || !tenureType) {
+        $row.find('.matdate').val(''); // clear if incomplete
+        return;
+    }
+
+    let dateObj = new Date(invDate);
+
+    if (tenureType === "months") {
+        dateObj.setMonth(dateObj.getMonth() + tenure);
+    } else if (tenureType === "years") {
+        console.log('Adding years:', tenure);
+        dateObj.setFullYear(dateObj.getFullYear() + tenure);
+    } else if (tenureType === "days") {
+        dateObj.setDate(dateObj.getDate() + tenure);
+    }
+
+    // always minus 1 day
+    dateObj.setDate(dateObj.getDate() - 1);
+
+    let yyyy = dateObj.getFullYear();
+    let mm = String(dateObj.getMonth() + 1).padStart(2, '0');
+    let dd = String(dateObj.getDate()).padStart(2, '0');
+
+    $row.find('.matdate').val(`${yyyy}-${mm}-${dd}`);
+}
+
+
+
+/*
+Investment Date (#inv_date) to auto-update on keyup / change based on:
+instrument_date[]
+effective_date[]
+*/
+
+$(document).on('change', '#investment_date', function () {
+
+    let selectedDate = $(this).val();
+    if (!selectedDate) return;
+
+    console.log('investment date', selectedDate)
+    let $row = $(this).closest('.instrumentRow');
+
+    // Set Instrument Date
+    $row.find('input[name="instrument_date[]"]').val(selectedDate);
+
+    // Set Effective / Credit Date
+    $row.find('input[name="effective_date[]"]').val(selectedDate);
+
+    // Format & show Investment Date
+    let dateObj = new Date(selectedDate);
+    let formattedDate = dateObj.toLocaleDateString('en-GB', {
+        day: '2-digit',
+        month: 'short',
+        year: 'numeric'
+    });
+
+    $row.find('.inv_date').text(formattedDate);
+});
+
+
