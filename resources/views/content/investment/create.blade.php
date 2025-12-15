@@ -98,25 +98,60 @@
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
+                            <div id="div_other_holders" class="row d-none">
 
-                            <div class="col-md-5 d-none" id="div_other_holders">
-                                <label for="other_holders" class="form-label">Investment 2nd Holder</label>
-                                <select class="form-select select2 @error('other_holders') is-invalid @enderror"
-                                    name="other_holders[]" id="other_holders" multiple>
-                                    <option value="">Select Holder</option>
-                                    @foreach ($clients as $d)
-                                        <option value="{{ $d->id }}"
-                                            {{ is_array(old('other_holders')) && in_array($d->id, old('other_holders')) ? 'selected' : '' }}>
-                                            {{ ucfirst(strtolower($d->name)) }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                                <div class="col-md-3">
+                                    <label for="other_holders2" class="form-label">Investment 2nd Holder</label>
+                                    <select class="form-select select2 @error('other_holders2') is-invalid @enderror"
+                                        name="other_holders2" id="other_holders2" multiple>
+                                        <option value="">Select Holder</option>
+                                        @foreach ($clients as $d)
+                                            <option value="{{ $d->id }}"
+                                                {{ is_array(old('other_holders2')) && in_array($d->id, old('other_holders2')) ? 'selected' : '' }}>
+                                                {{ ucfirst(strtolower($d->name)) }}
+                                            </option>
+                                        @endforeach
+                                    </select>
 
-                                @error('other_holders')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
+                                    @error('other_holders2')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="other_holders3" class="form-label">Investment 3rd Holder</label>
+                                    <select class="form-select select2 @error('other_holders3') is-invalid @enderror"
+                                        name="other_holders3" id="other_holders3" multiple>
+                                        <option value="">Select Holder</option>
+                                        @foreach ($clients as $d)
+                                            <option value="{{ $d->id }}"
+                                                {{ is_array(old('other_holders3')) && in_array($d->id, old('other_holders3')) ? 'selected' : '' }}>
+                                                {{ ucfirst(strtolower($d->name)) }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+
+                                    @error('other_holders3')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
+                                <div class="col-md-3 ">
+                                    <label for="other_holders4" class="form-label">Investment 4th Holder</label>
+                                    <select class="form-select select2 @error('other_holders4') is-invalid @enderror"
+                                        name="other_holders4" id="other_holders4" multiple>
+                                        <option value="">Select Holder</option>
+                                        @foreach ($clients as $d)
+                                            <option value="{{ $d->id }}"
+                                                {{ is_array(old('other_holders4')) && in_array($d->id, old('other_holders4')) ? 'selected' : '' }}>
+                                                {{ ucfirst(strtolower($d->name)) }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+
+                                    @error('other_holders4')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
                             </div>
-
                             <!-- Scheme -->
                             <div class="col-md-4">
                                 <label for="scheme_id" class="form-label">Scheme Name *</label>
