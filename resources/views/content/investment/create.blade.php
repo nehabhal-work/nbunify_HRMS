@@ -103,7 +103,7 @@
                                 <div class="col-md-3">
                                     <label for="other_holders2" class="form-label">Investment 2nd Holder</label>
                                     <select class="form-select select2 @error('other_holders2') is-invalid @enderror"
-                                        name="other_holders2" id="other_holders2" multiple>
+                                        name="other_holders2" id="other_holders2" >
                                         <option value="">Select Holder</option>
                                         @foreach ($clients as $d)
                                             <option value="{{ $d->id }}"
@@ -120,7 +120,7 @@
                                 <div class="col-md-3">
                                     <label for="other_holders3" class="form-label">Investment 3rd Holder</label>
                                     <select class="form-select select2 @error('other_holders3') is-invalid @enderror"
-                                        name="other_holders3" id="other_holders3" multiple>
+                                        name="other_holders3" id="other_holders3" >
                                         <option value="">Select Holder</option>
                                         @foreach ($clients as $d)
                                             <option value="{{ $d->id }}"
@@ -137,7 +137,7 @@
                                 <div class="col-md-3 ">
                                     <label for="other_holders4" class="form-label">Investment 4th Holder</label>
                                     <select class="form-select select2 @error('other_holders4') is-invalid @enderror"
-                                        name="other_holders4" id="other_holders4" multiple>
+                                        name="other_holders4" id="other_holders4" >
                                         <option value="">Select Holder</option>
                                         @foreach ($clients as $d)
                                             <option value="{{ $d->id }}"
