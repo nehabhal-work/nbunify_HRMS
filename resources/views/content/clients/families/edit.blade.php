@@ -36,13 +36,13 @@
         @method('PUT')
         <input type="hidden" name="client_id" value="{{ $clientFamily->client_id }}">
         {{-- Hidden (readable values) --}}
-        {{-- <input type="hidden" name="res_country" id="res_country" value="{{ $clientFamily->res_country }}">
+        <input type="hidden" name="res_country" id="res_country" value="{{ $clientFamily->res_country }}">
         <input type="hidden" name="res_state" id="res_state" value="{{ $clientFamily->res_state }}">
         <input type="hidden" name="res_city" id="res_city" value="{{ $clientFamily->res_city }}">
 
         <input type="hidden" name="office_country" id="office_country" value="{{ $clientFamily->office_country }}">
         <input type="hidden" name="office_state" id="office_state" value="{{ $clientFamily->office_state }}">
-        <input type="hidden" name="office_city" id="office_city" value="{{ $clientFamily->office_city }}"> --}}
+        <input type="hidden" name="office_city" id="office_city" value="{{ $clientFamily->office_city }}">
 
         <div class="row align-items-stretch">
             <div class="col-md-12">

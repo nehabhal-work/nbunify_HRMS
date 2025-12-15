@@ -137,7 +137,7 @@ class ClientFamilyController extends Controller
         $country = $data['country'] ?? null;
         $states = $data['states'] ?? [];
         $cities  = $data['cities'] ?? [];
-
+        // return $clientFamily;
         return view('content.clients.families.edit', compact('clientFamily', 'client', 'relations', 'country', 'states', 'cities'));
     }
 
