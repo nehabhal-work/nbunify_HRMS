@@ -47,8 +47,7 @@
                             <div class="col-md-2 mb-3">
                                 <label for="start_date" class="form-label">Start Date <span
                                         class="text-danger">*</span></label>
-                                <input type="text"
-                                    class="form-control datepicker @error('start_date') is-invalid @enderror"
+                                <input type="date" class="form-control  @error('start_date') is-invalid @enderror"
                                     id="start_date" name="start_date" value="{{ old('start_date') }}">
                                 @error('start_date')
                                     <span class="invalid-feedback">{{ $message }}</span>
@@ -58,8 +57,7 @@
                             <!-- End Date -->
                             <div class="col-md-2 mb-3">
                                 <label for="end_date" class="form-label">End Date <span class="text-danger">*</span></label>
-                                <input type="text"
-                                    class="form-control datepicker-next @error('end_date') is-invalid @enderror"
+                                <input type="date" class="form-control  @error('end_date') is-invalid @enderror"
                                     id="end_date" name="end_date" value="{{ old('end_date') }}">
                                 @error('end_date')
                                     <span class="invalid-feedback">{{ $message }}</span>
@@ -362,12 +360,26 @@
 
         });
 
-        $('.datepicker-next').datepicker({
+        $('#start_date').datepicker({
             format: "dd-mm-yyyy",
             autoclose: true,
             todayHighlight: true,
             clearBtn: true,
-            endDate: false // disallow future dates
+            endDate: new Date() // optional: disallow future dates
+        }).on('changeDate', function(e) {
+            $('#end_date').datepicker('setStartDate', e.date);
+        });
+
+        $('#end_date').datepicker({
+            format: "dd-mm-yyyy",
+            autoclose: true,
+            todayHighlight: true,
+            clearBtn: true,
+            endDate: new Date() // optional
+        });
+
+        document.getElementById('start_date').addEventListener('change', function() {
+            document.getElementById('end_date').setAttribute('min', this.value);
         });
     </script>
 @endpush
