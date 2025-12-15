@@ -24,7 +24,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('client', function (Blueprint $table) {
+        Schema::table('clients', function (Blueprint $table) {
             $table->dropColumn(['approved2_by', 'approved2_on', 'approved3_by', 'approved3_on']);
         });
     }

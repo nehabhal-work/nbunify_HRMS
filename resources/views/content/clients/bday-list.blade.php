@@ -136,7 +136,9 @@ if ($dob_md === $today_md) {
 
 
                                         <td>
-                                            <button class="btn btn-sm btn-outline-primary">
+                                            <button class="btn btn-sm btn-outline-primary send-wish-btn" 
+                                                    data-client-id="{{ $d['id'] }}" 
+                                                    data-client-name="{{ $d['name'] }}">
                                                 <i class="bi bi-send"></i> Send Wish
                                             </button>
                                         </td>
@@ -157,3 +159,62 @@ if ($dob_md === $today_md) {
 
 
 @endsection
+
+@push('scripts')
+<script>
+$(document).ready(function() {
+    $('.send-wish-btn').on('click', function() {
+        const button = $(this);
+        const clientId = button.data('client-id');
+        const clientName = button.data('client-name');
+        
+        // Disable button and show loading
+        button.prop('disabled', true).html('<i class="spinner-border spinner-border-sm"></i> Sending...');
+        
+        $.ajax({
+            url: '{{ route("send-birthday-email") }}',
+            method: 'POST',
+            data: {
+                client_id: clientId,
+                _token: '{{ csrf_token() }}'
+            },
+            success: function(response) {
+                if (response.success) {
+                    button.removeClass('btn-outline-primary').addClass('btn-success')
+                          .html('<i class="bi bi-check"></i> Sent');
+                    
+                    // Show success message
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: `Birthday email sent to ${clientName}`,
+                        timer: 3000,
+                        showConfirmButton: false
+                    });
+                } else {
+                    throw new Error(response.error || 'Unknown error');
+                }
+            },
+            error: function(xhr) {
+                let errorMessage = 'Failed to send email';
+                
+                if (xhr.responseJSON && xhr.responseJSON.error) {
+                    errorMessage = xhr.responseJSON.error;
+                }
+                
+                // Re-enable button
+                button.prop('disabled', false).html('<i class="bi bi-send"></i> Send Wish');
+                
+                // Show error message
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: errorMessage,
+                    confirmButtonText: 'OK'
+                });
+            }
+        });
+    });
+});
+</script>
+@endpush

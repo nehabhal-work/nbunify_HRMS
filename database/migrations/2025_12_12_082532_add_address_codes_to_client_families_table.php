@@ -27,6 +27,15 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('client_families', function (Blueprint $table) {});
+        Schema::table('client_families', function (Blueprint $table) {
+            $table->dropColumn([
+                'res_country_code',
+                'res_state_code', 
+                'res_city_code',
+                'office_country_code',
+                'office_state_code',
+                'office_city_code'
+            ]);
+        });
     }
 };

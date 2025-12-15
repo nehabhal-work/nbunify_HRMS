@@ -56,6 +56,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('client-banks', ClientBankController::class);
     Route::get('/birthday-client', [ClientBDayController::class, 'index'])
         ->name('birthday-client');
+    Route::post('/send-birthday-email', [ClientBDayController::class, 'sendBirthdayEmail'])
+        ->name('send-birthday-email');
 });
 
 Route::middleware(['auth', 'verified'])->prefix('accounts')->name('accounts.')->group(function () {
