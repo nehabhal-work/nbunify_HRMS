@@ -163,8 +163,8 @@
                 <div class="card shadow-sm border-0">
 
                     <!-- Header -->
-                    <div class="card-header bg-success text-white py-3">
-                        <h4 class="mb-0 text-white">
+                    <div class="card-header bg-success  py-3">
+                        <h4 class="mb-0 text-white1">
                             Investment Renewal Confirmation
                         </h4>
                         <small>Please review carefully and confirm your choice</small>
