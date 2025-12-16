@@ -111,4 +111,12 @@ class InvestmentController extends Controller
     {
         return view('content.investment.maturity');
     }
+    public function maturityLetter()
+    {
+        return view('content.investment.letters.maturity-letter');
+    }
+    public function maturityKYC()
+    {
+        return view('content.investment.maturity-kyc');
+    }
 }

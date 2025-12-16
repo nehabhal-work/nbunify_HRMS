@@ -98,6 +98,9 @@
                                                 <a class="dropdown-item" href="{{ route('investment.maturity') }}"><i
                                                         class="bx bx-edit-alt me-1"></i>
                                                     Maturity </a>
+                                                <a class="dropdown-item" href="{{ route('investment.maturity-letter') }}"><i
+                                                        class="bx bx-edit-alt me-1"></i>
+                                                    Maturity-letter </a>
 
                                             </div>
                                         </div>
