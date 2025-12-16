@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Investment Maturity Notification</title>
+    <title>Investment Maturity Notifications</title>
     <style>
         body {
             font-family: DejaVu Sans, sans-serif;
