@@ -38,7 +38,7 @@ class InvestmentController extends Controller
         $companyBanks = $this->companyService->getFirstCompanyBanks();
         // return 'aasdsd';
         // return $clients;
-        return view('content.investment.create', compact('scheme', 'clients'));
+        return view('content.investment.create', compact('scheme', 'clients','companyBanks'));
     }
 
     /**
