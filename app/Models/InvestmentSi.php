@@ -2,14 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class InvestmentSi extends Model
 {
-    use HasFactory, SoftDeletes;
-
     protected $table = 'investment_si';
 
     protected $fillable = [
@@ -25,22 +22,21 @@ class InvestmentSi extends Model
     ];
 
     protected $casts = [
-        'si_start_date' => 'date',
+        'si_start_date' => 'date:Y-m-d',
         'si_amount' => 'decimal:2',
-        'si_no_of_payments' => 'integer',
     ];
 
-    public function investment()
+    public function investment(): BelongsTo
     {
         return $this->belongsTo(Investment::class);
     }
 
-    public function clientBank()
+    public function siClientBank(): BelongsTo
     {
         return $this->belongsTo(ClientBank::class, 'si_client_bank_id');
     }
 
-    public function companyBank()
+    public function siCompanyBank(): BelongsTo
     {
         return $this->belongsTo(CompanyBankDetail::class, 'si_company_bank_id');
     }

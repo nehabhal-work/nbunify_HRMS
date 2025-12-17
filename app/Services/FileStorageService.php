@@ -46,6 +46,15 @@ class FileStorageService
         return $path;
     }
 
+    public function storeInvestmentDocument(int $investmentId, string $tempUrl, string $type = 'general'): string
+    {
+        $extension = pathinfo(parse_url($tempUrl, PHP_URL_PATH), PATHINFO_EXTENSION) ?: 'tmp';
+        $filename = Str::uuid() . '.' . $extension;
+        $path = "investments/{$investmentId}/{$type}/{$filename}";
+        StoreFileJob::dispatch($tempUrl, $path);
+        return $path;
+    }
+
     public function getTemporaryUrl(string $path, int $minutes = 30): string
     {
         return Storage::disk('wasabi')->temporaryUrl($path, now()->addMinutes($minutes));

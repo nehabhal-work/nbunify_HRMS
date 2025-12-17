@@ -3,21 +3,41 @@
 namespace App\Services;
 
 use App\Models\Investment;
+use App\Models\InvestmentInputBank;
+use App\Models\InvestmentNominee;
+use App\Models\InvestmentSi;
+use App\Models\InvestmentPayoutSchedule;
 use Illuminate\Database\Eloquent\Collection;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class InvestmentService
 {
+    public function __construct(private FileStorageService $fileStorageService) {}
     public function create(array $data)
     {
+        // Validate all data before starting transaction
+        $this->validateInvestmentData($data);
+        if (isset($data['input_banks'])) {
+            $this->validateInputBanks($data['input_banks']);
+        }
+        if (isset($data['nominees'])) {
+            $this->validateNominees($data['nominees']);
+        }
+        if (isset($data['standing_instructions'])) {
+            $this->validateStandingInstructions($data['standing_instructions']);
+        }
+        
         $calculatedData = $this->calculateInvestmentParameters($data);
 
         // Extract only fillable fields for Investment model
         $investmentData = [
             'investment_date' => $calculatedData['investment_date'],
             'investment_type' => $calculatedData['investment_type'],
-            'client_id' => $calculatedData['client_id'],
-            'other_holders' => $calculatedData['other_holders'] ?? null,
+            'first_client_id' => $calculatedData['first_client_id'],
+            'second_client_id' => $calculatedData['second_client_id'] ?? null,
+            'third_client_id' => $calculatedData['third_client_id'] ?? null,
+            'fourth_client_id' => $calculatedData['fourth_client_id'] ?? null,
             'scheme_id' => $calculatedData['scheme_id'],
             'investment_amount' => $calculatedData['investment_amount'],
             'tenure_type' => $calculatedData['tenure_type'],
@@ -25,16 +45,91 @@ class InvestmentService
             'frequency' => $calculatedData['frequency'],
             'roi_percent' => $calculatedData['roi_percent'],
             'additional_roi_percent' => $calculatedData['additional_roi_percent'] ?? 0,
-            'maturity_date' => $calculatedData['maturity_date'],
-            'payout_amount' => $calculatedData['payout_per_period'],
             'has_tds' => $calculatedData['has_tds'] ?? false,
-            'client_bank_id' => $data['client_bank_id'],
-            'company_bank_id' => $data['company_bank_id'],
+            'from_company_bank_id' => $data['from_company_bank_id'],
+            'to_client_bank_id' => $data['to_client_bank_id'],
+            'schedule_count' => $calculatedData['schedule_count'],
+            'annual_payout' => $calculatedData['annual_payout'],
+            'payout_per_period' => $calculatedData['payout_per_period'],
+            'maturity_date' => $calculatedData['maturity_date'],
+            'first_payout_date' => $calculatedData['first_payout_date'],
+            'actual_interest_amount' => $calculatedData['actual_interest_amount'],
+            'paid_interest_amount' => $calculatedData['paid_interest_amount'],
+            'rounding_off_amount' => $calculatedData['rounding_off_amount'],
         ];
 
-        $investment = Investment::create($investmentData);
+        return DB::transaction(function () use ($investmentData, $calculatedData, $data) {
+            $investment = Investment::create($investmentData);
 
-        return array_merge($calculatedData, ['investment' => $investment]);
+            // Handle TDS attachment after investment creation
+            if (isset($data['attachment_tds_url']) && $data['attachment_tds_url']) {
+                $investment->attachment_tds = $this->fileStorageService->storeInvestmentDocument(
+                    $investment->id,
+                    $data['attachment_tds_url'],
+                    'tds'
+                );
+                $investment->save();
+            }
+
+            // Create input banks
+            if (isset($data['input_banks'])) {
+                foreach ($data['input_banks'] as $inputBank) {
+                    if (isset($inputBank['attachment_instrument_url'])) {
+                        $inputBank['attachment_instrument'] = $this->fileStorageService->storeInvestmentDocument(
+                            $investment->id,
+                            $inputBank['attachment_instrument_url'],
+                            'instruments'
+                        );
+                    }
+                    InvestmentInputBank::create(array_merge($inputBank, ['investment_id' => $investment->id]));
+                }
+            }
+
+            // Create nominees
+            if (isset($data['nominees'])) {
+                foreach ($data['nominees'] as $nominee) {
+                    InvestmentNominee::create(array_merge($nominee, ['investment_id' => $investment->id]));
+                }
+            }
+
+            // Create standing instructions
+            if (isset($data['standing_instructions'])) {
+                $siData = $data['standing_instructions'];
+                if (isset($siData['attachment_si_image_url'])) {
+                    $siData['attachment_si_image'] = $this->fileStorageService->storeInvestmentDocument(
+                        $investment->id,
+                        $siData['attachment_si_image_url'],
+                        'si'
+                    );
+                }
+                if (isset($siData['attachment_notes_image_url'])) {
+                    $siData['attachment_notes_image'] = $this->fileStorageService->storeInvestmentDocument(
+                        $investment->id,
+                        $siData['attachment_notes_image_url'],
+                        'notes'
+                    );
+                }
+                InvestmentSi::create(array_merge($siData, ['investment_id' => $investment->id]));
+            }
+
+            // Create payout schedules
+            foreach ($calculatedData['payout_schedule'] as $schedule) {
+                InvestmentPayoutSchedule::create([
+                    'investment_id' => $investment->id,
+                    'sch_payout_date' => $schedule['payout_date'],
+                    'sch_payout_amount' => $schedule['amount'],
+                    'actual_payout_date' => null,
+                    'status' => $schedule['status'],
+                    'remarks' => null,
+                    'actual_payout_amount' => null,
+                    'utr_no' => null,
+                    'from_company_bank_id' => $data['from_company_bank_id'],
+                    'to_client_bank_id' => $data['to_client_bank_id'],
+                ]);
+            }
+
+            return array_merge($calculatedData, ['investment' => $investment]);
+        });
     }
 
     public function update(Investment $investment, array $data): Investment
@@ -50,18 +145,21 @@ class InvestmentService
 
     public function getAll(): Collection
     {
-        return Investment::with(['client', 'scheme'])->get();
+        return Investment::with(['firstClient', 'secondClient', 'thirdClient', 'fourthClient', 'scheme', 'fromCompanyBank', 'toClientBank'])->get();
     }
 
     public function getById(int $id): Investment
     {
-        return Investment::with(['client', 'scheme'])->findOrFail($id);
+        return Investment::with(['firstClient', 'secondClient', 'thirdClient', 'fourthClient', 'scheme', 'fromCompanyBank', 'toClientBank'])->findOrFail($id);
     }
 
     public function getByClient(int $clientId): Collection
     {
-        return Investment::with(['client', 'scheme'])
-            ->where('client_id', $clientId)
+        return Investment::with(['firstClient', 'secondClient', 'thirdClient', 'fourthClient', 'scheme', 'fromCompanyBank', 'toClientBank'])
+            ->where('first_client_id', $clientId)
+            ->orWhere('second_client_id', $clientId)
+            ->orWhere('third_client_id', $clientId)
+            ->orWhere('fourth_client_id', $clientId)
             ->get();
     }
 
@@ -201,7 +299,65 @@ class InvestmentService
         return $data;
     }
 
-    // public function calculateInvestmentParameters(array $data)
+    private function validateInvestmentData(array $data): void
+    {
+        $required = ['investment_date', 'investment_type', 'first_client_id', 'scheme_id', 'investment_amount', 'tenure_type', 'tenure_count', 'frequency', 'roi_percent', 'from_company_bank_id', 'to_client_bank_id'];
+        
+        foreach ($required as $field) {
+            if (!isset($data[$field]) || empty($data[$field])) {
+                throw new \InvalidArgumentException("Required field '{$field}' is missing or empty.");
+            }
+        }
+    }
+
+    private function validateInputBanks(array $inputBanks): void
+    {
+        foreach ($inputBanks as $index => $inputBank) {
+            $required = ['from_client_bank_id', 'to_company_bank_id', 'instrument_type', 'client_instrument_date', 'amount', 'attachment_instrument', 'company_instrument_date'];
+            
+            foreach ($required as $field) {
+                if (!isset($inputBank[$field]) || empty($inputBank[$field])) {
+                    throw new \InvalidArgumentException("Required field '{$field}' is missing in input bank #{$index}.");
+                }
+            }
+        }
+    }
+
+    private function validateNominees(array $nominees): void
+    {
+        $totalPercent = 0;
+        
+        foreach ($nominees as $index => $nominee) {
+            $required = ['client_family_id', 'guardian_client_family_id', 'percent'];
+            
+            foreach ($required as $field) {
+                if (!isset($nominee[$field]) || empty($nominee[$field])) {
+                    throw new \InvalidArgumentException("Required field '{$field}' is missing in nominee #{$index}.");
+                }
+            }
+            
+            $totalPercent += $nominee['percent'];
+        }
+        
+        if ($totalPercent != 100) {
+            throw new \InvalidArgumentException("Total nominee percentage must equal 100%. Current total: {$totalPercent}%");
+        }
+    }
+
+    private function validateStandingInstructions(array $siData): void
+    {
+        $required = ['si_number', 'si_client_bank_id', 'si_company_bank_id', 'si_start_date', 'si_amount', 'si_no_of_payments'];
+        
+        foreach ($required as $field) {
+            if (!isset($siData[$field]) || empty($siData[$field])) {
+                throw new \InvalidArgumentException("Required field '{$field}' is missing in standing instructions.");
+            }
+        }
+    }
+
+
+
+
     // {
     //     $data['annual_payout'] = ($data['investment_amount'] * ($data['roi_percent'] + $data['additional_roi_percent'] ?? 0)) / 100;
 
