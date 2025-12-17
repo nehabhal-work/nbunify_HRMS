@@ -579,7 +579,16 @@
                         <small class="text-muted float-end">Nominee Details</small>
                     </div>
 
+
+
+
                     <div class="card-body">
+                        <div class="alert alert-info py-2">
+                            <strong>Note:</strong> Total nominee percentage must be <strong>100%</strong> across all
+                            nominees
+                            added.
+                        </div>
+                        <div id="nomineePercentageMsg" class="my-3 fw-semibold"></div>
                         <div id="nomineeContainer">
 
                             <div class="row nomineeRow mb-3">
@@ -749,11 +758,7 @@
 @push('scripts')
     <script src="{{ asset('assets/js/investment.js') }}?v={{ time() }}"></script>
     <script>
-        /*
-                                                                                            Investment Date (#inv_date) to auto-update on keyup / change based on:
-                                                                                            instrument_date[]
-                                                                                            effective_date[]
-                                                                                            */
+        /* Investment Date (#inv_date) to auto-update on keyup / change based on: instrument_date[] effective_date[] */
 
         $(document).on('change', '.invDate', function() {
 
