@@ -114,4 +114,10 @@ class InvestmentController extends Controller
     {
         return view('content.investment.maturity-kyc');
     }
+
+    public function approve(string $id)
+    {
+        $this->investmentService->approve($id);
+        return redirect()->back()->with('success', 'Investment approved successfully.');
+    }
 }

@@ -7,6 +7,7 @@ use App\Models\InvestmentInputBank;
 use App\Models\InvestmentNominee;
 use App\Models\InvestmentSi;
 use App\Models\InvestmentPayoutSchedule;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -27,8 +28,11 @@ class InvestmentService
         if (isset($data['standing_instructions'])) {
             $this->validateStandingInstructions($data['standing_instructions']);
         }
-        
+
         $calculatedData = $this->calculateInvestmentParameters($data);
+
+        // Add maker checker fields
+        $data['created_by'] = auth()->id();
 
         // Extract only fillable fields for Investment model
         $investmentData = [
@@ -56,6 +60,7 @@ class InvestmentService
             'actual_interest_amount' => $calculatedData['actual_interest_amount'],
             'paid_interest_amount' => $calculatedData['paid_interest_amount'],
             'rounding_off_amount' => $calculatedData['rounding_off_amount'],
+            'created_by' => $data['created_by'],
         ];
 
         return DB::transaction(function () use ($investmentData, $calculatedData, $data) {
@@ -145,12 +150,30 @@ class InvestmentService
 
     public function getAll(): Collection
     {
-        return Investment::with(['firstClient', 'secondClient', 'thirdClient', 'fourthClient', 'scheme', 'fromCompanyBank', 'toClientBank'])->get();
+        return Investment::with(['firstClient', 'secondClient', 'thirdClient', 'fourthClient', 'scheme', 'fromCompanyBank', 'toClientBank', 'createdBy', 'approvedBy', 'approved2By', 'approved3By'])
+            ->orderByDesc('id')->get();
     }
 
     public function getById(int $id): Investment
     {
-        return Investment::with(['firstClient', 'secondClient', 'thirdClient', 'fourthClient', 'scheme', 'fromCompanyBank', 'toClientBank'])->findOrFail($id);
+        $investment = Investment::with(['firstClient', 'secondClient', 'thirdClient', 'fourthClient', 'scheme', 'fromCompanyBank', 'toClientBank', 'createdBy', 'approvedBy', 'approved2By', 'approved3By'])->findOrFail($id);
+
+        if (auth()->id() == $investment->created_by) {
+            $investment->is_approved = true;
+        } else {
+            $user = User::find(auth()->id());
+            if ($user->level == 1) {
+                $investment->is_approved = $investment->approved_by != null ? true : false;
+            } else if ($user->level == 2 && $investment->approved_by != null) {
+                $investment->is_approved = $investment->approved2_by != null ? true : false;
+            } else if ($user->level == 3 && $investment->approved2_by != null) {
+                $investment->is_approved = $investment->approved3_by != null ? true : false;
+            } else {
+                $investment->is_approved = true;
+            }
+        }
+
+        return $investment;
     }
 
     public function getByClient(int $clientId): Collection
@@ -299,10 +322,35 @@ class InvestmentService
         return $data;
     }
 
+    public function approve($id)
+    {
+        $investment = Investment::findOrFail($id);
+        $user = User::find(auth()->id());
+        if ($investment != null) {
+            if ($user->level == 1) {
+                $investment->approved_by = auth()->id();
+                $investment->approved_at = now();
+                $investment->save();
+            } else if ($user->level == 2) {
+                $investment->approved2_by = auth()->id();
+                $investment->approved2_on = now();
+                $investment->save();
+            } else if ($user->level == 3) {
+                $investment->approved3_by = auth()->id();
+                $investment->approved3_on = now();
+                $investment->save();
+            } else {
+                return abort(401, 'User level not found');
+            }
+        } else {
+            return abort(404, 'Investment Not Found');
+        }
+    }
+
     private function validateInvestmentData(array $data): void
     {
         $required = ['investment_date', 'investment_type', 'first_client_id', 'scheme_id', 'investment_amount', 'tenure_type', 'tenure_count', 'frequency', 'roi_percent', 'from_company_bank_id', 'to_client_bank_id'];
-        
+
         foreach ($required as $field) {
             if (!isset($data[$field]) || empty($data[$field])) {
                 throw new \InvalidArgumentException("Required field '{$field}' is missing or empty.");
@@ -314,7 +362,7 @@ class InvestmentService
     {
         foreach ($inputBanks as $index => $inputBank) {
             $required = ['from_client_bank_id', 'to_company_bank_id', 'instrument_type', 'client_instrument_date', 'amount', 'attachment_instrument', 'company_instrument_date'];
-            
+
             foreach ($required as $field) {
                 if (!isset($inputBank[$field]) || empty($inputBank[$field])) {
                     throw new \InvalidArgumentException("Required field '{$field}' is missing in input bank #{$index}.");
@@ -326,19 +374,19 @@ class InvestmentService
     private function validateNominees(array $nominees): void
     {
         $totalPercent = 0;
-        
+
         foreach ($nominees as $index => $nominee) {
             $required = ['client_family_id', 'guardian_client_family_id', 'percent'];
-            
+
             foreach ($required as $field) {
                 if (!isset($nominee[$field]) || empty($nominee[$field])) {
                     throw new \InvalidArgumentException("Required field '{$field}' is missing in nominee #{$index}.");
                 }
             }
-            
+
             $totalPercent += $nominee['percent'];
         }
-        
+
         if ($totalPercent != 100) {
             throw new \InvalidArgumentException("Total nominee percentage must equal 100%. Current total: {$totalPercent}%");
         }
@@ -347,7 +395,7 @@ class InvestmentService
     private function validateStandingInstructions(array $siData): void
     {
         $required = ['si_number', 'si_client_bank_id', 'si_company_bank_id', 'si_start_date', 'si_amount', 'si_no_of_payments'];
-        
+
         foreach ($required as $field) {
             if (!isset($siData[$field]) || empty($siData[$field])) {
                 throw new \InvalidArgumentException("Required field '{$field}' is missing in standing instructions.");

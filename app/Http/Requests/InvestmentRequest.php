@@ -67,6 +67,13 @@ class InvestmentRequest extends FormRequest
             'standing_instructions.si_no_of_payments' => 'nullable|integer|min:1',
             'standing_instructions.attachment_si_image_url' => 'nullable|string',
             'standing_instructions.attachment_notes_image_url' => 'nullable|string',
+            
+            // Maker checker fields
+            'status' => 'nullable|string|in:open,closed',
+            'action_status' => 'nullable|string|in:new,renewed,matured,merged,claimed,withdraw',
+            'exit_load_percent' => 'nullable|numeric|min:0|max:100',
+            'lock_in_period' => 'nullable|integer|min:0',
+            'lock_in_period_type' => 'nullable|string|in:days,months,years',
         ];
     }
 }

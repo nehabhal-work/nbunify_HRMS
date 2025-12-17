@@ -21,10 +21,13 @@ class SchemesMaster extends Model
         'tenure_min',
         'tenure_max',
         'frequency',
+        'exit_load_percent',
+        'lock_in_period',
+        'lock_in_period_type',
     ];
 
     protected $casts = [
-        'frequency' => 'array',     // ⭐ auto json encode/decode
+        'frequency' => 'array',
         'start_date' => 'date',
         'end_date'   => 'date',
     ];
