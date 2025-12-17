@@ -2,7 +2,56 @@
 @section('title', 'bday')
 
 @section('content')
+    <style>
+        /* TODAY – blinking + glow */
+        .birthday-today {
+            font-weight: 700;
+            color: #198754;
+            animation: blinkGlow 1.2s infinite;
+        }
 
+        /* TOMORROW – pulse (no blink, smoother) */
+        .birthday-tomorrow {
+            font-weight: 600;
+            color: #0d6efd;
+            animation: pulse 1.5s infinite;
+        }
+
+        /* Animations */
+        @keyframes blinkGlow {
+            0% {
+                opacity: 1;
+                text-shadow: 0 0 5px #198754;
+            }
+
+            50% {
+                opacity: 0.4;
+                text-shadow: 0 0 15px #198754;
+            }
+
+            100% {
+                opacity: 1;
+                text-shadow: 0 0 5px #198754;
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(1.05);
+                opacity: 0.85;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+    </style>
     <div>
         @if (session('success'))
             <x-alert-sweet type="success" :message="session('success')" />
@@ -87,7 +136,6 @@
                                     <th>Birthday Status</th>
                                 </tr>
                             </thead>
-
                             <tbody>
                                 @foreach ($clients as $key => $d)
                                     <tr>
@@ -101,46 +149,30 @@
                                         <td>{{ $d['mobile'] }}</td>
 
                                         <td>
-                                            @php
-                                                // Extract MM-DD from DOB
-                                                $dob_md = \Carbon\Carbon::parse($d['dob'])->format('m-d');
-
-                                                // Today's MM-DD
-$today_md = now()->format('m-d');
-
-// Full next birthday date (this year or next year)
-$birthday = \Carbon\Carbon::parse($d['dob'])->year(now()->year);
-
-if ($birthday->isPast()) {
-    $birthday = $birthday->addYear(); // move to next year
-}
-
-// Check status
-if ($dob_md === $today_md) {
-    $status = 'today';
-} elseif ($birthday->isFuture()) {
-    $status = 'upcoming';
-} else {
-    $status = 'passed';
-                                                }
-                                            @endphp
-
-                                            @if ($status === 'today')
-                                                <span class="badge bg-success">Today 🎉</span>
-                                            @elseif ($status === 'upcoming')
-                                                <span class="badge bg-warning text-dark">Upcoming</span>
+                                            @if ($d['birthday_status'] === 'Today')
+                                                🎂 <span class="badge bg-success birthday-today">TODAY </span>🎉
+                                            @elseif($d['birthday_status'] === 'Yesterday')
+                                                <span class="badge bg-danger text-dark">YESTERDAY</span>
+                                            @elseif($d['birthday_status'] === 'Tomorrow')
+                                                <span class="badge bg-warning birthday-tomorrow">
+                                                    🎁 TOMORROW
+                                                </span>
                                             @else
-                                                <span class="badge bg-secondary">Passed</span>
+                                                <span class="badge bg-secondary">{{ $d['birthday_status'] }}</span>
                                             @endif
                                         </td>
 
 
                                         <td>
-                                            <button class="btn btn-sm btn-outline-primary send-wish-btn" 
-                                                    data-client-id="{{ $d['id'] }}" 
+                                            @if ($d['birthday_status'] === 'Today' || $d['birthday_status'] === 'Yesterday')
+                                                <button class="btn btn-sm btn-outline-primary send-wish-btn"
+                                                    data-client-id="{{ $d['id'] }}"
                                                     data-client-name="{{ $d['name'] }}">
-                                                <i class="bi bi-send"></i> Send Wish
-                                            </button>
+                                                    <i class="bi bi-send"></i> Send Wish
+                                                </button>
+                                            @else
+                                                -
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach
@@ -161,60 +193,62 @@ if ($dob_md === $today_md) {
 @endsection
 
 @push('scripts')
-<script>
-$(document).ready(function() {
-    $('.send-wish-btn').on('click', function() {
-        const button = $(this);
-        const clientId = button.data('client-id');
-        const clientName = button.data('client-name');
-        
-        // Disable button and show loading
-        button.prop('disabled', true).html('<i class="spinner-border spinner-border-sm"></i> Sending...');
-        
-        $.ajax({
-            url: '{{ route("send-birthday-email") }}',
-            method: 'POST',
-            data: {
-                client_id: clientId,
-                _token: '{{ csrf_token() }}'
-            },
-            success: function(response) {
-                if (response.success) {
-                    button.removeClass('btn-outline-primary').addClass('btn-success')
-                          .html('<i class="bi bi-check"></i> Sent');
-                    
-                    // Show success message
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Success!',
-                        text: `Birthday email sent to ${clientName}`,
-                        timer: 3000,
-                        showConfirmButton: false
-                    });
-                } else {
-                    throw new Error(response.error || 'Unknown error');
-                }
-            },
-            error: function(xhr) {
-                let errorMessage = 'Failed to send email';
-                
-                if (xhr.responseJSON && xhr.responseJSON.error) {
-                    errorMessage = xhr.responseJSON.error;
-                }
-                
-                // Re-enable button
-                button.prop('disabled', false).html('<i class="bi bi-send"></i> Send Wish');
-                
-                // Show error message
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error!',
-                    text: errorMessage,
-                    confirmButtonText: 'OK'
+    <script>
+        $(document).ready(function() {
+            $('.send-wish-btn').on('click', function() {
+                const button = $(this);
+                const clientId = button.data('client-id');
+                const clientName = button.data('client-name');
+
+                // Disable button and show loading
+                button.prop('disabled', true).html(
+                    '<i class="spinner-border spinner-border-sm"></i> Sending...');
+
+                $.ajax({
+                    url: '{{ route('send-birthday-email') }}',
+                    method: 'POST',
+                    data: {
+                        client_id: clientId,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        if (response.success) {
+                            button.removeClass('btn-outline-primary').addClass('btn-success')
+                                .html('<i class="bi bi-check"></i> Sent');
+
+                            // Show success message
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success!',
+                                text: `Birthday email sent to ${clientName}`,
+                                timer: 3000,
+                                showConfirmButton: false
+                            });
+                        } else {
+                            throw new Error(response.error || 'Unknown error');
+                        }
+                    },
+                    error: function(xhr) {
+                        let errorMessage = 'Failed to send email';
+
+                        if (xhr.responseJSON && xhr.responseJSON.error) {
+                            errorMessage = xhr.responseJSON.error;
+                        }
+
+                        // Re-enable button
+                        button.prop('disabled', false).html(
+                            '<i class="bi bi-send"></i> Send Wish');
+
+                        // Show error message
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: errorMessage,
+                            confirmButtonText: 'OK'
+                        });
+                    }
                 });
-            }
+            });
         });
-    });
-});
-</script>
+    </script>
 @endpush

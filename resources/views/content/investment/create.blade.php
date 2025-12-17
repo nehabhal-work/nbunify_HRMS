@@ -459,10 +459,10 @@
                                                 <select class="form-select @error('company_bank_id') is-invalid @enderror"
                                                     name="company_bank_id[]">
                                                     <option value="">Select Company Bank</option>
-                                                    {{-- @foreach ($companyBanks as $d)
+                                                    @foreach ($companyBanks as $d)
                                                         <option value="{{ $d->id }}">
                                                             {{ $d->bank_name . '-' . $d->account_number }}</option>
-                                                    @endforeach --}}
+                                                    @endforeach
                                                 </select>
                                                 @error('company_bank_id')
                                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -545,12 +545,12 @@
                         <!-- Company Bank (From) -->
                         <div class="col-md-4">
                             <label class="form-label ">From Company Bank *</label>
-                            <select class="form-select" id="out_company_bank" name="out_company_bank" required>
+                            <select class="form-select" id="from_company_bank_id" name="from_company_bank_id" required>
                                 <option value="">Select Company Bank</option>
-                                {{-- @foreach ($companyBanks as $d)
+                                @foreach ($companyBanks as $d)
                                     <option value="{{ $d->id }}">
                                         {{ $d->bank_name . '-' . $d->account_number }}</option>
-                                @endforeach --}}
+                                @endforeach
                             </select>
 
                         </div>
@@ -558,7 +558,8 @@
                         <!-- Client Bank (To) -->
                         <div class="col-md-4">
                             <label class="form-label ">To Client Bank *</label>
-                            <select class="form-select to_client_bank" name="to_client_bank" required>
+                            <select class="form-select to_client_bank" name="to_client_bank_id" id="to_client_bank_id"
+                                required>
                                 <option value="">Select Client Bank</option>
                             </select>
                         </div>
@@ -749,10 +750,10 @@
     <script src="{{ asset('assets/js/investment.js') }}?v={{ time() }}"></script>
     <script>
         /*
-                                                                    Investment Date (#inv_date) to auto-update on keyup / change based on:
-                                                                    instrument_date[]
-                                                                    effective_date[]
-                                                                    */
+                                                                                            Investment Date (#inv_date) to auto-update on keyup / change based on:
+                                                                                            instrument_date[]
+                                                                                            effective_date[]
+                                                                                            */
 
         $(document).on('change', '.invDate', function() {
 

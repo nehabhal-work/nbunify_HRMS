@@ -38,7 +38,7 @@ class InvestmentController extends Controller
         $companyBanks = $this->companyService->getFirstCompanyBanks();
         // return 'aasdsd';
         // return $clients;
-        return view('content.investment.create', compact('scheme', 'clients','companyBanks'));
+        return view('content.investment.create', compact('scheme', 'clients', 'companyBanks'));
     }
 
     /**
@@ -47,7 +47,7 @@ class InvestmentController extends Controller
     public function store(InvestmentRequest $request)
     // public function store(Request $request)
     {
-
+        return $request;
         $result = $this->investmentService->create($request->validated());
         $client = $this->clientService->find($request->client_id);
         $scheme = $this->schemeService->find($request->scheme_id);
