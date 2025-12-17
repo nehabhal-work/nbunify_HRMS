@@ -148,7 +148,7 @@
                                         <td
                                             class="{{ !empty($d->approved2By) ? 'table-success fw-semibold rounded px-2 py-1' : '' }}">
                                             @if (!empty($d->approved2By))
-                                                {{ $d->approved2By->name }} <br>{{ $d->approved2_at ?? '-' }}
+                                                {{ $d->approved2By->name }} <br>{{ $d->approved2_on ?? '-' }}
                                             @else
                                                 -
                                             @endif
@@ -157,7 +157,7 @@
                                         <td
                                             class="{{ !empty($d->approved3By) ? 'table-success fw-semibold rounded px-2 py-1' : '' }}">
                                             @if (!empty($d->approved3By))
-                                                {{ $d->approved3By->name }} <br>{{ $d->approved3_at ?? '-' }}
+                                                {{ $d->approved3By->name }} <br>{{ $d->approved3_on ?? '-' }}
                                             @else
                                                 -
                                             @endif
