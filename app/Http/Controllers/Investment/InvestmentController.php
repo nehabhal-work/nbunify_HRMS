@@ -46,7 +46,7 @@ class InvestmentController extends Controller
     public function store(InvestmentRequest $request)
     // public function store(Request $request)
     {
-
+        return $request;
         $result = $this->investmentService->create($request->validated());
         $client = $this->clientService->find($request->first_client_id);
         $scheme = $this->schemeService->find($request->scheme_id);

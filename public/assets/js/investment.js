@@ -372,47 +372,93 @@ $(document).ready(function () {
     //     nominee PERCENTAGE CALCULATION
     // ------------------------------
 
-    function recalcPercentages() {
+    // function recalcPercentages() {
+    //     let total = 0;
+
+    //     $(".nominee_percentage").each(function () {
+    //         let v = parseFloat($(this).val());
+    //         if (!isNaN(v)) total += v;
+    //     });
+
+    //     // Prevent more than 100%
+    //     if (total > 100) {
+    //         alert("Total percentage cannot exceed 100%");
+    //         return false;
+    //     }
+
+    //     // Enable/Disable Add Button
+    //     if (total >= 100) {
+    //         $("#addNomineeRow").prop("disabled", true);
+    //     } else {
+    //         $("#addNomineeRow").prop("disabled", false);
+    //     }
+
+    //     return total;
+    // }
+
+    // // Auto-update after user enters value
+    // $(document).on("keyup change", ".nominee_percentage", function () {
+    //     let total = recalcPercentages();
+
+    //     if (total > 100) {
+    //         $(this).val("");
+    //         recalcPercentages();
+    //         return;
+    //     }
+
+    //     // Auto-fill remaining for NEXT row only when user finishes typing
+    //     if (total < 100) {
+    //         let remaining = 100 - total;
+
+    //         let $rows = $(".nominee_percentages");
+    //     }
+    // });
+    function recalcPercentages(currentInput = null) {
         let total = 0;
 
         $(".nominee_percentage").each(function () {
-            let v = parseFloat($(this).val());
-            if (!isNaN(v)) total += v;
+            let v = parseFloat($(this).val()) || 0;
+            total += v;
         });
 
         // Prevent more than 100%
-        if (total > 100) {
-            alert("Total percentage cannot exceed 100%");
-            return false;
+        if (total > 100 && currentInput) {
+            let entered = parseFloat($(currentInput).val()) || 0;
+            let allowed = entered - (total - 100);
+
+            $(currentInput).val(allowed > 0 ? allowed : '');
+            total = 100;
         }
 
-        // Enable/Disable Add Button
-        if (total >= 100) {
-            $("#addNomineeRow").prop("disabled", true);
+        // Enable / Disable Add button
+        $("#addNomineeRow").prop("disabled", total >= 100);
+
+        // Status message
+        if (total === 100) {
+            $("#nomineePercentageMsg")
+                .removeClass("text-danger")
+                .addClass("text-success")
+                .text("✔ Total nominee percentage is 100%");
         } else {
-            $("#addNomineeRow").prop("disabled", false);
+            $("#nomineePercentageMsg")
+                .removeClass("text-success")
+                .addClass("text-danger")
+                .text("Remaining percentage: " + (100 - total) + "%");
         }
 
         return total;
     }
 
-    // Auto-update after user enters value
-    $(document).on("keyup change", ".nominee_percentage", function () {
-        let total = recalcPercentages();
-
-        if (total > 100) {
-            $(this).val("");
-            recalcPercentages();
-            return;
-        }
-
-        // Auto-fill remaining for NEXT row only when user finishes typing
-        if (total < 100) {
-            let remaining = 100 - total;
-
-            let $rows = $(".nominee_percentages");
-        }
+    // Input listener
+    $(document).on("input", ".nominee_percentage", function () {
+        recalcPercentages(this);
     });
+
+    // After row add/remove
+    $(document).on("click", "#addNomineeRow, .removeNomineeRow", function () {
+        setTimeout(() => recalcPercentages(), 50);
+    });
+
 });
 
 
@@ -505,7 +551,7 @@ function calculateMaturity($row) {
     $row.find('.matdate').val(`${yyyy}-${mm}-${dd}`);
 }
 
-
+// instrumentSelect change - Auto set dates from Investment Date
 $(document).on("change", ".instrumentSelect", function () {
 
     let $row = $(this).closest(".instrumentRow"); // current row
@@ -563,3 +609,33 @@ $(document).on("change", ".instrumentSelect", function () {
     }
 });
 
+
+
+function calculateNomineePercentage() {
+    let total = 0;
+
+    $('.nominee_percentage').each(function () {
+        let val = parseFloat($(this).val()) || 0;
+        total += val;
+    });
+
+    if (total === 100) {
+        $('#nomineePercentageMsg')
+            .removeClass('text-danger')
+            .addClass('text-success')
+            .text('✔ Total nominee percentage is 100%');
+    } else {
+        $('#nomineePercentageMsg')
+            .removeClass('text-success')
+            .addClass('text-danger')
+            .text('✖ Total nominee percentage must be exactly 100% (Current: ' + total + '%)');
+    }
+}
+
+// On change/input
+$(document).on('input', '.nominee_percentage', calculateNomineePercentage);
+
+// After row add/remove
+$(document).on('click', '#addNomineeRow, .removeNomineeRow', function () {
+    setTimeout(calculateNomineePercentage, 100);
+});
