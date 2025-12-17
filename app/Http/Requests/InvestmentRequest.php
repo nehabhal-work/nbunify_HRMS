@@ -37,6 +37,8 @@ class InvestmentRequest extends FormRequest
             'maturity_date' => 'nullable|date|after:investment_date',
             'payout_amount' => 'nullable|numeric|min:0',
             'has_tds' => 'boolean',
+            'client_bank_id' => 'required',
+            'company_bank_id' => 'required'
         ];
     }
 }
