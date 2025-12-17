@@ -46,12 +46,8 @@ class InvestmentController extends Controller
     public function store(InvestmentRequest $request)
     // public function store(Request $request)
     {
-        return $request;
-        $result = $this->investmentService->create($request->validated());
-        $client = $this->clientService->find($request->first_client_id);
-        $scheme = $this->schemeService->find($request->scheme_id);
-
-        return view('content.investment.payout-schedule', compact('result', 'client', 'scheme'));
+        $this->investmentService->create($request->validated());
+        return redirect()->route('investment.els.index')->with('success', 'Investment created successfully.');
     }
 
     /**
