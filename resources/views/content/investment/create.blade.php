@@ -82,7 +82,7 @@
                             <!-- Investment Holder -->
                             <div class="col-md-3 " id="div_holder_single">
                                 <label for="client_id" class="form-label">Investment 1st Holder</label>
-                                <select class="form-select select2 @error('client_id') is-invalid @enderror"
+                                <select class="form-select select2 @error('client_id') is-invalid @enderror" required
                                     name="client_id" id="client_id">
                                     <option value="">Select Holder</option>
                                     @foreach ($clients as $d)
@@ -157,7 +157,7 @@
                             <div class="col-md-4">
                                 <label for="scheme_id" class="form-label">Scheme Name *</label>
                                 <select class="form-select select21 @error('scheme_id') is-invalid @enderror"
-                                    name="scheme_id" id="scheme_id">
+                                    name="scheme_id" id="scheme_id" required>
 
                                     <option value="">Select Scheme</option>
 
@@ -191,7 +191,7 @@
                                 <label for="investment_amount" class="form-label">Total Invested Amount *</label>
                                 <div class="input-group">
                                     <span class="input-group-text">₹</span>
-                                    <input type="number"
+                                    <input type="number" required
                                         class="form-control onlydigit @error('investment_amount') is-invalid @enderror"
                                         name="investment_amount" id="investment_amount"
                                         value="{{ old('investment_amount') }}">
@@ -218,7 +218,7 @@
                             <div class="col-md-2">
                                 <label for="tenure" class="form-label">Tenure *</label>
                                 <select class="form-select tenure @error('tenure_count') is-invalid @enderror"
-                                    name="tenure_count" id="tenure_count">
+                                    name="tenure_count" id="tenure_count" required>
                                     <!-- options loaded by JS -->
                                 </select>
 
@@ -231,7 +231,7 @@
                             <div class="col-md-2">
                                 <label for="frequency" class="form-label">Frequency *</label>
                                 <select class="form-select @error('frequency') is-invalid @enderror" name="frequency"
-                                    id="frequency">
+                                    id="frequency" required>
                                     <!-- Loaded via jQuery -->
                                 </select>
 
@@ -246,7 +246,7 @@
                                 <div class="input-group">
                                     <input type="text" class="form-control @error('roi') is-invalid @enderror"
                                         name="roi_percent" id="roi_percent" maxlength="5"
-                                        value="{{ old('roi_percent') }}">
+                                        value="{{ old('roi_percent') }}" required>
                                     <span class="input-group-text">%</span>
                                 </div>
                                 <div id="roi-message"></div>
@@ -346,8 +346,9 @@
                                                         class="text-danger">*</span></label>
                                                 <select
                                                     class="form-select instrumentSelect @error('instrument') is-invalid @enderror"
-                                                    name="instrument[]">
+                                                    name="instrument[]" required>
 
+                                                    <option value="">select..</option>
                                                     <option value="rtgs"
                                                         {{ old('instrument') == 'rtgs' ? 'selected' : '' }}>
                                                         RTGS
@@ -543,8 +544,8 @@
                     <div class="row g-3 outwardRow mb-2">
                         <!-- Company Bank (From) -->
                         <div class="col-md-4">
-                            <label class="form-label text-danger">From Company Bank *</label>
-                            <select class="form-select" id="out_company_bank" name="out_company_bank">
+                            <label class="form-label ">From Company Bank *</label>
+                            <select class="form-select" id="out_company_bank" name="out_company_bank" required>
                                 <option value="">Select Company Bank</option>
                                 {{-- @foreach ($companyBanks as $d)
                                     <option value="{{ $d->id }}">
@@ -556,8 +557,8 @@
 
                         <!-- Client Bank (To) -->
                         <div class="col-md-4">
-                            <label class="form-label text-danger">To Client Bank *</label>
-                            <select class="form-select to_client_bank" name="to_client_bank">
+                            <label class="form-label ">To Client Bank *</label>
+                            <select class="form-select to_client_bank" name="to_client_bank" required>
                                 <option value="">Select Client Bank</option>
                             </select>
                         </div>
@@ -748,10 +749,10 @@
     <script src="{{ asset('assets/js/investment.js') }}?v={{ time() }}"></script>
     <script>
         /*
-                                        Investment Date (#inv_date) to auto-update on keyup / change based on:
-                                        instrument_date[]
-                                        effective_date[]
-                                        */
+                                                                    Investment Date (#inv_date) to auto-update on keyup / change based on:
+                                                                    instrument_date[]
+                                                                    effective_date[]
+                                                                    */
 
         $(document).on('change', '.invDate', function() {
 
