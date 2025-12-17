@@ -161,21 +161,24 @@
                 </table>
 
                 <div class="p-3 text-end">
-                    @if (!$investment->is_approved)
+                    {{-- @if (!$investment->is_approved) --}}
                         {{-- show approve button --}}
-                        <form action="{{ route('investment.approve', $investment->id) }}" method="post">
+                        {{-- <form action="{{ route('investment.approve', $investment->id) }}" method="post">
                             @csrf
-                            @method('PUT')
+                            @method('PUT') --}}
                             <button type="submit" class="btn btn-success px-4">
                                 Approve
                             </button>
-                        </form>
-                    @else
+                                                                        <span class="text-danger">Note: Approve Logic is in process...</span>
+
+                        {{-- </form>
+                    @else --}}
                         {{-- hide button --}}
-                    @endif
+                    {{-- @endif --}}
 
 
                 </div>
+
             </div>
         </div>
     </div>
