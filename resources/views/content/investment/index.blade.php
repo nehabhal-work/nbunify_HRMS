@@ -112,7 +112,14 @@
                                         <!-- # -->
                                         <td>{{ $index + 1 }}</td>
                                         <td>{{ \Carbon\Carbon::parse($d->investment_date)->format('d M Y') }}</td>
-                                        <td>{{ ucfirst($d->firstClient->name ?? '-') }}</td>
+                                        <td>
+                                            <b>
+                                                <a href="{{ route('investment.els.show', $d->id) }}"
+                                                    class="text-decoration-none">
+                                                    {{ ucfirst($d->firstClient->name ?? '-') }}
+                                                </a>
+                                            </b>
+                                        </td>
                                         <td>{{ $d->scheme->scheme_name ?? '-' }}</td>
                                         <td>₹{{ number_format($d->investment_amount, 2) }}</td>
                                         <td>{{ $d->tenure_count }} {{ ucfirst($d->tenure_type) }}</td>
@@ -172,9 +179,10 @@
                                                 </button>
 
                                                 <div class="dropdown-menu">
-                                                  
-                                                    <a class="dropdown-item" href="{{ route('investment.els.show', $d->id) }}">
-                                                       <i class="bx bx-show me-1"></i>  View
+
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('investment.els.show', $d->id) }}">
+                                                        <i class="bx bx-show me-1"></i> View
                                                     </a>
 
 
