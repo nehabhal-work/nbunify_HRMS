@@ -11,7 +11,7 @@ class InvestmentService
     public function create(array $data)
     {
         $calculatedData = $this->calculateInvestmentParameters($data);
-        
+
         // Extract only fillable fields for Investment model
         $investmentData = [
             'investment_date' => $calculatedData['investment_date'],
@@ -28,10 +28,12 @@ class InvestmentService
             'maturity_date' => $calculatedData['maturity_date'],
             'payout_amount' => $calculatedData['payout_per_period'],
             'has_tds' => $calculatedData['has_tds'] ?? false,
+            'client_bank_id' => $data['client_bank_id'],
+            'company_bank_id' => $data['company_bank_id'],
         ];
-        
+
         $investment = Investment::create($investmentData);
-        
+
         return array_merge($calculatedData, ['investment' => $investment]);
     }
 
