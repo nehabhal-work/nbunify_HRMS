@@ -83,7 +83,7 @@
                             <div class="col-md-3 " id="div_holder_single">
                                 <label for="client_id" class="form-label">Investment 1st Holder</label>
                                 <select class="form-select select2 @error('client_id') is-invalid @enderror" required
-                                    name="client_id" id="client_id">
+                                    name="first_client_id" id="first_client_id">
                                     <option value="">Select Holder</option>
                                     @foreach ($clients as $d)
                                         <option value="{{ $d->id }}"
@@ -292,7 +292,39 @@
                                 </div>
                             </div>
 
+                            <div class="col-md-2 mb-3">
+                                <label class="form-label fw-semibold">
+                                    Lock-in Period Type <span class="text-danger">*</span>
+                                </label>
+                                <select class="form-select @error('lock_in_period_type') is-invalid @enderror"
+                                    name="lock_in_period_type" id="lock_in_period_type" required>
+                                    <option value="">Select</option>
+                                    <option value="months" {{ old('lock_in_period_type') == 'month' ? 'selected' : '' }}>
+                                        Months
+                                    </option>
+                                    <option value="years" {{ old('lock_in_period_type') == 'year' ? 'selected' : '' }}>
+                                        Years
+                                    </option>
+                                </select>
 
+                                @error('lock_in_period_type')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+
+                            <div class="col-md-2 mb-3">
+                                <label class="form-label fw-semibold">
+                                    Lock-in Period <span class="text-danger">*</span>
+                                </label>
+                                <input type="number" min="0"
+                                    class="form-control onlydigit @error('lock_in_period') is-invalid @enderror"
+                                    name="lock_in_period" id="lock_in_period" placeholder="Enter period"
+                                    value="{{ old('lock_in_period') }}" required>
+                                @error('lock_in_period')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
 
 
 

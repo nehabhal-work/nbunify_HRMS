@@ -204,6 +204,18 @@
                                 @enderror
                             </div>
 
+                            <!-- exit_load_percent -->
+                            <div class="col-md-2 mb-3">
+                                <label for="exit_load_percent" class="form-label">Exit load (%)</label>
+                                <input type="number"
+                                    class="form-control onlydigit @error('exit_load_percent') is-invalid @enderror"
+                                    id="exit_load_percent" name="exit_load_percent" step="0.01"
+                                    value="{{ old('exit_load_percent', $scheme->exit_load_percent) }}">
+                                @error('exit_load_percent')
+                                    <span class="invalid-feedback">{{ $message }}</span>
+                                @enderror
+                            </div>
+
                         </div>
 
                         {{-- Submit --}}
