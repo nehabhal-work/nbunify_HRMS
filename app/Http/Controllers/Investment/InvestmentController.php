@@ -128,7 +128,7 @@ class InvestmentController extends Controller
         $client = $this->clientService->find($id);
         $company = $this->companyService->find(1);
         $investment = $this->investmentService->getById($id);
-        return $investment;
+        // return $company;
         return view('content.investment.letters.welcome-letter', compact('client', 'company'));
     }
 

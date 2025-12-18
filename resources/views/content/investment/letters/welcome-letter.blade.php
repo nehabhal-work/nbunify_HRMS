@@ -47,7 +47,7 @@
             <p class="fw-semibold">Dear {{ ucwords(strtolower($client->name ?? 'Client')) }}</p>
 
             <p>
-                We are delighted to welcome you to <strong>{{ config('app.name') }}</strong>.
+                We are delighted to welcome you to <strong>{{ $company->name }}</strong>.
                 Thank you for choosing us as your trusted partner for managing your financial journey.
             </p>
 
@@ -80,8 +80,8 @@
                     For any queries, feel free to contact us:
                 </p>
 
-                <p class="mb-0"><strong>Email:</strong> support@yourcompany.com</p>
-                <p class="mb-0"><strong>Phone:</strong> +91 98765 43210</p>
+                <p class="mb-0"><strong>Email:</strong> {{ $company->email }}</p>
+                <p class="mb-0"><strong>Phone:</strong> {{ $company->phone }}</p>
                 <p><strong>Website:</strong> www.yourcompany.com</p>
             </div>
 
@@ -91,13 +91,13 @@
             </p>
 
             <p class="fw-semibold mb-1">Warm Regards,</p>
-            <p class="mb-0">{{ config('app.name') }}</p>
+            <p class="mb-0">{{ $company->name }}</p>
 
             <hr>
 
             <!-- Footer -->
             <p class="footer-text text-center mb-0">
-                This is an auto-generated welcome letter from {{ config('app.name') }}.
+                This is an auto-generated welcome letter from {{ $company->name }}.
             </p>
 
         </div>
