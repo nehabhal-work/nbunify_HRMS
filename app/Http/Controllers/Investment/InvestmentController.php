@@ -56,7 +56,8 @@ class InvestmentController extends Controller
     public function show(string $id)
     {
         $investment = $this->investmentService->getById($id);
-        return view('content.investment.show', compact('investment'));
+        // return $investment;
+        return view('content.investment.view', compact('investment'));
     }
 
     /**

@@ -177,9 +177,7 @@
                                     @empty
                                         <option value="">No Schemes Available</option>
                                     @endforelse
-
                                 </select>
-
                                 @error('scheme_id')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
@@ -188,7 +186,7 @@
 
                             <!-- Total Invested Amount -->
                             <div class="col-md-2">
-                                <label for="investment_amount" class="form-label">Total Invested Amount *</label>
+                                <label for="investment_amount" class="form-label">Total Invested Amt *</label>
                                 <div class="input-group">
                                     <span class="input-group-text">₹</span>
                                     <input type="number" required
@@ -196,7 +194,6 @@
                                         name="investment_amount" id="investment_amount"
                                         value="{{ old('investment_amount') }}">
                                 </div>
-
                                 @error('investment_amount')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
@@ -208,7 +205,6 @@
                                 <input type="text"
                                     class="form-control bg-secondary-subtle tenure_type @error('tenure_type') is-invalid @enderror"
                                     name="tenure_type" id="tenure_type" value="{{ old('tenure_type') }}" readonly>
-
                                 @error('tenure_type')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
@@ -273,7 +269,6 @@
                                     <span class="input-group-text">%</span>
                                 </div>
                                 <div id="addi-roi-message"></div>
-
                                 @error('addi_roi')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
@@ -286,7 +281,6 @@
                                     <span class="input-group-text">
                                         ₹
                                     </span>
-
                                     <input type="text" class="form-control text-end fw-semibold bg-info-subtle"
                                         id="roi_amount" readonly placeholder="0.00">
                                 </div>
@@ -369,11 +363,9 @@
                                     <!-- LEFT SIDE -->
                                     <div class="col-md-6">
                                         <h6 class="fw-bold mb-3 text-primary">Client Instrument Details</h6>
-
                                         <div class="row g-3">
-
                                             <!-- Instrument -->
-                                            <div class="col-md-4">
+                                            <div class="col-md-6">
                                                 <label class="form-label">Instrument <span
                                                         class="text-danger">*</span></label>
                                                 <select
@@ -406,7 +398,7 @@
                                             </div>
 
                                             <!-- Instrument Date -->
-                                            <div class="col-md-4">
+                                            <div class="col-md-6">
                                                 <label class="form-label">Instrument Date <span
                                                         class="text-danger">*</span></label>
                                                 <input type="date"
@@ -419,7 +411,7 @@
                                             </div>
 
                                             <!-- Reference No -->
-                                            <div class="col-md-4">
+                                            <div class="col-md-6">
                                                 <label class="form-label">Reference No <span
                                                         class="text-danger">*</span></label>
                                                 <input type="text"
@@ -432,14 +424,14 @@
                                             </div>
 
                                             <!-- Instrument Amount -->
-                                            <div class="col-md-4">
+                                            <div class="col-md-6">
                                                 <label class="form-label">Instrument Amount <span
                                                         class="text-danger">*</span></label>
                                                 <div class="input-group">
                                                     <span class="input-group-text">&#8377;</span>
                                                     <input type="number"
                                                         class="form-control bg-secondary-subtle onlydigit instrument_amt @error('instrument_amt.0') is-invalid @enderror"
-                                                        name="instrument_amt[]" value="{{ old('instrument_amt.0') }}">
+                                                        name="instrument_amt[]" id="instrument_amt" value="{{ old('instrument_amt.0') }}">
                                                 </div>
                                                 @error('instrument_amt.0')
                                                     <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -447,7 +439,7 @@
                                             </div>
 
                                             <!-- Client Output Bank -->
-                                            <div class="col-md-8">
+                                            <div class="col-md-6">
                                                 <label class="form-label">Client Output Bank <span
                                                         class="text-danger">*</span></label>
                                                 <select
@@ -461,7 +453,7 @@
                                             </div>
 
                                             <!-- Instrument Image -->
-                                            <div class="col-md-12">
+                                            <div class="col-md-6">
                                                 <label class="form-label">Instrument Image <span
                                                         class="text-danger">*</span></label>
                                                 <input type="file"
@@ -478,10 +470,10 @@
                                     </div>
 
                                     <!-- RIGHT SIDE -->
-                                    <div class="col-md-6 p-3 rounded" style="background:#f8f9fa;">
+                                    <div class="col-md-6  " >
 
-                                        <div class="row g-3">
-                                            <h6 class="fw-bold mb-3 text-success">Company Credit Details</h6>
+                                        <h6 class="fw-bold mb-3 text-success">Company Credit Details</h6>
+                                        <div class="row g-3 rounded" style="background:#f8f9fa;">
 
                                             <!-- Company Bank -->
                                             <div class="col-md-6">
@@ -501,8 +493,22 @@
                                                 @enderror
                                             </div>
 
+                                             <!-- Effective / Credit Date -->
+                                            <div class="col-md-6">
+                                                <label class="form-label">
+                                                    Effective / Credit Date <span class="text-danger">*</span>
+                                                </label>
+                                                <input type="date"
+                                                    class="form-control @error('effective_date.0') is-invalid @enderror"
+                                                    name="effective_date[]" value="{{ old('effective_date.0') }}"
+                                                    max="{{ date('Y-m-d') }}">
+                                                @error('effective_date.0')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+
                                             <!-- Company Bank Reference No -->
-                                            <div class="col-md-4">
+                                            <div class="col-md-6 mb-5">
                                                 <label class="form-label">
                                                     Company Bank Ref No <span class="text-danger">*</span>
                                                 </label>
@@ -517,38 +523,22 @@
                                             </div>
 
                                             <!-- Instrument Amount -->
-                                            <div class="col-md-4">
+                                            <div class="col-md-6 mb-5">
                                                 <label class="form-label">Instrument Amount <span
                                                         class="text-danger">*</span></label>
                                                 <div class="input-group">
                                                     <span class="input-group-text">&#8377;</span>
                                                     <input type="number"
                                                         class="form-control bg-secondary-subtle onlydigit instrument_amt @error('instrument_amt.0') is-invalid @enderror"
-                                                        name="instrument_amt[]" value="{{ old('instrument_amt.0') }}">
+                                                        name="instrument_amt[]" id="instrument_amt" value="{{ old('instrument_amt.0') }}">
                                                 </div>
                                                 @error('instrument_amt.0')
                                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                                 @enderror
                                             </div>
 
-                                            <!-- Effective / Credit Date -->
-                                            <div class="col-md-4">
-                                                <label class="form-label">
-                                                    Effective / Credit Date <span class="text-danger">*</span>
-                                                </label>
-                                                <input type="date"
-                                                    class="form-control @error('effective_date.0') is-invalid @enderror"
-                                                    name="effective_date[]" value="{{ old('effective_date.0') }}"
-                                                    max="{{ date('Y-m-d') }}">
-                                                @error('effective_date.0')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
-                                            </div>
-
                                         </div>
                                     </div>
-
-
                                 </div>
 
                                 <!-- Add / Remove Buttons -->
@@ -789,6 +779,16 @@
 
 @push('scripts')
     <script src="{{ asset('assets/js/investment.js') }}?v={{ time() }}"></script>
+    {{-- // ---------------------------type = number maxlength 10 ------------- --}}
+    <script>
+        $(document).on("input",
+            "#investment_amount, #roi_amount, #payout_count, #instrument_amt, #instrument_amt",
+            function() {
+                if (this.value.length > 10) {
+                    this.value = this.value.slice(0, 10); // ✅ keep only first 10 digits
+                }
+            });
+    </script>
     <script>
         /* Investment Date (#inv_date) to auto-update on keyup / change based on: instrument_date[] effective_date[] */
 
