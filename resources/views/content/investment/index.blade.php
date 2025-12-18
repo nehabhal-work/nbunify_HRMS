@@ -192,6 +192,11 @@
                                                     </a>
 
                                                     <a class="dropdown-item"
+                                                        href="{{ route('investment.clients.welcomeLetter', $d->id) }}">
+                                                        <i class="bx bx-show me-1"></i> Welcome letter
+                                                    </a>
+
+                                                    <a class="dropdown-item"
                                                         href="{{ route('investment.maturity-letter', $d->id) }}">
                                                         <i class="bx bx-envelope me-1"></i> Maturity Letter
                                                     </a>

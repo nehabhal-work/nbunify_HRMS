@@ -120,4 +120,24 @@ class InvestmentController extends Controller
         $this->investmentService->approve($id);
         return redirect()->back()->with('success', 'Investment approved successfully.');
     }
+
+    public function welcomeLetter($id)
+    {
+
+        $client = $this->clientService->find($id);
+        $company = $this->companyService->find(1);
+        $investment = $this->investmentService->getById($id);
+        return $investment;
+        return view('content.investment.letters.welcome-letter', compact('client', 'company'));
+    }
+
+    public function welcomeLetterPdf($clientId)
+    {
+        $client = Client::findOrFail($clientId);
+
+        $pdf = Pdf::loadView('content.clients.welcome-letter', compact('client'))
+            ->setPaper('A4', 'portrait');
+
+        return $pdf->download('Welcome-Letter-' . $client->full_name . '.pdf');
+    }
 }

@@ -47,8 +47,6 @@
                                     <th>pan no</th>
                                     <th>addhar no</th>
                                     <th>phone</th>
-                                    <th>Email</th>
-                                    <th>address</th>
                                     <th>Family info</th>
                                     <th>bank info</th>
                                     <th>Created By</th>
@@ -67,18 +65,20 @@
                                             </a>
                                         </td>
                                         <td>
-                                            <a href="{{ route('clients.show', $d->id) }}" class="">
+                                            <a href="{{ route('clients.show', $d->id) }}" class="text-dark">
                                                 {{ strtoupper($d->name) }}
+                                            </a> <br>
+                                            <a href="" class="email text-primary text-italic">
+                                                <i>{{ strtolower($d->email ?? '') }}</i>
                                             </a>
                                         </td>
                                         <td>{{ $d->pan_no ?? '' }}</td>
                                         <td>{{ $d->aadhar_no ?? '' }}</td>
                                         <td>{{ $d->mobile_no ?? '' }}</td>
-                                        <td class="email">{{ strtolower($d->email ?? '') }}</td>
-                                        <td class="text-truncate" style="max-width: 250px;" data-bs-toggle="tooltip"
+                                        {{-- <td class="text-truncate" style="max-width: 250px;" data-bs-toggle="tooltip"
                                             title="{{ strtoupper($d->res_address) }}">
                                             {{ \Illuminate\Support\Str::limit(strtoupper($d->res_address), 200) }}
-                                        </td>
+                                        </td> --}}
                                         <td>
 
                                             @if ($d->families->count() > 0)
@@ -174,10 +174,7 @@
                                                     <a class="dropdown-item" href="{{ route('clients.show', $d->id) }}">
                                                         <i class="bx bx-show me-1"></i> View
                                                     </a>
-                                                    <a class="dropdown-item"
-                                                        href="{{ route('clients.welcomeLetter', $d->id) }}">
-                                                        <i class="bx bx-show me-1"></i> Welcome letter
-                                                    </a>
+
 
                                                     <hr>
                                                     <form action="{{ route('clients.destroy', $d->id) }}" method="post"
