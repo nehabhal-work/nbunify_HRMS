@@ -46,6 +46,7 @@ class InvestmentController extends Controller
     public function store(InvestmentRequest $request)
     // public function store(Request $request)
     {
+
         $this->investmentService->create($request->validated());
         return redirect()->route('investment.els.index')->with('success', 'Investment created successfully.');
     }
@@ -124,8 +125,8 @@ class InvestmentController extends Controller
 
     public function welcomeLetter($id)
     {
-        return 'welcome letter';
         $client = $this->clientService->find($id);
+        return 'welcome letter' . $client;
         $company = $this->companyService->find(1);
         $investment = $this->investmentService->getById($id);
         // return $company;
