@@ -138,7 +138,7 @@ $(document).ready(function () {
 // -------------------------------
 // LOAD FAMILY & BANKS ON CLIENT CHANGE
 // -------------------------------
-$('#client_id').on('change', function () {
+$('#first_client_id').on('change', function () {
 
     let selected = $(this).find(':selected');
 
@@ -218,7 +218,7 @@ function getAge(dob) {
 // -------------------------------
 function loadGuardians(minorId, dropdown) {
 
-    let selectedClient = $('#client_id').find(':selected');
+    let selectedClient = $('#first_client_id').find(':selected');
     let families = selectedClient.data('families');
 
     if (typeof families === "string") {
