@@ -431,7 +431,8 @@
                                                     <span class="input-group-text">&#8377;</span>
                                                     <input type="number"
                                                         class="form-control bg-secondary-subtle onlydigit instrument_amt @error('instrument_amt.0') is-invalid @enderror"
-                                                        name="instrument_amt[]" id="instrument_amt" value="{{ old('instrument_amt.0') }}">
+                                                        name="instrument_amt[]" id="instrument_amt"
+                                                        value="{{ old('instrument_amt.0') }}">
                                                 </div>
                                                 @error('instrument_amt.0')
                                                     <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -470,7 +471,7 @@
                                     </div>
 
                                     <!-- RIGHT SIDE -->
-                                    <div class="col-md-6  " >
+                                    <div class="col-md-6  ">
 
                                         <h6 class="fw-bold mb-3 text-success">Company Credit Details</h6>
                                         <div class="row g-3 rounded" style="background:#f8f9fa;">
@@ -493,7 +494,7 @@
                                                 @enderror
                                             </div>
 
-                                             <!-- Effective / Credit Date -->
+                                            <!-- Effective / Credit Date -->
                                             <div class="col-md-6">
                                                 <label class="form-label">
                                                     Effective / Credit Date <span class="text-danger">*</span>
@@ -530,7 +531,8 @@
                                                     <span class="input-group-text">&#8377;</span>
                                                     <input type="number"
                                                         class="form-control bg-secondary-subtle onlydigit instrument_amt @error('instrument_amt.0') is-invalid @enderror"
-                                                        name="instrument_amt[]" id="instrument_amt" value="{{ old('instrument_amt.0') }}">
+                                                        name="instrument_amt[]" id="instrument_amt"
+                                                        value="{{ old('instrument_amt.0') }}">
                                                 </div>
                                                 @error('instrument_amt.0')
                                                     <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -617,14 +619,14 @@
 
                                 <div class="col-md-3">
                                     <label>Nominee Name</label>
-                                    <select class="form-select select21 nominee_name" name="other_holders[]">
+                                    <select class="form-select select21 nominee_name" name="client_family_id[]">
                                         <option value="">Select Holder</option>
                                     </select>
                                 </div>
 
                                 <div class="col-md-3 guardian_box d-none">
                                     <label>Guardian Name</label>
-                                    <select class="form-select guardian_select" name="guardian_id[]">
+                                    <select class="form-select guardian_select" name="guardian_client_family_id[]">
                                         <option value="">Select Guardian</option>
                                     </select>
                                     <small class="text-muted">Required because nominee is minor</small>
@@ -633,8 +635,7 @@
                                 <div class="col-md-2">
                                     <label>Percentage %</label>
                                     <div class="input-group">
-                                        <input type="text" class="form-control nominee_percentage"
-                                            name="nominee_percentage[]">
+                                        <input type="text" class="form-control nominee_percentage" name="percent[]">
                                         <span class="input-group-text">%</span>
                                     </div>
                                 </div>
