@@ -1,4 +1,10 @@
-<!DOCTYPE html>
+@extends('layouts.master-layout')
+@section('title', 'Investment')
+
+@section('content')
+    welcome letter blade view
+@endsection
+{{-- <!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -105,4 +111,4 @@
 
 </body>
 
-</html>
+</html> --}}
