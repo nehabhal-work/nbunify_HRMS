@@ -31,7 +31,7 @@
             <div class="header-line mx-auto"></div>
             <p class="text-muted mt-2">A Trusted Partner in Financial Growth</p>
         </div>
-        {{ $client }}
+        {{-- {{ $client }} --}}
         <!-- Greeting -->
         <p class="fw-semibold">Dear {{ ucwords(strtolower($client->name ?? 'Client')) }}</p>
 
