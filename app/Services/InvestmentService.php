@@ -156,7 +156,7 @@ class InvestmentService
 
     public function getById(int $id): Investment
     {
-        $investment = Investment::with(['firstClient', 'secondClient', 'thirdClient', 'fourthClient', 'scheme', 'fromCompanyBank', 'toClientBank', 'createdBy', 'approvedBy', 'approved2By', 'approved3By'])->findOrFail($id);
+        $investment = Investment::with(['firstClient', 'secondClient', 'thirdClient', 'fourthClient', 'scheme', 'fromCompanyBank', 'toClientBank', 'createdBy', 'approvedBy', 'approved2By', 'approved3By','nominees'])->findOrFail($id);
 
         if (auth()->id() == $investment->created_by) {
             $investment->is_approved = true;
