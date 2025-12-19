@@ -85,6 +85,7 @@ class InvestmentService
                             $inputBank['attachment_instrument_url'],
                             'instruments'
                         );
+                        unset($inputBank['attachment_instrument_url']); // Remove URL after processing
                     }
                     InvestmentInputBank::create(array_merge($inputBank, ['investment_id' => $investment->id]));
                 }
@@ -106,6 +107,7 @@ class InvestmentService
                         $siData['attachment_si_image_url'],
                         'si'
                     );
+                    unset($siData['attachment_si_image_url']); // Remove URL after processing
                 }
                 if (isset($siData['attachment_notes_image_url'])) {
                     $siData['attachment_notes_image'] = $this->fileStorageService->storeInvestmentDocument(
@@ -113,6 +115,7 @@ class InvestmentService
                         $siData['attachment_notes_image_url'],
                         'notes'
                     );
+                    unset($siData['attachment_notes_image_url']); // Remove URL after processing
                 }
                 InvestmentSi::create(array_merge($siData, ['investment_id' => $investment->id]));
             }
@@ -361,10 +364,10 @@ class InvestmentService
     private function validateInputBanks(array $inputBanks): void
     {
         foreach ($inputBanks as $index => $inputBank) {
-            $required = ['from_client_bank_id', 'to_company_bank_id', 'instrument_type', 'client_instrument_date', 'amount', 'attachment_instrument', 'company_instrument_date'];
+            $required = ['from_client_bank_id', 'to_company_bank_id', 'instrument_type', 'client_instrument_date', 'amount', 'attachment_instrument_url', 'company_instrument_date'];
 
             foreach ($required as $field) {
-                if (!isset($inputBank[$field]) || empty($inputBank[$field])) {
+                if (!isset($inputBank[$field]) || ($inputBank[$field] === '' || $inputBank[$field] === null)) {
                     throw new \InvalidArgumentException("Required field '{$field}' is missing in input bank #{$index}.");
                 }
             }
@@ -379,15 +382,15 @@ class InvestmentService
             $required = ['client_family_id', 'guardian_client_family_id', 'percent'];
 
             foreach ($required as $field) {
-                if (!isset($nominee[$field]) || empty($nominee[$field])) {
+                if (!isset($nominee[$field]) || ($nominee[$field] === '' || $nominee[$field] === null)) {
                     throw new \InvalidArgumentException("Required field '{$field}' is missing in nominee #{$index}.");
                 }
             }
 
-            $totalPercent += $nominee['percent'];
+            $totalPercent += (float)$nominee['percent'];
         }
 
-        if ($totalPercent != 100) {
+        if (abs($totalPercent - 100) > 0.01) {
             throw new \InvalidArgumentException("Total nominee percentage must equal 100%. Current total: {$totalPercent}%");
         }
     }
@@ -397,7 +400,7 @@ class InvestmentService
         $required = ['si_number', 'si_client_bank_id', 'si_company_bank_id', 'si_start_date', 'si_amount', 'si_no_of_payments'];
 
         foreach ($required as $field) {
-            if (!isset($siData[$field]) || empty($siData[$field])) {
+            if (!isset($siData[$field]) || ($siData[$field] === '' || $siData[$field] === null)) {
                 throw new \InvalidArgumentException("Required field '{$field}' is missing in standing instructions.");
             }
         }
