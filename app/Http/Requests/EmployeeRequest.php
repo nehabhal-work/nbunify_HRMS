@@ -18,9 +18,9 @@ class EmployeeRequest extends FormRequest
             'gender' => 'nullable|in:male,female,other',
             'dob' => 'nullable|date',
             'phone' => 'nullable|string|max:15',
-            'email' => 'nullable|email',
-            'aadhar' => 'nullable|string|size:12',
-            'pan' => 'nullable|string|size:10',
+            'email' => 'required|nullable|email',
+            'aadhar' => 'required|nullable|string|size:12',
+            'pan' => 'required|nullable|string|size:10',
 
             // Address fields
             'res_address' => 'nullable|string',

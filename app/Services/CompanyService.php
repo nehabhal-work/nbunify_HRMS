@@ -7,26 +7,31 @@ use Illuminate\Support\Str;
 
 class CompanyService
 {
-    public function __construct(private FileStorageService $fileStorageService)
-    {
-    }
+    public function __construct(private FileStorageService $fileStorageService) {}
 
     public function getAll()
     {
         return Company::all();
     }
 
-    public function getFirstCompanyBanks() {
+    public function getFirstCompanyBanks()
+    {
         $company = Company::with('bankDetails')->firstOrFail();
-        if($company == null) {
+        if ($company == null) {
             return [];
         } else {
             return $company->bankDetails;
         }
     }
 
-    public function find($id) {
+    public function find($id)
+    {
         return Company::findOrFail($id);
+    }
+
+    public function findFirstOrFail()
+    {
+        return Company::firstOrFail();
     }
 
     public function create(array $data): Company
@@ -55,12 +60,19 @@ class CompanyService
     private function handleFileUploads(array $data, Company $company, string $mode): array
     {
         $fileFields = [
-            'logo', 'attachment_pan', 'attachment_tan', 'attachment_gstin',
-            'attachment_ckyc', 'attachment_partnership_deed', 'attachment_udyam_aadhar',
-            'attachment_gumasta', 'attachment_msme', 'attachment_aadhar'
+            'logo',
+            'attachment_pan',
+            'attachment_tan',
+            'attachment_gstin',
+            'attachment_ckyc',
+            'attachment_partnership_deed',
+            'attachment_udyam_aadhar',
+            'attachment_gumasta',
+            'attachment_msme',
+            'attachment_aadhar'
         ];
 
-        if($mode == 'A') {
+        if ($mode == 'A') {
             foreach ($fileFields as $field) {
                 if (isset($data[$field . '_url'])) {
                     $data[$field] = $this->fileStorageService->storeCompanyDocument(
@@ -70,10 +82,10 @@ class CompanyService
                     );
                 }
             }
-        } else if($mode == 'E') {
+        } else if ($mode == 'E') {
             foreach ($fileFields as $field) {
                 if (isset($data[$field . '_url'])) {
-                    if(Str::contains($data[$field . '_url'], 'temp')) {
+                    if (Str::contains($data[$field . '_url'], 'temp')) {
                         if ($company && $company->$field) {
                             $this->fileStorageService->deleteFile($company->$field);
                         }
@@ -99,9 +111,16 @@ class CompanyService
     private function deleteFiles(Company $company): void
     {
         $fileFields = [
-            'logo', 'attachment_pan', 'attachment_tan', 'attachment_gstin',
-            'attachment_ckyc', 'attachment_partnership_deed', 'attachment_udyam_aadhar',
-            'attachment_gumasta', 'attachment_msme', 'attachment_aadhar'
+            'logo',
+            'attachment_pan',
+            'attachment_tan',
+            'attachment_gstin',
+            'attachment_ckyc',
+            'attachment_partnership_deed',
+            'attachment_udyam_aadhar',
+            'attachment_gumasta',
+            'attachment_msme',
+            'attachment_aadhar'
         ];
 
         foreach ($fileFields as $field) {
