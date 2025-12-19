@@ -37,6 +37,7 @@ class InvestmentRequest extends FormRequest
             'additional_roi_percent' => 'nullable|numeric|min:0|max:100',
             'has_tds' => 'boolean',
             'attachment_tds' => 'nullable|file|mimes:jpeg,png,jpg,pdf|max:2048',
+            'attachment_tds_url' => 'nullable|string',
             'from_company_bank_id' => 'required|exists:company_bank_details,id',
             'to_client_bank_id' => 'required|exists:client_banks,id',
             

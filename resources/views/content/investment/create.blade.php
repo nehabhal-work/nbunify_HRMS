@@ -299,10 +299,10 @@
                                 <select class="form-select @error('lock_in_period_type') is-invalid @enderror"
                                     name="lock_in_period_type" id="lock_in_period_type" required>
                                     <option value="">Select</option>
-                                    <option value="months" {{ old('lock_in_period_type') == 'month' ? 'selected' : '' }}>
+                                    <option value="months" {{ old('lock_in_period_type') == 'months' ? 'selected' : '' }}>
                                         Months
                                     </option>
-                                    <option value="years" {{ old('lock_in_period_type') == 'year' ? 'selected' : '' }}>
+                                    <option value="years" {{ old('lock_in_period_type') == 'years' ? 'selected' : '' }}>
                                         Years
                                     </option>
                                 </select>
