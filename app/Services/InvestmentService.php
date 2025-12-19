@@ -17,15 +17,18 @@ class InvestmentService
     public function __construct(private FileStorageService $fileStorageService) {}
     public function create(array $data)
     {
+        // Transform form data to expected structure
+        $data = $this->transformFormData($data);
+        
         // Validate all data before starting transaction
         $this->validateInvestmentData($data);
-        if (isset($data['input_banks'])) {
+        if (isset($data['input_banks']) && !empty($data['input_banks'])) {
             $this->validateInputBanks($data['input_banks']);
         }
-        if (isset($data['nominees'])) {
+        if (isset($data['nominees']) && !empty($data['nominees'])) {
             $this->validateNominees($data['nominees']);
         }
-        if (isset($data['standing_instructions'])) {
+        if (isset($data['standing_instructions']) && !empty($data['standing_instructions'])) {
             $this->validateStandingInstructions($data['standing_instructions']);
         }
 
@@ -60,6 +63,11 @@ class InvestmentService
             'actual_interest_amount' => $calculatedData['actual_interest_amount'],
             'paid_interest_amount' => $calculatedData['paid_interest_amount'],
             'rounding_off_amount' => $calculatedData['rounding_off_amount'],
+            'status' => $data['status'] ?? 'open',
+            'action_status' => $data['action_status'] ?? 'new',
+            'exit_load_percent' => $data['exit_load_percent'] ?? 0,
+            'lock_in_period' => $data['lock_in_period'] ?? 0,
+            'lock_in_period_type' => $data['lock_in_period_type'] ?? 'months',
             'created_by' => $data['created_by'],
         ];
 
@@ -364,12 +372,17 @@ class InvestmentService
     private function validateInputBanks(array $inputBanks): void
     {
         foreach ($inputBanks as $index => $inputBank) {
-            $required = ['from_client_bank_id', 'to_company_bank_id', 'instrument_type', 'client_instrument_date', 'amount', 'attachment_instrument_url', 'company_instrument_date'];
+            $required = ['from_client_bank_id', 'to_company_bank_id', 'instrument_type', 'client_instrument_date', 'amount', 'company_instrument_date'];
 
             foreach ($required as $field) {
                 if (!isset($inputBank[$field]) || ($inputBank[$field] === '' || $inputBank[$field] === null)) {
                     throw new \InvalidArgumentException("Required field '{$field}' is missing in input bank #{$index}.");
                 }
+            }
+            
+            // Attachment is optional but if provided should not be empty
+            if (isset($inputBank['attachment_instrument_url']) && $inputBank['attachment_instrument_url'] === '') {
+                throw new \InvalidArgumentException("Attachment URL cannot be empty in input bank #{$index}.");
             }
         }
     }
@@ -379,12 +392,18 @@ class InvestmentService
         $totalPercent = 0;
 
         foreach ($nominees as $index => $nominee) {
-            $required = ['client_family_id', 'guardian_client_family_id', 'percent'];
+            // Only client_family_id and percent are required
+            $required = ['client_family_id', 'percent'];
 
             foreach ($required as $field) {
                 if (!isset($nominee[$field]) || ($nominee[$field] === '' || $nominee[$field] === null)) {
                     throw new \InvalidArgumentException("Required field '{$field}' is missing in nominee #{$index}.");
                 }
+            }
+            
+            // Guardian is optional but must be valid if provided
+            if (isset($nominee['guardian_client_family_id']) && $nominee['guardian_client_family_id'] === '') {
+                throw new \InvalidArgumentException("Guardian client family ID cannot be empty in nominee #{$index}.");
             }
 
             $totalPercent += (float)$nominee['percent'];
@@ -404,6 +423,98 @@ class InvestmentService
                 throw new \InvalidArgumentException("Required field '{$field}' is missing in standing instructions.");
             }
         }
+    }
+
+    private function transformFormData(array $data): array
+    {
+        // Transform holder fields
+        if (isset($data['other_holders2'])) {
+            $data['second_client_id'] = $data['other_holders2'];
+            unset($data['other_holders2']);
+        }
+        if (isset($data['other_holders3'])) {
+            $data['third_client_id'] = $data['other_holders3'];
+            unset($data['other_holders3']);
+        }
+        if (isset($data['other_holders4'])) {
+            $data['fourth_client_id'] = $data['other_holders4'];
+            unset($data['other_holders4']);
+        }
+
+        // Transform input banks from arrays to structured format
+        if (isset($data['instrument']) && is_array($data['instrument'])) {
+            $data['input_banks'] = [];
+            $count = count($data['instrument']);
+            
+            for ($i = 0; $i < $count; $i++) {
+                if (!empty($data['instrument'][$i])) {
+                    // Handle file upload - store temporarily and get URL
+                    $attachmentUrl = null;
+                    if (isset($data['instrumentImage'][$i]) && $data['instrumentImage'][$i]) {
+                        $file = $data['instrumentImage'][$i];
+                        if ($file instanceof \Illuminate\Http\UploadedFile) {
+                            // Store file temporarily and get URL
+                            $tempPath = $file->store('temp/instruments', 'public');
+                            $attachmentUrl = asset('storage/' . $tempPath);
+                        }
+                    }
+                    
+                    $data['input_banks'][] = [
+                        'from_client_bank_id' => $data['client_output_bank'][$i] ?? null,
+                        'to_company_bank_id' => $data['company_bank_id'][$i] ?? null,
+                        'instrument_type' => $data['instrument'][$i],
+                        'client_instrument_date' => $data['instrument_date'][$i] ?? null,
+                        'client_reference_no' => $data['reference_no'][$i] ?? null,
+                        'amount' => $data['instrument_amt'][$i] ?? null,
+                        'attachment_instrument_url' => $attachmentUrl,
+                        'company_reference_no' => $data['company_reference_no'][$i] ?? null,
+                        'company_instrument_date' => $data['effective_date'][$i] ?? null,
+                    ];
+                }
+            }
+            
+            // Clean up array fields
+            unset($data['instrument'], $data['instrument_date'], $data['reference_no'], 
+                  $data['instrument_amt'], $data['client_output_bank'], $data['instrumentImage'],
+                  $data['company_bank_id'], $data['effective_date'], $data['company_reference_no']);
+        }
+
+        // Transform nominees from arrays to structured format
+        if (isset($data['client_family_id']) && is_array($data['client_family_id'])) {
+            $data['nominees'] = [];
+            $count = count($data['client_family_id']);
+            
+            for ($i = 0; $i < $count; $i++) {
+                if (!empty($data['client_family_id'][$i])) {
+                    $nominee = [
+                        'client_family_id' => $data['client_family_id'][$i],
+                        'percent' => $data['percent'][$i] ?? 0,
+                    ];
+                    
+                    // Only add guardian if provided and not empty
+                    if (isset($data['guardian_client_family_id'][$i]) && !empty($data['guardian_client_family_id'][$i])) {
+                        $nominee['guardian_client_family_id'] = $data['guardian_client_family_id'][$i];
+                    } else {
+                        // Default to self if no guardian provided
+                        $nominee['guardian_client_family_id'] = $data['client_family_id'][$i];
+                    }
+                    
+                    $data['nominees'][] = $nominee;
+                }
+            }
+            
+            // Clean up array fields
+            unset($data['client_family_id'], $data['guardian_client_family_id'], $data['percent']);
+        }
+
+        // Handle TDS attachment file upload
+        if (isset($data['attachment_tds']) && $data['attachment_tds'] instanceof \Illuminate\Http\UploadedFile) {
+            $tempPath = $data['attachment_tds']->store('temp/tds', 'public');
+            $data['attachment_tds_url'] = asset('storage/' . $tempPath);
+            unset($data['attachment_tds']);
+        }
+
+        return $data;
     }
 
 
