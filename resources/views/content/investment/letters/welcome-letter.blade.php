@@ -23,6 +23,18 @@
         }
     </style>
 
+    <div>
+        @if (session('success'))
+            <x-alert-sweet type="success" :message="session('success')" />
+        @endif
+
+        @if (session('error'))
+            <x-alert-sweet type="danger" :message="session('error')" />
+        @endif
+
+
+    </div>
+
     <div class="letter-box shadow-sm">
 
         <!-- Company Header -->
@@ -42,21 +54,28 @@
 
         <!-- Body Content -->
         <p>
-            Your profile has been successfully created in our system.
-            Our team will now ensure you receive complete support for your investments, documentation,
-            services, and future financial planning.
+            We are pleased to confirm that your investment has been successfully recorded in our system with the following
+            details:
         </p>
 
         <p>
-            You can now access:
+            Investment Summary:
         </p>
 
         <ul>
-            <li>Your investment portfolio</li>
-            <li>Service requests & follow-ups</li>
-            <li>Personalized financial solutions</li>
-            <li>Secure document management</li>
+            <li><strong>Investment Amount:</strong> ₹{{ number_format($investment->investment_amount, 2) }}</li>
+            <li><strong>Tenure:</strong> {{ $investment->tenure_count }} {{ ucfirst($investment->tenure_type) }}</li>
+            <li><strong>ROI:</strong> {{ $investment->roi_percent }}%</li>
+            <li><strong>Payout Frequency:</strong> {{ ucfirst($investment->frequency) }}</li>
+            <li><strong>Annual Payout:</strong> ₹{{ number_format($investment->annual_payout, 2) }}</li>
+            <li><strong>Total Interest:</strong> ₹{{ number_format($investment->actual_interest_amount, 2) }}</li>
+            <li><strong>First Payout Date:</strong>
+                {{ \Carbon\Carbon::parse($investment->first_payout_date)->format('d M Y') }}</li>
+            <li><strong>Maturity Date:</strong> {{ \Carbon\Carbon::parse($investment->maturity_date)->format('d M Y') }}
+            </li>
         </ul>
+
+
 
         <p>
             We believe in transparency, trust and long-term relationships.
@@ -90,6 +109,17 @@
         </p>
 
     </div>
+
+    <div class="mt-4 d-flex gap-2">
+        <a href="{{ route('investment.welcome.pdf', $investment->id) }}" class="btn btn-primary">
+            Download PDF
+        </a>
+
+        <a href="{{ route('investment.welcome.email', $investment->id) }}" class="btn btn-success">
+            Send Email
+        </a>
+    </div>
+
 @endsection
 {{-- <!DOCTYPE html>
 <html lang="en">

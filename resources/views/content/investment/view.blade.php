@@ -143,38 +143,37 @@
 
                 </table>
 
-                <h5 class="card-title">Nominee Details <span class="text-danger">Note: It is in process...</span> </h5>
+                <h5 class="card-title">Nominee Details </h5>
                 <table class="table table-bordered ">
                     <tbody>
                         <tr>
-                            <th>Nominee Name</th>
-                            <td><b>{{ $investment->nominee_name }}</b></td>
+                            <th width="300">Nominee Name Percentage %</th>
+                            {{-- <td><b>{{ $investment->nominees->nominee_name }}</b></td> --}}
+                            <td colspan="3">
+                                @foreach ($investment->nominees as $data)
+                                    <b>{{ $data->client_family_id . '-' . $data->Percent }}</b><br>
+                                @endforeach
+                            </td>
 
-                            <th>Percentage %</th>
-                            <td><b>{{ $investment->nominee_percentage }}</b></td>
                         </tr>
-                        <tr>
-                            <th>Guardian Name</th>
-                            <td><b>{{ $investment->guardian_name }}</b></td>
-                        </tr>
+
                     </tbody>
                 </table>
 
                 <div class="p-3 text-end">
-                    {{-- @if (!$investment->is_approved) --}}
+                    @if (!$investment->is_approved)
                         {{-- show approve button --}}
-                        {{-- <form action="{{ route('investment.approve', $investment->id) }}" method="post">
+                        <form action="{{ route('investment.approve', $investment->id) }}" method="post">
                             @csrf
-                            @method('PUT') --}}
+                            @method('PUT')
                             <button type="submit" class="btn btn-success px-4">
                                 Approve
                             </button>
-                                                                        <span class="text-danger">Note: Approve Logic is in process...</span>
 
-                        {{-- </form>
-                    @else --}}
+                        </form>
+                    @else
                         {{-- hide button --}}
-                    {{-- @endif --}}
+                    @endif
 
 
                 </div>

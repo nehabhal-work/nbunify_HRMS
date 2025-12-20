@@ -32,30 +32,46 @@
             </div>
         </div>
 
+        @php
+            $name = Auth::user()->name ?? '';
+            $words = explode(' ', $name);
+
+            if (count($words) >= 2) {
+                $initials = strtoupper(substr($words[0], 0, 2) . substr($words[1], 0, 1));
+            } else {
+                $initials = strtoupper(substr($words[0], 0, 2));
+            }
+        @endphp
+
         <ul class="navbar-nav flex-row align-items-center ms-auto">
             <!-- User -->
             <li class="nav-item navbar-dropdown dropdown-user dropdown">
                 <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
-                    <div class="avatar avatar-online">
-                        <img src="../../assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle" />
+                    <div class="avatar avatar-online d-flex align-items-center justify-content-center
+                        rounded-circle bg-primary text-white fw-bold"
+                        style="width:40px;height:40px;">
+                        {{ $initials }}
                     </div>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
                     <li>
                         <a class="dropdown-item" href="#">
-                            <div class="d-flex">
+                            <div class="d-flex align-items-center">
                                 <div class="flex-shrink-0 me-3">
-                                    <div class="avatar avatar-online">
-                                        <img src="../../assets/img/avatars/1.png" alt
-                                            class="w-px-40 h-auto rounded-circle" />
+                                    <div class="avatar avatar-online d-flex align-items-center justify-content-center
+                        rounded-circle bg-primary text-white fw-bold"
+                                        style="width:40px;height:40px;">
+                                        {{ $initials }}
                                     </div>
                                 </div>
+
                                 <div class="flex-grow-1">
-                                    <span class="fw-medium d-block">John Doe</span>
-                                    <small class="text-muted">Admin</small>
+                                    <span class="fw-medium d-block">{{ Auth::user()->name }}</span>
+                                    <small class="text-muted">Level {{ Auth::user()->level }}</small>
                                 </div>
                             </div>
                         </a>
+
                     </li>
                     <li>
                         <div class="dropdown-divider"></div>
@@ -76,7 +92,7 @@
                         <a class="dropdown-item" href="#">
                             <span class="d-flex align-items-center align-middle">
                                 <i class="flex-shrink-0 bx bx-credit-card me-2"></i>
-                                <span class="flex-grow-1 align-middle ms-1">Billing</span>
+                                <span class="flex-grow-1 align-middle ms-1">Task List</span>
                                 <span
                                     class="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span>
                             </span>

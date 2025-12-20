@@ -23,6 +23,7 @@ class ClientService
 
     public function find($id)
     {
+        // return $id;
         $client = Client::findOrFail($id);
         if (auth()->id() == $client->created_by) {
             $client->is_approved = true;

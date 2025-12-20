@@ -49,6 +49,7 @@ Route::middleware(['auth', 'verified'])->prefix('master')->name('master.')->grou
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('clients', ClientController::class)->names('clients');
     Route::put('client-approve/{id}', [ClientController::class, 'approve'])->name('client.approve');
+    Route::put('investment-approve/{id}', [InvestmentController::class, 'approve'])->name('investment.approve');
 
     Route::resource('client-families', ClientFamilyController::class);
     Route::get('client-families-create-from-existing', [ClientFamilyController::class, 'createFromExistingClient'])->name('client-families.create.existing');
@@ -80,6 +81,10 @@ Route::middleware(['auth', 'verified'])->prefix('investment')->name('investment.
     Route::get('els-maturity-leteer', [InvestmentController::class, 'maturityLetter'])->name("maturity-letter");
     Route::get('els-maturity-kyc', [InvestmentController::class, 'maturityKYC'])->name("maturity-kyc");
     Route::get('els-welcome-letter/{id}', [InvestmentController::class, 'welcomeLetter'])->name('clients.welcomeLetter');
+
+    Route::get('/investment/{id}/pdf', [InvestmentController::class, 'welcomeLetterDownloadPdf'])->name('welcome.pdf');
+
+    Route::get('/investment/{id}/email', [InvestmentController::class, 'sendEmailWithPdf'])->name('welcome.email');
 });
 
 

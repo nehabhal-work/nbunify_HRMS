@@ -121,7 +121,7 @@
                                 <div class="col-md-3">
                                     <label for="third_client" class="form-label">Investment 3rd Holder</label>
                                     <select class="form-select select2 @error('third_client') is-invalid @enderror"
-                                        name="third_client" id="third_client" data-allow-clear="true"> 
+                                        name="third_client" id="third_client" data-allow-clear="true">
                                         <option value="">Select Holder</option>
                                         @foreach ($clients as $d)
                                             <option value="{{ $d->id }}"
@@ -451,7 +451,7 @@
                                                         class="text-danger">*</span></label>
                                                 <select
                                                     class="form-select clientOutputBank @error('client_output_bank.0') is-invalid @enderror"
-                                                    name="client_output_bank[]">
+                                                    name="client_output_bank[]" required>
                                                     <option value="">Select Bank</option>
                                                 </select>
                                                 @error('client_output_bank.0')
@@ -488,7 +488,7 @@
                                                     Company Bank <span class="text-danger">*</span>
                                                 </label>
                                                 <select class="form-select @error('company_bank_id') is-invalid @enderror"
-                                                    name="company_bank_id[]">
+                                                    name="company_bank_id[]" required>
                                                     <option value="">Select Company Bank</option>
                                                     @foreach ($companyBanks as $d)
                                                         <option value="{{ $d->id }}">

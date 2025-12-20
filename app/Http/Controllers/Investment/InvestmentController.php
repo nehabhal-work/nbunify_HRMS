@@ -8,7 +8,9 @@ use App\Services\ClientService;
 use App\Services\CompanyService;
 use App\Services\InvestmentService;
 use App\Services\SchemeService;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class InvestmentController extends Controller
 {
@@ -57,7 +59,7 @@ class InvestmentController extends Controller
     public function show(string $id)
     {
         $investment = $this->investmentService->getById($id);
-        return $investment;
+        // return $investment;
         return view('content.investment.view', compact('investment'));
     }
 
@@ -125,21 +127,52 @@ class InvestmentController extends Controller
 
     public function welcomeLetter($id)
     {
-        $client = $this->clientService->find($id);
+        // $client = $this->clientService->find($id);
         $company = $this->companyService->findFirstOrFail();
         $investment = $this->investmentService->getById($id);
-        // return 'welcome letter' . $investment;
-        // return $company;
-        return view('content.investment.letters.welcome-letter', compact('client', 'company'));
+        // return $investment;
+        return view('content.investment.letters.welcome-letter', compact('investment', 'company'));
     }
 
-    public function welcomeLetterPdf($clientId)
+
+
+    public function welcomeLetterDownloadPdf($investmentId)
     {
-        $client = Client::findOrFail($clientId);
+        // return 'pdf function called';
+        $company = $this->companyService->findFirstOrFail();
+        $investment = $this->investmentService->getById($investmentId);
 
-        $pdf = Pdf::loadView('content.clients.welcome-letter', compact('client'))
-            ->setPaper('A4', 'portrait');
+        $pdf = Pdf::loadView('content.investment.pdf.welcome-letter-pdf', compact(
+            'investment',
+            'company'
+        ))->setPaper('A4', 'portrait');
 
-        return $pdf->download('Welcome-Letter-' . $client->full_name . '.pdf');
+        return $pdf->download('Investment-Welcome-Letter.pdf');
+    }
+
+    public function sendEmailWithPdf($investmentId)
+    {
+        $company = $this->companyService->findFirstOrFail();
+        $investment = $this->investmentService->getById($investmentId);
+
+
+        $pdf = Pdf::loadView('content.investment.pdf.welcome-letter-pdf', compact(
+            'investment',
+            'company'
+        ));
+        // return $investment;
+
+        Mail::send('content.investment.emails.welcome-letter-email', compact(
+            'investment',
+            'company'
+        ), function ($message) use ($investment, $pdf) {
+            $message->to(['bhalchandrahrs@gmail.com', 'chitrashedge@kandkfinserv.com', 'maddy2008@gmail.com'])
+                ->subject('Investment Confirmation Letter -' . $investment->id)
+                ->attachData(
+                    $pdf->output(),
+                    'Investment-Welcome-Letter.pdf'
+                );
+        });
+        return back()->with('success', 'Email sent successfully with PDF attached.');
     }
 }
