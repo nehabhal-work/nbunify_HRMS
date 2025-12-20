@@ -19,7 +19,7 @@ class InvestmentService
     {
         // Transform form data to expected structure
         $data = $this->transformFormData($data);
-        
+
         // Validate all data before starting transaction
         $this->validateInvestmentData($data);
         if (isset($data['input_banks']) && !empty($data['input_banks'])) {
@@ -379,7 +379,7 @@ class InvestmentService
                     throw new \InvalidArgumentException("Required field '{$field}' is missing in input bank #{$index}.");
                 }
             }
-            
+
             // Attachment is optional but if provided should not be empty
             if (isset($inputBank['attachment_instrument_url']) && $inputBank['attachment_instrument_url'] === '') {
                 throw new \InvalidArgumentException("Attachment URL cannot be empty in input bank #{$index}.");
@@ -400,7 +400,7 @@ class InvestmentService
                     throw new \InvalidArgumentException("Required field '{$field}' is missing in nominee #{$index}.");
                 }
             }
-            
+
             // Guardian is optional but must be valid if provided
             if (isset($nominee['guardian_client_family_id']) && $nominee['guardian_client_family_id'] === '') {
                 throw new \InvalidArgumentException("Guardian client family ID cannot be empty in nominee #{$index}.");
@@ -445,7 +445,7 @@ class InvestmentService
         if (isset($data['instrument']) && is_array($data['instrument'])) {
             $data['input_banks'] = [];
             $count = count($data['instrument']);
-            
+
             for ($i = 0; $i < $count; $i++) {
                 if (!empty($data['instrument'][$i])) {
                     // Handle file upload - store temporarily and get URL
@@ -458,7 +458,7 @@ class InvestmentService
                             $attachmentUrl = asset('storage/' . $tempPath);
                         }
                     }
-                    
+
                     $data['input_banks'][] = [
                         'from_client_bank_id' => $data['client_output_bank'][$i] ?? null,
                         'to_company_bank_id' => $data['company_bank_id'][$i] ?? null,
@@ -472,9 +472,9 @@ class InvestmentService
                     ];
                 }
             }
-            
+
             // Clean up array fields
-            unset($data['instrument'], $data['instrument_date'], $data['reference_no'], 
+            unset($data['instrument'], $data['instrument_date'], $data['reference_no'],
                   $data['instrument_amt'], $data['client_output_bank'], $data['instrumentImage'],
                   $data['company_bank_id'], $data['effective_date'], $data['company_reference_no']);
         }
@@ -483,14 +483,14 @@ class InvestmentService
         if (isset($data['client_family_id']) && is_array($data['client_family_id'])) {
             $data['nominees'] = [];
             $count = count($data['client_family_id']);
-            
+
             for ($i = 0; $i < $count; $i++) {
                 if (!empty($data['client_family_id'][$i])) {
                     $nominee = [
                         'client_family_id' => $data['client_family_id'][$i],
                         'percent' => $data['percent'][$i] ?? 0,
                     ];
-                    
+
                     // Only add guardian if provided and not empty
                     if (isset($data['guardian_client_family_id'][$i]) && !empty($data['guardian_client_family_id'][$i])) {
                         $nominee['guardian_client_family_id'] = $data['guardian_client_family_id'][$i];
@@ -498,11 +498,11 @@ class InvestmentService
                         // Default to self if no guardian provided
                         $nominee['guardian_client_family_id'] = $data['client_family_id'][$i];
                     }
-                    
+
                     $data['nominees'][] = $nominee;
                 }
             }
-            
+
             // Clean up array fields
             unset($data['client_family_id'], $data['guardian_client_family_id'], $data['percent']);
         }
