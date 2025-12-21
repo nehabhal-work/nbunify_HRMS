@@ -210,6 +210,10 @@
                                                         href="{{ route('investment.maturity-letter', $d->id) }}">
                                                         <i class="bx bx-envelope me-1"></i> Maturity Letter
                                                     </a>
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('calculate-investment-parameters', $d->id) }}">
+                                                        <i class="bx bx-envelope me-1"></i> show Payment-schedule
+                                                    </a>
                                                 </div>
                                             </div>
                                         </td>

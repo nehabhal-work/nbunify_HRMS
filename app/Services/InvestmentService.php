@@ -167,7 +167,7 @@ class InvestmentService
 
     public function getById(int $id): Investment
     {
-        $investment = Investment::with(['firstClient', 'secondClient', 'thirdClient', 'fourthClient', 'scheme', 'fromCompanyBank', 'toClientBank', 'createdBy', 'approvedBy', 'approved2By', 'approved3By','nominees'])->findOrFail($id);
+        $investment = Investment::with(['firstClient', 'secondClient', 'thirdClient', 'fourthClient', 'scheme', 'fromCompanyBank', 'toClientBank', 'createdBy', 'approvedBy', 'approved2By', 'approved3By', 'nominees.clientFamily'])->findOrFail($id);
 
         if (auth()->id() == $investment->created_by) {
             $investment->is_approved = true;
@@ -185,6 +185,13 @@ class InvestmentService
         }
 
         return $investment;
+    }
+
+    public function getPaymentSchedule(int $id): Investment
+    {
+        $payschedule = Investment::with(['payoutSchedules.fromCompanyBank', 'payoutSchedules.toClientBank'])->findOrFail($id);
+
+        return $payschedule;
     }
 
     public function getByClient(int $clientId): Collection
@@ -300,7 +307,7 @@ class InvestmentService
         }
 
         $data['actual_interest_amount'] = $data['payout_per_period'] * $data['schedule_count'];
-        $data['paid_interest_amount'] = round($data['payout_per_period'],0) * $data['schedule_count'];
+        $data['paid_interest_amount'] = round($data['payout_per_period'], 0) * $data['schedule_count'];
 
         $data['rounding_off_amount'] = $data['actual_interest_amount'] - $data['paid_interest_amount'];
 
@@ -474,9 +481,17 @@ class InvestmentService
             }
 
             // Clean up array fields
-            unset($data['instrument'], $data['instrument_date'], $data['reference_no'],
-                  $data['instrument_amt'], $data['client_output_bank'], $data['instrumentImage'],
-                  $data['company_bank_id'], $data['effective_date'], $data['company_reference_no']);
+            unset(
+                $data['instrument'],
+                $data['instrument_date'],
+                $data['reference_no'],
+                $data['instrument_amt'],
+                $data['client_output_bank'],
+                $data['instrumentImage'],
+                $data['company_bank_id'],
+                $data['effective_date'],
+                $data['company_reference_no']
+            );
         }
 
         // Transform nominees from arrays to structured format

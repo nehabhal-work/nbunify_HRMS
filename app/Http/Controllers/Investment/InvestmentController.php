@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Investment;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\InvestmentRequest;
+use App\Models\InvestmentPayoutSchedule;
 use App\Services\ClientService;
 use App\Services\CompanyService;
 use App\Services\InvestmentService;
@@ -59,8 +60,10 @@ class InvestmentController extends Controller
     public function show(string $id)
     {
         $investment = $this->investmentService->getById($id);
-        // return $investment;
-        return view('content.investment.view', compact('investment'));
+        $paySchdeule = $this->investmentService->getPaymentSchedule($id);
+        // return $paySchdeule;
+        return view('content.investment.view', compact('investment', 'paySchdeule'));
+        // return view('investments.payment-schedule', compact('investment'));
     }
 
     /**
@@ -174,5 +177,40 @@ class InvestmentController extends Controller
                 );
         });
         return back()->with('success', 'Email sent successfully with PDF attached.');
+    }
+
+    public function markPaid(Request $request)
+    {
+        // return $request;
+        $schedule = InvestmentPayoutSchedule::findOrFail($request->schedule_id);
+
+        $schedule->update([
+            'actual_payout_amount' => $request->actual_payout_amount,
+            'actual_payout_date'   => $request->actual_payout_date,
+            'utr_no'               => $request->utr_no,
+            'remarks'              => $request->remarks,
+            'status'               => 'done',
+        ]);
+
+        return back()->with('success', 'Payout marked as paid successfully.');
+    }
+
+    public function sendEmailPayout($id)
+    {
+        $schedule = InvestmentPayoutSchedule::with('investment.firstClient')->findOrFail($id);
+        // return $schedule;
+        // Mail::to($schedule->investment->firstClient->email)
+        //     ->send(new PayoutCompletedMail($schedule));
+
+        Mail::send(
+            'content.investment.emails.payout-template',
+            compact('schedule'),
+            function ($message) use ($schedule) {
+                $message->to(['bhalchandrahrs@gmail.com', 'chitrashedge@kandkfinserv.com', 'maddy2008@gmail.com'])
+                    ->subject('Investment-Payout Done -' . $schedule->id);
+            }
+        );
+
+        return back()->with('success', 'Payout mail sent to client.');
     }
 }

@@ -80,11 +80,13 @@ Route::middleware(['auth', 'verified'])->prefix('investment')->name('investment.
     Route::get('els-maturity', [InvestmentController::class, 'maturity'])->name("maturity");
     Route::get('els-maturity-leteer', [InvestmentController::class, 'maturityLetter'])->name("maturity-letter");
     Route::get('els-maturity-kyc', [InvestmentController::class, 'maturityKYC'])->name("maturity-kyc");
+
     Route::get('els-welcome-letter/{id}', [InvestmentController::class, 'welcomeLetter'])->name('clients.welcomeLetter');
-
     Route::get('/investment/{id}/pdf', [InvestmentController::class, 'welcomeLetterDownloadPdf'])->name('welcome.pdf');
-
     Route::get('/investment/{id}/email', [InvestmentController::class, 'sendEmailWithPdf'])->name('welcome.email');
+
+    Route::put('/investment-payout-mark-paid', [InvestmentController::class, 'markPaid'])->name('payout.mark-paid');
+    Route::get('/investment-payout/{id}/email', [InvestmentController::class, 'sendEmailPayout'])->name('payout.send-mail');
 });
 
 
