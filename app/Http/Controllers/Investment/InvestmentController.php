@@ -20,7 +20,8 @@ class InvestmentController extends Controller
         private SchemeService $schemeService,
         private ClientService $clientService,
         private CompanyService $companyService,
-    ) {}
+    ) {
+    }
 
     /**
      * Display a listing of the resource.
@@ -57,14 +58,42 @@ class InvestmentController extends Controller
     /**
      * Display the specified resource.
      */
+    // public function show(string $id)
+    // {
+    //     $investment = $this->investmentService->getById($id);
+    //     $paySchdeule = $this->investmentService->getPaymentSchedule($id);
+    //     // return $paySchdeule;
+    //     return view('content.investment.view', compact('investment', 'paySchdeule'));
+    //     // return view('investments.payment-schedule', compact('investment'));
+    // }
+
     public function show(string $id)
     {
         $investment = $this->investmentService->getById($id);
         $paySchdeule = $this->investmentService->getPaymentSchedule($id);
-        // return $paySchdeule;
-        return view('content.investment.view', compact('investment', 'paySchdeule'));
-        // return view('investments.payment-schedule', compact('investment'));
+// return $bankInstrument;
+        $scheme = $this->schemeService->getAll();
+        $clients = $this->clientService->getAll();
+        $companyBanks = $this->companyService->getFirstCompanyBanks();
+
+        $inputBank = \DB::table('investment_input_banks')
+            ->where('investment_id', $id)
+            ->first();
+// return $investment;
+        return view(
+            'content.investment.view',
+            compact(
+                'investment',
+                'paySchdeule',
+                'scheme',
+                'clients',
+                'companyBanks',
+                'inputBank'
+            )
+        );
     }
+
+
 
     /**
      * Show the form for editing the specified resource.
@@ -186,10 +215,10 @@ class InvestmentController extends Controller
 
         $schedule->update([
             'actual_payout_amount' => $request->actual_payout_amount,
-            'actual_payout_date'   => $request->actual_payout_date,
-            'utr_no'               => $request->utr_no,
-            'remarks'              => $request->remarks,
-            'status'               => 'done',
+            'actual_payout_date' => $request->actual_payout_date,
+            'utr_no' => $request->utr_no,
+            'remarks' => $request->remarks,
+            'status' => 'done',
         ]);
 
         return back()->with('success', 'Payout marked as paid successfully.');

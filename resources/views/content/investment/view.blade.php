@@ -14,6 +14,12 @@
 
 
     </div>
+    @php
+        $clientNames = $clients->pluck('name', 'id');
+        $schemeNames = $scheme->pluck('scheme_name', 'id'); // adjust column if needed
+
+    @endphp
+
     <style>
         table td {
             font-weight: bold;
@@ -47,7 +53,9 @@
     <div class="container">
         <div class="card">
             <div class="card-header">
-                <h5 class="card-title">Investment Details</h5>
+                <h5 class="card-title">Investment Details</h5> 
+                <h6>Investment ID : {{ $investment->id }}</h6>
+               
                 <table class="table table-bordered mb-4 investment-view">
                     <tbody>
                         <tr>
@@ -58,19 +66,59 @@
                             <th>Investment Type</th>
                             <td><b>{{ ucfirst($investment->investment_type) }}</b></td>
                         </tr>
+                        <tr>
+                            <th>Investment Holder Name</th>
+                            <td class="bg-warning-subtle"><b>{{ $clientNames[$investment->first_client_id] ?? '-' }}</b>
+                            </td>
+
+                            @if ($investment->investment_type !== 'single')
+                                <th>Investment 2nd Holder</th>
+                                <td class="bg-warning-subtle">
+                                    <b>{{ $clientNames[$investment->second_client_id] ?? '-' }}</b>
+                                </td>
+                            @else
+                                <td colspan="2"></td>
+                            @endif
+                        </tr>
+
+                        @if ($investment->investment_type !== 'single')
+                            <tr>
+                                <th>Investment 3rd Holder</th>
+                                <td class="bg-warning-subtle"><b>{{ $clientNames[$investment->third_client_id] ?? '-' }}</b>
+                                </td>
+
+                                <th>Investment 4th Holder</th>
+                                <td class="bg-warning-subtle">
+                                    <b>{{ $clientNames[$investment->fourth_client_id] ?? '-' }}</b>
+                                </td>
+                            </tr>
+                        @endif
+
 
                         <tr>
+                            <th>Scheme Name</th>
+                            <td><b>{{ $schemeNames[$investment->scheme_id] ?? '-' }}</b></td>
                             <th>Investment Amount</th>
                             <td><b>₹ {{ number_format($investment->investment_amount, 2) }}</b></td>
+                        </tr>
+                        <tr>
+                            <th>Tenure</th>
+                            <td><b>{{ $investment->tenure_count }} {{ ucfirst($investment->tenure_type) }}</b></td>
                             <th>Frequency</th>
                             <td><b>{{ ucfirst($investment->frequency) }}</b></td>
                         </tr>
 
                         <tr>
-                            <th>Tenure</th>
-                            <td><b>{{ $investment->tenure_count }} {{ ucfirst($investment->tenure_type) }}</b></td>
                             <th>ROI (%)</th>
                             <td><b>{{ $investment->roi_percent }}%</b></td>
+                            <th>Maturity Date</th>
+                            <td><b>{{ \Carbon\Carbon::parse($investment->maturity_date)->format('d M Y') }}</b></td>
+                        </tr>
+                        <tr>
+                            <th>Interest Amount</th>
+                            <td><b>₹ {{ number_format($investment->actual_interest_amount, 2) }}</b></td>
+                            <th>Lock in Period</th>
+                            <td><b>{{ $investment->lock_in_period }}</b></td>
                         </tr>
 
                         <tr>
@@ -94,46 +142,90 @@
                             <td><b>{{ \Carbon\Carbon::parse($investment->first_payout_date)->format('d M Y') }}</b></td>
                         </tr>
 
-                        <tr>
-                            <th>Maturity Date</th>
-                            <td><b>{{ \Carbon\Carbon::parse($investment->maturity_date)->format('d M Y') }}</b></td>
-                            <th>Total Interest</th>
-                            <td><b>₹ {{ number_format($investment->actual_interest_amount, 2) }}</b></td>
-                        </tr>
 
-                        <tr>
-                            <th>Paid Interest</th>
-                            <td><b>₹ {{ number_format($investment->paid_interest_amount, 2) }}</b></td>
-                            <th>Rounding Off</th>
-                            <td><b>₹ {{ number_format($investment->rounding_off_amount, 2) }}</b></td>
-                        </tr>
-                        <tr>
-
-                            <th>Company Bank</th>
-                            <td><b>{{ $investment->fromCompanyBank?->bank_name ?? '-' }}</b></td>
-                            <th>Client Bank</th>
-                            <td><b>{{ $investment->toClientBank?->bank_name ?? '-' }}</b></td>
-                        </tr>
                     </tbody>
                 </table>
 
 
 
-                <h5 class="card-title">Bank Details</h5>
+                <h5 class="card-title">Bank / Instrument Details </h5>
+                <table class="table table-bordered mb-4">
+                    <h6 class="text-warning">Client Instrument Details</h6>
+                    {{-- Header Row --}}
+                    <tr class="bg-warning-subtle">
+                        <th>Instrument</th>
+                        <th>Instrument Date</th>
+                        <th>Reference No</th>
+                        <th>Instrument Amount</th>
+                        <th>Client Output Bank</th>
+                        <th>Instrument Image</th>
+
+                    </tr>
+
+                    {{-- Data Row --}}
+                    @forelse($investment->investmentInputBank ?? [] as $b)
+                        <tr>
+                            <td>{{ $b->instrument_type }}</td>
+                            <td>{{ \Carbon\Carbon::parse($b->client_instrument_date)->format('d M Y') }}</td>
+                            <td>{{ $b->client_reference_no }}</td>
+                            <td>₹ {{ number_format($b->amount, 2) }}</td>
+                            <td>{{ $investment->toClientBank?->bank_name ?? '-' }}</td>
+                            <td>{{ $b->attachment_instrument ?? 'No Attachment' }}</td>
+
+                        </tr>
+
+
+                    @empty
+                        <tr>
+                            <td colspan="10" class="text-center text-muted">No bank/instrument details available.</td>
+                        </tr>
+                    @endforelse
+                </table>
+                <table class="table table-bordered mb-4">
+                    <h6 class="text-warning">Company Credit Details</h6>
+                    {{-- Header Row --}}
+                    <tr class="bg-warning-subtle">
+
+                        <th>Company Bank</th>
+                        <th>Credit Date</th>
+                        <th>Company Bank Ref No</th>
+                        <th>Instrument A mount</th>
+                    </tr>
+
+                    {{-- Data Row --}}
+                    @forelse($investment->investmentInputBank ?? [] as $b)
+                        <tr>
+
+                            <td>{{ $investment->fromCompanyBank?->bank_name ?? '-' }}</td>
+                            <td>{{ \Carbon\Carbon::parse($b->company_instrument_date)->format('d M Y') }}</td>
+                            <td>{{ $b->company_reference_no }}</td>
+                            <td>₹ {{ number_format($b->amount, 2) }}</td>
+                        </tr>
+
+
+                    @empty
+                        <tr>
+                            <td colspan="10" class="text-center text-muted">No bank/instrument details available.</td>
+                        </tr>
+                    @endforelse
+                </table>
+
+
+                <h5 class="card-title">Outward Bank / Payout Details</h5>
 
                 <table class="table table-bordered  mb-4">
                     <tbody>
                         <tr>
                             <th>Company Bank</th>
-                            <td><b>{{ $investment->fromCompanyBank?->bank_name ?? '-' }}</b></td>
                             <th>Company Account No</th>
-                            <td><b>{{ $investment->fromCompanyBank?->account_number ?? '-' }}</b></td>
+                            <th>Client Bank</th>
+                            <th>Client Account No</th>
                         </tr>
 
                         <tr>
-                            <th>Client Bank</th>
+                            <td><b>{{ $investment->fromCompanyBank?->bank_name ?? '-' }}</b></td>
+                            <td><b>{{ $investment->fromCompanyBank?->account_number ?? '-' }}</b></td>
                             <td><b>{{ $investment->toClientBank?->bank_name ?? '-' }}</b></td>
-                            <th>Client Account No</th>
                             <td><b>{{ $investment->toClientBank?->account_number ?? '-' }}</b></td>
                         </tr>
 
@@ -149,13 +241,26 @@
                     <tbody>
                         <tr>
                             <th width="300">Nominee Name Percentage %</th>
-                            {{-- <td><b>{{ $investment->nominees->nominee_name }}</b></td> --}}
                             <td colspan="3">
-                                @foreach ($investment->nominees as $data)
-                                    <b>{{ $data->clientFamily->name . '- ' . $data->percent . '%' }}</b><br>
+                                @php
+                                    // Take only first 3 nominees
+                                    $nominees = $investment->nominees->take(3);
+                                @endphp
+
+                                @foreach ($nominees as $data)
+                                    <b>{{ $data->clientFamily->name . ' - ' . $data->percent . '%' }}</b><br>
                                 @endforeach
                             </td>
-
+                            <th>Guardian Name</th>
+                            <td>
+                                @php
+                                    // Take only first 3 guardian names if needed
+                                    $guardians = $investment->nominees->take(3);
+                                @endphp
+                                @foreach ($guardians as $data)
+                                    <b>{{ $data->guardian_client_family_id ? $data->guardianClientFamily->name : '-' }}</b><br>
+                                @endforeach
+                            </td>
                         </tr>
 
                     </tbody>
