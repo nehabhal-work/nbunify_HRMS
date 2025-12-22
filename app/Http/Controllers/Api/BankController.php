@@ -24,13 +24,13 @@ class BankController extends Controller
                 'status' => true,
                 'error' => null,
                 'data' => $response->json(),
-            ]);
+            ], 200);
         }
 
         return response()->json([
             'status' => false,
             'error' => 'IFSC code not found',
             'data' => null,
-        ], 404);
+        ], 200);
     }
 }
