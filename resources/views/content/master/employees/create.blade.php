@@ -79,8 +79,8 @@
                             <!-- Date of Birth -->
                             <div class="col-md-2 mb-3">
                                 <label class="form-label">Date of Birth</label>
-                                <input type="text" class="form-control datepicker @error('dob') is-invalid @enderror"
-                                    name="dob" value="{{ old('dob') }}" placeholder="Select Date">
+                                <input type="date" class="form-control  @error('dob') is-invalid @enderror"
+                                    name="dob" value="{{ old('dob') }}" placeholder="Select Date"  max="{{ now()->toDateString() }}">
                                 @error('dob')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror

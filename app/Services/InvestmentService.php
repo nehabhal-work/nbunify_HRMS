@@ -167,7 +167,9 @@ class InvestmentService
 
     public function getById(int $id): Investment
     {
-        $investment = Investment::with(['firstClient', 'secondClient', 'thirdClient', 'fourthClient', 'scheme', 'fromCompanyBank', 'toClientBank', 'createdBy', 'approvedBy', 'approved2By', 'approved3By', 'nominees.clientFamily'])->findOrFail($id);
+        $investment = Investment::with(['firstClient', 'secondClient', 'thirdClient', 'fourthClient', 'scheme', 
+        'fromCompanyBank', 'toClientBank', 'createdBy', 'approvedBy', 'approved2By', 'approved3By',
+         'nominees.clientFamily','InvestmentInputBank'])->findOrFail($id);
 
         if (auth()->id() == $investment->created_by) {
             $investment->is_approved = true;
@@ -192,7 +194,14 @@ class InvestmentService
         $payschedule = Investment::with(['payoutSchedules.fromCompanyBank', 'payoutSchedules.toClientBank'])->findOrFail($id);
 
         return $payschedule;
-    }
+        }
+
+    //  public function getBankInstrument(int $id): Investment
+    // {
+    //     $bankInstrument = Investment::with(['standingInstructions'])->findOrFail($id);
+
+    //     return $bankInstrument;
+    // }
 
     public function getByClient(int $clientId): Collection
     {

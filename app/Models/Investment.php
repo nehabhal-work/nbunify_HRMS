@@ -118,6 +118,12 @@ class Investment extends Model
         return $this->hasMany(InvestmentSi::class);
     }
 
+    public function InvestmentInputBank(): HasMany
+    {
+        return $this->hasMany(InvestmentInputBank::class);
+    }
+
+
     public function payoutSchedules(): HasMany
     {
         return $this->hasMany(InvestmentPayoutSchedule::class);
