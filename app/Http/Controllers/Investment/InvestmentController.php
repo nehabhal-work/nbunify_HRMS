@@ -27,6 +27,7 @@ class InvestmentController extends Controller
      */
     public function index()
     {
+        // return 'index page called';
         $investments = $this->investmentService->getAll();
         return view('content.investment.index', compact('investments'));
     }
@@ -58,6 +59,15 @@ class InvestmentController extends Controller
      * Display the specified resource.
      */
     public function show(string $id)
+    {
+        $investment = $this->investmentService->getById($id);
+        $paySchdeule = $this->investmentService->getPaymentSchedule($id);
+        // return $paySchdeule;
+        return view('content.investment.view', compact('investment', 'paySchdeule'));
+        // return view('investments.payment-schedule', compact('investment'));
+    }
+
+    public function show_standingInstruction(string $id)
     {
         $investment = $this->investmentService->getById($id);
         $paySchdeule = $this->investmentService->getPaymentSchedule($id);

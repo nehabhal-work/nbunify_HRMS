@@ -101,50 +101,39 @@
                             </div>
                             <div id="div_other_holders" class="row d-none mt-3">
 
-                                <div class="col-md-3">
-                                    <label for="second_client" class="form-label">Investment 2nd Holder</label>
-                                    <select class="form-select select2 @error('second_client') is-invalid @enderror"
-                                        name="second_client" id="second_client" data-allow-clear="true">
+                                <!-- 2nd Holder -->
+                                <div class="col-md-3 holder-box" id="holder_2">
+                                    <label class="form-label">Investment 2nd Holder</label>
+                                    <select class="form-select select2" name="second_client" id="second_client">
                                         <option value="">Select Holder</option>
                                         @foreach ($clients as $d)
                                             <option value="{{ $d->id }}"
-                                                {{ is_array(old('second_client')) && in_array($d->id, old('second_client')) ? 'selected' : '' }}>
+                                                {{ old('second_client') == $d->id ? 'selected' : '' }}>
                                                 {{ ucfirst(strtolower($d->name)) }}
                                             </option>
                                         @endforeach
                                     </select>
-
-                                    @error('second_client')
-                                        <small class="text-danger">{{ $message }}</small>
-                                    @enderror
                                 </div>
-                                <div class="col-md-3">
-                                    <label for="third_client" class="form-label">Investment 3rd Holder</label>
-                                    <select class="form-select select2 @error('third_client') is-invalid @enderror"
-                                        name="third_client" id="third_client" data-allow-clear="true">
+
+                                <!-- 3rd Holder -->
+                                <div class="col-md-3 holder-box d-none" id="holder_3">
+                                    <label class="form-label">Investment 3rd Holder</label>
+                                    <select class="form-select select2" name="third_client" id="third_client">
                                         <option value="">Select Holder</option>
                                         @foreach ($clients as $d)
                                             <option value="{{ $d->id }}"
-                                                {{ is_array(old('third_client')) && in_array($d->id, old('third_client')) ? 'selected' : '' }}>
+                                                {{ old('third_client') == $d->id ? 'selected' : '' }}>
                                                 {{ ucfirst(strtolower($d->name)) }}
                                             </option>
                                         @endforeach
                                     </select>
-
-                                    @error('third_client')
-                                        <small class="text-danger">{{ $message }}</small>
-                                    @enderror
                                 </div>
-                                <div class="col-md-3">
-                                    <label for="fourth_client" class="form-label">Investment 4th Holder</label>
 
-                                    <select class="form-select select2 @error('fourth_client') is-invalid @enderror"
-                                        name="fourth_client" id="fourth_client" data-placeholder="Select Holder"
-                                        data-allow-clear="true">
-
-                                        {{-- MUST be empty for Select2 --}}
-                                        <option value=""></option>
-
+                                <!-- 4th Holder -->
+                                <div class="col-md-3 holder-box d-none" id="holder_4">
+                                    <label class="form-label">Investment 4th Holder</label>
+                                    <select class="form-select select2" name="fourth_client" id="fourth_client">
+                                        <option value="">Select Holder</option>
                                         @foreach ($clients as $d)
                                             <option value="{{ $d->id }}"
                                                 {{ old('fourth_client') == $d->id ? 'selected' : '' }}>
@@ -152,13 +141,23 @@
                                             </option>
                                         @endforeach
                                     </select>
-
-                                    @error('fourth_client')
-                                        <small class="text-danger">{{ $message }}</small>
-                                    @enderror
                                 </div>
 
+                                <!-- Add More Button -->
+                                <!-- Action Buttons -->
+                                <div class="col-md-3 align-self-end d-flex gap-2">
+                                    <button type="button" class="btn btn-outline-primary btn-sm" id="addHolderBtn">
+                                        + Add Holder
+                                    </button>
+                                    <button type="button" class="btn btn-outline-danger btn-sm d-none"
+                                        id="removeHolderBtn">
+                                        − Remove Holder
+                                    </button>
+                                </div>
+
+
                             </div>
+
                             <!-- Scheme -->
                             <div class="col-md-4">
                                 <label for="scheme_id" class="form-label">Scheme Name *</label>
@@ -292,6 +291,7 @@
                                 </div>
                             </div>
 
+                            {{-- Lock-in Period Type --}}
                             <div class="col-md-2 mb-3">
                                 <label class="form-label fw-semibold">
                                     Lock-in Period Type <span class="text-danger">*</span>
@@ -313,6 +313,7 @@
                             </div>
 
 
+                            {{-- Lock-in Period --}}
                             <div class="col-md-2 mb-3">
                                 <label class="form-label fw-semibold">
                                     Lock-in Period <span class="text-danger">*</span>
@@ -350,6 +351,9 @@
         </div>
 
 
+        <div>
+            <h3 id="remainingBalanceMsg" class="fw-semibold d-block mt-1"></h3>
+        </div>
         {{-- Bank / Instrument Details --}}
         <div class="row align-items-stretch">
             <div class="col-md-12">
@@ -359,6 +363,8 @@
                         <h5 class="mb-0">Bank / Instrument Details</h5>
                         <small class="text-muted float-end">Bank - Instrument Details</small>
                     </div>
+
+
 
                     <div class="card-body">
                         <div id="instrumentContainer">
@@ -436,9 +442,8 @@
                                                 <div class="input-group">
                                                     <span class="input-group-text">&#8377;</span>
                                                     <input type="number"
-                                                        class="form-control bg-secondary-subtle onlydigit instrument_amt @error('instrument_amt.0') is-invalid @enderror"
-                                                        name="instrument_amt[]" id="instrument_amt"
-                                                        value="{{ old('instrument_amt.0') }}">
+                                                        class="form-control bg-secondary-subtle onlydigit instrument_amt client_instrument_amt @error('instrument_amt.0') is-invalid @enderror"
+                                                        name="instrument_amt[]" value="{{ old('instrument_amt.0') }}">
                                                 </div>
                                                 @error('instrument_amt.0')
                                                     <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -536,9 +541,8 @@
                                                 <div class="input-group">
                                                     <span class="input-group-text">&#8377;</span>
                                                     <input type="number"
-                                                        class="form-control bg-secondary-subtle onlydigit instrument_amt @error('instrument_amt.0') is-invalid @enderror"
-                                                        name="instrument_amt[]" id="instrument_amt"
-                                                        value="{{ old('instrument_amt.0') }}">
+                                                        class="form-control bg-secondary-subtle onlydigit instrument_amt company_instrument_amt @error('instrument_amt.0') is-invalid @enderror"
+                                                        name="instrument_amt[]" value="{{ old('instrument_amt.0') }}">
                                                 </div>
                                                 @error('instrument_amt.0')
                                                     <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -787,6 +791,7 @@
 @push('scripts')
     <script src="{{ asset('assets/js/investment.js') }}?v={{ time() }}"></script>
     {{-- // ---------------------------type = number maxlength 10 ------------- --}}
+
     <script>
         $(document).on("input",
             "#investment_amount, #roi_amount, #payout_count, #instrument_amt, #instrument_amt",
@@ -796,6 +801,7 @@
                 }
             });
     </script>
+
     <script>
         /* Investment Date (#inv_date) to auto-update on keyup / change based on: instrument_date[] effective_date[] */
 
@@ -875,50 +881,51 @@
 
         });
     </script>
+
     <script>
-        $(document).on("change", ".instrumentSelect", function() {
+        // $(document).on("change", ".instrumentSelect", function() {
+        //     console.log("Instrument changed from page");
+        //     let $row = $(this).closest(".instrumentRow");
+        //     let instrument = $(this).val();
+        //     let investmentDate = $(".invDate").val();
 
-            let $row = $(this).closest(".instrumentRow");
-            let instrument = $(this).val();
-            let investmentDate = $(".invDate").val();
+        //     let $instrumentDate = $row.find("input[name='instrument_date[]']");
+        //     let $creditDate = $row.find("input[name='effective_date[]']");
+        //     let $refNo = $row.find("input[name='reference_no[]']");
+        //     let $companyRef = $row.find("input[name='company_reference_no[]']");
 
-            let $instrumentDate = $row.find("input[name='instrument_date[]']");
-            let $creditDate = $row.find("input[name='effective_date[]']");
-            let $refNo = $row.find("input[name='reference_no[]']");
-            let $companyRef = $row.find("input[name='company_reference_no[]']");
+        //     /* ===============================
+        //        Auto set dates from investment date
+        //     =============================== */
+        //     if (investmentDate) {
+        //         $instrumentDate.val(investmentDate);
+        //         $creditDate.val(investmentDate);
+        //     }
 
-            /* ===============================
-               Auto set dates from investment date
-            =============================== */
-            if (investmentDate) {
-                $instrumentDate.val(investmentDate);
-                $creditDate.val(investmentDate);
-            }
+        //     /* ===============================
+        //        Readonly toggle
+        //     =============================== */
+        //     if (instrument === "cheque") {
+        //         $companyRef
+        //             .prop("readonly", false)
+        //             .removeClass("bg-secondary-subtle");
+        //     } else {
+        //         $companyRef
+        //             .prop("readonly", true)
+        //             .addClass("bg-secondary-subtle");
+        //     }
 
-            /* ===============================
-               Readonly toggle
-            =============================== */
-            if (instrument === "cheque") {
-                $companyRef
-                    .prop("readonly", false)
-                    .removeClass("bg-secondary-subtle");
-            } else {
-                $companyRef
-                    .prop("readonly", true)
-                    .addClass("bg-secondary-subtle");
-            }
+        //     /* ===============================
+        //        ALWAYS sync Reference → Company Ref
+        //     =============================== */
+        //     $refNo.off("input.syncRef").on("input.syncRef", function() {
+        //         $companyRef.val($(this).val());
+        //     });
 
-            /* ===============================
-               ALWAYS sync Reference → Company Ref
-            =============================== */
-            $refNo.off("input.syncRef").on("input.syncRef", function() {
-                $companyRef.val($(this).val());
-            });
-
-            // Immediate sync if already filled
-            if ($refNo.val()) {
-                $companyRef.val($refNo.val());
-            }
-        });
+        //     // Immediate sync if already filled
+        //     if ($refNo.val()) {
+        //         $companyRef.val($refNo.val());
+        //     }
+        // });
     </script>
 @endpush
