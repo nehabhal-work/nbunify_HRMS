@@ -185,6 +185,11 @@
                                                         <i class="bx bx-show me-1"></i> View
                                                     </a>
 
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('investment.els.show', $d->id) }}">
+                                                        <i class="bx bx-show me-1"></i> standing
+                                                    </a>
+
 
                                                     <a class="dropdown-item"
                                                         href="{{ route('investment.merge', $d->id) }}">

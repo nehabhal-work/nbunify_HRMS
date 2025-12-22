@@ -65,13 +65,25 @@
                                             </a>
                                         </td>
                                         <td>
-                                            <a href="{{ route('clients.show', $d->id) }}" class="text-dark">
-                                                {{ strtoupper($d->name) }}
-                                            </a> <br>
-                                            <a href="" class="email text-primary text-italic">
-                                                <i>{{ strtolower($d->email ?? '') }}</i>
-                                            </a>
+                                            <div class="fw-semibold text-dark">
+                                                <i class="bx bx-show me-1"></i>
+                                                <a href="{{ route('clients.show', $d->id) }}"
+                                                    class="text-dark text-decoration-none">
+                                                    {{ strtoupper($d->name) }}
+                                                </a>
+                                            </div>
+
+                                            @if (!empty($d->email))
+                                                <div class="text-muted small mt-1">
+                                                    <i class="bx bx-envelope me-1"></i>
+                                                    <a href="mailto:{{ $d->email }}"
+                                                        class="text-primary small text-decoration-none fst-italic">
+                                                        {{ strtolower($d->email) }}
+                                                    </a>
+                                                </div>
+                                            @endif
                                         </td>
+
                                         <td>{{ $d->pan_no ?? '' }}</td>
                                         <td>{{ $d->aadhar_no ?? '' }}</td>
                                         <td>{{ $d->mobile_no ?? '' }}</td>

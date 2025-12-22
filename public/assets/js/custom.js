@@ -153,7 +153,7 @@ $(document).ready(function () {
 
         } else if (ifsc !== '') {
             parent.find('.bank_name, .branch_name, .bank_code').val('');
-            $this.addClass('is-invalid');
+            input.addClass('is-invalid');
             errmsg.text('Invalid IFSC. It must be 11 characters..').show();
         } else {
             parent.find('.bank_name, .branch_name, .bank_code').val('');

@@ -113,26 +113,87 @@ $('#addi_roi').on('input', function () {
 
 
 // Function to toggle holder sections single/double
+// 
+
 $(document).ready(function () {
+
+    let currentHolder = 2; // Always start from 2nd holder
+
+    function resetHolders() {
+        $('#holder_3, #holder_4').addClass('d-none')
+            .find('select').val(null).trigger('change');
+
+        currentHolder = 2;
+        $('#removeHolderBtn').addClass('d-none');
+        $('#addHolderBtn').show();
+    }
+
     function toggleInvestmentHolders() {
+
         let type = $('#investment_type').val();
 
         if (type === 'single') {
             $('#div_other_holders').addClass('d-none');
+            resetHolders();
         } else {
             $('#div_other_holders').removeClass('d-none');
+            $('#holder_2').removeClass('d-none');
+
+            // Restore old values
+            if ($('#third_client').val()) {
+                $('#holder_3').removeClass('d-none');
+                currentHolder = 3;
+                $('#removeHolderBtn').removeClass('d-none');
+            }
+
+            if ($('#fourth_client').val()) {
+                $('#holder_4').removeClass('d-none');
+                currentHolder = 4;
+                $('#removeHolderBtn').removeClass('d-none');
+                $('#addHolderBtn').hide();
+            }
         }
     }
 
-    // Run on page load (for old values)
     toggleInvestmentHolders();
 
-    // Run on change
-    $('#investment_type').on('change', function () {
-        toggleInvestmentHolders();
+    $('#investment_type').on('change', toggleInvestmentHolders);
+
+    // ADD HOLDER
+    $('#addHolderBtn').on('click', function () {
+
+        if (currentHolder === 2) {
+            $('#holder_3').removeClass('d-none');
+            currentHolder = 3;
+            $('#removeHolderBtn').removeClass('d-none');
+
+        } else if (currentHolder === 3) {
+            $('#holder_4').removeClass('d-none');
+            currentHolder = 4;
+            $('#addHolderBtn').hide();
+        }
+    });
+
+    // REMOVE HOLDER (Rollback)
+    $('#removeHolderBtn').on('click', function () {
+
+        if (currentHolder === 4) {
+            $('#holder_4').addClass('d-none')
+                .find('select').val(null).trigger('change');
+            currentHolder = 3;
+            $('#addHolderBtn').show();
+
+        } else if (currentHolder === 3) {
+            $('#holder_3').addClass('d-none')
+                .find('select').val(null).trigger('change');
+            currentHolder = 2;
+            $('#removeHolderBtn').addClass('d-none');
+        }
     });
 
 });
+
+
 
 
 // -------------------------------
@@ -247,12 +308,8 @@ $(document).on('click', '.removeNomineeRow', function () {
 });
 
 
-$(document).on('input', '#investment_amount', function () {
-    let val = $(this).val();
 
-    // Set value to all .instrument_amt fields
-    $('.instrument_amt').val(val);
-});
+
 
 
 
@@ -553,7 +610,7 @@ function calculateMaturity($row) {
 
 // instrumentSelect change - Auto set dates from Investment Date
 $(document).on("change", ".instrumentSelect", function () {
-
+    console.log("Instrument changed from js file");
     let $row = $(this).closest(".instrumentRow"); // current row
     let instrument = $(this).val();
     let investmentDate = $(".invDate").val();
@@ -611,6 +668,11 @@ $(document).on("change", ".instrumentSelect", function () {
 
 
 
+
+// ------------------------------
+//     nominee PERCENTAGE CALCULATION
+// ------------------------------
+
 function calculateNomineePercentage() {
     let total = 0;
 
@@ -638,4 +700,110 @@ $(document).on('input', '.nominee_percentage', calculateNomineePercentage);
 // After row add/remove
 $(document).on('click', '#addNomineeRow, .removeNomineeRow', function () {
     setTimeout(calculateNomineePercentage, 100);
+});
+
+
+
+// ------------------------------
+//     INSTRUMENT AMOUNT VALIDATION
+// ------------------------------
+
+function calculateRemainingBalance() {
+
+    let investmentAmount = parseFloat($('#investment_amount').val()) || 0;
+    let used = 0;
+
+    $('.client_instrument_amt').each(function () {
+        used += parseFloat($(this).val()) || 0;
+    });
+
+    let remaining = investmentAmount - used;
+
+    let msg = `
+        Investment Amount: ₹${investmentAmount}
+        | Entered Amount: ₹${used}
+        | Balance Amount: ₹${remaining}
+    `;
+
+    if (remaining === 0 && investmentAmount > 0) {
+        $('#remainingBalanceMsg')
+            .removeClass('text-danger')
+            .addClass('text-success')
+            .text('✔ Fully Allocated | ' + msg);
+    } else if (remaining > 0) {
+        $('#remainingBalanceMsg')
+            .removeClass('text-success')
+            .addClass('text-danger')
+            .text(msg);
+    } else {
+        $('#remainingBalanceMsg')
+            .removeClass('text-success')
+            .addClass('text-danger')
+            .text('✖ Allocation exceeds investment amount | ' + msg);
+    }
+
+
+    return remaining;
+}
+
+
+$(document).on('input', '#investment_amount', function () {
+
+    let investmentAmount = parseFloat($(this).val()) || 0;
+
+    let firstRow = $('.instrumentRow').eq(0);
+
+    firstRow.find('.client_instrument_amt').val(investmentAmount);
+    firstRow.find('.company_instrument_amt').val(investmentAmount);
+
+    calculateRemainingBalance();
+});
+
+
+$(document).on('input', '.client_instrument_amt', function () {
+
+    let rowIndex = $(this).closest('.instrumentRow').index();
+    let remaining = calculateRemainingBalance();
+
+    // If editing FIRST row → auto-fill SECOND row
+    if (rowIndex === 0 && remaining > 0) {
+
+        let secondRow = $('.instrumentRow').eq(1);
+
+        if (secondRow.length) {
+            secondRow.find('.client_instrument_amt').val(remaining);
+            secondRow.find('.company_instrument_amt').val(remaining);
+        }
+    }
+});
+
+
+
+
+$(document).on('input', '.client_instrument_amt', function () {
+
+    let value = $(this).val();
+
+    // Find the current instrument row
+    let row = $(this).closest('.instrumentRow');
+
+    // Set value only for company instrument amount in the SAME row
+    row.find('.company_instrument_amt').val(value);
+
+});
+
+$(document).on('input', '.client_instrument_amt, .company_instrument_amt', function () {
+
+    let value = $(this).val();
+
+    // Find current row
+    let row = $(this).closest('.instrumentRow');
+
+    // Decide direction
+    if ($(this).hasClass('client_instrument_amt')) {
+        row.find('.company_instrument_amt').val(value);
+    } else {
+        row.find('.client_instrument_amt').val(value);
+    }
+
 });
