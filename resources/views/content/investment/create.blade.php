@@ -166,7 +166,7 @@
 
                                     <option value="">Select Scheme</option>
 
-                                    @forelse ($scheme as $s)
+                                    {{-- @forelse ($scheme as $s)
                                         <option value="{{ $s->id }}"
                                             {{ old('scheme_id') == $s->id ? 'selected' : '' }}
                                             data-tenure-type="{{ $s->tenure_type }}"
@@ -175,13 +175,15 @@
                                             data-min-roi="{{ $s->roi_min }}" data-max-roi="{{ $s->roi_max }}"
                                             data-addi-roi-min="{{ $s->roi_min_additional }}"
                                             data-addi-roi-max="{{ $s->roi_max_additional }}"
-                                            data-scheme-name="{{ $s->scheme_name }}">
+                                            data-scheme-name="{{ $s->scheme_name }}"
+                                            data-start-date="{{ $s->scheme_name }}"
+                                            data-end-date="{{ $s->scheme_name }}">
 
                                             {{ $s->scheme_name }}
                                         </option>
                                     @empty
                                         <option value="">No Schemes Available</option>
-                                    @endforelse
+                                    @endforelse --}}
                                 </select>
                                 @error('scheme_id')
                                     <small class="text-danger">{{ $message }}</small>
@@ -882,50 +884,61 @@
         });
     </script>
 
+
+    {{-- keep this ajax on page only. external js not working. --}}
     <script>
-        // $(document).on("change", ".instrumentSelect", function() {
-        //     console.log("Instrument changed from page");
-        //     let $row = $(this).closest(".instrumentRow");
-        //     let instrument = $(this).val();
-        //     let investmentDate = $(".invDate").val();
+        $('#investment_date').on('change', function() {
+            console.log("Investment date changed");
+            let investmentDate = $(this).val();
 
-        //     let $instrumentDate = $row.find("input[name='instrument_date[]']");
-        //     let $creditDate = $row.find("input[name='effective_date[]']");
-        //     let $refNo = $row.find("input[name='reference_no[]']");
-        //     let $companyRef = $row.find("input[name='company_reference_no[]']");
+            if (!investmentDate) return;
 
-        //     /* ===============================
-        //        Auto set dates from investment date
-        //     =============================== */
-        //     if (investmentDate) {
-        //         $instrumentDate.val(investmentDate);
-        //         $creditDate.val(investmentDate);
-        //     }
+            $.ajax({
+                url: "{{ route('investment.schemes.by.date') }}",
+                type: "GET",
+                data: {
+                    investment_date: investmentDate
+                },
+                success: function(response) {
+                    console.log("Schemes loaded:", response);
+                    let $schemeSelect = $('#scheme_id');
 
-        //     /* ===============================
-        //        Readonly toggle
-        //     =============================== */
-        //     if (instrument === "cheque") {
-        //         $companyRef
-        //             .prop("readonly", false)
-        //             .removeClass("bg-secondary-subtle");
-        //     } else {
-        //         $companyRef
-        //             .prop("readonly", true)
-        //             .addClass("bg-secondary-subtle");
-        //     }
+                    // Clear existing options
+                    $schemeSelect.empty();
+                    $schemeSelect.append('<option value="">Select Scheme</option>');
 
-        //     /* ===============================
-        //        ALWAYS sync Reference → Company Ref
-        //     =============================== */
-        //     $refNo.off("input.syncRef").on("input.syncRef", function() {
-        //         $companyRef.val($(this).val());
-        //     });
+                    if (response.length === 0) {
+                        $schemeSelect.append(
+                            '<option value="">No Schemes Available</option>');
+                    } else {
 
-        //     // Immediate sync if already filled
-        //     if ($refNo.val()) {
-        //         $companyRef.val($refNo.val());
-        //     }
-        // });
+                        $.each(response, function(key, s) {
+
+                            $schemeSelect.append(`
+                        <option value="${s.id}"
+                            data-tenure-type="${s.tenure_type}"
+                            data-min-tenure="${s.tenure_min}"
+                            data-max-tenure="${s.tenure_max}"
+                            data-frequencies='${JSON.stringify(s.frequency)}'
+                            data-min-roi="${s.roi_min}"
+                            data-max-roi="${s.roi_max}"
+                            data-addi-roi-min="${s.roi_min_additional}"
+                            data-addi-roi-max="${s.roi_max_additional}"
+                            data-scheme-name="${s.scheme_name}"
+                            data-start-date="${s.start_date}"
+                            data-end-date="${s.end_date}">
+                            ${s.scheme_name}
+                        </option>
+                    `);
+                        });
+                    }
+
+                    // Refresh Select2
+                    $schemeSelect.val('').trigger('change');
+                }
+            });
+        });
+        $('#investment_date').trigger('change'); // Trigger change on page load to load schemes
+        $(sdocument).ready(function() {});
     </script>
 @endpush

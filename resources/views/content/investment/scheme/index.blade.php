@@ -48,7 +48,8 @@
                                 <label for="start_date" class="form-label">Start Date <span
                                         class="text-danger">*</span></label>
                                 <input type="date" class="form-control  @error('start_date') is-invalid @enderror"
-                                    id="start_date" name="start_date" max="{{ date('Y-m-d') }}" value="{{ old('start_date') }}">
+                                    id="start_date" name="start_date" max="{{ date('Y-m-d') }}"
+                                    value="{{ old('start_date') }}">
                                 @error('start_date')
                                     <span class="invalid-feedback">{{ $message }}</span>
                                 @enderror
@@ -58,7 +59,7 @@
                             <div class="col-md-2 mb-3">
                                 <label for="end_date" class="form-label">End Date <span class="text-danger">*</span></label>
                                 <input type="date" class="form-control  @error('end_date') is-invalid @enderror"
-                                    id="end_date" name="end_date" min="{{ date('Y-m-d') }}" value="{{ old('end_date') }}">
+                                    id="end_date" name="end_date" value="{{ old('end_date') }}">
                                 @error('end_date')
                                     <span class="invalid-feedback">{{ $message }}</span>
                                 @enderror

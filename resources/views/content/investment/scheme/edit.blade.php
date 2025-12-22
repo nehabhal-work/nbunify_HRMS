@@ -54,8 +54,8 @@
                                 {{-- <input type="text" id="start_date"
                                     class="form-control datepicker @error('start_date') is-invalid @enderror"
                                     name="start_date" value="{{ old('start_date', $scheme->start_date) }}"> --}}
-                                <input type="text" id="start_date"
-                                    class="form-control datepicker @error('start_date') is-invalid @enderror"
+                                <input type="date" id="start_date"
+                                    class="form-control datepicker1 @error('start_date') is-invalid @enderror"
                                     name="start_date"
                                     value="{{ old('start_date', \Carbon\Carbon::parse($scheme->start_date)->format('d-m-Y')) }}">
 
@@ -67,8 +67,8 @@
                             {{-- End Date --}}
                             <div class="col-md-2 mb-3">
                                 <label class="form-label">End Date <span class="text-danger">*</span></label>
-                                <input type="text" id="end_date"
-                                    class="form-control datepicker @error('end_date') is-invalid @enderror" name="end_date"
+                                <input type="date" id="end_date"
+                                    class="form-control datepicker1 @error('end_date') is-invalid @enderror" name="end_date"
                                     value="{{ old('end_date', \Carbon\Carbon::parse($scheme->end_date)->format('d-m-Y')) }}">
 
                                 @error('end_date')

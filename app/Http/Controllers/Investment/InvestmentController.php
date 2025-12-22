@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Investment;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\InvestmentRequest;
 use App\Models\InvestmentPayoutSchedule;
+use App\Models\SchemesMaster;
 use App\Services\ClientService;
 use App\Services\CompanyService;
 use App\Services\InvestmentService;
@@ -222,5 +223,15 @@ class InvestmentController extends Controller
         );
 
         return back()->with('success', 'Payout mail sent to client.');
+    }
+
+    public function getSchemesByDate(Request $request)
+    {
+        // return response()->json(['message' => 'testing', 'date' => $request->investment_date], 200);
+        $date = $request->investment_date;
+
+        $schemes = SchemesMaster::where('start_date', '<=', $date)->where('end_date', '>=', $date)->get();
+
+        return response()->json($schemes);
     }
 }

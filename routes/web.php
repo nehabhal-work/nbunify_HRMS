@@ -72,8 +72,9 @@ Route::middleware(['auth', 'verified'])->prefix('accounts')->name('accounts.')->
 
 Route::middleware(['auth', 'verified'])->prefix('investment')->name('investment.')->group(function () {
     Route::resource('scheme', SchemeController::class)->names('scheme');
-    Route::resource('els', InvestmentController::class)->names('els');
 
+
+    Route::resource('els', InvestmentController::class)->names('els');
     Route::get('els-renew', [InvestmentController::class, 'renew'])->name("renew");
     Route::get('els-claim', [InvestmentController::class, 'claim'])->name("claim");
     Route::get('els-merge', [InvestmentController::class, 'merge'])->name("merge");
@@ -87,6 +88,9 @@ Route::middleware(['auth', 'verified'])->prefix('investment')->name('investment.
 
     Route::put('/investment-payout-mark-paid', [InvestmentController::class, 'markPaid'])->name('payout.mark-paid');
     Route::get('/investment-payout/{id}/email', [InvestmentController::class, 'sendEmailPayout'])->name('payout.send-mail');
+
+    Route::get('schemes-by-date', [InvestmentController::class, 'getSchemesByDate'])
+        ->name('schemes.by.date');
 });
 
 
