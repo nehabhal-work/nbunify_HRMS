@@ -19,6 +19,7 @@ class BranchController extends Controller
         $country = $data['country'] ?? null;
         $states = $data['states'] ?? [];
         $cities = $data['cities'] ?? [];
+        
         return view('content.master.branches.index', [
             'branches' => Branch::all()
         ], compact('country', 'states', 'cities'));

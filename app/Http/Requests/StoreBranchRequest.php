@@ -25,15 +25,16 @@ class StoreBranchRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'address' => ['required', 'string'],
-            'phone' => ['nullable', 'string', 'max:20'],
-            'email' => ['nullable', 'email', 'max:255'],
-            'contact_person' => ['nullable', 'string', 'max:255'],
-            'country' => ['nullable', 'string', 'max:255'],
-            'state' => ['nullable', 'string', 'max:255'],
-            'city' => ['nullable', 'string', 'max:255'],
-            'pincode' => ['nullable', 'string', 'max:10'],
+            'phone' => ['required', 'string', 'max:15'],
+            'whatsapp_no' => ['required', 'string', 'max:15'],
+            'email' => ['required', 'email', 'max:255'],
+            'contact_person' => ['required', 'string', 'max:255'],
+            'country' => ['required', 'string', 'max:255'],
+            'state' => ['required', 'string', 'max:255'],
+            'city' => ['required', 'string', 'max:255'],
+            'res_pincode' => ['required', 'string', 'max:6'],
             'code' => ['required', 'string', 'max:50', Rule::unique('branches')->ignore($this->branch)],
-            'gumasta' => ['nullable', 'string', 'max:255'],
+            'gumasta' => ['required', 'string', 'max:255'],
         ];
     }
 
