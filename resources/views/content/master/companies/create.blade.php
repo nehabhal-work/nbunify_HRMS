@@ -106,7 +106,7 @@
 
                             <!-- Establishment Date -->
                             <div class="col-md-2 mb-3">
-                                <label class="form-label">Establishment Date</label>
+                                <label class="form-label">Establishment Date <span class="text-danger">*</span></label>
                                 <input type="text" name="est_date" id="est_date"
                                     class="form-control datepicker @error('est_date') is-invalid @enderror"
                                     value="{{ old('est_date') }}" placeholder="Select Date" readonly>
@@ -118,7 +118,7 @@
                             <div class="w-100"></div>
                             <!-- Contact Person -->
                             <div class="col-md-3 mb-3">
-                                <label class="form-label">Contact Person Name</label>
+                                <label class="form-label">Contact Person Name <span class="text-danger">*</span></label>
                                 <input type="text" name="contact_person_name" id="contact_person_name"
                                     class="form-control @error('contact_person_name') is-invalid @enderror"
                                     value="{{ old('contact_person_name') }}">
@@ -131,7 +131,7 @@
                             <!-- Contact Number -->
 
                             <div class="col-md-3 mb-3">
-                                <label class="form-label">Contact Person Number</label>
+                                <label class="form-label">Contact Person Number <span class="text-danger">*</span></label>
                                 <input type="text" name="phone" id="phone"
                                     class="form-control onlyphone @error('phone') is-invalid @enderror"
                                     value="{{ old('phone') }}" maxlength="15">
@@ -142,7 +142,7 @@
 
                             <!-- Email -->
                             <div class="col-md-3 mb-3">
-                                <label class="form-label">Contact Person Email</label>
+                                <label class="form-label">Contact Person Email <span class="text-danger">*</span></label>
                                 <input type="email" name="email" id="email"
                                     class="form-control  no-uppercase @error('email') is-invalid @enderror"
                                     value="{{ old('email') }}">
@@ -171,7 +171,7 @@
 
                             <!-- Proprietor Contact Person -->
                             <div class="col-md-3 mb-3">
-                                <label class="form-label">Proprietor Name</label>
+                                <label class="form-label">Proprietor Name <span class="text-danger">*</span></label>
                                 <input type="text" name="proprietor_name" id="proprietor_name"
                                     class="form-control @error('proprietor_name') is-invalid @enderror"
                                     value="{{ old('proprietor_name') }}">
@@ -182,7 +182,8 @@
 
                             <!-- Proprietor Contact Number -->
                             <div class="col-md-3 mb-3">
-                                <label class="form-label">Proprietor Contact Number</label>
+                                <label class="form-label">Proprietor Contact Number <span
+                                        class="text-danger">*</span></label>
                                 <input type="text" name="proprietor_phone" id="proprietor_phone"
                                     class="form-control onlyphone @error('proprietor_phone') is-invalid @enderror"
                                     value="{{ old('proprietor_phone') }}" maxlength="15">
@@ -195,7 +196,7 @@
 
                             <!-- Proprietor Email -->
                             <div class="col-md-3 mb-3">
-                                <label class="form-label">Proprietor Email</label>
+                                <label class="form-label">Proprietor Email <span class="text-danger">*</span></label>
                                 <input type="email" name="proprietor_email" id="proprietor_email"
                                     class="form-control no-uppercase @error('proprietor_email') is-invalid @enderror"
                                     value="{{ old('proprietor_email') }}">
@@ -238,7 +239,7 @@
                             <!-- Residential Address -->
                             <h6 class="my-3">Registered Address</h6>
                             <div class="col-md-4 mb-3">
-                                <label class="form-label">Address</label>
+                                <label class="form-label">Address <span class="text-danger">*</span></label>
                                 <input type="text" name="registered_address" id="res_address"
                                     class="form-control @error('registered_address') is-invalid @enderror"
                                     value="{{ old('registered_address') }}">
@@ -526,7 +527,8 @@
 
                             <!-- PAN Number -->
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">PAN Number of proprietor</label>
+                                <label class="form-label">PAN Number of proprietor <span
+                                        class="text-danger">*</span></label>
                                 <input type="text" name="pan_no" id="pan_no"
                                     class="form-control  @error('pan_no') is-invalid @enderror"
                                     value="{{ old('pan_no') }}" maxlength="10">
@@ -548,11 +550,21 @@
 
                             <!-- GSTIN -->
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">GSTIN</label>
+                                <label class="form-label">GSTIN <span class="text-danger">*</span></label>
                                 <input type="text" name="gstin" id="gstin"
                                     class="form-control  @error('gstin') is-invalid @enderror"
                                     value="{{ old('gstin') }}" maxlength="15">
                                 @error('gstin')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <!-- aadhar Number -->
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">aadhar Number <span class="text-danger">*</span></label>
+                                <input type="text" name="aadhar_no" id="aadhar_no"
+                                    class="form-control @error('aadhar_no') is-invalid @enderror"
+                                    value="{{ old('aadhar_no') }}" maxlength="12">
+                                @error('aadhar_no')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -622,16 +634,7 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <!-- Gumasta Number -->
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">aadhar Number</label>
-                                <input type="text" name="aadhar_no" id="aadhar_no"
-                                    class="form-control @error('aadhar_no') is-invalid @enderror"
-                                    value="{{ old('aadhar_no') }}" maxlength="12">
-                                @error('aadhar_no')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
+
 
                         </div>
                     </div>
@@ -995,6 +998,84 @@
                                 @endif
                             </div>
 
+
+                            <!-- Cheque Photo -->
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Cheque Photo <span class="text-danger">*</span></label>
+
+                                <div class="input-group">
+                                    <input type="file"
+                                        class="form-control @error('attachment_cancelled_cheque') is-invalid @enderror"
+                                        id="attachment_cancelled_cheque" name="attachment_cancelled_cheque"
+                                        onchange="uploadTempFile(this, 'attachment_cancelled_cheque')"
+                                        accept=".jpg,.jpeg,.png,.pdf">
+
+                                    <button class="btn btn-outline-danger" type="button"
+                                        onclick="document.getElementById('attachment_cancelled_cheque').value = ''">
+                                        ✕
+                                    </button>
+                                </div>
+
+                                @error('attachment_cancelled_cheque')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+
+                                <input type="hidden" id="attachment_cancelled_cheque_url"
+                                    name="attachment_cancelled_cheque_url"
+                                    value="{{ old('attachment_cancelled_cheque_url') }}">
+
+                                @if (old('attachment_cancelled_cheque_url'))
+                                    <div id="attachment_cancelled_cheque_preview"
+                                        class="position-relative d-inline-block mt-2">
+                                        <img src="{{ old('attachment_cancelled_cheque_url') }}" width="100"
+                                            class="rounded">
+
+                                        <button type="button"
+                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                                            onclick="removeImage('attachment_cancelled_cheque')">
+                                            ✕
+                                        </button>
+                                    </div>
+                                @endif
+                            </div>
+
+                            <!-- Propritor Photo -->
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Proprietor Photo <span class="text-danger">*</span></label>
+
+                                <div class="input-group">
+                                    <input type="file"
+                                        class="form-control @error('attachment_proprietor') is-invalid @enderror"
+                                        id="attachment_proprietor" name="attachment_proprietor"
+                                        onchange="uploadTempFile(this, 'attachment_proprietor')"
+                                        accept=".jpg,.jpeg,.png,.pdf">
+
+                                    <button class="btn btn-outline-danger" type="button"
+                                        onclick="document.getElementById('attachment_proprietor').value = ''">
+                                        ✕
+                                    </button>
+                                </div>
+
+                                @error('attachment_proprietor')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+
+                                <input type="hidden" id="attachment_proprietor_url" name="attachment_proprietor_url"
+                                    value="{{ old('attachment_proprietor_url') }}">
+
+                                @if (old('attachment_proprietor_url'))
+                                    <div id="attachment_proprietor_preview" class="position-relative d-inline-block mt-2">
+                                        <img src="{{ old('attachment_proprietor_url') }}" width="100"
+                                            class="rounded">
+
+                                        <button type="button"
+                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                                            onclick="removeImage('attachment_proprietor')">
+                                            ✕
+                                        </button>
+                                    </div>
+                                @endif
+                            </div>
 
                         </div>
 

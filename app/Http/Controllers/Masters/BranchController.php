@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Masters;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreBranchRequest;
 use App\Models\Branch;
+use App\Models\Company;
 use App\Services\BranchService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
@@ -19,9 +20,11 @@ class BranchController extends Controller
         $country = $data['country'] ?? null;
         $states = $data['states'] ?? [];
         $cities = $data['cities'] ?? [];
+
+        $company = Company::first();
         return view('content.master.branches.index', [
             'branches' => Branch::all()
-        ], compact('country', 'states', 'cities'));
+        ], compact('country', 'states', 'cities', 'company'));
     }
 
     public function create(): View
