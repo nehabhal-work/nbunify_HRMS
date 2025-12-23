@@ -27,7 +27,7 @@
         <span class="text-muted fw-light">Master /</span> <a href="{{ route('master.branches.index') }}">Branch</a>
         {{-- {{ ($company->name) }} --}} - EASY LIFE SOLUTIONS
     </h4>
-
+    {{-- {{ $company }} --}}
 
     <form action="{{ route('master.branches.store') }}" method="POST" enctype="multipart/form-data">
         @csrf

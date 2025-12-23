@@ -7,12 +7,13 @@ use App\Http\Requests\StoreBranchRequest;
 use App\Models\Branch;
 use App\Models\Company;
 use App\Services\BranchService;
+use App\Services\CompanyService;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
 class BranchController extends Controller
 {
-    public function __construct(private BranchService $branchService) {}
+    public function __construct(private BranchService $branchService, private CompanyService $CompanyService) {}
 
     public function index(): View
     {
@@ -21,7 +22,10 @@ class BranchController extends Controller
         $states = $data['states'] ?? [];
         $cities = $data['cities'] ?? [];
 
+        // $comp = $this->CompanyService->findFirstOrFail();
         $company = Company::first();
+        // return $company;
+
         return view('content.master.branches.index', [
             'branches' => Branch::all()
         ], compact('country', 'states', 'cities', 'company'));
