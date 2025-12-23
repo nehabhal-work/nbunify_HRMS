@@ -496,11 +496,13 @@ $(document).ready(function () {
                 .removeClass("text-danger")
                 .addClass("text-success")
                 .text("✔ Total nominee percentage is 100%");
+            $('#nomineePerentageSum').val(100);
         } else {
             $("#nomineePercentageMsg")
                 .removeClass("text-success")
                 .addClass("text-danger")
                 .text("Remaining percentage: " + (100 - total) + "%");
+            $('#nomineePerentageSum').val(100 - total);
         }
 
         return total;
@@ -610,7 +612,6 @@ function calculateMaturity($row) {
 
 // instrumentSelect change - Auto set dates from Investment Date
 $(document).on("change", ".instrumentSelect", function () {
-    console.log("Instrument changed from js file");
     let $row = $(this).closest(".instrumentRow"); // current row
     let instrument = $(this).val();
     let investmentDate = $(".invDate").val();

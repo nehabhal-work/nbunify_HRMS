@@ -36,6 +36,8 @@
     <form action="{{ route('investment.els.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('post')
+        <input type="hidden1" id="nomineePerentageSum" value="0">
+        {{-- investment Basic Details --}}
         <div class="row align-items-stretch">
             <div class="col-md-12">
                 <div class="card mb-4">
@@ -631,7 +633,7 @@
 
                                 <div class="col-md-3">
                                     <label>Nominee Name</label>
-                                    <select class="form-select select21 nominee_name" name="client_family_id[]">
+                                    <select class="form-select select21 nominee_name" name="client_family_id[]" required>
                                         <option value="">Select Holder</option>
                                     </select>
                                 </div>
@@ -647,7 +649,8 @@
                                 <div class="col-md-2">
                                     <label>Percentage %</label>
                                     <div class="input-group">
-                                        <input type="text" class="form-control nominee_percentage" name="percent[]">
+                                        <input type="text" class="form-control nominee_percentage" name="percent[]"
+                                            required>
                                         <span class="input-group-text">%</span>
                                     </div>
                                 </div>
@@ -940,5 +943,65 @@
         });
         $('#investment_date').trigger('change'); // Trigger change on page load to load schemes
         $(sdocument).ready(function() {});
+    </script>
+
+    <script>
+        // $('form').on('submit', function(e) {
+        //     let total = 0;
+        //     let investmentAmount = parseFloat($('#investment_amount').val()) || 0;
+        //     let nomineeTotal = parseFloat($('#nomineePerentageSum').val()) || 0;
+
+        //     $('.client_instrument_amt').each(function() {
+        //         total += parseFloat($(this).val()) || 0;
+        //     });
+
+        //     if (total !== investmentAmount) {
+        //         e.preventDefault();
+        //         alert(
+        //             `Total Instrument Amount (₹${total.toFixed(2)}) must equal Investment Amount (₹${investmentAmount.toFixed(2)}). Please adjust the amounts accordingly.`
+        //         );
+        //     } else if (nomineeTotal >= = 1 && nomineeTotal <= 99) {
+        //         e.preventDefault();
+        //         alert(
+        //             `Total Nominee Percentage (${nomineeTotal}%) must equal 100%. Please adjust the percentages accordingly.`
+        //         );
+        //     }
+
+        // });
+
+        $('form').on('submit', function(e) {
+
+            let total = 0;
+            let investmentAmount = parseFloat($('#investment_amount').val()) || 0;
+            let nomineeTotal = parseFloat($('#nomineePerentageSum').val()) || 0;
+
+            $('.client_instrument_amt').each(function() {
+                total += parseFloat($(this).val()) || 0;
+            });
+
+            /* ===============================
+             * Instrument Amount Validation
+             * =============================== */
+            if (total !== investmentAmount) {
+                e.preventDefault();
+                alert(
+                    `Total Instrument Amount (₹${total.toFixed(2)}) must equal Investment Amount (₹${investmentAmount.toFixed(2)}).`
+                );
+                return false; // ⛔ HARD STOP
+            }
+
+            /* ===============================
+             * Nominee Percentage Validation
+             * =============================== */
+            if (nomineeTotal >= 1 && nomineeTotal <= 99) {
+                e.preventDefault();
+                alert(
+                    `Total Nominee Percentage (${nomineeTotal}%) must be exactly 100%.`
+                );
+                return false; // ⛔ HARD STOP
+            }
+
+            // ✅ Allow submit if everything is valid
+        });
     </script>
 @endpush
