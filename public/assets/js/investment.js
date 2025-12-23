@@ -56,10 +56,56 @@ function loadSchemeData() {
 $('#scheme_id').on('change', function () {
     loadSchemeData();
 });
+// ---------------------
+
+$(document).ready(function () {
+
+    function syncHolders() {
+        let selected = [];
+
+        // gather all selected holder IDs
+        $('#first_client_id, #second_client, #third_client, #fourth_client').each(function () {
+            let val = $(this).val();
+            if (val) {
+                selected.push(val);
+            }
+        });
+
+        // loop through each select
+        $('#first_client_id, #second_client, #third_client, #fourth_client').each(function () {
+            let current = $(this);
+
+            current.find('option').each(function () {
+                let optionVal = $(this).val();
+
+                // skip placeholder
+                if (optionVal === '') return;
+
+                // disable if chosen elsewhere
+                if (
+                    selected.includes(optionVal) &&
+                    optionVal !== current.val()
+                ) {
+                    $(this).prop('disabled', true);
+                } else {
+                    $(this).prop('disabled', false);
+                }
+            });
+        });
+    }
+
+    // on change
+    $('#first_client_id, #second_client, #third_client, #fourth_client').on('change', function () {
+        syncHolders();
+    });
+
+    // on page load (edit form safe)
+    syncHolders();
+
+});
 
 
-
-
+// -----------------end-------------------
 $('#roi_percent').on('input', function () {
 
     let min = parseFloat($(this).data('min'));
