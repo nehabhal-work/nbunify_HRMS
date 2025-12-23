@@ -244,7 +244,7 @@
     </form>
 
 
-
+<div class="container">
     <div class="row">
         <!-- TABLE SECTION -->
 
@@ -312,7 +312,7 @@
             </div>
         </div>
     </div>
-
+</div>
 
 
 @endsection
