@@ -87,4 +87,39 @@ class InvestmentRequest extends FormRequest
             'lock_in_period_type' => 'nullable|string|in:days,months,years',
         ];
     }
+
+    /**
+     * Configure the validator instance.
+     */
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            // Validate investment amount equals sum of instrument amounts
+            if ($this->has('investment_amount') && $this->has('instrument_amt')) {
+                $investmentAmount = (float) $this->input('investment_amount');
+                $instrumentAmounts = array_map('floatval', $this->input('instrument_amt', []));
+                $totalInstrumentAmount = array_sum($instrumentAmounts);
+
+                if ($investmentAmount != $totalInstrumentAmount) {
+                    $validator->errors()->add('investment_amount', 
+                        'Investment amount must equal the sum of all instrument amounts. ' .
+                        'Investment: ' . number_format($investmentAmount, 2) . 
+                        ', Instruments total: ' . number_format($totalInstrumentAmount, 2)
+                    );
+                }
+            }
+
+            // Validate percent array sums to 100%
+            if ($this->has('percent')) {
+                $percentages = array_map('floatval', $this->input('percent', []));
+                $totalPercentage = array_sum($percentages);
+
+                if ($totalPercentage != 100) {
+                    $validator->errors()->add('percent', 
+                        'Total percentage must equal 100%. Current total: ' . number_format($totalPercentage, 2) . '%'
+                    );
+                }
+            }
+        });
+    }
 }

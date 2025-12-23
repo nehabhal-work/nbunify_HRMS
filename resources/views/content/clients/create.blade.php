@@ -53,9 +53,6 @@
                     </div>
                     <div class="card-body">
                         <div class="row">
-
-
-
                             {{-- Full Name --}}
                             <div class="col-md-4 mb-3">
                                 <label class="form-label" for="name">Full Name</label>
@@ -511,14 +508,6 @@
                 </div>
             </div>
 
-
-
-
-
-
-
-
-
             {{-- Image Section --}}
             <div id="divImageSection" class="col-md-12 ">
                 <div class="card mb-4">
@@ -774,12 +763,8 @@
                     </div>
                 </div>
             </div>
-
+            
         </div>
-
-
-
-
     </form>
 
 
