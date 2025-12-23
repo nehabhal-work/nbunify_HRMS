@@ -58,33 +58,28 @@ $('#scheme_id').on('change', function () {
 });
 // ---------------------
 
+
 $(document).ready(function () {
 
-    function syncHolders() {
-        let selected = [];
+    function updateHolderOptions() {
+        let selectedValues = [];
 
-        // gather all selected holder IDs
         $('#first_client_id, #second_client, #third_client, #fourth_client').each(function () {
-            let val = $(this).val();
-            if (val) {
-                selected.push(val);
+            if ($(this).val()) {
+                selectedValues.push($(this).val());
             }
         });
 
-        // loop through each select
         $('#first_client_id, #second_client, #third_client, #fourth_client').each(function () {
-            let current = $(this);
+            let currentSelect = $(this);
 
-            current.find('option').each(function () {
+            currentSelect.find('option').each(function () {
                 let optionVal = $(this).val();
+                if (optionVal === "") return;
 
-                // skip placeholder
-                if (optionVal === '') return;
-
-                // disable if chosen elsewhere
                 if (
-                    selected.includes(optionVal) &&
-                    optionVal !== current.val()
+                    selectedValues.includes(optionVal) &&
+                    optionVal !== currentSelect.val()
                 ) {
                     $(this).prop('disabled', true);
                 } else {
@@ -92,18 +87,43 @@ $(document).ready(function () {
                 }
             });
         });
+
+        $('.select2').trigger('change.select2');
     }
 
-    // on change
-    $('#first_client_id, #second_client, #third_client, #fourth_client').on('change', function () {
-        syncHolders();
+    // 🔥 NEW: reset joined holders when switching to single
+    $('#investment_type').on('change', function () {
+        if ($(this).val() === 'single') {
+
+            // clear joined holder values
+            $('#second_client, #third_client, #fourth_client')
+                .val('')
+                .trigger('change');
+
+            // hide joined holder section
+            $('#div_other_holders').addClass('d-none');
+
+        } else {
+            // show joined holder section
+            $('#div_other_holders').removeClass('d-none');
+        }
+
+        updateHolderOptions();
     });
 
-    // on page load (edit form safe)
-    syncHolders();
+    // holder change
+    $(document).on(
+        'change',
+        '#first_client_id, #second_client, #third_client, #fourth_client',
+        function () {
+            updateHolderOptions();
+        }
+    );
+
+    // page load safety
+    updateHolderOptions();
 
 });
-
 
 // -----------------end-------------------
 $('#roi_percent').on('input', function () {
