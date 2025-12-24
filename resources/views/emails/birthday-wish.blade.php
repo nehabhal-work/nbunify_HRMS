@@ -6,17 +6,14 @@
     <title>Happy Birthday</title>
 </head>
 <style>
-    #birthdaybackground {
+    /* #birthdaybackground {
         background-image: url('https://www.erp.easylifesolutions.co.in/assets/img/mail/els_birthday_bg.png');
         background-size: cover;
-        /* fills the area */
         background-position: center;
-        /* stays centered */
         background-repeat: no-repeat;
-        /* no tiling */
         width: 100%;
 
-    }
+    } */
 </style>
 
 <body id="birthdaybackground">
@@ -31,10 +28,10 @@
 
                     <!-- Header Image -->
                     <tr>
-                        <td align="center">
+                        {{-- <td align="center">
                             <img src="https://www.erp.easylifesolutions.co.in/assets/img/mail/els_birthday_header.png"
                                 alt="Happy Birthday" style="width:100%; display:block;">
-                        </td>
+                        </td> --}}
                     </tr>
 
                     <!-- Content -->
@@ -77,11 +74,11 @@
                     <tr>
 
                         <td align="center" style="padding:20px; border-top:1px solid #1e1d1d; ">
-                            <img src="https://www.erp.easylifesolutions.co.in/assets/img/branding/logo.png"
-                                alt="ELS Finserv1" width="80"><br><br>
+                            {{-- <img src="https://www.erp.easylifesolutions.co.in/assets/img/branding/logo.png"
+                                alt="ELS Finserv1" width="80"><br><br> --}}
 
                             <!-- Social Icons -->
-                            <a href="https://www.facebook.com/elsolutionsofficial?rdid=GpqaDR8vMNRExBkg&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1GknSE1nS2%2F#"
+                            {{-- <a href="https://www.facebook.com/elsolutionsofficial?rdid=GpqaDR8vMNRExBkg&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1GknSE1nS2%2F#"
                                 target="_blank">
                                 <img src="https://www.erp.easylifesolutions.co.in/assets/img/mail/fb.png" alt="Facebook"
                                     width="24" style="border:0;">
@@ -96,7 +93,7 @@
                             <a href="https://wa.me/918424042885" target="_blank">
                                 <img src="https://www.erp.easylifesolutions.co.in/assets/img/mail/wp.png" alt="WhatsApp"
                                     width="24" style="border:0;">
-                            </a>
+                            </a> --}}
 
                             <p style="font-size:12px; color:#666; margin-top:15px;">
                                 +91 98672 25059 | +91 96198 50696 | +91 91617 03666 | +91 84240 42885<br>
