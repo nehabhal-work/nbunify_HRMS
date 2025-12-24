@@ -56,7 +56,7 @@ function loadSchemeData() {
 $('#scheme_id').on('change', function () {
     loadSchemeData();
 });
-// ---------------------
+// -----------1st , 2nd , 3rd, 4th holder select  validation----------
 
 
 $(document).ready(function () {
@@ -126,6 +126,52 @@ $(document).ready(function () {
 });
 
 // -----------------end-------------------
+// -------------------lock in period on tenure------------
+$(document).ready(function () {
+
+    // when tenure changes
+    $('#tenure_count').on('change', function () {
+
+        let tenure = parseInt($(this).val(), 10);
+
+        if (!tenure) {
+            $('#lock_in_period')
+                .prop('disabled', true)
+                .removeAttr('max')
+                .val('');
+            return;
+        }
+
+        // enable + set limits
+        $('#lock_in_period')
+            .prop('disabled', false)
+            .attr('max', tenure)
+            .val('');
+    });
+
+    // block typing beyond max + limit to 2 digits
+    $('#lock_in_period').on('input', function () {
+
+        let max = parseInt($(this).attr('max'), 10);
+        let val = this.value.replace(/\D/g, '');
+
+        // enforce 2 digits
+        if (val.length > 2) {
+            val = val.slice(0, 2);
+        }
+
+        let num = parseInt(val, 10);
+
+        // enforce max
+        if (num > max) {
+            val = max.toString();
+        }
+
+        this.value = val;
+    });
+
+});
+// -----------------end------------------------
 $('#roi_percent').on('input', function () {
 
     let min = parseFloat($(this).data('min'));

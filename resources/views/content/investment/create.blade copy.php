@@ -36,7 +36,7 @@
     <form action="{{ route('investment.els.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('post')
-        <input type="hidden" id="nomineePerentageSum" value="0">
+        <input type="hidden1" id="nomineePerentageSum" value="0">
         {{-- investment Basic Details --}}
         <div class="row align-items-stretch">
             <div class="col-md-12">
@@ -322,7 +322,7 @@
                                 <label class="form-label fw-semibold">
                                     Lock-in Period <span class="text-danger">*</span>
                                 </label>
-
+                                
 
                                 <input type="number" min="1"
                                     class="form-control onlydigit @error('lock_in_period') is-invalid @enderror"
@@ -549,8 +549,7 @@
                                                     <span class="input-group-text">&#8377;</span>
                                                     <input type="number"
                                                         class="form-control bg-secondary-subtle onlydigit instrument_amt company_instrument_amt @error('instrument_amt.0') is-invalid @enderror"
-                                                        name="company_instrument_amt[]"
-                                                        value="{{ old('instrument_amt.0') }}">
+                                                        name="instrument_amt[]" value="{{ old('instrument_amt.0') }}">
                                                 </div>
                                                 @error('instrument_amt.0')
                                                     <div class="invalid-feedback d-block">{{ $message }}</div>

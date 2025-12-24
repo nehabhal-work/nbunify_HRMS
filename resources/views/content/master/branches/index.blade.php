@@ -24,9 +24,15 @@
     @endif
 
     <h4 class="fw-bold py-3 mb-4">
-        <span class="text-muted fw-light">Master /</span> <a href="{{ route('master.branches.index') }}">Branch</a>
+        <span class="text-muted fw-light">Master /</span>
+        <a href="{{ route('master.branches.index') }}" class="text-decoration-none">
+            Branch
+        </a>
+        <span class="text-muted">—</span>
+        <span class="text-primary">{{ $company->name ?? 'Company' }}</span>
     </h4>
 
+    {{-- {{ $company }} --}}
 
     <form action="{{ route('master.branches.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
@@ -243,7 +249,7 @@
     </form>
 
 
-
+<div class="container">
     <div class="row">
         <!-- TABLE SECTION -->
 
@@ -311,7 +317,7 @@
             </div>
         </div>
     </div>
-
+</div>
 
 
 @endsection
