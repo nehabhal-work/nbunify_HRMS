@@ -94,7 +94,7 @@
                             </a>
 
 
-                            <a href="https://wa.me/918424042887" target="_blank">
+                            <a href="https://wa.me/918424042885" target="_blank">
                                 <img src="https://www.erp.easylifesolutions.co.in/assets/img/mail/wp.png" alt="WhatsApp"
                                     width="24" style="border:0;">
                             </a>

@@ -175,7 +175,7 @@ class ClientController extends Controller
                     function ($message) use ($client) {
                         $message->to($client->email) // use client email
                             // ->bcc('bhalchandrahrs@gmail.com')
-                            ->subject('Mery Christmas - Warm Wishes from K And K Finserv');
+                            ->subject('Mery Christmas!');
                     }
                 );
 
