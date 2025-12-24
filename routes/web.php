@@ -59,6 +59,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('birthday-client');
     Route::post('/send-birthday-email', [ClientBDayController::class, 'sendBirthdayEmail'])
         ->name('send-birthday-email');
+    Route::post('/send-festival-mail', [ClientController::class, 'sendFestivalMail'])
+        ->name('send.festival.mail');
 });
 
 Route::middleware(['auth', 'verified'])->prefix('accounts')->name('accounts.')->group(function () {

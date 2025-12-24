@@ -13,6 +13,8 @@ use App\Services\FileStorageService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class ClientController extends Controller
 {
@@ -157,5 +159,42 @@ class ClientController extends Controller
         // return 'approve';
         $this->clientService->approve($id);
         return redirect()->route('clients.index')->with('success', 'Client approved successfully');
+    }
+
+    public function sendFestivalMail(Request $request)
+    {
+        // return 'send festival mail';
+        $clients = Client::get(); // or filter based on festival logic
+
+        foreach ($clients as $client) {
+            try {
+
+                Mail::send(
+                    'emails.christmas-wish',
+                    compact('client'),
+                    function ($message) use ($client) {
+                        $message->to($client->email) // use client email
+                            // ->bcc('bhalchandrahrs@gmail.com')
+                            ->subject('Mery Christmas - Warm Wishes from K And K Finserv');
+                    }
+                );
+
+                // ✅ SUCCESS LOG
+                Log::info('Festival mail sent successfully', [
+                    'client_id' => $client->id,
+                    'email'     => $client->email,
+                ]);
+            } catch (\Exception $e) {
+
+                // ❌ FAILURE LOG
+                Log::error('Festival mail failed', [
+                    'client_id' => $client->id,
+                    'email'     => $client->email,
+                    'error'     => $e->getMessage(),
+                ]);
+            }
+        }
+
+        return back()->with('success', 'Festival emails processed successfully.');
     }
 }
