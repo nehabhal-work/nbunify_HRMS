@@ -19,11 +19,13 @@ class InvestmentSi extends Model
         'si_no_of_payments',
         'attachment_si_image',
         'attachment_notes_image',
+        'status',
     ];
 
     protected $casts = [
         'si_start_date' => 'date:Y-m-d',
         'si_amount' => 'decimal:2',
+        'status' => 'string',
     ];
 
     public function investment(): BelongsTo

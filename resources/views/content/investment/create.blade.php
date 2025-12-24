@@ -546,7 +546,7 @@
                                                     <span class="input-group-text">&#8377;</span>
                                                     <input type="number"
                                                         class="form-control bg-secondary-subtle onlydigit instrument_amt company_instrument_amt @error('instrument_amt.0') is-invalid @enderror"
-                                                        name="instrument_amt[]" value="{{ old('instrument_amt.0') }}">
+                                                        name="company_instrument_amt[]" value="{{ old('instrument_amt.0') }}">
                                                 </div>
                                                 @error('instrument_amt.0')
                                                     <div class="invalid-feedback d-block">{{ $message }}</div>
