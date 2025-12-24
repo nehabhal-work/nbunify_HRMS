@@ -8,6 +8,7 @@ use App\Services\InvestmentSiService;
 use App\Services\InvestmentService;
 use App\Services\ClientBankService;
 use App\Services\CompanyService;
+use Illuminate\Http\Request;
 
 class InvestmentSiController extends Controller
 {
@@ -16,17 +17,20 @@ class InvestmentSiController extends Controller
         private InvestmentService $investmentService,
         private ClientBankService $clientBankService,
         private CompanyService $companyService,
-    ) {
-    }
+    ) {}
 
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $investmentSis = $this->investmentSiService->getAll();
+
+        return $request->all();
+        $investments = $this->investmentSiService->getAll();
+        $invt = $this->investmentService->getById($request->id);
+        return $invt;
         // TODO: Create view - content.investment.si.index
-        return view('content.investment.si.index', compact('investments'));
+        return view('content.investment.standing-instruction', compact('investments'));
     }
 
     /**
@@ -37,7 +41,7 @@ class InvestmentSiController extends Controller
         $investments = $this->investmentService->getAll();
         $companyBanks = $this->companyService->getFirstCompanyBanks();
 
-        return view('content.investment.si.create', compact('investments','companyBanks'));
+        return view('content.investment.si.create', compact('investments', 'companyBanks'));
     }
 
     /**
@@ -58,7 +62,7 @@ class InvestmentSiController extends Controller
         $investments = $this->investmentService->getAll();
         $companyBanks = $this->companyService->getFirstCompanyBanks();
 
-        return view('content.investment.si.edit', compact('investmentSi','investments','companyBanks'));
+        return view('content.investment.si.edit', compact('investmentSi', 'investments', 'companyBanks'));
     }
 
     /**

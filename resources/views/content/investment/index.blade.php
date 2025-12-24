@@ -184,10 +184,11 @@
                                                         href="{{ route('investment.els.show', $d->id) }}">
                                                         <i class="bx bx-show me-1"></i> View
                                                     </a>
-                                                    {{-- <a class="dropdown-item"
-                                                        href="{{ view('content.investment.standing-instruction') }}">
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('investment.si.index', $d->id) }}">
                                                         <i class="bx bx-show me-1"></i> investmen standing instruction
-                                                    </a> --}}
+                                                        {{ $d->id }}
+                                                    </a>
 
                                                     <a class="dropdown-item"
                                                         href="{{ route('investment.els.show', $d->id) }}">
