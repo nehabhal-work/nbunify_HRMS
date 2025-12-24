@@ -2,60 +2,112 @@
 <html>
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
     <title>Happy New Year!</title>
 </head>
+<style>
+    #birthdaybackground {
+        background-image: url('https://www.erp.easylifesolutions.co.in/assets/img/mail/ELS_newyear_BG.png');
+        /* background image */
+        background-size: cover;
+        /* fills the area */
+        background-position: center;
+        /* stays centered */
+        background-repeat: no-repeat;
+        /* no tiling */
+        width: 100%;
 
-<body
-    style="font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px;">
+    }
+</style>
 
-    <!-- Header -->
-    <div
-        style="text-align: center;
-                background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-                color: white;
-                padding: 30px;
-                border-radius: 10px;
-                margin-bottom: 20px;">
-        <h1 style="margin: 0; font-size: 2.5em;">
-            🎉 Happy New Year! 🎆
-        </h1>
-    </div>
+<body id="birthdaybackground">
 
-    <!-- Body -->
-    <div style="background: #f9f9f9; padding: 20px; border-radius: 10px;">
+    <div cellpadding="0" cellspacing="0" align="center">
+        <tr>
+            <td align="center">
 
-        <p style="font-size: 1.2em; margin-bottom: 20px;">
-            Dear,
-            {{-- Dear {{ $client->name ?? $client->client_name }}, --}}
-        </p>
+                <!-- Main Container -->
+                <table width="600" cellpadding="0" cellspacing="0"
+                    style="background:#ffffff; border-radius:20px; overflow:hidden; margin:20px 0; ">
 
-        <p style="font-size: 1.1em; margin-bottom: 20px;">
-            Warm greetings and best wishes for a joyful and prosperous New Year! ✨
-        </p>
+                    <!-- Header Image -->
+                    <tr>
+                        <td align="center">
+                            <img src="https://www.erp.easylifesolutions.co.in/assets/img/mail/ELS_newyear_Header.png"
+                                alt="New Year" style="width:100%; display:block;">
+                        </td>
+                    </tr>
 
-        <p style="margin-bottom: 20px;">
-            As we step into a new year, we would like to thank you for your continued trust
-            and support. It has been a pleasure serving you, and we truly value our association.
-        </p>
+                    <!-- Content -->
+                    <tr>
+                        <td style="padding:30px; font-family:Arial, sans-serif; color:#333;">
 
-        <p style="margin-bottom: 20px;">
-            May the coming year bring you good health, success, happiness, and new opportunities.
-            We look forward to continuing our journey together in the year ahead.
-        </p>
+                            <p style="font-size:16px;">
+                                Dear {{ $client->name ?? $client->client_name }},
+                            </p>
 
-        <div style="text-align: center; margin: 30px 0;">
-            <p style="font-size: 1.3em; color: #2a5298; font-weight: bold;">
-                🌟 Wishing You a Bright & Successful Year Ahead 🌟
-            </p>
-        </div>
+                            {{-- <p style="font-size:16px; margin-top:15px;">
+                                Merry Christmas! 🎅
+                            </p> --}}
 
-        <p style="margin-top: 30px;">
-            Best regards,<br>
-            <strong>The Team</strong>
-        </p>
+                            <p style="font-size:14px; line-height:1.6; margin-top:15px;">
+                                As we step into 2026, we’ve been reflecting on the milestones we reached together this
+                                past year. Your trust is the foundation of everything we do at ELS.
+                            </p>
 
+                            <p style="font-size:14px; line-height:1.6; margin-top:15px;">
+                                May the year ahead be defined by steady growth, smart breakthroughs, and continued
+                                prosperity. We are honored to be in your corner and can’t wait to see what we achieve
+                                together next. </p>
+
+
+
+                            <p style="margin-top:30px;">
+                                To a brilliant 2026, The
+                                <strong>ELS </strong>Team
+                            </p>
+
+                        </td>
+
+
+                    </tr>
+
+                    <!-- Footer -->
+                    <tr>
+
+                        <td align="center" style="padding:20px; border-top:1px solid #1e1d1d; ">
+                            <img src="https://www.erp.easylifesolutions.co.in/assets/img/branding/logo.png"
+                                alt="ELS Finserv1" width="80"><br><br>
+
+                            <!-- Social Icons -->
+                            <a href="https://www.facebook.com/elsolutionsofficial?rdid=GpqaDR8vMNRExBkg&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1GknSE1nS2%2F#"
+                                target="_blank">
+                                <img src="https://www.erp.easylifesolutions.co.in/assets/img/mail/fb.png" alt="Facebook"
+                                    width="24" style="border:0;">
+                            </a>
+
+                            <a href="https://www.instagram.com/easylifesolutions.official/" target="_blank">
+                                <img src="https://www.erp.easylifesolutions.co.in/assets/img/mail/instag.png"
+                                    alt="Instagram" width="24" style="border:0;">
+                            </a>
+
+
+                            <a href="https://wa.me/918424042887" target="_blank">
+                                <img src="https://www.erp.easylifesolutions.co.in/assets/img/mail/wp.png" alt="WhatsApp"
+                                    width="24" style="border:0;">
+                            </a>
+
+                            <p style="font-size:12px; color:#666; margin-top:15px;">
+                                +91 98672 25059 | +91 96198 50696 | +91 91617 03666 | +91 84240 42885<br>
+                                info@elsolutions.co.in | www.elsolutions.co.in
+                            </p>
+                        </td>
+                    </tr>
+
+                </table>
+
+            </td>
+        </tr>
     </div>
 
 </body>
