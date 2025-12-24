@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Masters\CompanyController;
 use App\Http\Controllers\Masters\HeadOfficeController;
 use App\Http\Controllers\Masters\BranchController;
+use App\Http\Controllers\Investment\InvestmentSiController;
 
 
 // MERGED
@@ -75,8 +76,9 @@ Route::middleware(['auth', 'verified'])->prefix('accounts')->name('accounts.')->
 Route::middleware(['auth', 'verified'])->prefix('investment')->name('investment.')->group(function () {
     Route::resource('scheme', SchemeController::class)->names('scheme');
 
-
     Route::resource('els', InvestmentController::class)->names('els');
+    Route::resource('si', InvestmentSiController::class)->names('si');
+
     Route::get('els-renew', [InvestmentController::class, 'renew'])->name("renew");
     Route::get('els-claim', [InvestmentController::class, 'claim'])->name("claim");
     Route::get('els-merge', [InvestmentController::class, 'merge'])->name("merge");

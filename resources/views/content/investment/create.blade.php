@@ -322,7 +322,7 @@
                                 <label class="form-label fw-semibold">
                                     Lock-in Period <span class="text-danger">*</span>
                                 </label>
-                                
+
 
                                 <input type="number" min="1"
                                     class="form-control onlydigit @error('lock_in_period') is-invalid @enderror"
