@@ -33,9 +33,12 @@
         <a href="{{ route('investment.els.index') }}" class="btn btn-secondary px-4">Go back</a>
 
     </div>
-    <form action="{{ route('investment.els.store') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('investment.si.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('post')
+
+        <input type="hidden" name="investment_id" value="{{ request()->get('id') }}">
+        <input type="hidden" name="si_no_of_payments" value="{{ $investment->schedule_count }}">
 
         {{-- Set standing instruction --}}
         <div class="row">
@@ -54,7 +57,7 @@
                                 <label class="form-label">
                                     Reference No <span class="text-danger">*</span>
                                 </label>
-                                <input type="text" name="reference_no"
+                                <input type="text" name="si_number"
                                     class="form-control @error('reference_no') is-invalid @enderror"
                                     placeholder="Enter reference no" value="{{ old('reference_no') }}">
 
@@ -68,41 +71,33 @@
                                 <label class="form-label">
                                     Company Bank <span class="text-danger">*</span>
                                 </label>
-                                <select name="company_bank" class="form-select @error('company_bank') is-invalid @enderror">
-                                    <option value="">Select Company Bank</option>
 
-                                    {{-- @foreach ($companyBanks as $bank)
-                                <option value="{{ $bank->id }}"
-                                    {{ old('company_bank') == $bank->id ? 'selected' : '' }}>
-                                    {{ $bank->bank_name }} — {{ $bank->account_no }}
-                                </option>
-                            @endforeach --}}
-                                </select>
+                                <!-- Display (Disabled Input) -->
+                                <input type="text" class="form-control  bg-subtle"
+                                    value="{{ $investment->fromCompanyBank->bank_name . '-' . $investment->fromCompanyBank->account_number }}"
+                                    disabled>
+                                <!-- Hidden Field (Actual Value Submitted) -->
+                                <input type="hidden" name="si_company_bank_id"
+                                    value="{{ $investment->fromCompanyBank->id }}">
 
-                                @error('company_bank')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
+
                             </div>
+
 
                             <!-- Client Bank -->
                             <div class="col-md-3">
                                 <label class="form-label">
                                     Client Bank <span class="text-danger">*</span>
                                 </label>
-                                <select name="client_bank" class="form-select @error('client_bank') is-invalid @enderror">
-                                    <option value="">Select Client Bank</option>
 
-                                    {{-- @foreach ($clientBanks as $bank)
-                                <option value="{{ $bank->id }}"
-                                    {{ old('client_bank') == $bank->id ? 'selected' : '' }}>
-                                    {{ $bank->bank_name }} — {{ $bank->account_no }}
-                                </option>
-                            @endforeach --}}
-                                </select>
+                                <!-- Display (Disabled Input) -->
+                                <input type="text" class="form-control  bg-subtle"
+                                    value="{{ $investment->toClientBank->bank_name . '-' . $investment->toClientBank->account_number }}"
+                                    disabled>
+                                <!-- Hidden Field (Actual Value Submitted) -->
+                                <input type="hidden" name="si_client_bank_id" value="{{ $investment->toClientBank->id }}">
 
-                                @error('client_bank')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
+
                             </div>
 
                             <!-- Payment Start Date -->
@@ -110,13 +105,11 @@
                                 <label class="form-label">
                                     Payment Start Date <span class="text-danger">*</span>
                                 </label>
-                                <input type="date" name="payment_start_date"
-                                    class="form-control bg-secondary-subtle @error('payment_start_date') is-invalid @enderror"
-                                    value="{{ old('payment_start_date') }}" readonly>
+                                <input type="date" name="si_start_date"
+                                    class="form-control bg-secondary-subtle @error('si_start_date') is-invalid @enderror"
+                                    value="{{ $investment->first_payout_date }}" readonly>
 
-                                @error('payment_start_date')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
+
                             </div>
 
                             <!-- Amount -->
@@ -124,13 +117,10 @@
                                 <label class="form-label">
                                     Amount <span class="text-danger">*</span>
                                 </label>
-                                <input type="number" step="0.01" name="amount"
+                                <input type="number" step="0.01" name="si_amount"
                                     class="form-control @error('amount') is-invalid @enderror" placeholder="Enter amount"
-                                    value="{{ old('amount') }}">
+                                    value="{{ $investment->payout_per_period }}">
 
-                                @error('amount')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
                             </div>
 
                             <!-- Instruction Image -->

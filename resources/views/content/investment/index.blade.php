@@ -185,7 +185,7 @@
                                                         <i class="bx bx-show me-1"></i> View
                                                     </a>
                                                     <a class="dropdown-item"
-                                                        href="{{ route('investment.si.index', $d->id) }}">
+                                                        href="{{ route('investment.si.index', ['id' => $d->id]) }}">
                                                         <i class="bx bx-show me-1"></i> investmen standing instruction
                                                         {{ $d->id }}
                                                     </a>

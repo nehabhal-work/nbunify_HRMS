@@ -25,12 +25,12 @@ class InvestmentSiController extends Controller
     public function index(Request $request)
     {
 
-        return $request->all();
-        $investments = $this->investmentSiService->getAll();
-        $invt = $this->investmentService->getById($request->id);
-        return $invt;
+        // return $request->all();
+        $si = $this->investmentSiService->getAll();
+        $investment = $this->investmentService->getById($request->id);
+        // return $investments;
         // TODO: Create view - content.investment.si.index
-        return view('content.investment.standing-instruction', compact('investments'));
+        return view('content.investment.standing-instruction', compact('investment', 'si'));
     }
 
     /**
@@ -49,6 +49,7 @@ class InvestmentSiController extends Controller
      */
     public function store(InvestmentSiRequest $request)
     {
+        return $request;
         $this->investmentSiService->create($request->validated());
         return redirect()->route('investment.si.index')->with('success', 'Standing Instruction created successfully.');
     }
