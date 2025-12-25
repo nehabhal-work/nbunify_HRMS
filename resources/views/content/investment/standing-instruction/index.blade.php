@@ -174,86 +174,86 @@
                 </div>
             </div>
         </div>
+    </form>
 
-        <div class="card my-4">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h5 class="mb-0">Bank / Instrument List</h5>
-            </div>
-            <div class="card-body">
-                <div class="table-responsive text-nowrap">
-                    <table class="table srkdataTable">
-                        <thead class="table-light">
+    <div class="card my-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Bank / Instrument List</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive text-nowrap">
+                <table class="table srkdataTable">
+                    <thead class="table-light">
+                        <tr>
+                            <th>#</th>
+                            <th>Reference No</th>
+                            <th>Company Bank</th>
+                            <th>Client Bank</th>
+                            <th>Payment Start Date</th>
+                            <th>Amount</th>
+                            <th>Instruction Image</th>
+                            <th>Notes Image</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($investment->standingInstructions as $d)
                             <tr>
-                                <th>#</th>
-                                <th>Reference No</th>
-                                <th>Company Bank</th>
-                                <th>Client Bank</th>
-                                <th>Payment Start Date</th>
-                                <th>Amount</th>
-                                <th>Instruction Image</th>
-                                <th>Notes Image</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($investment->standingInstructions as $d)
-                                <tr>
-                                    <td>1</td>
-                                    <td>{{ $d->si_number }}</td>
-                                    <td>{{ $investment->fromCompanyBank->bank_name . ' - ' . $investment->fromCompanyBank->account_number }}
-                                    </td>
-                                    <td>{{ $investment->ToClientBank->bank_name . ' - ' . $investment->ToClientBank->account_number }}
-                                    </td>
-                                    <td>{{ \Carbon\Carbon::parse($d->si_start_date)->format('d M Y') }}
-                                    </td>
-                                    <td>{{ $d->si_amount }}</td>
-                                    <td>instruction_001.jpg</td>
-                                    <td>notes_001.jpg</td>
-                                    <td>
-                                        <div class="dropdown">
-                                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                                data-bs-toggle="dropdown">
-                                                <i class="bx bx-dots-vertical-rounded"></i>
-                                            </button>
+                                <td>1</td>
+                                <td>{{ $d->si_number }}</td>
+                                <td>{{ $investment->fromCompanyBank->bank_name . ' - ' . $investment->fromCompanyBank->account_number }}
+                                </td>
+                                <td>{{ $investment->ToClientBank->bank_name . ' - ' . $investment->ToClientBank->account_number }}
+                                </td>
+                                <td>{{ \Carbon\Carbon::parse($d->si_start_date)->format('d M Y') }}
+                                </td>
+                                <td>{{ $d->si_amount }}</td>
+                                <td>instruction_001.jpg</td>
+                                <td>notes_001.jpg</td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
+                                            data-bs-toggle="dropdown">
+                                            <i class="bx bx-dots-vertical-rounded"></i>
+                                        </button>
 
-                                            <div class="dropdown-menu">
+                                        <div class="dropdown-menu">
 
-                                                <a class="dropdown-item edit-btn"
-                                                    href="{{ route('investment.si.edit', $d->id) }}">
-                                                    <i class="bx bx-edit-alt me-1"></i> Edit
-                                                </a>
+                                            <a class="dropdown-item edit-btn"
+                                                href="{{ route('investment.si.edit', $d->id) }}">
+                                                <i class="bx bx-edit-alt me-1"></i> Edit
+                                            </a>
 
-                                                <form action="{{ route('investment.si.destroy', $d->id) }}"
-                                                    method="POST" onsubmit="return confirmDelete()">
-                                                    @csrf
-                                                    @method('DELETE')
+                                            <form action="{{ route('investment.si.destroy', $d->id) }}" method="POST"
+                                                onsubmit="return confirmDelete()">
+                                                @csrf
+                                                @method('DELETE')
 
-                                                    <button type="submit" class="dropdown-item text-danger">
-                                                        Delete
-                                                    </button>
-                                                </form>
-                                              
+                                                <button type="submit" class="dropdown-item text-danger">
+                                                    Delete
+                                                </button>
+                                            </form>
 
 
 
-                                            </div>
+
                                         </div>
+                                    </div>
 
-                                    </td>
-                                </tr>
-                            @endforeach
-
-
-                        </tbody>
+                                </td>
+                            </tr>
+                        @endforeach
 
 
-                    </table>
-                </div>
+                    </tbody>
+
+
+                </table>
             </div>
         </div>
+    </div>
 
 
-    </form>
 
 
 

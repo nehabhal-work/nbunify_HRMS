@@ -114,6 +114,7 @@ class InvestmentSiController extends Controller
      */
     public function destroy($id)
     {
+        // return $id;
         $investmentSi = $this->investmentSiService->getById($id);
         $this->investmentSiService->delete($investmentSi);
         return redirect()->route('investment.si.index')->with('success', 'Standing Instruction deleted successfully.');

@@ -40,7 +40,9 @@
         @method('PUT')
 
         <!-- Investment ID -->
-        {{-- <input type="hidden" name="investment_id" value="{{ $investment->id }}"> --}}
+        <input type="hidden" name="investment_id" value="{{ $investment->id }}">
+                <input type="hidden" name="si_no_of_payments" value="{{ $investment->schedule_count }}">
+
 
         <div class="row">
             <div class="col-md-12">
