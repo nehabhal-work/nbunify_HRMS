@@ -112,7 +112,7 @@ class InvestmentSiController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
         $investmentSi = $this->investmentSiService->getById($id);
         $this->investmentSiService->delete($investmentSi);

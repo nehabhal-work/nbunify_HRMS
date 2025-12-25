@@ -232,16 +232,32 @@ class InvestmentService
 
         if ($data['frequency'] === 'monthly') {
             $data['payout_per_period'] = $data['annual_payout'] / 12;
-            $data['schedule_count'] = $data['tenure_count'] * 12;
+            if($data['tenure_type'] == 'months') {
+                $data['schedule_count'] = ($data['tenure_count']/12) * 12;
+            } else if($data['tenure_type'] == 'years') {
+                $data['schedule_count'] = $data['tenure_count'] * 12;
+            }
         } elseif ($data['frequency'] === 'quarterly') {
             $data['payout_per_period'] = $data['annual_payout'] / 4;
-            $data['schedule_count'] = $data['tenure_count'] * 4;
+            if($data['tenure_type'] == 'months') {
+                $data['schedule_count'] = ($data['tenure_count']/12) * 4;
+            } else if($data['tenure_type'] == 'years') {
+                $data['schedule_count'] = $data['tenure_count'] * 4;
+            }
         } elseif ($data['frequency'] === 'half-yearly') {
             $data['payout_per_period'] = $data['annual_payout'] / 2;
-            $data['schedule_count'] = $data['tenure_count'] * 2;
+            if($data['tenure_type'] == 'months') {
+                $data['schedule_count'] = ($data['tenure_count']/12) * 2;
+            } else if($data['tenure_type'] == 'years') {
+                $data['schedule_count'] = $data['tenure_count'] * 2;
+            }
         } elseif ($data['frequency'] === 'yearly') {
             $data['payout_per_period'] = $data['annual_payout'];
-            $data['schedule_count'] = $data['tenure_count'];
+            if($data['tenure_type'] == 'months') {
+                $data['schedule_count'] = ($data['tenure_count']/12);
+            } else if($data['tenure_type'] == 'years') {
+                $data['schedule_count'] = $data['tenure_count'];
+            }
         } else {
             $principal = $data['investment_amount'];
             $rate = ($data['roi_percent'] + $data['additional_roi_percent']) / 100;
