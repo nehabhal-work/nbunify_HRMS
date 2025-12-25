@@ -94,7 +94,7 @@ class InvestmentSiController extends Controller
     //     $this->investmentSiService->update($investmentSi, $request->validated());
     //     return redirect()->route('investment.si.index')->with('success', 'Standing Instruction updated successfully.');
     // }
-    public function update(Request $request, string $id)
+    public function update(InvestmentSiRequest $request, string $id)
     {
         $investmentSi = $this->investmentSiService->getById($id);
 
