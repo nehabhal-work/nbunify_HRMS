@@ -51,8 +51,9 @@ class InvestmentSiController extends Controller
      */
     public function store(InvestmentSiRequest $request)
     {
-        // return $request;
-        $this->investmentSiService->create($request->validated());
+        $data = $request->validated();
+        $data['created_by'] = auth()->id();
+        $this->investmentSiService->create($data);
         return redirect()->route('investment.si.index', ['id' => $request->investment_id])->with('success', 'Standing Instruction created successfully.');
     }
 
@@ -117,6 +118,34 @@ class InvestmentSiController extends Controller
         $investmentSi = $this->investmentSiService->getById($si);
         $this->investmentSiService->delete($investmentSi);
         return redirect()->route('investment.si.index', ['id' => $investmentSi->investment_id])->with('success', 'Standing Instruction deleted successfully.');
+    }
+
+    /**
+     * Approve the specified resource.
+     */
+    public function approve($id)
+    {
+        $investmentSi = $this->investmentSiService->getById($id);
+        $user = auth()->user();
+        
+        if ($user->level == 1 && !$investmentSi->approved_by) {
+            $investmentSi->update([
+                'approved_by' => $user->id,
+                'approved_at' => now()
+            ]);
+        } elseif ($user->level == 2 && $investmentSi->approved_by && !$investmentSi->approved2_by) {
+            $investmentSi->update([
+                'approved2_by' => $user->id,
+                'approved2_on' => now()
+            ]);
+        } elseif ($user->level == 3 && $investmentSi->approved2_by && !$investmentSi->approved3_by) {
+            $investmentSi->update([
+                'approved3_by' => $user->id,
+                'approved3_on' => now()
+            ]);
+        }
+        
+        return redirect()->route('investment.si.index', ['id' => $investmentSi->investment_id])->with('success', 'Standing Instruction approved successfully.');
     }
 
 
