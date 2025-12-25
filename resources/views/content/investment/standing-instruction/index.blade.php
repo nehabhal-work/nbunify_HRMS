@@ -58,10 +58,10 @@
                                     Reference No <span class="text-danger">*</span>
                                 </label>
                                 <input type="text" name="si_number"
-                                    class="form-control @error('reference_no') is-invalid @enderror"
-                                    placeholder="Enter reference no" value="{{ old('reference_no') }}">
+                                    class="form-control @error('si_number') is-invalid @enderror"
+                                    placeholder="Enter reference no" value="{{ old('si_number') }}">
 
-                                @error('reference_no')
+                                @error('si_number')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
@@ -107,7 +107,9 @@
                                 </label>
                                 <input type="date" name="si_start_date"
                                     class="form-control bg-secondary-subtle @error('si_start_date') is-invalid @enderror"
-                                    value="{{ $investment->first_payout_date }}" readonly>
+                                    value="{{ $investment->first_payout_date ? \Carbon\Carbon::parse($investment->first_payout_date)->format('Y-m-d') : '' }}"
+                                    readonly>
+
 
 
                             </div>
@@ -117,9 +119,9 @@
                                 <label class="form-label">
                                     Amount <span class="text-danger">*</span>
                                 </label>
-                                <input type="number" step="0.01" name="si_amount"
-                                    class="form-control @error('amount') is-invalid @enderror" placeholder="Enter amount"
-                                    value="{{ $investment->payout_per_period }}">
+                                <input type="text" step="0.01" name="si_amount" readonly
+                                    class="form-control bg-secondary-subtle @error('amount') is-invalid @enderror"
+                                    placeholder="Enter amount" value="{{ $investment->payout_per_period }}">
 
                             </div>
 
@@ -190,23 +192,25 @@
                                 <th>Amount</th>
                                 <th>Instruction Image</th>
                                 <th>Notes Image</th>
-                                <th>Remarks</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>REF-2025-001</td>
-                                <td>ICICI Bank — 0023456789</td>
-                                <td>HDFC Bank — 4455667788</td>
-                                <td>05 Mar 2025</td>
-                                <td>₹50,000</td>
-                                <td>instruction_001.jpg</td>
-                                <td>notes_001.jpg</td>
-                                <td>Monthly SIP standing instruction initiated.</td>
-                            </tr>
+                            @foreach ($investment->standingInstructions as $d)
+                                <tr>
+                                    <td>1</td>
+                                    <td>{{ $d->si_number }}</td>
+                                    <td>{{ $investment->fromCompanyBank->bank_name . ' - ' . $investment->fromCompanyBank->account_number }}
+                                    </td>
+                                    <td>{{ $investment->ToClientBank->bank_name . ' - ' . $investment->ToClientBank->account_number }}
+                                    </td>
+                                    <td>{{ $d->si_start_date }}</td>
+                                    <td>{{ $d->si_amount }}</td>
+                                    <td>instruction_001.jpg</td>
+                                    <td>notes_001.jpg</td>
+                                </tr>
+                            @endforeach
 
-                            <tr>
+                            {{-- <tr>
                                 <td>2</td>
                                 <td>REF-2025-002</td>
                                 <td>Axis Bank — 8855441122</td>
@@ -228,7 +232,7 @@
                                 <td>instruction_003.jpg</td>
                                 <td>notes_003.jpg</td>
                                 <td>Instruction for automated transfer to client.</td>
-                            </tr>
+                            </tr> --}}
                         </tbody>
 
 

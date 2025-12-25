@@ -161,15 +161,28 @@ class InvestmentService
 
     public function getAll(): Collection
     {
-        return Investment::with(['firstClient', 'secondClient', 'thirdClient', 'fourthClient', 'scheme', 'fromCompanyBank', 'toClientBank', 'createdBy', 'approvedBy', 'approved2By', 'approved3By'])
+        return Investment::with(['firstClient', 'secondClient', 'thirdClient', 'fourthClient', 'scheme', 'fromCompanyBank', 'toClientBank', 'createdBy', 'approvedBy', 'approved2By', 'approved3By', 'standingInstructions',])
             ->orderByDesc('id')->get();
     }
 
     public function getById(int $id): Investment
     {
-        $investment = Investment::with(['firstClient', 'secondClient', 'thirdClient', 'fourthClient', 'scheme', 
-        'fromCompanyBank', 'toClientBank', 'createdBy', 'approvedBy', 'approved2By', 'approved3By',
-         'nominees.clientFamily','InvestmentInputBank'])->findOrFail($id);
+        $investment = Investment::with([
+            'firstClient',
+            'secondClient',
+            'thirdClient',
+            'fourthClient',
+            'scheme',
+            'fromCompanyBank',
+            'toClientBank',
+            'createdBy',
+            'approvedBy',
+            'approved2By',
+            'approved3By',
+            'nominees.clientFamily',
+            'InvestmentInputBank',
+            'standingInstructions'
+        ])->findOrFail($id);
 
         if (auth()->id() == $investment->created_by) {
             $investment->is_approved = true;
@@ -194,7 +207,7 @@ class InvestmentService
         $payschedule = Investment::with(['payoutSchedules.fromCompanyBank', 'payoutSchedules.toClientBank'])->findOrFail($id);
 
         return $payschedule;
-        }
+    }
 
     //  public function getBankInstrument(int $id): Investment
     // {

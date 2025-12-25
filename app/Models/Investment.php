@@ -115,7 +115,7 @@ class Investment extends Model
 
     public function standingInstructions(): HasMany
     {
-        return $this->hasMany(InvestmentSi::class);
+        return $this->hasMany(InvestmentSi::class, 'investment_id', 'id');
     }
 
     public function InvestmentInputBank(): HasMany
