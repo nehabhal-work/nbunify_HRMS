@@ -17,7 +17,8 @@ class InvestmentSiController extends Controller
         private InvestmentService $investmentService,
         private ClientBankService $clientBankService,
         private CompanyService $companyService,
-    ) {}
+    ) {
+    }
 
     /**
      * Display a listing of the resource.
@@ -58,24 +59,55 @@ class InvestmentSiController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
-    {
-        $investmentSi = $this->investmentSiService->getById($id);
-        $investments = $this->investmentService->getAll();
-        $companyBanks = $this->companyService->getFirstCompanyBanks();
+   public function edit(string $id)
+{
+    // Standing Instruction
+    $investmentSi = $this->investmentSiService->getById($id);
 
-        return view('content.investment.si.edit', compact('investmentSi', 'investments', 'companyBanks'));
-    }
+    // Parent Investment (REQUIRED)
+    $investment = $this->investmentService->getById(
+        $investmentSi->investment_id
+    );
+
+    // Optional data (if you still need them)
+    $investments = $this->investmentService->getAll();
+    $companyBanks = $this->companyService->getFirstCompanyBanks();
+
+    return view(
+        'content.investment.standing-instruction.edit',
+        compact(
+            'investmentSi',
+            'investment',
+            'investments',
+            'companyBanks'
+        )
+    );
+}
+
 
     /**
      * Update the specified resource in storage.
      */
+    // public function update(InvestmentSiRequest $request, string $id)
+    // {
+    //     $investmentSi = $this->investmentSiService->getById($id);
+    //     $this->investmentSiService->update($investmentSi, $request->validated());
+    //     return redirect()->route('investment.si.index')->with('success', 'Standing Instruction updated successfully.');
+    // }
     public function update(InvestmentSiRequest $request, string $id)
     {
         $investmentSi = $this->investmentSiService->getById($id);
-        $this->investmentSiService->update($investmentSi, $request->validated());
-        return redirect()->route('investment.si.index')->with('success', 'Standing Instruction updated successfully.');
+
+        $this->investmentSiService->update(
+            $investmentSi,
+            $request->validated()
+        );
+
+        return redirect()
+            ->route('investment.si.index', ['id' => $investmentSi->investment_id])
+            ->with('success', 'Standing Instruction updated successfully.');
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -86,4 +118,6 @@ class InvestmentSiController extends Controller
         $this->investmentSiService->delete($investmentSi);
         return redirect()->route('investment.si.index')->with('success', 'Standing Instruction deleted successfully.');
     }
+
+
 }

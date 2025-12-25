@@ -65,47 +65,7 @@
                                 </tr>
                             </thead>
 
-                            {{-- <tr>
-                                    <td>1</td>
-                                    <td>15 Jan 2025</td>
-                                    <td>Mr. Rajesh Sharma</td>
-                                    <td>Monthly Growth Plan</td>
-                                    <td>₹50,000</td>
-                                    <td>1 Year</td>
-                                    <td>Monthly</td>
-                                    <td>12.5%</td>
-                                    <td><span class="badge bg-secondary">INACTIVE</span></td>
-                                    <td>Neha Bhalerao</td>
-                                    <td>13.5%</td>
-                                    <td><span class="badge bg-primary">View Bank Instrument</span></td>
-                                    <td><span class="badge bg-secondary">Not Set</span></td>
-                                    <td>
-                                        <div class="dropdown">
-                                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                                data-bs-toggle="dropdown">
-                                                <i class="bx bx-dots-vertical-rounded"></i>
-                                            </button>
-                                            <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="#"><i class="bx bx-edit-alt me-1"></i>
-                                                    View </a>
-
-                                                <a class="dropdown-item" href="{{ route('investment.merge') }}"><i
-                                                        class="bx bx-edit-alt me-1"></i>
-                                                    Merge </a>
-                                                <a class="dropdown-item" href="{{ route('investment.claim') }}"><i
-                                                        class="bx bx-edit-alt me-1"></i>
-                                                    Claim </a>
-                                                <a class="dropdown-item" href="{{ route('investment.maturity') }}"><i
-                                                        class="bx bx-edit-alt me-1"></i>
-                                                    Maturity </a>
-                                                <a class="dropdown-item" href="{{ route('investment.maturity-letter') }}"><i
-                                                        class="bx bx-edit-alt me-1"></i>
-                                                    Maturity-letter </a>
-
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr> --}}
+                            
                             <tbody>
                                 @foreach ($investments as $index => $d)
                                     <tr>

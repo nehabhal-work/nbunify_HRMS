@@ -78,6 +78,8 @@ Route::middleware(['auth', 'verified'])->prefix('investment')->name('investment.
 
     Route::resource('els', InvestmentController::class)->names('els');
     Route::resource('si', InvestmentSiController::class)->names('si');
+    // Route::delete('investment/si/{si}', [InvestmentSiController::class, 'destroy'])->name('investment.si.destroy');
+
 
     Route::get('els-renew', [InvestmentController::class, 'renew'])->name("renew");
     Route::get('els-claim', [InvestmentController::class, 'claim'])->name("claim");

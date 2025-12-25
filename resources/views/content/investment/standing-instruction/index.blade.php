@@ -192,6 +192,7 @@
                                 <th>Amount</th>
                                 <th>Instruction Image</th>
                                 <th>Notes Image</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -203,36 +204,46 @@
                                     </td>
                                     <td>{{ $investment->ToClientBank->bank_name . ' - ' . $investment->ToClientBank->account_number }}
                                     </td>
-                                    <td>{{ $d->si_start_date }}</td>
+                                    <td>{{ \Carbon\Carbon::parse($d->si_start_date)->format('d M Y') }}
+                                    </td>
                                     <td>{{ $d->si_amount }}</td>
                                     <td>instruction_001.jpg</td>
                                     <td>notes_001.jpg</td>
+                                    <td>
+                                        <div class="dropdown">
+                                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
+                                                data-bs-toggle="dropdown">
+                                                <i class="bx bx-dots-vertical-rounded"></i>
+                                            </button>
+
+                                            <div class="dropdown-menu">
+
+                                                <a class="dropdown-item edit-btn"
+                                                    href="{{ route('investment.si.edit', $d->id) }}">
+                                                    <i class="bx bx-edit-alt me-1"></i> Edit
+                                                </a>
+
+                                                <form action="{{ route('investment.si.destroy', $d->id) }}"
+                                                    method="POST" onsubmit="return confirmDelete()">
+                                                    @csrf
+                                                    @method('DELETE')
+
+                                                    <button type="submit" class="dropdown-item text-danger">
+                                                        Delete
+                                                    </button>
+                                                </form>
+                                              
+
+
+
+                                            </div>
+                                        </div>
+
+                                    </td>
                                 </tr>
                             @endforeach
 
-                            {{-- <tr>
-                                <td>2</td>
-                                <td>REF-2025-002</td>
-                                <td>Axis Bank — 8855441122</td>
-                                <td>SBI Bank — 9988776655</td>
-                                <td>10 Mar 2025</td>
-                                <td>₹1,20,000</td>
-                                <td>instruction_002.pdf</td>
-                                <td>notes_002.png</td>
-                                <td>Quarterly payout instruction for investment.</td>
-                            </tr>
 
-                            <tr>
-                                <td>3</td>
-                                <td>REF-2025-003</td>
-                                <td>Kotak Bank — 2233114455</td>
-                                <td>Yes Bank — 7766554422</td>
-                                <td>15 Mar 2025</td>
-                                <td>₹75,500</td>
-                                <td>instruction_003.jpg</td>
-                                <td>notes_003.jpg</td>
-                                <td>Instruction for automated transfer to client.</td>
-                            </tr> --}}
                         </tbody>
 
 
