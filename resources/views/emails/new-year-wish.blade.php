@@ -98,7 +98,7 @@
                             </a>
 
                             <p style="font-size:12px; color:#666; margin-top:15px;">
-                                +91 98672 25059 | +91 96198 50696 | +91 91617 03666 | +91 84240 42885<br>
+                                +91 98672 25059 | +91 96198 50696 | +91 98922 76058 | +91 84240 42885<br>
                                 info@elsolutions.co.in | www.elsolutions.co.in
                             </p>
                         </td>

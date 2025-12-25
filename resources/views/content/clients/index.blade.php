@@ -28,7 +28,15 @@
             <span class="text-muted fw-light">Master /</span> <a href="{{ route('clients.create') }}">Client</a>
         </h4>
     </div>
-
+    @if (Auth::user()->email == 'admin@els.com')
+        <form action="{{ route('send.festival.mail') }}" method="POST">
+            @csrf
+            <input type="hidden" name="id">
+            <button type="submit" class="btn btn-success mb-3">
+                Send Festival Mail
+            </button>
+        </form>
+    @endif
     <div class="row">
         <!-- TABLE SECTION -->
         <div class="col-12">

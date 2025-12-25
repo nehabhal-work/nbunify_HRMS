@@ -23,7 +23,8 @@ class ClientController extends Controller
         private ClientBankService $clientBankService,
         private FileStorageService $fileStorageService,
         private CompanyService $companyService,
-    ) {}
+    ) {
+    }
 
     public function index()
     {
@@ -173,24 +174,27 @@ class ClientController extends Controller
                     'emails.christmas-wish',
                     compact('client'),
                     function ($message) use ($client) {
-                        $message->to($client->email) // use client email
-                            // ->bcc('bhalchandrahrs@gmail.com')
-                            ->subject('Mery Christmas!');
+                        if (!empty($client->email)) {
+                            $message->to($client->email);
+                        }
+
+                        $message->subject('Merry Christmas! 🎄');
                     }
                 );
+
 
                 // ✅ SUCCESS LOG
                 Log::info('Festival mail sent successfully', [
                     'client_id' => $client->id,
-                    'email'     => $client->email,
+                    'email' => $client->email,
                 ]);
             } catch (\Exception $e) {
 
                 // ❌ FAILURE LOG
                 Log::error('Festival mail failed', [
                     'client_id' => $client->id,
-                    'email'     => $client->email,
-                    'error'     => $e->getMessage(),
+                    'email' => $client->email,
+                    'error' => $e->getMessage(),
                 ]);
             }
         }
