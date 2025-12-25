@@ -233,37 +233,45 @@ class InvestmentService
         if ($data['frequency'] === 'monthly') {
             $data['payout_per_period'] = $data['annual_payout'] / 12;
             if($data['tenure_type'] == 'months') {
-                $data['schedule_count'] = ($data['tenure_count']/12) * 12;
+                $data['schedule_count'] = $data['tenure_count'];
             } else if($data['tenure_type'] == 'years') {
                 $data['schedule_count'] = $data['tenure_count'] * 12;
+            } else {
+                $data['schedule_count'] = 1;
             }
         } elseif ($data['frequency'] === 'quarterly') {
             $data['payout_per_period'] = $data['annual_payout'] / 4;
             if($data['tenure_type'] == 'months') {
-                $data['schedule_count'] = ($data['tenure_count']/12) * 4;
+                $data['schedule_count'] = $data['tenure_count'] / 3;
             } else if($data['tenure_type'] == 'years') {
                 $data['schedule_count'] = $data['tenure_count'] * 4;
+            } else {
+                $data['schedule_count'] = 1;
             }
         } elseif ($data['frequency'] === 'half-yearly') {
             $data['payout_per_period'] = $data['annual_payout'] / 2;
             if($data['tenure_type'] == 'months') {
-                $data['schedule_count'] = ($data['tenure_count']/12) * 2;
+                $data['schedule_count'] = $data['tenure_count'] / 6;
             } else if($data['tenure_type'] == 'years') {
                 $data['schedule_count'] = $data['tenure_count'] * 2;
+            } else {
+                $data['schedule_count'] = 1;
             }
         } elseif ($data['frequency'] === 'yearly') {
             $data['payout_per_period'] = $data['annual_payout'];
             if($data['tenure_type'] == 'months') {
-                $data['schedule_count'] = ($data['tenure_count']/12);
+                $data['schedule_count'] = $data['tenure_count']/12;
             } else if($data['tenure_type'] == 'years') {
                 $data['schedule_count'] = $data['tenure_count'];
+            } else {
+                $data['schedule_count'] = 1;
             }
         } else {
             $principal = $data['investment_amount'];
             $rate = ($data['roi_percent'] + $data['additional_roi_percent']) / 100;
             $n = $data['tenure_count'];
             $data['payout_per_period'] = $principal * pow(1 + $rate, $n);
-            $data['schedule_count'] = $data['tenure_count'];
+            $data['schedule_count'] = 1;
         }
 
         $investmentDate = Carbon::parse($data['investment_date']);

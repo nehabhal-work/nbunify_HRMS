@@ -32,6 +32,7 @@ class InvestmentSiRequest extends FormRequest
             'attachment_si_image' => 'nullable|file|mimes:jpeg,png,jpg,pdf|max:2048',
             'attachment_notes_image' => 'nullable|file|mimes:jpeg,png,jpg,pdf|max:2048',
             'status' => 'nullable|in:active,inactive',
+            'remarks' => 'nullable|string|max:255',
         ];
     }
 
@@ -52,6 +53,7 @@ class InvestmentSiRequest extends FormRequest
             'si_amount.min' => 'SI Amount must be greater than 0.',
             'si_no_of_payments.required' => 'Number of payments is required.',
             'si_no_of_payments.min' => 'Number of payments must be at least 1.',
+            'remarks.max' => 'Remarks may not be greater than 255 characters.',
         ];
     }
 }

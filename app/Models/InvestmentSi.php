@@ -20,6 +20,7 @@ class InvestmentSi extends Model
         'attachment_si_image',
         'attachment_notes_image',
         'status',
+        'remarks',
     ];
 
     protected $casts = [

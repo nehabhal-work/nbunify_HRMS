@@ -78,9 +78,6 @@ Route::middleware(['auth', 'verified'])->prefix('investment')->name('investment.
 
     Route::resource('els', InvestmentController::class)->names('els');
     Route::resource('si', InvestmentSiController::class)->names('si');
-Route::prefix('investment')->name('investment.')->group(function () {
-    Route::resource('si', InvestmentSiController::class);
-});
 
 
     Route::get('els-renew', [InvestmentController::class, 'renew'])->name("renew");
