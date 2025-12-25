@@ -78,6 +78,7 @@ Route::middleware(['auth', 'verified'])->prefix('investment')->name('investment.
 
     Route::resource('els', InvestmentController::class)->names('els');
     Route::resource('si', InvestmentSiController::class)->names('si');
+    Route::put('si-approve/{id}', [InvestmentSiController::class, 'approve'])->name('si.approve');
 
 
     Route::get('els-renew', [InvestmentController::class, 'renew'])->name("renew");
