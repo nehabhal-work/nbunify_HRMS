@@ -94,7 +94,7 @@ class InvestmentSiController extends Controller
     //     $this->investmentSiService->update($investmentSi, $request->validated());
     //     return redirect()->route('investment.si.index')->with('success', 'Standing Instruction updated successfully.');
     // }
-    public function update(InvestmentSiRequest $request, string $id)
+    public function update(Request $request, string $id)
     {
         $investmentSi = $this->investmentSiService->getById($id);
 
@@ -112,11 +112,11 @@ class InvestmentSiController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy($si)
     {
-        $investmentSi = $this->investmentSiService->getById($id);
+        $investmentSi = $this->investmentSiService->getById($si);
         $this->investmentSiService->delete($investmentSi);
-        return redirect()->route('investment.si.index')->with('success', 'Standing Instruction deleted successfully.');
+        return redirect()->route('investment.si.index', ['id' => $investmentSi->investment_id])->with('success', 'Standing Instruction deleted successfully.');
     }
 
 
