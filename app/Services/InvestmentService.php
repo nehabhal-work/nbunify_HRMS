@@ -34,37 +34,37 @@ class InvestmentService
             $this->validateStandingInstructions($data['standing_instructions']);
         }
 
-        $calculatedData = $this->calculateInvestmentParameters($data);
+        $data = $this->calculateInvestmentParameters($data);
 
         // Add maker checker fields
         $data['created_by'] = auth()->id();
 
         // Extract only fillable fields for Investment model
         $investmentData = [
-            'investment_date' => $calculatedData['investment_date'],
-            'investment_type' => $calculatedData['investment_type'],
-            'first_client_id' => $calculatedData['first_client_id'],
-            'second_client_id' => $calculatedData['second_client_id'] ?? null,
-            'third_client_id' => $calculatedData['third_client_id'] ?? null,
-            'fourth_client_id' => $calculatedData['fourth_client_id'] ?? null,
-            'scheme_id' => $calculatedData['scheme_id'],
-            'investment_amount' => $calculatedData['investment_amount'],
-            'tenure_type' => $calculatedData['tenure_type'],
-            'tenure_count' => $calculatedData['tenure_count'],
-            'frequency' => $calculatedData['frequency'],
-            'roi_percent' => $calculatedData['roi_percent'],
-            'additional_roi_percent' => $calculatedData['additional_roi_percent'] ?? 0,
-            'has_tds' => $calculatedData['has_tds'] ?? false,
+            'investment_date' => $data['investment_date'],
+            'investment_type' => $data['investment_type'],
+            'first_client_id' => $data['first_client_id'],
+            'second_client_id' => $data['second_client_id'] ?? null,
+            'third_client_id' => $data['third_client_id'] ?? null,
+            'fourth_client_id' => $data['fourth_client_id'] ?? null,
+            'scheme_id' => $data['scheme_id'],
+            'investment_amount' => $data['investment_amount'],
+            'tenure_type' => $data['tenure_type'],
+            'tenure_count' => $data['tenure_count'],
+            'frequency' => $data['frequency'],
+            'roi_percent' => $data['roi_percent'],
+            'additional_roi_percent' => $data['additional_roi_percent'] ?? 0,
+            'has_tds' => $data['has_tds'] ?? false,
             'from_company_bank_id' => $data['from_company_bank_id'],
             'to_client_bank_id' => $data['to_client_bank_id'],
-            'schedule_count' => $calculatedData['schedule_count'],
-            'annual_payout' => $calculatedData['annual_payout'],
-            'payout_per_period' => $calculatedData['payout_per_period'],
-            'maturity_date' => $calculatedData['maturity_date'],
-            'first_payout_date' => $calculatedData['first_payout_date'],
-            'actual_interest_amount' => $calculatedData['actual_interest_amount'],
-            'paid_interest_amount' => $calculatedData['paid_interest_amount'],
-            'rounding_off_amount' => $calculatedData['rounding_off_amount'],
+            'schedule_count' => $data['schedule_count'],
+            'annual_payout' => $data['annual_payout'],
+            'payout_per_period' => $data['payout_per_period'],
+            'maturity_date' => $data['maturity_date'],
+            'first_payout_date' => $data['first_payout_date'],
+            'actual_interest_amount' => $data['actual_interest_amount'],
+            'paid_interest_amount' => $data['paid_interest_amount'],
+            'rounding_off_amount' => $data['rounding_off_amount'],
             'status' => $data['status'] ?? 'open',
             'action_status' => $data['action_status'] ?? 'new',
             'exit_load_percent' => $data['exit_load_percent'] ?? 0,
@@ -73,7 +73,7 @@ class InvestmentService
             'created_by' => $data['created_by'],
         ];
 
-        return DB::transaction(function () use ($investmentData, $calculatedData, $data) {
+        return DB::transaction(function () use ($investmentData, $data) {
             $investment = Investment::create($investmentData);
 
             // Handle TDS attachment after investment creation
@@ -131,7 +131,7 @@ class InvestmentService
             }
 
             // Create payout schedules
-            foreach ($calculatedData['payout_schedule'] as $schedule) {
+            foreach ($data['payout_schedule'] as $schedule) {
                 InvestmentPayoutSchedule::create([
                     'investment_id' => $investment->id,
                     'sch_payout_date' => $schedule['payout_date'],
@@ -146,7 +146,7 @@ class InvestmentService
                 ]);
             }
 
-            return array_merge($calculatedData, ['investment' => $investment]);
+            return array_merge($data, ['investment' => $investment]);
         });
     }
 
@@ -476,20 +476,6 @@ class InvestmentService
 
     private function transformFormData(array $data): array
     {
-        // Transform holder fields
-        if (isset($data['other_holders2'])) {
-            $data['second_client_id'] = $data['other_holders2'];
-            unset($data['other_holders2']);
-        }
-        if (isset($data['other_holders3'])) {
-            $data['third_client_id'] = $data['other_holders3'];
-            unset($data['other_holders3']);
-        }
-        if (isset($data['other_holders4'])) {
-            $data['fourth_client_id'] = $data['other_holders4'];
-            unset($data['other_holders4']);
-        }
-
         // Transform input banks from arrays to structured format
         if (isset($data['instrument']) && is_array($data['instrument'])) {
             $data['input_banks'] = [];
