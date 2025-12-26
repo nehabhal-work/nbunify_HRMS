@@ -25,9 +25,9 @@ class InvestmentRequest extends FormRequest
             'investment_date' => 'required|date',
             'investment_type' => 'required|string|max:255',
             'first_client_id' => 'required|exists:clients,id',
-            'other_holders2' => 'nullable|exists:clients,id',
-            'other_holders3' => 'nullable|exists:clients,id',
-            'other_holders4' => 'nullable|exists:clients,id',
+            'second_client_id' => 'nullable|exists:clients,id',
+            'third_client_id' => 'nullable|exists:clients,id',
+            'fourth_client_id' => 'nullable|exists:clients,id',
             'scheme_id' => 'required|exists:schemes_master,id',
             'investment_amount' => 'required|numeric|min:0',
             'tenure_type' => 'required|string|max:255',
@@ -40,7 +40,7 @@ class InvestmentRequest extends FormRequest
             'attachment_tds_url' => 'nullable|string',
             'from_company_bank_id' => 'required|exists:company_bank_details,id',
             'to_client_bank_id' => 'required|exists:client_banks,id',
-            
+
             // Input banks validation (arrays from form)
             'instrument' => 'nullable|array',
             'instrument.*' => 'required|string|max:255',
@@ -60,7 +60,7 @@ class InvestmentRequest extends FormRequest
             'effective_date.*' => 'required|date',
             'company_reference_no' => 'nullable|array',
             'company_reference_no.*' => 'nullable|string|max:255',
-            
+
             // Nominees validation (arrays from form)
             'client_family_id' => 'nullable|array',
             'client_family_id.*' => 'required|exists:client_families,id',
@@ -68,7 +68,7 @@ class InvestmentRequest extends FormRequest
             'guardian_client_family_id.*' => 'nullable|exists:client_families,id',
             'percent' => 'nullable|array',
             'percent.*' => 'required|numeric|min:0|max:100',
-            
+
             // Standing instructions validation
             'standing_instructions.si_number' => 'nullable|string|max:255',
             'standing_instructions.si_client_bank_id' => 'nullable|exists:client_banks,id',
@@ -78,7 +78,7 @@ class InvestmentRequest extends FormRequest
             'standing_instructions.si_no_of_payments' => 'nullable|integer|min:1',
             'standing_instructions.attachment_si_image_url' => 'nullable|string',
             'standing_instructions.attachment_notes_image_url' => 'nullable|string',
-            
+
             // Maker checker fields
             'status' => 'nullable|string|in:open,closed',
             'action_status' => 'nullable|string|in:new,renewed,matured,merged,claimed,withdraw',
@@ -101,9 +101,9 @@ class InvestmentRequest extends FormRequest
                 $totalInstrumentAmount = array_sum($instrumentAmounts);
 
                 if ($investmentAmount != $totalInstrumentAmount) {
-                    $validator->errors()->add('investment_amount', 
+                    $validator->errors()->add('investment_amount',
                         'Investment amount must equal the sum of all instrument amounts. ' .
-                        'Investment: ' . number_format($investmentAmount, 2) . 
+                        'Investment: ' . number_format($investmentAmount, 2) .
                         ', Instruments total: ' . number_format($totalInstrumentAmount, 2)
                     );
                 }
@@ -115,7 +115,7 @@ class InvestmentRequest extends FormRequest
                 $totalPercentage = array_sum($percentages);
 
                 if ($totalPercentage != 100) {
-                    $validator->errors()->add('percent', 
+                    $validator->errors()->add('percent',
                         'Total percentage must equal 100%. Current total: ' . number_format($totalPercentage, 2) . '%'
                     );
                 }

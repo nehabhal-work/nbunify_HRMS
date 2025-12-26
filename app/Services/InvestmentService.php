@@ -476,20 +476,6 @@ class InvestmentService
 
     private function transformFormData(array $data): array
     {
-        // Transform holder fields
-        if (isset($data['other_holders2'])) {
-            $data['second_client_id'] = $data['other_holders2'];
-            unset($data['other_holders2']);
-        }
-        if (isset($data['other_holders3'])) {
-            $data['third_client_id'] = $data['other_holders3'];
-            unset($data['other_holders3']);
-        }
-        if (isset($data['other_holders4'])) {
-            $data['fourth_client_id'] = $data['other_holders4'];
-            unset($data['other_holders4']);
-        }
-
         // Transform input banks from arrays to structured format
         if (isset($data['instrument']) && is_array($data['instrument'])) {
             $data['input_banks'] = [];
