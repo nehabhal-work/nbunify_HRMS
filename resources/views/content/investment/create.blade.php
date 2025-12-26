@@ -106,11 +106,11 @@
                                 <!-- 2nd Holder -->
                                 <div class="col-md-3 holder-box" id="holder_2">
                                     <label class="form-label">Investment 2nd Holder</label>
-                                    <select class="form-select select2" name="second_client" id="second_client">
+                                    <select class="form-select select2" name="second_client_id" id="second_client">
                                         <option value="">Select Holder</option>
                                         @foreach ($clients as $d)
                                             <option value="{{ $d->id }}"
-                                                {{ old('second_client') == $d->id ? 'selected' : '' }}>
+                                                {{ old('second_client_id') == $d->id ? 'selected' : '' }}>
                                                 {{ ucfirst(strtolower($d->name)) }}
                                             </option>
                                         @endforeach
@@ -120,11 +120,11 @@
                                 <!-- 3rd Holder -->
                                 <div class="col-md-3 holder-box d-none" id="holder_3">
                                     <label class="form-label">Investment 3rd Holder</label>
-                                    <select class="form-select select2" name="third_client" id="third_client">
+                                    <select class="form-select select2" name="third_client_id" id="third_client">
                                         <option value="">Select Holder</option>
                                         @foreach ($clients as $d)
                                             <option value="{{ $d->id }}"
-                                                {{ old('third_client') == $d->id ? 'selected' : '' }}>
+                                                {{ old('third_client_id') == $d->id ? 'selected' : '' }}>
                                                 {{ ucfirst(strtolower($d->name)) }}
                                             </option>
                                         @endforeach
@@ -134,11 +134,11 @@
                                 <!-- 4th Holder -->
                                 <div class="col-md-3 holder-box d-none" id="holder_4">
                                     <label class="form-label">Investment 4th Holder</label>
-                                    <select class="form-select select2" name="fourth_client" id="fourth_client">
+                                    <select class="form-select select2" name="fourth_client_id" id="fourth_client">
                                         <option value="">Select Holder</option>
                                         @foreach ($clients as $d)
                                             <option value="{{ $d->id }}"
-                                                {{ old('fourth_client') == $d->id ? 'selected' : '' }}>
+                                                {{ old('fourth_client_id') == $d->id ? 'selected' : '' }}>
                                                 {{ ucfirst(strtolower($d->name)) }}
                                             </option>
                                         @endforeach
