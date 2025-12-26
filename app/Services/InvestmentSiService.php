@@ -21,10 +21,7 @@ class InvestmentSiService
         return InvestmentSi::with(['investment', 'siClientBank', 'siCompanyBank'])->get();
     }
 
-    /**
-     * Get investment SI by ID with relationships
-     */
-    public function getById(int $id): InvestmentSi
+    public function showById(int $id): InvestmentSi
     {
         $investmentSi = InvestmentSi::with([
             'investment',
@@ -52,6 +49,22 @@ class InvestmentSiService
             }
         }
         return $investmentSi;
+    }
+
+    /**
+     * Get investment SI by ID with relationships
+     */
+    public function getById(int $id): InvestmentSi
+    {
+        return InvestmentSi::with([
+            'investment',
+            'siClientBank',
+            'siCompanyBank',
+            'createdBy',
+            'approvedBy',
+            'approved2By',
+            'approved3By'
+        ])->findOrFail($id);
     }
 
     /**

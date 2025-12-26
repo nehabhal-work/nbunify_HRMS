@@ -88,7 +88,7 @@ class InvestmentSiController extends Controller
     public function show(string $id)
     {
         // Standing Instruction
-        $investmentSi = $this->investmentSiService->getById($id);
+        $investmentSi = $this->investmentSiService->showById($id);
 
         // Parent Investment (REQUIRED)
         $investment = $this->investmentService->getById(
@@ -150,6 +150,7 @@ class InvestmentSiController extends Controller
     public function approve($id)
     {
         $investmentSi = $this->investmentSiService->getById($id);
+
         $user = auth()->user();
 
         if ($user->level == 1 && !$investmentSi->approved_by) {
