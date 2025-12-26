@@ -75,8 +75,12 @@ class ClientBankController extends Controller
     public function destroy($id, Request $request)
     {
         if ($client_id = $request->client_id) {
-            $this->clientBankService->delete($id);
-            return redirect()->route('client-banks.index', ['client_id' => $client_id])->with('success', 'Client bank account deleted successfully');
+            try {
+                $this->clientBankService->delete($id);
+                return redirect()->route('client-banks.index', ['client_id' => $client_id])->with('success', 'Client bank account deleted successfully');
+            } catch (\Exception $e) {
+                return redirect()->route('client-banks.index', ['client_id' => $client_id])->with('error', $e->getMessage());
+            }
         } else {
             abort(404);
         }

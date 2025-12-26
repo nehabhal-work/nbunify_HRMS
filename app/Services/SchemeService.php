@@ -23,6 +23,7 @@ class SchemeService
     public function create(array $data): SchemesMaster
     {
         $data['scheme_code'] = $this->generateSchemeCode($data['scheme_name']);
+        $data['exit_load_percent'] = $data['exit_load_percent'] ?? 0;
         return SchemesMaster::create($data);
     }
 
