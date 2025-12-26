@@ -126,6 +126,25 @@ class ClientBankService
     public function delete($id)
     {
         $clientBank = ClientBank::findOrFail($id);
+        
+        // Check if client bank is used in investments
+        $investmentCount = \App\Models\Investment::where('to_client_bank_id', $id)->count();
+        if ($investmentCount > 0) {
+            throw new \Exception('Cannot delete client bank as it is used in ' . $investmentCount . ' investment(s).');
+        }
+        
+        // Check if client bank is used in standing instructions
+        $siCount = \App\Models\InvestmentSi::where('si_client_bank_id', $id)->count();
+        if ($siCount > 0) {
+            throw new \Exception('Cannot delete client bank as it is used in ' . $siCount . ' standing instruction(s).');
+        }
+        
+        // Check if client bank is used in investment input banks
+        $inputBankCount = \App\Models\InvestmentInputBank::where('from_client_bank_id', $id)->count();
+        if ($inputBankCount > 0) {
+            throw new \Exception('Cannot delete client bank as it is used in ' . $inputBankCount . ' investment input bank(s).');
+        }
+        
         if ($clientBank->attachment_cancelled_cheque) {
             $this->fileStorageService->deleteFile($clientBank->attachment_cancelled_cheque);
         }

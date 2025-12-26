@@ -14,7 +14,9 @@ use Illuminate\Support\Facades\DB;
 
 class InvestmentService
 {
-    public function __construct(private FileStorageService $fileStorageService) {}
+    public function __construct(private FileStorageService $fileStorageService)
+    {
+    }
     public function create(array $data)
     {
         // Transform form data to expected structure
@@ -228,54 +230,11 @@ class InvestmentService
 
     public function calculateInvestmentParameters(array $data)
     {
-        $data['annual_payout'] = ($data['investment_amount'] * ($data['roi_percent'] + $data['additional_roi_percent'] ?? 0)) / 100;
-
-        if ($data['frequency'] === 'monthly') {
-            $data['payout_per_period'] = $data['annual_payout'] / 12;
-            if($data['tenure_type'] == 'months') {
-                $data['schedule_count'] = $data['tenure_count'];
-            } else if($data['tenure_type'] == 'years') {
-                $data['schedule_count'] = $data['tenure_count'] * 12;
-            } else {
-                $data['schedule_count'] = 1;
-            }
-        } elseif ($data['frequency'] === 'quarterly') {
-            $data['payout_per_period'] = $data['annual_payout'] / 4;
-            if($data['tenure_type'] == 'months') {
-                $data['schedule_count'] = $data['tenure_count'] / 3;
-            } else if($data['tenure_type'] == 'years') {
-                $data['schedule_count'] = $data['tenure_count'] * 4;
-            } else {
-                $data['schedule_count'] = 1;
-            }
-        } elseif ($data['frequency'] === 'half-yearly') {
-            $data['payout_per_period'] = $data['annual_payout'] / 2;
-            if($data['tenure_type'] == 'months') {
-                $data['schedule_count'] = $data['tenure_count'] / 6;
-            } else if($data['tenure_type'] == 'years') {
-                $data['schedule_count'] = $data['tenure_count'] * 2;
-            } else {
-                $data['schedule_count'] = 1;
-            }
-        } elseif ($data['frequency'] === 'yearly') {
-            $data['payout_per_period'] = $data['annual_payout'];
-            if($data['tenure_type'] == 'months') {
-                $data['schedule_count'] = $data['tenure_count']/12;
-            } else if($data['tenure_type'] == 'years') {
-                $data['schedule_count'] = $data['tenure_count'];
-            } else {
-                $data['schedule_count'] = 1;
-            }
-        } else {
-            $principal = $data['investment_amount'];
-            $rate = ($data['roi_percent'] + $data['additional_roi_percent']) / 100;
-            $n = $data['tenure_count'];
-            $data['payout_per_period'] = $principal * pow(1 + $rate, $n);
-            $data['schedule_count'] = 1;
-        }
-
+        // CALCULATE ANNUAL PAYOUT
+        $data['annual_payout'] = ($data['investment_amount'] * ($data['roi_percent'])) / 100;
         $investmentDate = Carbon::parse($data['investment_date']);
 
+        // NOW CALCULATE MATURITY DATE
         switch ($data['tenure_type']) {
             case 'months':
                 $data['maturity_date'] = $investmentDate->copy()->addMonths((int) $data['tenure_count']);
@@ -283,61 +242,120 @@ class InvestmentService
             case 'years':
                 $data['maturity_date'] = $investmentDate->copy()->addYears((int) $data['tenure_count']);
                 break;
-            default: // days
+            default:
                 $data['maturity_date'] = $investmentDate->copy()->addDays((int) $data['tenure_count']);
                 break;
         }
         $data['maturity_date'] = $data['maturity_date']->subDay();
 
-        switch ($data['frequency']) {
-            case 'monthly':
-                if ($investmentDate->day < 20) {
-                    $data['first_payout_date'] = $investmentDate->copy()->addMonths(1)->startOfMonth();
-                } else {
-                    $data['first_payout_date'] = $investmentDate->copy()->addMonths(2)->startOfMonth();
-                }
-                break;
-            case 'quarterly':
-                $data['first_payout_date'] = $investmentDate->copy()->addMonths(3)->startOfMonth();
-                break;
-            case 'half-yearly':
-                $data['first_payout_date'] = $investmentDate->copy()->addMonths(6)->startOfMonth();
-                break;
-            case 'yearly':
-                $data['first_payout_date'] = $investmentDate->copy()->addYears(1)->startOfMonth();
-                break;
-            default:
-                $data['first_payout_date'] = $data['maturity_date'];
-                break;
-        }
+        $frequencyMap = [
+            'monthly' => ['divisor' => 12, 'months_multiplier' => 1, 'years_multiplier' => 12, 'add_months' => 1],
+            'quarterly' => ['divisor' => 4, 'months_multiplier' => 1 / 3, 'years_multiplier' => 4, 'add_months' => 3],
+            'half-yearly' => ['divisor' => 2, 'months_multiplier' => 1 / 6, 'years_multiplier' => 2, 'add_months' => 6],
+            'yearly' => ['divisor' => 1, 'months_multiplier' => 1 / 12, 'years_multiplier' => 1, 'add_years' => 1]
+        ];
 
+        // CALCULATE PAYOUT PER PERIOD, SCHEDULE COUNT AND FIRST PAYOUT DATE
+        if ($data['tenure_type'] == 'days') {
+            // FOR DAILY TENURE, WE ASSUME LUMP SUM PAYMENT AT MATURITY
+            $data['annual_payout'] = $data['annual_payout'] + $data['investment_amount'];
+            $data['payout_per_period'] = $data['annual_payout'];
+            $data['schedule_count'] = 1;
+            $data['first_payout_date'] = $data['maturity_date'];
+        } elseif (isset($frequencyMap[$data['frequency']])) {
+            // FOR REGULAR FREQUENCY PAYOUTS
+            $config = $frequencyMap[$data['frequency']];
+            $data['payout_per_period'] = $data['annual_payout'] / $config['divisor'];
+            $data['schedule_count'] = $data['tenure_type'] == 'months'
+                ? $data['tenure_count'] * $config['months_multiplier']
+                : $data['tenure_count'] * $config['years_multiplier'];
+            if ($data['frequency'] == 'monthly') {
+                $data['first_payout_date'] = $investmentDate->day < 20
+                    ? $investmentDate->copy()->addMonths(1)->startOfMonth()
+                    : $investmentDate->copy()->addMonths(2)->startOfMonth();
+            } elseif (isset($config['add_years'])) {
+                $data['first_payout_date'] = $investmentDate->copy()->addYears($config['add_years'])->startOfMonth();
+            } else {
+                $data['first_payout_date'] = $investmentDate->copy()->addMonths($config['add_months'])->startOfMonth();
+            }
+        } else {
+            // FOR COMPOUNDING FREQUENCY WE ASSUME THE TENURE IS IN YEARS
+            $principal = $data['investment_amount'];
+            $rate = $data['roi_percent'] / 100;
+            $data['payout_per_period'] = $principal * pow(1 + $rate, $data['tenure_count']);
+            $data['schedule_count'] = 1;
+            $data['first_payout_date'] = $data['maturity_date'];
+        }
         $data['payout_schedule'] = [];
 
         $returnPrincipalWithInterest = false;
 
-        for ($i = 0; $i < $data['schedule_count']; $i++) {
-            switch ($data['frequency']) {
-                case 'monthly':
-                    $payoutDate = Carbon::parse($data['first_payout_date'])->addMonths($i);
+        if ($data['schedule_count'] == 1) {
+            $data['payout_schedule'][] = [
+                'payout_date' => $data['maturity_date']->toDateString(),
+                'amount' => round($data['payout_per_period'], 0),
+                'actual_payout_date' => null,
+                'status' => 'pending',
+                'remarks' => null,
+                'actual_payout_amount' => 0,
+                'utr_no' => null,
+                'company_bank_id' => null,
+                'client_bank_id' => null,
+            ];
+            $returnPrincipalWithInterest = true;
+
+            $data['actual_interest_amount'] = $data['payout_per_period'] - $data['investment_amount'];
+            $data['paid_interest_amount'] = $data['actual_interest_amount'];
+
+            $data['rounding_off_amount'] = 0;
+
+        } else {
+            for ($i = 0; $i < $data['schedule_count']; $i++) {
+                switch ($data['frequency']) {
+                    case 'monthly':
+                        $payoutDate = Carbon::parse($data['first_payout_date'])->addMonths($i);
+                        break;
+                    case 'quarterly':
+                        $payoutDate = Carbon::parse($data['first_payout_date'])->addMonths($i * 3);
+                        break;
+                    case 'half-yearly':
+                        $payoutDate = Carbon::parse($data['first_payout_date'])->addMonths($i * 6);
+                        break;
+                    case 'yearly':
+                        $payoutDate = Carbon::parse($data['first_payout_date'])->addYears($i);
+                        break;
+                    default:
+                        $payoutDate = Carbon::parse($data['maturity_date']);
+                        break;
+                }
+
+                if ($payoutDate->lessThan($data['maturity_date'])) {
+                    $data['payout_schedule'][] = [
+                        'payout_date' => $payoutDate->toDateString(),
+                        'amount' => round($data['payout_per_period'], 0),
+                        'actual_payout_date' => null,
+                        'status' => 'pending',
+                        'remarks' => null,
+                        'actual_payout_amount' => 0,
+                        'utr_no' => null,
+                        'company_bank_id' => null,
+                        'client_bank_id' => null,
+                    ];
+                } else {
+                    $returnPrincipalWithInterest = true;
                     break;
-                case 'quarterly':
-                    $payoutDate = Carbon::parse($data['first_payout_date'])->addMonths($i * 3);
-                    break;
-                case 'half-yearly':
-                    $payoutDate = Carbon::parse($data['first_payout_date'])->addMonths($i * 6);
-                    break;
-                case 'yearly':
-                    $payoutDate = Carbon::parse($data['first_payout_date'])->addYears($i);
-                    break;
-                default:
-                    $payoutDate = Carbon::parse($data['maturity_date']);
-                    break;
+                }
             }
 
-            if ($payoutDate->lessThan($data['maturity_date'])) {
+            $data['actual_interest_amount'] = $data['payout_per_period'] * $data['schedule_count'];
+            $data['paid_interest_amount'] = round($data['payout_per_period'], 0) * $data['schedule_count'];
+
+            $data['rounding_off_amount'] = $data['actual_interest_amount'] - $data['paid_interest_amount'];
+
+            if ($returnPrincipalWithInterest) {
                 $data['payout_schedule'][] = [
-                    'payout_date' => $payoutDate->toDateString(),
-                    'amount' => round($data['payout_per_period'], 0),
+                    'payout_date' => $data['maturity_date']->toDateString(),
+                    'amount' => round($data['payout_per_period'] + $data['investment_amount'] + $data['rounding_off_amount'], 0),
                     'actual_payout_date' => null,
                     'status' => 'pending',
                     'remarks' => null,
@@ -347,40 +365,18 @@ class InvestmentService
                     'client_bank_id' => null,
                 ];
             } else {
-                $returnPrincipalWithInterest = true;
-                break;
+                $data['payout_schedule'][] = [
+                    'payout_date' => $data['maturity_date']->toDateString(),
+                    'amount' => round($data['investment_amount'] + $data['rounding_off_amount'], 0),
+                    'actual_payout_date' => null,
+                    'status' => 'pending',
+                    'remarks' => null,
+                    'actual_payout_amount' => 0,
+                    'utr_no' => null,
+                    'company_bank_id' => null,
+                    'client_bank_id' => null,
+                ];
             }
-        }
-
-        $data['actual_interest_amount'] = $data['payout_per_period'] * $data['schedule_count'];
-        $data['paid_interest_amount'] = round($data['payout_per_period'], 0) * $data['schedule_count'];
-
-        $data['rounding_off_amount'] = $data['actual_interest_amount'] - $data['paid_interest_amount'];
-
-        if ($returnPrincipalWithInterest) {
-            $data['payout_schedule'][] = [
-                'payout_date' => $data['maturity_date']->toDateString(),
-                'amount' => round($data['payout_per_period'] + $data['investment_amount'] + $data['rounding_off_amount'], 0),
-                'actual_payout_date' => null,
-                'status' => 'pending',
-                'remarks' => null,
-                'actual_payout_amount' => 0,
-                'utr_no' => null,
-                'company_bank_id' => null,
-                'client_bank_id' => null,
-            ];
-        } else {
-            $data['payout_schedule'][] = [
-                'payout_date' => $data['maturity_date']->toDateString(),
-                'amount' => round($data['investment_amount'] + $data['rounding_off_amount'], 0),
-                'actual_payout_date' => null,
-                'status' => 'pending',
-                'remarks' => null,
-                'actual_payout_amount' => 0,
-                'utr_no' => null,
-                'company_bank_id' => null,
-                'client_bank_id' => null,
-            ];
         }
 
         return $data;
@@ -459,7 +455,7 @@ class InvestmentService
                 throw new \InvalidArgumentException("Guardian client family ID cannot be empty in nominee #{$index}.");
             }
 
-            $totalPercent += (float)$nominee['percent'];
+            $totalPercent += (float) $nominee['percent'];
         }
 
         if (abs($totalPercent - 100) > 0.01) {
