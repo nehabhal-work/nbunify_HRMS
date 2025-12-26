@@ -276,7 +276,20 @@
                             <td>{{ $b->client_reference_no }}</td>
                             <td>₹ {{ number_format($b->amount, 2) }}</td>
                             <td>{{ $investment->toClientBank?->bank_name ?? '-' }}</td>
-                            <td>{{ $b->attachment_instrument ?? 'No Attachment' }}</td>
+                            {{-- <td>{{ $b->attachment_instrument ?? 'No Attachment' }}</td> --}}
+                            <td class="value">
+                                @if (!empty($b->attachment_instrument))
+                                    <a href="{{ $b->attachment_instrument }}" target="_blank"
+                                        class="text-primary fw-medium text-decoration-underline">
+                                        Click to view
+                                    </a>
+                                @else
+                                    <span class="text-muted">Not available</span>
+                                @endif
+                            </td>
+
+
+
 
                         </tr>
 

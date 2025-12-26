@@ -39,6 +39,7 @@ class InvestmentController extends Controller
      */
     public function create()
     {
+
         $scheme = $this->schemeService->getAll();
         $clients = $this->clientService->getAll();
         $companyBanks = $this->companyService->getFirstCompanyBanks();
@@ -52,6 +53,7 @@ class InvestmentController extends Controller
     public function store(InvestmentRequest $request)
     // public function store(Request $request)
     {
+        // return $request;
         $this->investmentService->create($request->validated());
         return redirect()->route('investment.els.index')->with('success', 'Investment created successfully.');
     }
