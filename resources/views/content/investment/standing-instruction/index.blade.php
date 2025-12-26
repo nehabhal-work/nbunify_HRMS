@@ -338,9 +338,9 @@
                                 <td
                                     class="{{ !empty($d->createdBy) ? 'table-warning fw-semibold rounded px-2 py-1' : '' }}">
                                     @if (!empty($d->createdBy))
-                                        <div class="d-flex justify-content-center text-center">
+                                        {{-- <div class="d-flex justify-content-center text-center"> --}}
                                             {{ $d->createdBy->name }}
-                                        </div>
+                                        {{-- </div> --}}
                                         <br>
                                         {{ $d->created_at ?? '-' }}
                                     @else

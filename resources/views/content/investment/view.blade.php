@@ -53,12 +53,16 @@
     <div class="container">
         <div class="card">
             <div class="card-header">
-                <h5 class="card-title">Investment Details</h5> 
+                <h5 class="card-title">Investment Details</h5>
                 <h6>Investment ID : {{ $investment->id }}</h6>
-               
+
                 <table class="table table-bordered mb-4 investment-view">
-                    <tbody>
+                    {{-- <tbody>
                         <tr>
+                            <th>Investment ID</th>
+                            <td>
+                                <b>{{ $investment->id }}</b>
+                            </td>
                             <th>Investment Date</th>
                             <td>
                                 <b>{{ \Carbon\Carbon::parse($investment->investment_date)->format('d M Y') }}</b>
@@ -143,7 +147,109 @@
                         </tr>
 
 
+                    </tbody> --}}
+                    <tbody>
+                        <tr>
+                            <th>Investment ID</th>
+                            <td><b>{{ $investment->id }}</b></td>
+
+                            <th>Investment Date</th>
+                            <td><b>{{ \Carbon\Carbon::parse($investment->investment_date)->format('d M Y') }}</b></td>
+
+                            <th>Investment Type</th>
+                            <td><b>{{ ucfirst($investment->investment_type) }}</b></td>
+                        </tr>
+
+                        <tr>
+                            <th>Scheme Name</th>
+                            <td><b>{{ $schemeNames[$investment->scheme_id] ?? '-' }}</b></td>
+
+                            <th>Investment Amount</th>
+                            <td><b>₹ {{ number_format($investment->investment_amount, 2) }}</b></td>
+
+                            <th>Interest Amount</th>
+                            <td><b>₹ {{ number_format($investment->actual_interest_amount, 2) }}</b></td>
+                        </tr>
+
+                        {{-- Always show 1st Holder --}}
+                        <tr>
+                            <th>1st Holder</th>
+                            <td class="bg-warning-subtle"
+                                colspan="{{ $investment->investment_type === 'single' ? 5 : 1 }}">
+                                <b>{{ $clientNames[$investment->first_client_id] ?? '-' }}</b>
+                            </td>
+
+                            @if ($investment->investment_type !== 'single')
+                                <th>2nd Holder</th>
+                                <td class="bg-warning-subtle">
+                                    <b>{{ $clientNames[$investment->second_client_id] ?? '-' }}</b>
+                                </td>
+
+                                <th>3rd Holder</th>
+                                <td class="bg-warning-subtle">
+                                    <b>{{ $clientNames[$investment->third_client_id] ?? '-' }}</b>
+                                </td>
+                            @endif
+                        </tr>
+
+                        {{-- Show 4th holder only for joint --}}
+                        @if ($investment->investment_type !== 'single')
+                            <tr>
+                                <th>4th Holder</th>
+                                <td class="bg-warning-subtle" colspan="5">
+                                    <b>{{ $clientNames[$investment->fourth_client_id] ?? '-' }}</b>
+                                </td>
+                            </tr>
+                        @endif
+
+
+                        <tr>
+                            {{-- <th>4th Holder</th>
+                            <td class="bg-warning-subtle">
+                                <b>{{ $investment->investment_type !== 'single' ? $clientNames[$investment->fourth_client_id] ?? '-' : '-' }}</b>
+                            </td> --}}
+
+                            <th>Tenure</th>
+                            <td><b>{{ $investment->tenure_count }} {{ ucfirst($investment->tenure_type) }}</b></td>
+
+                            <th>Lock-in Period</th>
+                            <td><b>{{ $investment->lock_in_period }}</b></td>
+                        </tr>
+
+                        <tr>
+                            <th>ROI (%)</th>
+                            <td><b>{{ $investment->roi_percent }}%</b></td>
+
+                            <th>Additional ROI</th>
+                            <td><b>{{ $investment->additional_roi_percent }}%</b></td>
+
+                            <th>TDS Applicable</th>
+                            <td><b>{{ $investment->has_tds ? 'Yes' : 'No' }}</b></td>
+                        </tr>
+
+                        <tr>
+                            <th>Frequency</th>
+                            <td><b>{{ ucfirst($investment->frequency) }}</b></td>
+
+                            <th>Schedule Count</th>
+                            <td><b>{{ $investment->schedule_count }}</b></td>
+                            <th>Payout Per Period</th>
+                            <td><b>₹ {{ number_format($investment->payout_per_period, 2) }}</b></td>
+
+                        </tr>
+
+                        <tr>
+                            <th>First Payout Date</th>
+                            <td>
+                                <b>{{ \Carbon\Carbon::parse($investment->first_payout_date)->format('d M Y') }}</b>
+                            </td>
+                            <th>Maturity Date</th>
+                            <td>
+                                <b>{{ \Carbon\Carbon::parse($investment->maturity_date)->format('d M Y') }}</b>
+                            </td>
+                        </tr>
                     </tbody>
+
                 </table>
 
 
