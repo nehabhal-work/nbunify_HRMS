@@ -665,6 +665,8 @@ function calculateROI() {
         case 'yearly':
             finalAmount = yearlyInterest;
             break;
+        default:
+            finalAmount = yearlyInterest;
     }
 
     $('#roi_amount').val(finalAmount.toFixed(2));

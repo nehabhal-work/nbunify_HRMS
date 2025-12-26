@@ -536,8 +536,8 @@
                     <div class="modal-body">
                         <div class="mb-3">
                             <label class="form-label">Actual Paid Amount</label>
-                            <input type="number" step="0.01" class="form-control" name="actual_payout_amount"
-                                id="actual_amount" required>
+                            <input type="number" step="0.01" class="form-control bg-secondary-subtle"
+                                name="actual_payout_amount" id="actual_amount" readonly>
                         </div>
 
                         <div class="mb-3">
@@ -555,8 +555,47 @@
                             <label class="form-label">Remarks</label>
                             <textarea class="form-control" name="remarks" rows="3"></textarea>
                         </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">
+                                reference Image <span class="text-danger">*</span>
+                            </label>
+
+                            <div class="input-group">
+                                <input type="file"
+                                    class="form-control fileInput instrumentImage @error('refImage') is-invalid @enderror"
+                                    id="refImage" name="attachment_refImage" accept="image/*,application/pdf"
+                                    onchange="uploadTempFile(this, 'refImage')">
+
+                                <button class="btn btn-outline-danger" type="button"
+                                    onclick="document.getElementById('refImage').value = ''">
+                                    ✕
+                                </button>
+                            </div>
+
+                            @error('refImage.0')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
+
+                            <input type="hidden" id="attachment_refImage_url" name="attachment_refImage_url"
+                                value="{{ old('attachment_refImage_url') }}">
+
+                            @if (old('attachment_refImage_url'))
+                                <div id="attachment_refImage_preview" class="position-relative d-inline-block mt-2">
+                                    <img src="{{ old('attachment_refImage_url') }}" width="100"
+                                        class="rounded border">
+
+                                    <button type="button"
+                                        class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                                        onclick="removeImage('attachment_refImage')">
+                                        ✕
+                                    </button>
+                                </div>
+                            @endif
+                        </div>
                     </div>
 
+                    <hr>
                     <div class="modal-footer">
                         <button class="btn btn-success">Confirm Payment</button>
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
