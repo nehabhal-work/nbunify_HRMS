@@ -224,30 +224,83 @@
                             </div>
 
                             <!-- Instruction Image -->
-                            <div class="col-md-3">
+                            <div class="col-md-3 mb-3">
                                 <label class="form-label">
                                     Instruction Image <span class="text-danger">*</span>
                                 </label>
-                                <input type="file" name="instruction_image"
-                                    class="form-control @error('instruction_image') is-invalid @enderror">
+
+                                <div class="input-group">
+                                    <input type="file"
+                                        class="form-control fileInput @error('instruction_image') is-invalid @enderror"
+                                        id="instruction_image" name="instruction_image" accept="image/*,application/pdf"
+                                        onchange="uploadTempFile(this, 'instruction_image')">
+
+                                    <button class="btn btn-outline-danger" type="button"
+                                        onclick="document.getElementById('instruction_image').value = ''">
+                                        ✕
+                                    </button>
+                                </div>
 
                                 @error('instruction_image')
-                                    <small class="text-danger">{{ $message }}</small>
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
                                 @enderror
+
+                                <input type="hidden" id="instruction_image_url" name="instruction_image_url"
+                                    value="{{ old('instruction_image_url') }}">
+
+                                @if (old('instruction_image_url'))
+                                    <div id="instruction_image_preview" class="position-relative d-inline-block mt-2">
+                                        <img src="{{ old('instruction_image_url') }}" width="100"
+                                            class="rounded border">
+
+                                        <button type="button"
+                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                                            onclick="removeImage('instruction_image')">
+                                            ✕
+                                        </button>
+                                    </div>
+                                @endif
                             </div>
 
+
                             <!-- Notes Image -->
-                            <div class="col-md-3">
+                            <div class="col-md-3 mb-3">
                                 <label class="form-label">
                                     Notes Image <span class="text-danger">*</span>
                                 </label>
-                                <input type="file" name="notes_image"
-                                    class="form-control @error('notes_image') is-invalid @enderror">
+
+                                <div class="input-group">
+                                    <input type="file"
+                                        class="form-control fileInput @error('notes_image') is-invalid @enderror"
+                                        id="notes_image" name="notes_image" accept="image/*,application/pdf"
+                                        onchange="uploadTempFile(this, 'notes_image')">
+
+                                    <button class="btn btn-outline-danger" type="button"
+                                        onclick="document.getElementById('notes_image').value = ''">
+                                        ✕
+                                    </button>
+                                </div>
 
                                 @error('notes_image')
-                                    <small class="text-danger">{{ $message }}</small>
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
                                 @enderror
+
+                                <input type="hidden" id="notes_image_url" name="notes_image_url"
+                                    value="{{ old('notes_image_url') }}">
+
+                                @if (old('notes_image_url'))
+                                    <div id="notes_image_preview" class="position-relative d-inline-block mt-2">
+                                        <img src="{{ old('notes_image_url') }}" width="100" class="rounded border">
+
+                                        <button type="button"
+                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                                            onclick="removeImage('notes_image')">
+                                            ✕
+                                        </button>
+                                    </div>
+                                @endif
                             </div>
+
                             <!-- Status -->
                             <div class="col-md-3">
                                 <label class="form-label">
@@ -339,7 +392,7 @@
                                     class="{{ !empty($d->createdBy) ? 'table-warning fw-semibold rounded px-2 py-1' : '' }}">
                                     @if (!empty($d->createdBy))
                                         {{-- <div class="d-flex justify-content-center text-center"> --}}
-                                            {{ $d->createdBy->name }}
+                                        {{ $d->createdBy->name }}
                                         {{-- </div> --}}
                                         <br>
                                         {{ $d->created_at ?? '-' }}

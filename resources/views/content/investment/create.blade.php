@@ -472,18 +472,47 @@
                                             </div>
 
                                             <!-- Instrument Image -->
-                                            <div class="col-md-6">
-                                                <label class="form-label">Instrument Image <span
-                                                        class="text-danger">*</span></label>
-                                                <input type="file"
-                                                    class="form-control fileInput instrumentImage @error('instrumentImage.0') is-invalid @enderror"
-                                                    name="instrumentImage[]" accept="image/*,application/pdf">
-                                                <img src="" class="imgPreview mt-2 rounded border"
-                                                    style="width:100px; display:none;">
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label">
+                                                    Instrument Image <span class="text-danger">*</span>
+                                                </label>
+
+                                                <div class="input-group">
+                                                    <input type="file"
+                                                        class="form-control fileInput instrumentImage @error('instrumentImage.0') is-invalid @enderror"
+                                                        id="instrumentImage_0" name="instrumentImage[]"
+                                                        accept="image/*,application/pdf"
+                                                        onchange="uploadTempFile(this, 'instrumentImage_0')">
+
+                                                    <button class="btn btn-outline-danger" type="button"
+                                                        onclick="document.getElementById('instrumentImage_0').value = ''">
+                                                        ✕
+                                                    </button>
+                                                </div>
+
                                                 @error('instrumentImage.0')
                                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                                 @enderror
+
+                                                <input type="hidden" id="instrumentImage_0_url"
+                                                    name="instrumentImage_url[]"
+                                                    value="{{ old('instrumentImage_url.0') }}">
+
+                                                @if (old('instrumentImage_url.0'))
+                                                    <div id="instrumentImage_0_preview"
+                                                        class="position-relative d-inline-block mt-2">
+                                                        <img src="{{ old('instrumentImage_url.0') }}" width="100"
+                                                            class="rounded border">
+
+                                                        <button type="button"
+                                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                                                            onclick="removeImage('instrumentImage_0')">
+                                                            ✕
+                                                        </button>
+                                                    </div>
+                                                @endif
                                             </div>
+
 
                                         </div>
                                     </div>

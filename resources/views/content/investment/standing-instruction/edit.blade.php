@@ -124,41 +124,108 @@
                             </div>
 
                             <!-- Instruction Image -->
-                            <div class="col-md-3">
+                            <div class="col-md-3 mb-3">
                                 <label class="form-label">
-                                    Instruction Image
+                                    Instruction Image <span class="text-danger">*</span>
                                 </label>
-                                <input type="file" name="instruction_image"
-                                    class="form-control @error('instruction_image') is-invalid @enderror">
 
-                                @if ($investmentSi->instruction_image)
-                                    <small class="text-muted d-block mt-1">
-                                        Current: {{ $investmentSi->instruction_image }}
-                                    </small>
-                                @endif
+                                <div class="input-group">
+                                    <input type="file"
+                                        class="form-control fileInput @error('instruction_image') is-invalid @enderror"
+                                        id="instruction_image" name="instruction_image" accept="image/*,application/pdf"
+                                        onchange="uploadTempFile(this, 'instruction_image')">
+
+                                    <button class="btn btn-outline-danger" type="button"
+                                        onclick="document.getElementById('instruction_image').value = ''">
+                                        ✕
+                                    </button>
+                                </div>
 
                                 @error('instruction_image')
-                                    <small class="text-danger">{{ $message }}</small>
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
                                 @enderror
+
+                                <input type="hidden" id="instruction_image_url" name="instruction_image_url"
+                                    value="{{ old('instruction_image_url', $investmentSi->instruction_image) }}">
+
+                                @if (old('instruction_image_url'))
+                                    <div id="instruction_image_preview" class="position-relative d-inline-block mt-2">
+                                        <a href="{{ old('instruction_image_url') }}" target="_blank">
+                                            <img src="{{ old('instruction_image_url') }}" width="100"
+                                                class="rounded border">
+                                        </a>
+                                        <button type="button"
+                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                                            onclick="removeImage('instruction_image')">
+                                            ✕
+                                        </button>
+                                    </div>
+                                @elseif ($investmentSi->instruction_image)
+                                    <div id="instruction_image_preview" class="position-relative d-inline-block mt-2">
+                                        <a href="{{ $investmentSi->instruction_image }}" target="_blank">
+                                            <img src="{{ $investmentSi->instruction_image }}" width="100"
+                                                class="rounded border">
+                                        </a>
+                                        <button type="button"
+                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                                            onclick="removeImage('instruction_image')">
+                                            ✕
+                                        </button>
+                                    </div>
+                                @endif
                             </div>
 
-                            <!-- Notes Image -->
-                            <div class="col-md-3">
-                                <label class="form-label">
-                                    Notes Image
-                                </label>
-                                <input type="file" name="notes_image"
-                                    class="form-control @error('notes_image') is-invalid @enderror">
 
-                                @if ($investmentSi->notes_image)
-                                    <small class="text-muted d-block mt-1">
-                                        Current: {{ $investmentSi->notes_image }}
-                                    </small>
-                                @endif
+                            <!-- Notes Image -->
+                            <div class="col-md-3 mb-3">
+                                <label class="form-label">
+                                    Notes Image <span class="text-danger">*</span>
+                                </label>
+
+                                <div class="input-group">
+                                    <input type="file"
+                                        class="form-control fileInput @error('notes_image') is-invalid @enderror"
+                                        id="notes_image" name="notes_image" accept="image/*,application/pdf"
+                                        onchange="uploadTempFile(this, 'notes_image')">
+
+                                    <button class="btn btn-outline-danger" type="button"
+                                        onclick="document.getElementById('notes_image').value = ''">
+                                        ✕
+                                    </button>
+                                </div>
 
                                 @error('notes_image')
-                                    <small class="text-danger">{{ $message }}</small>
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
                                 @enderror
+
+                                <input type="hidden" id="notes_image_url" name="notes_image_url"
+                                    value="{{ old('notes_image_url', $investmentSi->notes_image) }}">
+
+                                @if (old('notes_image_url'))
+                                    <div id="notes_image_preview" class="position-relative d-inline-block mt-2">
+                                        <a href="{{ old('notes_image_url') }}" target="_blank">
+                                            <img src="{{ old('notes_image_url') }}" width="100"
+                                                class="rounded border">
+                                        </a>
+                                        <button type="button"
+                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                                            onclick="removeImage('notes_image')">
+                                            ✕
+                                        </button>
+                                    </div>
+                                @elseif ($investmentSi->notes_image)
+                                    <div id="notes_image_preview" class="position-relative d-inline-block mt-2">
+                                        <a href="{{ $investmentSi->notes_image }}" target="_blank">
+                                            <img src="{{ $investmentSi->notes_image }}" width="100"
+                                                class="rounded border">
+                                        </a>
+                                        <button type="button"
+                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                                            onclick="removeImage('notes_image')">
+                                            ✕
+                                        </button>
+                                    </div>
+                                @endif
                             </div>
 
                             <div class="col-md-3">
