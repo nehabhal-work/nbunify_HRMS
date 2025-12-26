@@ -374,8 +374,6 @@
                     @else
                         {{-- hide button --}}
                     @endif
-
-
                 </div>
 
 

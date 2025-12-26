@@ -60,31 +60,55 @@ class InvestmentSiController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-   public function edit(string $id)
-{
-    // Standing Instruction
-    $investmentSi = $this->investmentSiService->getById($id);
+    public function edit(string $id)
+    {
+        // Standing Instruction
+        $investmentSi = $this->investmentSiService->getById($id);
 
-    // Parent Investment (REQUIRED)
-    $investment = $this->investmentService->getById(
-        $investmentSi->investment_id
-    );
+        // Parent Investment (REQUIRED)
+        $investment = $this->investmentService->getById(
+            $investmentSi->investment_id
+        );
 
-    // Optional data (if you still need them)
-    $investments = $this->investmentService->getAll();
-    $companyBanks = $this->companyService->getFirstCompanyBanks();
+        // Optional data (if you still need them)
+        $investments = $this->investmentService->getAll();
+        $companyBanks = $this->companyService->getFirstCompanyBanks();
 
-    return view(
-        'content.investment.standing-instruction.edit',
-        compact(
-            'investmentSi',
-            'investment',
-            'investments',
-            'companyBanks'
-        )
-    );
-}
+        return view(
+            'content.investment.standing-instruction.edit',
+            compact(
+                'investmentSi',
+                'investment',
+                'investments',
+                'companyBanks'
+            )
+        );
+    }
 
+    public function show(string $id)
+    {
+        // Standing Instruction
+        $investmentSi = $this->investmentSiService->getById($id);
+
+        // Parent Investment (REQUIRED)
+        $investment = $this->investmentService->getById(
+            $investmentSi->investment_id
+        );
+
+        // Optional data (if you still need them)
+        $investments = $this->investmentService->getAll();
+        $companyBanks = $this->companyService->getFirstCompanyBanks();
+
+        return view(
+            'content.investment.standing-instruction.view',
+            compact(
+                'investmentSi',
+                'investment',
+                'investments',
+                'companyBanks'
+            )
+        );
+    }
 
     /**
      * Update the specified resource in storage.
@@ -127,7 +151,7 @@ class InvestmentSiController extends Controller
     {
         $investmentSi = $this->investmentSiService->getById($id);
         $user = auth()->user();
-        
+
         if ($user->level == 1 && !$investmentSi->approved_by) {
             $investmentSi->update([
                 'approved_by' => $user->id,
@@ -144,7 +168,7 @@ class InvestmentSiController extends Controller
                 'approved3_on' => now()
             ]);
         }
-        
+
         return redirect()->route('investment.si.index', ['id' => $investmentSi->investment_id])->with('success', 'Standing Instruction approved successfully.');
     }
 

@@ -1,6 +1,6 @@
 @extends('layouts.master-layout')
+
 @section('title', 'Investment')
-@section('title', 'Investment-create')
 
 @section('content')
     <div>
@@ -33,6 +33,10 @@
         <a href="{{ route('investment.els.index') }}" class="btn btn-secondary px-4">Go back</a>
 
     </div>
+    <style>
+
+
+    </style>
     <form action="{{ route('investment.si.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('post')
@@ -41,8 +45,10 @@
         <input type="hidden" name="si_no_of_payments" value="{{ $investment->schedule_count }}">
 
         {{-- Set standing instruction --}}
-        <div class="card mb-3">
-            <table class="table table-bordered table-sm align-middle mb-4 investment-view">
+        <div class="card p-3 mb-3">
+            <h5>Standing Instruction Details</h5>
+            <table
+                class="table table-bordered table-striped table-sm align-middle  investment-view styled-investment-table">
                 <tbody>
                     <tr>
                         <th>Investment Date</th>
@@ -313,7 +319,13 @@
                         @foreach ($investment->standingInstructions as $d)
                             <tr>
                                 <td>1</td>
-                                <td>{{ $d->si_number }}</td>
+                                <td>
+                                    <a href="{{ route('investment.si.show', $d->id) }}"
+                                        class="fw-semibold text-primary text-decoration-none">
+                                        {{ $d->si_number }}
+                                    </a>
+                                </td>
+
                                 <td>{{ $investment->fromCompanyBank->bank_name . ' - ' . $investment->fromCompanyBank->account_number }}
                                 </td>
                                 <td>{{ $investment->ToClientBank->bank_name . ' - ' . $investment->ToClientBank->account_number }}
@@ -377,7 +389,7 @@
                                             </a>
                                             <a class="dropdown-item edit-btn"
                                                 href="{{ route('investment.si.show', $d->id) }}">
-                                                <i class="bx bx-edit-alt me-1"></i> View
+                                                <i class="bx bx-show-alt me-1"></i> View
                                             </a>
 
                                             <form action="{{ route('investment.si.destroy', $d->id) }}" method="POST"

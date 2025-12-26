@@ -1,6 +1,6 @@
 @extends('layouts.master-layout')
 @section('title', 'Investment')
-@section('title', 'Investment-create')
+
 
 @section('content')
     <div>
@@ -44,73 +44,103 @@
                     </a>
                 </div>
 
-                <div class="card-body p-0">
+                <div class="card-body  p-3">
                     <table class="table table-bordered table-sm mb-0 align-middle">
-                        <tbody>
-                            <tr>
-                                <th>Reference No</th>
-                                <td><strong>{{ $investmentSi->si_number }}</strong></td>
+                        <tbody class="table-light">
 
-                                <th>Status</th>
-                                <td>
-                                    <strong
-                                        class="{{ $investmentSi->status == 'active' ? 'text-success' : 'text-danger' }}">
-                                        {{ ucfirst($investmentSi->status) }}
-                                    </strong>
+                            <tr>
+                                <th class="bg-light px-3 py-2">Investment ID</th>
+                                <td class="px-3 py-2 text-muted">
+                                    {{ $investment->id }}
                                 </td>
+                                <th class="bg-light px-3 py-2">Reference No</th>
+                                <td class="px-3 py-2 fw-semibold">
+                                    {{ $investmentSi->si_number }}
+                                </td>
+
+
                             </tr>
 
                             <tr>
-                                <th>Company Bank</th>
-                                <td>
+                                <th class="bg-light px-3 py-2">Company Bank</th>
+                                <td class="px-3 py-2">
                                     {{ $investment->fromCompanyBank->bank_name }}
-                                    - {{ $investment->fromCompanyBank->account_number }}
+                                    <span class="text-muted">– {{ $investment->fromCompanyBank->account_number }}</span>
                                 </td>
 
-                                <th>Client Bank</th>
-                                <td>
+                                <th class="bg-light px-3 py-2">Client Bank</th>
+                                <td class="px-3 py-2">
                                     {{ $investment->toClientBank->bank_name }}
-                                    - {{ $investment->toClientBank->account_number }}
+                                    <span class="text-muted">– {{ $investment->toClientBank->account_number }}</span>
                                 </td>
                             </tr>
 
                             <tr>
-                                <th>Payment Start Date</th>
-                                <td>{{ $investmentSi->si_start_date?->format('d M Y') }}</td>
+                                <th class="bg-light px-3 py-2">Payment Start Date</th>
+                                <td class="px-3 py-2">
+                                    {{ $investmentSi->si_start_date?->format('d M Y') }}
+                                </td>
 
-                                <th>Payout Count</th>
-                                <td>{{ $investment->schedule_count }}</td>
+                                <th class="bg-light px-3 py-2">Payout Count</th>
+                                <td class="px-3 py-2 fw-semibold">
+                                    {{ $investment->schedule_count }}
+                                </td>
                             </tr>
 
                             <tr>
-                                <th>Amount</th>
-                                <td>₹ {{ number_format($investmentSi->si_amount, 2) }}</td>
+                                <th class="bg-light px-3 py-2">Amount</th>
+                                <td class="px-3 py-2 fw-bold text-primary">
+                                    ₹ {{ number_format($investmentSi->si_amount, 2) }}
+                                </td>
+                                <th class="bg-light px-3 py-2">Status</th>
+                                <td class="px-3 py-2">
+                                    <span
+                                        class="fw-semibold badge {{ $investmentSi->status == 'active' ? 'bg-success-subtle text-success' : 'bg-danger-subtle text-danger' }}">
+                                        {{ ucfirst($investmentSi->status) }}
+                                    </span>
+                                </td>
 
-                                <th>Investment ID</th>
-                                <td>{{ $investment->id }}</td>
                             </tr>
 
                             <tr>
-                                <th>Instruction Image</th>
-                                <td>
+                                <th class="bg-light px-3 py-2">Instruction Image</th>
+                                <td class="px-3 py-2 text-muted">
                                     {{ $investmentSi->instruction_image ?? '-' }}
                                 </td>
 
-                                <th>Notes Image</th>
-                                <td>
+                                <th class="bg-light px-3 py-2">Notes Image</th>
+                                <td class="px-3 py-2 text-muted">
                                     {{ $investmentSi->notes_image ?? '-' }}
                                 </td>
                             </tr>
 
                             <tr>
-                                <th>Remarks</th>
-                                <td colspan="3">
+                                <th class="bg-light px-3 py-2">Remarks</th>
+                                <td colspan="3" class="px-3 py-3 bg-warning-subtle fst-italic">
                                     {{ $investmentSi->remarks ?? '-' }}
                                 </td>
                             </tr>
+
                         </tbody>
                     </table>
+
+                       <div class="p-3 text-end">
+                    @if (!$investmentSi->is_approved)
+                        {{-- show approve button --}}
+                        <form action="{{ route('investment.si.approve', $investmentSi->id) }}" method="post">
+                            @csrf
+                            @method('PUT')
+                            <button type="submit" class="btn btn-success px-4">
+                                Approve
+                            </button>
+
+                        </form>
+                    @else
+                        {{-- hide button --}}
+                    @endif
                 </div>
+                </div>
+
             </div>
 
         </div>
