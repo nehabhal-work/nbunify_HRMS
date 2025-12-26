@@ -33,15 +33,13 @@
         <a href="{{ route('investment.els.index') }}" class="btn btn-secondary px-4">Go back</a>
 
     </div>
-   <form action="{{ route('investment.si.update', $investmentSi->id) }}"
-          method="POST"
-          enctype="multipart/form-data">
+    <form action="{{ route('investment.si.update', $investmentSi->id) }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('PUT')
 
         <!-- Investment ID -->
         <input type="hidden" name="investment_id" value="{{ $investment->id }}">
-                <input type="hidden" name="si_no_of_payments" value="{{ $investment->schedule_count }}">
+        <input type="hidden" name="si_no_of_payments" value="{{ $investment->schedule_count }}">
 
 
         <div class="row">
@@ -51,7 +49,7 @@
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="mb-0">Edit Standing Instruction</h5>
                         <a href="{{ route('investment.si.index', ['id' => $investment->id]) }}"
-                           class="btn btn-sm btn-secondary">
+                            class="btn btn-sm btn-secondary">
                             Back
                         </a>
                     </div>
@@ -64,10 +62,9 @@
                                 <label class="form-label">
                                     Reference No <span class="text-danger">*</span>
                                 </label>
-                                <input type="text"
-                                       name="si_number"
-                                       class="form-control @error('si_number') is-invalid @enderror"
-                                       value="{{ old('si_number', $investmentSi->si_number) }}">
+                                <input type="text" name="si_number"
+                                    class="form-control @error('si_number') is-invalid @enderror"
+                                    value="{{ old('si_number', $investmentSi->si_number) }}">
                                 @error('si_number')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
@@ -78,14 +75,12 @@
                                 <label class="form-label">
                                     Company Bank
                                 </label>
-                                <input type="text"
-                                       class="form-control bg-secondary-subtle"
-                                       value="{{ $investment->fromCompanyBank->bank_name }} - {{ $investment->fromCompanyBank->account_number }}"
-                                       disabled>
+                                <input type="text" class="form-control bg-secondary-subtle"
+                                    value="{{ $investment->fromCompanyBank->bank_name }} - {{ $investment->fromCompanyBank->account_number }}"
+                                    disabled>
 
-                                <input type="hidden"
-                                       name="si_company_bank_id"
-                                       value="{{ $investment->fromCompanyBank->id }}">
+                                <input type="hidden" name="si_company_bank_id"
+                                    value="{{ $investment->fromCompanyBank->id }}">
                             </div>
 
                             <!-- Client Bank -->
@@ -93,14 +88,11 @@
                                 <label class="form-label">
                                     Client Bank
                                 </label>
-                                <input type="text"
-                                       class="form-control bg-secondary-subtle"
-                                       value="{{ $investment->toClientBank->bank_name }} - {{ $investment->toClientBank->account_number }}"
-                                       disabled>
+                                <input type="text" class="form-control bg-secondary-subtle"
+                                    value="{{ $investment->toClientBank->bank_name }} - {{ $investment->toClientBank->account_number }}"
+                                    disabled>
 
-                                <input type="hidden"
-                                       name="si_client_bank_id"
-                                       value="{{ $investment->toClientBank->id }}">
+                                <input type="hidden" name="si_client_bank_id" value="{{ $investment->toClientBank->id }}">
                             </div>
 
                             <!-- Payment Start Date -->
@@ -108,11 +100,8 @@
                                 <label class="form-label">
                                     Payment Start Date
                                 </label>
-                                <input type="date"
-                                       name="si_start_date"
-                                       class="form-control bg-secondary-subtle"
-                                       value="{{ $investmentSi->si_start_date?->format('Y-m-d') }}"
-                                       readonly>
+                                <input type="date" name="si_start_date" class="form-control bg-secondary-subtle"
+                                    value="{{ $investmentSi->si_start_date?->format('Y-m-d') }}" readonly>
                             </div>
 
                             <!-- Amount -->
@@ -120,11 +109,18 @@
                                 <label class="form-label">
                                     Amount
                                 </label>
-                                <input type="text"
-                                       name="si_amount"
-                                       class="form-control bg-secondary-subtle"
-                                       value="{{ $investmentSi->si_amount }}"
-                                       readonly>
+                                <input type="text" name="si_amount" class="form-control bg-secondary-subtle"
+                                    value="{{ $investmentSi->si_amount }}" readonly>
+                            </div>
+
+                            <div class="col-md-3">
+                                <label class="form-label">
+                                    Payout Count <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" step="0.01" name="schedule_count"
+                                    class="form-control  @error('amount') is-invalid @enderror" placeholder="Enter amount"
+                                    value="{{ $investment->schedule_count }}">
+
                             </div>
 
                             <!-- Instruction Image -->
@@ -132,11 +128,10 @@
                                 <label class="form-label">
                                     Instruction Image
                                 </label>
-                                <input type="file"
-                                       name="instruction_image"
-                                       class="form-control @error('instruction_image') is-invalid @enderror">
+                                <input type="file" name="instruction_image"
+                                    class="form-control @error('instruction_image') is-invalid @enderror">
 
-                                @if($investmentSi->instruction_image)
+                                @if ($investmentSi->instruction_image)
                                     <small class="text-muted d-block mt-1">
                                         Current: {{ $investmentSi->instruction_image }}
                                     </small>
@@ -152,11 +147,10 @@
                                 <label class="form-label">
                                     Notes Image
                                 </label>
-                                <input type="file"
-                                       name="notes_image"
-                                       class="form-control @error('notes_image') is-invalid @enderror">
+                                <input type="file" name="notes_image"
+                                    class="form-control @error('notes_image') is-invalid @enderror">
 
-                                @if($investmentSi->notes_image)
+                                @if ($investmentSi->notes_image)
                                     <small class="text-muted d-block mt-1">
                                         Current: {{ $investmentSi->notes_image }}
                                     </small>
@@ -167,14 +161,34 @@
                                 @enderror
                             </div>
 
+                            <div class="col-md-3">
+                                <label class="form-label">
+                                    Status <span class="text-danger">*</span>
+                                </label>
+                                <select name="status" class="form-control @error('status') is-invalid @enderror">
+                                    <option value="active"
+                                        {{ old('status', $investmentSi->status) == 'active' ? 'selected' : '' }}>
+                                        Active
+                                    </option>
+
+                                    <option value="inactive"
+                                        {{ old('status', $investmentSi->status) == 'inactive' ? 'selected' : '' }}>
+                                        Inactive
+                                    </option>
+                                </select>
+
+
+                                @error('status')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
                             <!-- Remarks -->
                             <div class="col-md-6">
                                 <label class="form-label">
                                     Remarks
                                 </label>
-                                <textarea name="remarks"
-                                          rows="3"
-                                          class="form-control @error('remarks') is-invalid @enderror">{{ old('remarks', $investmentSi->remarks) }}</textarea>
+                                <textarea name="remarks" rows="3" class="form-control @error('remarks') is-invalid @enderror">{{ old('remarks', $investmentSi->remarks) }}</textarea>
 
                                 @error('remarks')
                                     <small class="text-danger">{{ $message }}</small>

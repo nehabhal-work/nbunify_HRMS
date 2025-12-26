@@ -41,12 +41,93 @@
         <input type="hidden" name="si_no_of_payments" value="{{ $investment->schedule_count }}">
 
         {{-- Set standing instruction --}}
+        <div class="card mb-3">
+            <table class="table table-bordered table-sm align-middle mb-4 investment-view">
+                <tbody>
+                    <tr>
+                        <th>Investment Date</th>
+                        <td>
+                            <b>{{ \Carbon\Carbon::parse($investment->investment_date)->format('d M Y') }}</b>
+                        </td>
+                        <th>Investment Type</th>
+                        <td><b>{{ ucfirst($investment->investment_type) }}</b></td>
+                    </tr>
+                    <tr>
+                        <th>Investment Holder Name</th>
+                        <td class="bg-warning-subtle"><b><small class="text-info">
+                                    @if ($investment->firstClient)
+                                        {{ $investment->firstClient->name }}
+                                    @endif
+                                    @if ($investment->secondClient)
+                                        , {{ $investment->secondClient->name }}
+                                    @endif
+                                    @if ($investment->thirdClient)
+                                        , {{ $investment->thirdClient->name }}
+                                    @endif
+                                    @if ($investment->fourthClient)
+                                        , {{ $investment->fourthClient->name }}
+                                    @endif
+                                </small></b>
+                        </td>
+                        <th>Scheme Name</th>
+                        <td><b>{{ $investment->scheme->scheme_name ?? '-' }}</b></td>
+                    </tr>
+
+                    {{-- @if ($investment->investment_type !== 'single')
+                            <tr>
+                                <th>Investment 3rd Holder</th>
+                                <td class="bg-warning-subtle"><b>{{ $clientNames[$investment->third_client_id] ?? '-' }}</b>
+                                </td>
+
+                                <th>Investment 4th Holder</th>
+                                <td class="bg-warning-subtle">
+                                    <b>{{ $clientNames[$investment->fourth_client_id] ?? '-' }}</b>
+                                </td>
+                            </tr>
+                        @endif --}}
+
+
+                    <tr>
+                        <th>Schedule Count</th>
+                        <td><b>{{ $investment->schedule_count }}</b></td>
+
+                        <th>Investment Amount</th>
+                        <td><b>₹ {{ number_format($investment->investment_amount, 2) }}</b></td>
+                    </tr>
+                    <tr>
+                        <th>Tenure</th>
+                        <td><b>{{ $investment->tenure_count }} {{ ucfirst($investment->tenure_type) }}</b></td>
+                        <th>Frequency</th>
+                        <td><b>{{ ucfirst($investment->frequency) }}</b></td>
+                    </tr>
+
+                    <tr>
+                        <th>ROI (%)</th>
+                        <td><b>{{ $investment->roi_percent }}%</b></td>
+                        <th>Maturity Date</th>
+                        <td><b>{{ \Carbon\Carbon::parse($investment->maturity_date)->format('d M Y') }}</b></td>
+                    </tr>
+
+
+                    <tr>
+                        <th>Payout Per Period</th>
+                        <td><b>₹ {{ number_format($investment->payout_per_period, 2) }}</b></td>
+                        <th>First Payout Date</th>
+                        <td><b>{{ \Carbon\Carbon::parse($investment->first_payout_date)->format('d M Y') }}</b></td>
+                    </tr>
+
+
+                </tbody>
+            </table>
+        </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="card shadow-sm">
 
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="mb-0">Set Standing Instruction</h5>
+
+
                     </div>
 
                     <div class="card-body">
@@ -124,6 +205,17 @@
                                     placeholder="Enter amount" value="{{ $investment->payout_per_period }}">
 
                             </div>
+                            {{-- "schedule_count": 6, --}}
+
+                            <div class="col-md-3">
+                                <label class="form-label">
+                                    Payout Count <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" step="0.01" name="schedule_count"
+                                    class="form-control  @error('amount') is-invalid @enderror" placeholder="Enter amount"
+                                    value="{{ $investment->schedule_count }}">
+
+                            </div>
 
                             <!-- Instruction Image -->
                             <div class="col-md-3">
@@ -147,6 +239,23 @@
                                     class="form-control @error('notes_image') is-invalid @enderror">
 
                                 @error('notes_image')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                            <!-- Status -->
+                            <div class="col-md-3">
+                                <label class="form-label">
+                                    Status <span class="text-danger">*</span>
+                                </label>
+                                <select name="status" class="form-control @error('status') is-invalid @enderror">
+                                    {{-- <option value="">Select Status</option> --}}
+                                    <option value="active" {{ old('status') == 'active' ? 'selected' : '' }}>Active
+                                    </option>
+                                    <option value="inactive" {{ old('status') == 'inactive' ? 'selected' : '' }}>Inactive
+                                    </option>
+                                </select>
+
+                                @error('status')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
@@ -193,6 +302,10 @@
                             <th>Amount</th>
                             <th>Instruction Image</th>
                             <th>Notes Image</th>
+                            <th>Created By</th>
+                            <th>Approved By 1</th>
+                            <th>Approved By 2</th>
+                            <th>Approved By 3</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -210,6 +323,45 @@
                                 <td>{{ $d->si_amount }}</td>
                                 <td>instruction_001.jpg</td>
                                 <td>notes_001.jpg</td>
+                                <td
+                                    class="{{ !empty($d->createdBy) ? 'table-warning fw-semibold rounded px-2 py-1' : '' }}">
+                                    @if (!empty($d->createdBy))
+                                        <div class="d-flex justify-content-center text-center">
+                                            {{ $d->createdBy->name }}
+                                        </div>
+                                        <br>
+                                        {{ $d->created_at ?? '-' }}
+                                    @else
+                                        -
+                                    @endif
+                                </td>
+
+                                <td
+                                    class="{{ !empty($d->approvedBy) ? 'table-success fw-semibold rounded px-2 py-1' : '' }}">
+                                    @if (!empty($d->approvedBy))
+                                        {{ $d->approvedBy->name }} <br>{{ $d->approved_at ?? '-' }}
+                                    @else
+                                        -
+                                    @endif
+                                </td>
+
+                                <td
+                                    class="{{ !empty($d->approved2By) ? 'table-success fw-semibold rounded px-2 py-1' : '' }}">
+                                    @if (!empty($d->approved2By))
+                                        {{ $d->approved2By->name }} <br>{{ $d->approved2_on ?? '-' }}
+                                    @else
+                                        -
+                                    @endif
+                                </td>
+
+                                <td
+                                    class="{{ !empty($d->approved3By) ? 'table-success fw-semibold rounded px-2 py-1' : '' }}">
+                                    @if (!empty($d->approved3By))
+                                        {{ $d->approved3By->name }} <br>{{ $d->approved3_on ?? '-' }}
+                                    @else
+                                        -
+                                    @endif
+                                </td>
                                 <td>
                                     <div class="dropdown">
                                         <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
@@ -222,6 +374,10 @@
                                             <a class="dropdown-item edit-btn"
                                                 href="{{ route('investment.si.edit', $d->id) }}">
                                                 <i class="bx bx-edit-alt me-1"></i> Edit
+                                            </a>
+                                            <a class="dropdown-item edit-btn"
+                                                href="{{ route('investment.si.show', $d->id) }}">
+                                                <i class="bx bx-edit-alt me-1"></i> View
                                             </a>
 
                                             <form action="{{ route('investment.si.destroy', $d->id) }}" method="POST"
