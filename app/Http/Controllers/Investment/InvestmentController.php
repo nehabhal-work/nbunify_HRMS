@@ -21,8 +21,7 @@ class InvestmentController extends Controller
         private SchemeService $schemeService,
         private ClientService $clientService,
         private CompanyService $companyService,
-    ) {
-    }
+    ) {}
 
     /**
      * Display a listing of the resource.
@@ -74,7 +73,7 @@ class InvestmentController extends Controller
     {
         $investment = $this->investmentService->getById($id);
         $paySchdeule = $this->investmentService->getPaymentSchedule($id);
-// return $bankInstrument;
+        // return $bankInstrument;
         $scheme = $this->schemeService->getAll();
         $clients = $this->clientService->getAll();
         $companyBanks = $this->companyService->getFirstCompanyBanks();
@@ -82,7 +81,7 @@ class InvestmentController extends Controller
         $inputBank = \DB::table('investment_input_banks')
             ->where('investment_id', $id)
             ->first();
-// return $investment;
+        // return $investment;
         return view(
             'content.investment.view',
             compact(
@@ -114,6 +113,8 @@ class InvestmentController extends Controller
     {
         $investment = $this->investmentService->getById($id);
         $scheme = $this->schemeService->getAll();
+        // $clients = $this->clientService->getAll();
+        // $companyBanks = $this->companyService->getFirstCompanyBanks();
         return view('content.investment.edit', compact('investment', 'scheme'));
     }
 

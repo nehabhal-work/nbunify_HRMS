@@ -65,7 +65,7 @@
                                 </tr>
                             </thead>
 
-                            
+
                             <tbody>
                                 @foreach ($investments as $index => $d)
                                     <tr>
@@ -140,6 +140,10 @@
 
                                                 <div class="dropdown-menu">
 
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('investment.els.edit', $d->id) }}">
+                                                        <i class="bx bx-show me-1"></i> Edit
+                                                    </a>
                                                     <a class="dropdown-item"
                                                         href="{{ route('investment.els.show', $d->id) }}">
                                                         <i class="bx bx-show me-1"></i> View
