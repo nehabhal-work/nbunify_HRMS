@@ -26,7 +26,8 @@
     @endif
 
     <h4 class="fw-bold py-3 mb-4">
-        <span class="text-muted fw-light">Master /</span> <a href="{{ route('investment.els.index') }}">ELS-Investment</a>
+        <span class="text-muted fw-light">Master /</span> <a href="{{ route('investment.els.index') }}">EDIT-
+            ELS-Investment</a>
     </h4>
 
     <div class="div d-flex justify-content-end mb-3">
@@ -55,7 +56,9 @@
                                 <input type="date"
                                     class="form-control invDate @error('investment_date') is-invalid @enderror"
                                     name="investment_date" id="investment_date"
-                                    value="{{ old('investment_date', date('Y-m-d')) }}" max="{{ date('Y-m-d') }}">
+                                    value="{{ old('investment_date', $investment->investment_date?->format('Y-m-d')) }}"
+                                    max="{{ date('Y-m-d') }}">
+
 
                                 @error('investment_date')
                                     <small class="text-danger">{{ $message }}</small>
@@ -168,24 +171,7 @@
 
                                     <option value="">Select Scheme</option>
 
-                                    {{-- @forelse ($scheme as $s)
-                                        <option value="{{ $s->id }}"
-                                            {{ old('scheme_id') == $s->id ? 'selected' : '' }}
-                                            data-tenure-type="{{ $s->tenure_type }}"
-                                            data-min-tenure="{{ $s->tenure_min }}" data-max-tenure="{{ $s->tenure_max }}"
-                                            data-frequencies='@json($s->frequency)'
-                                            data-min-roi="{{ $s->roi_min }}" data-max-roi="{{ $s->roi_max }}"
-                                            data-addi-roi-min="{{ $s->roi_min_additional }}"
-                                            data-addi-roi-max="{{ $s->roi_max_additional }}"
-                                            data-scheme-name="{{ $s->scheme_name }}"
-                                            data-start-date="{{ $s->scheme_name }}"
-                                            data-end-date="{{ $s->scheme_name }}">
-
-                                            {{ $s->scheme_name }}
-                                        </option>
-                                    @empty
-                                        <option value="">No Schemes Available</option>
-                                    @endforelse --}}
+                                    {{-- load from ajax --}}
                                 </select>
                                 @error('scheme_id')
                                     <small class="text-danger">{{ $message }}</small>
