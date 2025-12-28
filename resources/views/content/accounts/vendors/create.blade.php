@@ -30,17 +30,21 @@
 
     <form action="{{ route('accounts.vendors.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
-        @method('post')
+        @method('POST')
+
         <div class="row align-items-stretch">
             <div class="col-md-12">
                 <div class="card mb-4">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Primary Information</h5>
-                        <small class="text-muted float-end">Vendors Basic Details</small>
+                        <h5 class="mb-0"id="salesClient">Primary Information</h5>
+                        <small class="text-muted float-end">
+                            <span class="text-danger fs-5">*</span> Required fields
+                        </small>
+
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <!-- Radio Buttons -->
+                            <!-- optClientVendor Radio Buttons -->
                             <div class="col-md-6 mb-3">
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="optClientVendor" id="inlineRadio1"
@@ -63,27 +67,35 @@
 
                             <!-- Entity Type -->
                             <div class="col-md-3 mb-3">
-                                <label class="form-label">Types of Entities</label>
-                                <select class="form-select text-uppercase @error('entityType') is-invalid @enderror"
-                                    name="entityType">
+                                <label class="form-label">Types of Entities <span class="text-danger fs-5">*</span></label>
+                                <select class="form-select text-uppercase @error('entity_type') is-invalid @enderror"
+                                    name="entity_type">
                                     <option value="">Select Option</option>
-                                    <option value="1" {{ old('entityType') == 1 ? 'selected' : '' }}>Individual
+                                    <option value="individual" {{ old('entity_type') == 'individual' ? 'selected' : '' }}>
+                                        Individual
                                     </option>
-                                    <option value="2" {{ old('entityType') == 2 ? 'selected' : '' }}>Non-Individual
+                                    <option value="non_individual"
+                                        {{ old('entity_type') == 'non_individual' ? 'selected' : '' }}>
+                                        Non-Individual
                                     </option>
                                 </select>
-                                @error('entityType')
+                                @error('entity_type')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
 
                             <!-- Non-Individual Type -->
                             <div class="col-md-3 mb-3">
-                                <label class="form-label">Non-Individual Type</label>
+                                <label class="form-label">Non-Individual Type <span
+                                        class="text-danger fs-5">*</span></label>
                                 <select class="form-select text-uppercase @error('nonindividual') is-invalid @enderror"
                                     name="nonindividual">
                                     <option value="">Select Option</option>
-
+                                    @foreach ($companyTypes as $d)
+                                        <option value="{{ $d }}"
+                                            {{ old('nonindividual') == $d ? 'selected' : '' }}>
+                                            {{ $d }}</option>
+                                    @endforeach
                                 </select>
                                 @error('nonindividual')
                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -92,15 +104,15 @@
 
                             <!-- GST Mode -->
                             <div class="col-md-3 mb-3">
-                                <label class="form-label">GST Mode</label>
-                                <select class="form-select text-uppercase @error('gstmode') is-invalid @enderror"
-                                    name="gstmode">
+                                <label class="form-label">GST Mode <span class="text-danger fs-5">*</span></label>
+                                <select class="form-select text-uppercase @error('gst_mode') is-invalid @enderror"
+                                    name="gst_mode">
                                     <option value="">Select Option</option>
-                                    <option value="GST" {{ old('gstmode') == 'GST' ? 'selected' : '' }}>GST</option>
-                                    <option value="Non-GST" {{ old('gstmode') == 'Non-GST' ? 'selected' : '' }}>Non-GST
+                                    <option value="GST" {{ old('gst_mode') == 'GST' ? 'selected' : '' }}>GST</option>
+                                    <option value="Non-GST" {{ old('gst_mode') == 'Non-GST' ? 'selected' : '' }}>Non-GST
                                     </option>
                                 </select>
-                                @error('gstmode')
+                                @error('gst_mode')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -126,9 +138,14 @@
                             <!-- Under Head -->
                             <div class="col-md-3 mb-3">
                                 <label class="form-label">Under Head</label>
-                                <select class="form-select text-uppercase @error('underhead') is-invalid @enderror"
+                                <select class="form-select select2 text-uppercase @error('underhead') is-invalid @enderror"
                                     name="underhead">
                                     <option value="">Select option</option>
+                                    @foreach ($underheads as $head)
+                                        <option value="{{ $head }}"
+                                            {{ old('underhead') == $head ? 'selected' : '' }}>
+                                            {{ $head }}</option>
+                                    @endforeach
 
                                 </select>
                                 @error('underhead')
@@ -167,17 +184,17 @@
 
                             <!-- Client Name -->
                             <div class="col-md-3 mb-3">
-                                <label class="form-label">Name of Client</label>
-                                <input type="text" class="form-control @error('cname') is-invalid @enderror"
-                                    name="cname" maxlength="50" value="{{ old('cname') }}">
-                                @error('cname')
+                                <label class="form-label">Name of Client <span class="text-danger fs-5">*</span></label>
+                                <input type="text" class="form-control @error('client_name') is-invalid @enderror"
+                                    name="client_name" maxlength="50" value="{{ old('client_name') }}">
+                                @error('client_name')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
 
                             <!-- Vendor Mobile -->
                             <div class="col-md-3 mb-3">
-                                <label class="form-label">Vendor Mobile No.</label>
+                                <label class="form-label">Vendor Mobile No. </label>
                                 <input type="text" class="form-control onlydigit @error('mobno') is-invalid @enderror"
                                     name="mobno" maxlength="10" value="{{ old('mobno') }}">
                                 @error('mobno')
@@ -198,9 +215,10 @@
                             <!-- Contact Person -->
                             <div class="col-md-3 mb-3">
                                 <label class="form-label">Contact Person Name *</label>
-                                <input type="text" class="form-control @error('cpname') is-invalid @enderror"
-                                    name="cpname" maxlength="50" value="{{ old('cpname') }}">
-                                @error('cpname')
+                                <input type="text"
+                                    class="form-control @error('contact_person_name') is-invalid @enderror"
+                                    name="contact_person_name" maxlength="50" value="{{ old('contact_person_name') }}">
+                                @error('contact_person_name')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -250,9 +268,9 @@
                             <!-- GST -->
                             <div id="divgst" class="col-md-3 mb-3 ">
                                 <label class="form-label">GST No.</label>
-                                <input type="text" class="form-control @error('gst') is-invalid @enderror"
-                                    name="gst" maxlength="15" value="{{ old('gst') }}">
-                                @error('gst')
+                                <input type="text" class="form-control @error('gst_no') is-invalid @enderror"
+                                    name="gst_no" maxlength="15" value="{{ old('gst_no') }}">
+                                @error('gst_no')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
@@ -522,4 +540,21 @@
 @endsection
 
 @push('scripts')
+    <script>
+        $(document).ready(function() {
+            $('input[name="optClientVendor"]').change(function() {
+                if ($(this).val() === 'client') {
+                    $('#salesClient').text("GST-TDS/Sales Client");
+                    $('#labelcname').text("Name of Client");
+                }
+                if ($(this).val() === 'both') {
+                    $('#salesClient').text("GST-TDS/Vendor & Client");
+                    $('#labelcname').text("Name of Vendor & Client");
+                } else {
+                    $('#salesClient').text("GST-TDS/Purchase Vendor");
+                    $('#labelcname').text("Name of Vendor");
+                }
+            });
+        });
+    </script>
 @endpush

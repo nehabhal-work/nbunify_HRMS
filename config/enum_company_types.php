@@ -1,11 +1,16 @@
 <?php
 
 return [
-    'sole_proprietorship' => 'Sole Proprietorship',
-    'partnership' => 'Partnership',
-    'pvt_ltd' => 'Private Limited',
-    'public_ltd' => 'Public Limited',
-    'llp' => 'Limited Liability Partnership',
+    'aop_boi' => 'Association / Body of Individuals',
+    'government' => 'Government Entity',
     'huf' => 'Hindu Undivided Family',
+    'llp' => 'Limited Liability Partnership',
     'ngo' => 'Non-Governmental Organization',
+    'opc' => 'One Person Company',
+    'partnership' => 'Partnership Firm',
+    'public_ltd' => 'Public Limited',
+    'pvt_ltd' => 'Private Limited',
+    'society' => 'Society',
+    'sole_proprietorship' => 'Sole Proprietorship',
+    'trust' => 'Trust',
 ];
