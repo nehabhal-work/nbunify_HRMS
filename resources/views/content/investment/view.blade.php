@@ -57,97 +57,7 @@
                 <h6>Investment ID : {{ $investment->id }}</h6>
 
                 <table class="table table-bordered mb-4 investment-view">
-                    {{-- <tbody>
-                        <tr>
-                            <th>Investment ID</th>
-                            <td>
-                                <b>{{ $investment->id }}</b>
-                            </td>
-                            <th>Investment Date</th>
-                            <td>
-                                <b>{{ \Carbon\Carbon::parse($investment->investment_date)->format('d M Y') }}</b>
-                            </td>
-                            <th>Investment Type</th>
-                            <td><b>{{ ucfirst($investment->investment_type) }}</b></td>
-                        </tr>
-                        <tr>
-                            <th>Investment Holder Name</th>
-                            <td class="bg-warning-subtle"><b>{{ $clientNames[$investment->first_client_id] ?? '-' }}</b>
-                            </td>
 
-                            @if ($investment->investment_type !== 'single')
-                                <th>Investment 2nd Holder</th>
-                                <td class="bg-warning-subtle">
-                                    <b>{{ $clientNames[$investment->second_client_id] ?? '-' }}</b>
-                                </td>
-                            @else
-                                <td colspan="2"></td>
-                            @endif
-                        </tr>
-
-                        @if ($investment->investment_type !== 'single')
-                            <tr>
-                                <th>Investment 3rd Holder</th>
-                                <td class="bg-warning-subtle"><b>{{ $clientNames[$investment->third_client_id] ?? '-' }}</b>
-                                </td>
-
-                                <th>Investment 4th Holder</th>
-                                <td class="bg-warning-subtle">
-                                    <b>{{ $clientNames[$investment->fourth_client_id] ?? '-' }}</b>
-                                </td>
-                            </tr>
-                        @endif
-
-
-                        <tr>
-                            <th>Scheme Name</th>
-                            <td><b>{{ $schemeNames[$investment->scheme_id] ?? '-' }}</b></td>
-                            <th>Investment Amount</th>
-                            <td><b>₹ {{ number_format($investment->investment_amount, 2) }}</b></td>
-                        </tr>
-                        <tr>
-                            <th>Tenure</th>
-                            <td><b>{{ $investment->tenure_count }} {{ ucfirst($investment->tenure_type) }}</b></td>
-                            <th>Frequency</th>
-                            <td><b>{{ ucfirst($investment->frequency) }}</b></td>
-                        </tr>
-
-                        <tr>
-                            <th>ROI (%)</th>
-                            <td><b>{{ $investment->roi_percent }}%</b></td>
-                            <th>Maturity Date</th>
-                            <td><b>{{ \Carbon\Carbon::parse($investment->maturity_date)->format('d M Y') }}</b></td>
-                        </tr>
-                        <tr>
-                            <th>Interest Amount</th>
-                            <td><b>₹ {{ number_format($investment->actual_interest_amount, 2) }}</b></td>
-                            <th>Lock in Period</th>
-                            <td><b>{{ $investment->lock_in_period }}</b></td>
-                        </tr>
-
-                        <tr>
-                            <th>Additional ROI</th>
-                            <td><b>{{ $investment->additional_roi_percent }}%</b></td>
-                            <th>TDS Applicable</th>
-                            <td><b>{{ $investment->has_tds ? 'Yes' : 'No' }}</b></td>
-                        </tr>
-
-                        <tr>
-                            <th>Schedule Count</th>
-                            <td><b>{{ $investment->schedule_count }}</b></td>
-                            <th>Annual Payout</th>
-                            <td><b>₹ {{ number_format($investment->annual_payout, 2) }}</b></td>
-                        </tr>
-
-                        <tr>
-                            <th>Payout Per Period</th>
-                            <td><b>₹ {{ number_format($investment->payout_per_period, 2) }}</b></td>
-                            <th>First Payout Date</th>
-                            <td><b>{{ \Carbon\Carbon::parse($investment->first_payout_date)->format('d M Y') }}</b></td>
-                        </tr>
-
-
-                    </tbody> --}}
                     <tbody>
                         <tr>
                             <th>Investment ID</th>
@@ -394,6 +304,7 @@
                             <th>#</th>
                             <th>Payout Date</th>
                             <th class="text-end">Scheduled (₹)</th>
+                            <th class="text-end">rounding-off (₹)</th>
                             <th class="text-end">Actual Paid (₹)</th>
                             <th>Paid Date</th>
                             <th>UTR no.</th>
@@ -405,15 +316,73 @@
                         </tr>
                     </thead>
                     <tbody>
+
+                        {{-- ===================== --}}
+                        {{-- CREDIT / INVESTMENT ENTRY --}}
+                        {{-- ===================== --}}
+                        @forelse($investment->investmentInputBank ?? [] as $loopIndex => $b)
+                            <tr class="table-light">
+                                <td class="fw-semibold">
+                                    CR-{{ $loopIndex + 1 }}
+                                </td>
+
+                                <td>
+                                    {{ \Carbon\Carbon::parse($b->client_instrument_date)->format('d M Y') }}
+                                </td>
+
+                                <td class="text-end fw-semibold text-success">
+                                    ₹ {{ number_format($b->amount, 2) }}
+                                </td>
+
+                                <td class="">—</td>
+                                <td>—</td>
+                                <td>—</td>
+
+                                <td>
+                                    {{ $b->client_reference_no ?? '—' }}
+                                </td>
+
+                                <td>—</td>
+                                <td>—</td>
+
+                                <td>
+                                    <span class="badge bg-info">Credit</span>
+                                </td>
+
+                                <td>
+                                    {{ $b->instrument_type }}
+                                </td>
+
+                                <td class="text-center">—</td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="11" class="text-center text-muted">
+                                    No investment credit records found
+                                </td>
+                            </tr>
+                        @endforelse
+
+
+                        {{-- ===================== --}}
+                        {{-- PAYOUT SCHEDULES --}}
+                        {{-- ===================== --}}
                         @foreach ($investment->payoutSchedules as $index => $schedule)
                             <tr
                                 class="{{ $schedule->sch_payout_amount == $investment->investment_amount ? 'table-info' : '' }}">
-                                <td>{{ $index + 1 }}</td>
 
-                                <td>{{ \Carbon\Carbon::parse($schedule->sch_payout_date)->format('d M Y') }}</td>
+                                <td class="fw-semibold">
+                                    {{ $index + 1 }}
+                                </td>
+
+                                <td>
+                                    {{ \Carbon\Carbon::parse($schedule->sch_payout_date)->format('d M Y') }}
+                                </td>
 
                                 <td class="text-end fw-semibold">
                                     ₹ {{ number_format($schedule->sch_payout_amount, 2) }}
+                                </td>
+                                <td>{{ $schedule->rounding_off_amount ? '₹ ' . number_format($schedule->rounding_off_amount, 2) : '—' }}
                                 </td>
 
                                 <td class="text-end">
@@ -423,7 +392,10 @@
                                 <td>
                                     {{ $schedule->actual_payout_date ? \Carbon\Carbon::parse($schedule->actual_payout_date)->format('d M Y') : '—' }}
                                 </td>
-                                <td>{{ $schedule->utr_no }}</td>
+
+                                <td>
+                                    {{ $schedule->utr_no ?? '—' }}
+                                </td>
 
                                 <td>
                                     {{ $schedule->fromCompanyBank->bank_name ?? '-' }}<br>
@@ -447,7 +419,9 @@
                                     @endif
                                 </td>
 
-                                <td>{{ $schedule->remarks ?? '—' }}</td>
+                                <td>
+                                    {{ $schedule->remarks ?? '—' }}
+                                </td>
 
                                 <td class="text-center">
                                     @if ($schedule->status === 'pending')
@@ -465,7 +439,9 @@
                                 </td>
                             </tr>
                         @endforeach
+
                     </tbody>
+
 
                     <tfoot class="table-light">
                         <tr>
@@ -541,10 +517,10 @@
                         </div>
 
                         <div class="mb-3">
-    <label class="form-label">Actual Payout Date & Time</label>
-    <input type="datetime-local" class="form-control" name="actual_payout_date"
-        value="{{ date('Y-m-d\TH:i') }}" required>
-</div>
+                            <label class="form-label">Actual Payout Date & Time</label>
+                            <input type="datetime-local" class="form-control" name="actual_payout_date"
+                                value="{{ date('Y-m-d\TH:i') }}" required>
+                        </div>
 
 
                         <div class="mb-3">
