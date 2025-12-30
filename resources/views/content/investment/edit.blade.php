@@ -26,7 +26,7 @@
     @endif
 
     <h4 class="fw-bold py-3 mb-4">
-        <span class="text-muted fw-light">Master /</span> <a href="{{ route('investment.els.index') }}">EDIT-
+        <span class="text-muted fw-light">Master /</span> <a href="{{ route('investment.els.index') }}">Edit -
             ELS-Investment</a>
     </h4>
 
@@ -90,14 +90,14 @@
                                 <select class="form-select select2 @error('client_id') is-invalid @enderror" required
                                     name="first_client_id" id="first_client_id">
                                     <option value="">Select Holder</option>
-                                    @foreach ($clients as $d)
+                                    {{-- @foreach ($clients as $d)
                                         <option value="{{ $d->id }}"
                                             {{ old('client_id') == $d->id ? 'selected' : '' }}
                                             data-banks='@json($d->banks)'
                                             data-families='@json($d->families)'>
                                             {{ ucfirst(strtolower($d->name)) }}
                                         </option>
-                                    @endforeach
+                                    @endforeach --}}
                                 </select>
 
                                 @error('client_id')
@@ -111,12 +111,12 @@
                                     <label class="form-label">Investment 2nd Holder</label>
                                     <select class="form-select select2" name="second_client_id" id="second_client">
                                         <option value="">Select Holder</option>
-                                        @foreach ($clients as $d)
+                                        {{-- @foreach ($clients as $d)
                                             <option value="{{ $d->id }}"
                                                 {{ old('second_client_id') == $d->id ? 'selected' : '' }}>
                                                 {{ ucfirst(strtolower($d->name)) }}
                                             </option>
-                                        @endforeach
+                                        @endforeach --}}
                                     </select>
                                 </div>
 
@@ -125,12 +125,12 @@
                                     <label class="form-label">Investment 3rd Holder</label>
                                     <select class="form-select select2" name="third_client_id" id="third_client">
                                         <option value="">Select Holder</option>
-                                        @foreach ($clients as $d)
+                                        {{-- @foreach ($clients as $d)
                                             <option value="{{ $d->id }}"
                                                 {{ old('third_client_id') == $d->id ? 'selected' : '' }}>
                                                 {{ ucfirst(strtolower($d->name)) }}
                                             </option>
-                                        @endforeach
+                                        @endforeach --}}
                                     </select>
                                 </div>
 
@@ -139,12 +139,12 @@
                                     <label class="form-label">Investment 4th Holder</label>
                                     <select class="form-select select2" name="fourth_client_id" id="fourth_client">
                                         <option value="">Select Holder</option>
-                                        @foreach ($clients as $d)
+                                        {{-- @foreach ($clients as $d)
                                             <option value="{{ $d->id }}"
                                                 {{ old('fourth_client_id') == $d->id ? 'selected' : '' }}>
                                                 {{ ucfirst(strtolower($d->name)) }}
                                             </option>
-                                        @endforeach
+                                        @endforeach --}}
                                     </select>
                                 </div>
 
@@ -488,10 +488,10 @@
                                                 <select class="form-select @error('company_bank_id') is-invalid @enderror"
                                                     name="company_bank_id[]" required>
                                                     <option value="">Select Company Bank</option>
-                                                    @foreach ($companyBanks as $d)
+                                                    {{-- @foreach ($companyBanks as $d)
                                                         <option value="{{ $d->id }}">
                                                             {{ $d->bank_name . '-' . $d->account_number }}</option>
-                                                    @endforeach
+                                                    @endforeach --}}
                                                 </select>
                                                 @error('company_bank_id')
                                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -575,10 +575,10 @@
                             <label class="form-label ">From Company Bank *</label>
                             <select class="form-select" id="from_company_bank_id" name="from_company_bank_id" required>
                                 <option value="">Select Company Bank</option>
-                                @foreach ($companyBanks as $d)
+                                {{-- @foreach ($companyBanks as $d)
                                     <option value="{{ $d->id }}">
                                         {{ $d->bank_name . '-' . $d->account_number }}</option>
-                                @endforeach
+                                @endforeach --}}
                             </select>
 
                         </div>

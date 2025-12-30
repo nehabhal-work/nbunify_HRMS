@@ -213,7 +213,7 @@
 
                                                     <a class="dropdown-item"
                                                         href="{{ route('investment.els.edit', $d->id) }}">
-                                                        <i class="bx bx-show me-1"></i> Edit
+                                                        <i class="bx bx-edit me-1"></i> Edit
                                                     </a>
                                                     <a class="dropdown-item"
                                                         href="{{ route('investment.els.show', $d->id) }}">
@@ -221,13 +221,13 @@
                                                     </a>
                                                     <a class="dropdown-item"
                                                         href="{{ route('investment.si.index', ['id' => $d->id]) }}">
-                                                        <i class="bx bx-show me-1"></i> investmen standing instruction
+                                                        <i class="bx bx-receipt me-1"></i> investmen standing instruction
                                                         {{ $d->id }}
                                                     </a>
 
                                                     <a class="dropdown-item"
                                                         href="{{ route('investment.els.show', $d->id) }}">
-                                                        <i class="bx bx-show me-1"></i> standing
+                                                        <i class="bx bx-check-circle me-1"></i> Standing
                                                     </a>
 
 
@@ -248,7 +248,7 @@
 
                                                     <a class="dropdown-item"
                                                         href="{{ route('investment.clients.welcomeLetter', $d->id) }}">
-                                                        <i class="bx bx-show me-1"></i> Welcome letter
+                                                        <i class="bx bx-mail-send me-1"></i> Welcome Letter
                                                     </a>
 
                                                     <a class="dropdown-item"
@@ -257,7 +257,7 @@
                                                     </a>
                                                     <a class="dropdown-item"
                                                         href="{{ route('calculate-investment-parameters', $d->id) }}">
-                                                        <i class="bx bx-envelope me-1"></i> show Payment-schedule
+                                                        <i class="bx bx-calendar-check me-1"></i> Show Payment Schedule
                                                     </a>
                                                 </div>
                                             </div>

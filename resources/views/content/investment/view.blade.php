@@ -541,10 +541,10 @@
                         </div>
 
                         <div class="mb-3">
-    <label class="form-label">Actual Payout Date & Time</label>
-    <input type="datetime-local" class="form-control" name="actual_payout_date"
-        value="{{ date('Y-m-d\TH:i') }}" required>
-</div>
+                            <label class="form-label">Actual Payout Date & Time</label>
+                            <input type="datetime-local" class="form-control" name="actual_payout_date"
+                                value="{{ date('Y-m-d\TH:i') }}" required>
+                        </div>
 
 
                         <div class="mb-3">
