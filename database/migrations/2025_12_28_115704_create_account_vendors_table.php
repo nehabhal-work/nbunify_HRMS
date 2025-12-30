@@ -39,13 +39,13 @@ return new class extends Migration
 
             /* Primary Details */
             $table->string('client_name', 100);
-            $table->string('vendor_mobile', 10)->nullable();
+            $table->string('vendor_mobile', 50)->nullable();
             $table->string('vendor_email', 100)->nullable();
 
             /* Contact Person */
-            $table->string('contact_person_name', 100);
+            $table->string('contact_person_name', 100)->nullable();;
             $table->string('contact_email', 100)->nullable();
-            $table->string('contact_mobile', 10)->nullable();
+            $table->string('contact_mobile', 50)->nullable();
 
             /* Address */
             $table->text('res_address')->nullable();

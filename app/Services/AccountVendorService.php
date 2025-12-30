@@ -163,11 +163,11 @@ class AccountVendorService
 
     public function generateClientCode(): string
     {
-        $baseCode = 'VNDR';
+        $baseCode = 'VND';
         $counter = 1;
 
         do {
-            $code = $baseCode . str_pad($counter, 8, '0', STR_PAD_LEFT);
+            $code = $baseCode . str_pad($counter, 4, '0', STR_PAD_LEFT);
             $counter++;
         } while (AccountVendor::where('vendor_code', $code)->exists());
 
