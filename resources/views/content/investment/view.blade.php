@@ -304,7 +304,6 @@
                             <th>#</th>
                             <th>Payout Date</th>
                             <th class="text-end">Scheduled (₹)</th>
-                            <th class="text-end">rounding-off (₹)</th>
                             <th class="text-end">Actual Paid (₹)</th>
                             <th>Paid Date</th>
                             <th>UTR no.</th>
@@ -367,7 +366,8 @@
                         {{-- ===================== --}}
                         {{-- PAYOUT SCHEDULES --}}
                         {{-- ===================== --}}
-                        @foreach ($investment->payoutSchedules as $index => $schedule)
+                        @foreach ($paySchdeule->payoutSchedules as $index => $schedule)
+                            {{-- <h1>{{ $schedule }}</h1> --}}
                             <tr
                                 class="{{ $schedule->sch_payout_amount == $investment->investment_amount ? 'table-info' : '' }}">
 
@@ -381,8 +381,6 @@
 
                                 <td class="text-end fw-semibold">
                                     ₹ {{ number_format($schedule->sch_payout_amount, 2) }}
-                                </td>
-                                <td>{{ $schedule->rounding_off_amount ? '₹ ' . number_format($schedule->rounding_off_amount, 2) : '—' }}
                                 </td>
 
                                 <td class="text-end">
@@ -427,13 +425,12 @@
                                     @if ($schedule->status === 'pending')
                                         <button class="btn btn-sm btn-outline-success" data-bs-toggle="modal"
                                             data-bs-target="#markPaidModal" data-id="{{ $schedule->id }}"
-                                            data-amount="{{ $schedule->sch_payout_amount }}">
+                                            data-amount="{{ $schedule->sch_payout_amount }}"
+                                            data-sr_no="{{ $schedule->sr_no }}">
                                             Mark Paid
                                         </button>
                                     @else
-                                        <a href="{{ route('investment.payout.send-mail', $schedule->id) }}"
-                                            class="btn btn-sm btn-outline-primary">
-                                            Send Mail
+                                        Done
                                         </a>
                                     @endif
                                 </td>
@@ -448,6 +445,13 @@
                             <th colspan="2" class="text-end">Total</th>
                             <th class="text-end">
                                 ₹ {{ number_format($investment->payoutSchedules->sum('sch_payout_amount'), 2) }}
+                            </th>
+                            <th colspan="7"></th>
+                        </tr>
+                        <tr>
+                            <th colspan="2" class="text-end">Rounding-off</th>
+                            <th class="text-end">
+                                {{ $schedule->rounding_off_amount ? '₹ ' . number_format($schedule->rounding_off_amount, 2) : '—' }}
                             </th>
                             <th colspan="7"></th>
                         </tr>
@@ -530,7 +534,7 @@
 
                         <div class="mb-3">
                             <label class="form-label">Remarks</label>
-                            <textarea class="form-control" name="remarks" rows="3"></textarea>
+                            <textarea class="form-control" name="remarks" id="mark_paid_remarks" rows="3"></textarea>
                         </div>
 
                         <div class="mb-3">
@@ -657,6 +661,8 @@
             var button = event.relatedTarget;
             document.getElementById('schedule_id').value = button.getAttribute('data-id');
             document.getElementById('actual_amount').value = button.getAttribute('data-amount');
+            document.getElementById('mark_paid_remarks').value = 'Payment for SR No. ' + button.getAttribute(
+                'data-sr_no');
         });
     </script>
 @endpush
