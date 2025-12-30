@@ -210,8 +210,17 @@ class InvestmentService
 
         // Add serial numbers to payout schedules
         $totalSchedules = $payschedule->payoutSchedules->count();
-        $payschedule->payoutSchedules->each(function ($schedule, $index) use ($totalSchedules) {
+        $payschedule->payoutSchedules->each(function ($schedule, $index) use ($totalSchedules, $payschedule) {
             $schedule->sr_no = ($index + 1) . '/' . $totalSchedules;
+            // If the previous schedule is paid, enable marking this as paid else disable
+            if ($index === 0) {
+                // First schedule can always be marked as paid
+                $schedule->enable_marked_as_paid = true;
+            } else {
+                // Check if previous schedule is paid
+                $previousSchedule = $payschedule->payoutSchedules[$index - 1];
+                $schedule->enable_marked_as_paid = $previousSchedule->status === 'paid';
+            }
         });
 
         return $payschedule;

@@ -93,7 +93,6 @@ Route::middleware(['auth', 'verified'])->prefix('investment')->name('investment.
     Route::get('/investment/{id}/email', [InvestmentController::class, 'sendEmailWithPdf'])->name('welcome.email');
 
     Route::put('/investment-payout-mark-paid', [InvestmentController::class, 'markPaid'])->name('payout.mark-paid');
-    Route::get('/investment-payout/{id}/email', [InvestmentController::class, 'sendEmailPayout'])->name('payout.send-mail');
 
     Route::get('schemes-by-date', [InvestmentController::class, 'getSchemesByDate'])
         ->name('schemes.by.date');

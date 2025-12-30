@@ -72,7 +72,6 @@ class InvestmentController extends Controller
     {
         $investment = $this->investmentService->getById($id);
         $paySchdeule = $this->investmentService->getPaymentSchedule($id);
-        
         $scheme = $this->schemeService->getAll();
         $clients = $this->clientService->getAll();
         $companyBanks = $this->companyService->getFirstCompanyBanks();
@@ -230,18 +229,18 @@ class InvestmentController extends Controller
             'actual_payout_date' => $request->actual_payout_date,
             'utr_no' => $request->utr_no,
             'remarks' => $request->remarks,
-            'status' => 'done',
+            'status' => 'paid',
         ]);
+
+        // Send email notification after successful payout
+        $this->sendEmailPayout($schedule->id);
 
         return back()->with('success', 'Payout marked as paid successfully.');
     }
 
-    public function sendEmailPayout($id)
+    private function sendEmailPayout($id)
     {
         $schedule = InvestmentPayoutSchedule::with('investment.firstClient')->findOrFail($id);
-        // return $schedule;
-        // Mail::to($schedule->investment->firstClient->email)
-        //     ->send(new PayoutCompletedMail($schedule));
 
         Mail::send(
             'content.investment.emails.payout-template',
