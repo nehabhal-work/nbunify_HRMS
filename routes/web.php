@@ -2,9 +2,9 @@
 
 use App\Http\Controllers\Accounts\ExpensesController;
 use App\Http\Controllers\Accounts\LedgerController;
-use App\Http\Controllers\Accounts\purchaseController;
 use App\Http\Controllers\Accounts\PurchaseOrderController;
-use App\Http\Controllers\Accounts\salesController;
+use App\Http\Controllers\Accounts\PurchaseController;
+use App\Http\Controllers\Accounts\SaleController;
 use App\Http\Controllers\Accounts\VendorsController;
 use App\Http\Controllers\Masters\DepartmentController;
 use App\Http\Controllers\Masters\DesignationController;
@@ -67,7 +67,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::middleware(['auth', 'verified'])->prefix('accounts')->name('accounts.')->group(function () {
     Route::resource('vendors', VendorsController::class);
     Route::resource('purchases', PurchaseController::class);
-    Route::resource('sales', salesController::class);
+    Route::resource('sales', SaleController::class);
     Route::resource('purchase-orders', PurchaseOrderController::class);
     Route::resource('expenses', ExpensesController::class);
     Route::resource('ledger', LedgerController::class);
