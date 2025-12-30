@@ -229,7 +229,7 @@ class InvestmentController extends Controller
             'actual_payout_date' => $request->actual_payout_date,
             'utr_no' => $request->utr_no,
             'remarks' => $request->remarks,
-            'status' => 'paid',
+            'status' => 'done',
         ]);
 
         // Send email notification after successful payout
