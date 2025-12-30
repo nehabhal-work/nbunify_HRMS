@@ -665,6 +665,8 @@ function calculateROI() {
         case 'yearly':
             finalAmount = yearlyInterest;
             break;
+        default:
+            finalAmount = yearlyInterest;
     }
 
     $('#roi_amount').val(finalAmount.toFixed(2));
@@ -722,6 +724,8 @@ function calculateMaturity($row) {
     $row.find('.matdate').val(`${yyyy}-${mm}-${dd}`);
 }
 
+
+
 // instrumentSelect change - Auto set dates from Investment Date
 $(document).on("change", ".instrumentSelect", function () {
     let $row = $(this).closest(".instrumentRow"); // current row
@@ -737,9 +741,15 @@ $(document).on("change", ".instrumentSelect", function () {
        Auto set dates from Investment Date
     =============================== */
     if (investmentDate) {
-        $instrumentDate.val(investmentDate);
-        $creditDate.val(investmentDate);
+        $instrumentDate.val(investmentDate).attr("max", investmentDate);;
+        $creditDate.val(investmentDate).attr("max", investmentDate);;
     }
+
+
+    /* ===============================
+       Sync dates on instrument change
+    =============================== */
+    // syncInstrumentDates($row);
 
     /* ===============================
        CHEQUE LOGIC
@@ -778,6 +788,8 @@ $(document).on("change", ".instrumentSelect", function () {
         $refNo.off("input.syncRef");
     }
 });
+
+
 
 
 

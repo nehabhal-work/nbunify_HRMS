@@ -26,7 +26,8 @@
     @endif
 
     <h4 class="fw-bold py-3 mb-4">
-        <span class="text-muted fw-light">Master /</span> <a href="{{ route('investment.els.index') }}">ELS-Investment</a>
+        <span class="text-muted fw-light">Master /</span> <a href="{{ route('investment.els.index') }}">Edit -
+            ELS-Investment</a>
     </h4>
 
     <div class="div d-flex justify-content-end mb-3">
@@ -55,7 +56,9 @@
                                 <input type="date"
                                     class="form-control invDate @error('investment_date') is-invalid @enderror"
                                     name="investment_date" id="investment_date"
-                                    value="{{ old('investment_date', date('Y-m-d')) }}" max="{{ date('Y-m-d') }}">
+                                    value="{{ old('investment_date', $investment->investment_date?->format('Y-m-d')) }}"
+                                    max="{{ date('Y-m-d') }}">
+
 
                                 @error('investment_date')
                                     <small class="text-danger">{{ $message }}</small>
@@ -87,14 +90,14 @@
                                 <select class="form-select select2 @error('client_id') is-invalid @enderror" required
                                     name="first_client_id" id="first_client_id">
                                     <option value="">Select Holder</option>
-                                    @foreach ($clients as $d)
+                                    {{-- @foreach ($clients as $d)
                                         <option value="{{ $d->id }}"
                                             {{ old('client_id') == $d->id ? 'selected' : '' }}
                                             data-banks='@json($d->banks)'
                                             data-families='@json($d->families)'>
                                             {{ ucfirst(strtolower($d->name)) }}
                                         </option>
-                                    @endforeach
+                                    @endforeach --}}
                                 </select>
 
                                 @error('client_id')
@@ -108,12 +111,12 @@
                                     <label class="form-label">Investment 2nd Holder</label>
                                     <select class="form-select select2" name="second_client_id" id="second_client">
                                         <option value="">Select Holder</option>
-                                        @foreach ($clients as $d)
+                                        {{-- @foreach ($clients as $d)
                                             <option value="{{ $d->id }}"
                                                 {{ old('second_client_id') == $d->id ? 'selected' : '' }}>
                                                 {{ ucfirst(strtolower($d->name)) }}
                                             </option>
-                                        @endforeach
+                                        @endforeach --}}
                                     </select>
                                 </div>
 
@@ -122,12 +125,12 @@
                                     <label class="form-label">Investment 3rd Holder</label>
                                     <select class="form-select select2" name="third_client_id" id="third_client">
                                         <option value="">Select Holder</option>
-                                        @foreach ($clients as $d)
+                                        {{-- @foreach ($clients as $d)
                                             <option value="{{ $d->id }}"
                                                 {{ old('third_client_id') == $d->id ? 'selected' : '' }}>
                                                 {{ ucfirst(strtolower($d->name)) }}
                                             </option>
-                                        @endforeach
+                                        @endforeach --}}
                                     </select>
                                 </div>
 
@@ -136,12 +139,12 @@
                                     <label class="form-label">Investment 4th Holder</label>
                                     <select class="form-select select2" name="fourth_client_id" id="fourth_client">
                                         <option value="">Select Holder</option>
-                                        @foreach ($clients as $d)
+                                        {{-- @foreach ($clients as $d)
                                             <option value="{{ $d->id }}"
                                                 {{ old('fourth_client_id') == $d->id ? 'selected' : '' }}>
                                                 {{ ucfirst(strtolower($d->name)) }}
                                             </option>
-                                        @endforeach
+                                        @endforeach --}}
                                     </select>
                                 </div>
 
@@ -168,24 +171,7 @@
 
                                     <option value="">Select Scheme</option>
 
-                                    {{-- @forelse ($scheme as $s)
-                                        <option value="{{ $s->id }}"
-                                            {{ old('scheme_id') == $s->id ? 'selected' : '' }}
-                                            data-tenure-type="{{ $s->tenure_type }}"
-                                            data-min-tenure="{{ $s->tenure_min }}" data-max-tenure="{{ $s->tenure_max }}"
-                                            data-frequencies='@json($s->frequency)'
-                                            data-min-roi="{{ $s->roi_min }}" data-max-roi="{{ $s->roi_max }}"
-                                            data-addi-roi-min="{{ $s->roi_min_additional }}"
-                                            data-addi-roi-max="{{ $s->roi_max_additional }}"
-                                            data-scheme-name="{{ $s->scheme_name }}"
-                                            data-start-date="{{ $s->scheme_name }}"
-                                            data-end-date="{{ $s->scheme_name }}">
-
-                                            {{ $s->scheme_name }}
-                                        </option>
-                                    @empty
-                                        <option value="">No Schemes Available</option>
-                                    @endforelse --}}
+                                    {{-- load from ajax --}}
                                 </select>
                                 @error('scheme_id')
                                     <small class="text-danger">{{ $message }}</small>
@@ -472,47 +458,18 @@
                                             </div>
 
                                             <!-- Instrument Image -->
-                                            <div class="col-md-6 mb-3">
-                                                <label class="form-label">
-                                                    Instrument Image <span class="text-danger">*</span>
-                                                </label>
-
-                                                <div class="input-group">
-                                                    <input type="file"
-                                                        class="form-control fileInput instrumentImage @error('instrumentImage.0') is-invalid @enderror"
-                                                        id="instrumentImage_0" name="instrumentImage[]"
-                                                        accept="image/*,application/pdf"
-                                                        onchange="uploadTempFile(this, 'instrumentImage_0')">
-
-                                                    <button class="btn btn-outline-danger" type="button"
-                                                        onclick="document.getElementById('instrumentImage_0').value = ''">
-                                                        ✕
-                                                    </button>
-                                                </div>
-
+                                            <div class="col-md-6">
+                                                <label class="form-label">Instrument Image <span
+                                                        class="text-danger">*</span></label>
+                                                <input type="file"
+                                                    class="form-control fileInput instrumentImage @error('instrumentImage.0') is-invalid @enderror"
+                                                    name="instrumentImage[]" accept="image/*,application/pdf">
+                                                <img src="" class="imgPreview mt-2 rounded border"
+                                                    style="width:100px; display:none;">
                                                 @error('instrumentImage.0')
                                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                                 @enderror
-
-                                                <input type="hidden" id="instrumentImage_0_url"
-                                                    name="instrumentImage_url[]"
-                                                    value="{{ old('instrumentImage_url.0') }}">
-
-                                                @if (old('instrumentImage_url.0'))
-                                                    <div id="instrumentImage_0_preview"
-                                                        class="position-relative d-inline-block mt-2">
-                                                        <img src="{{ old('instrumentImage_url.0') }}" width="100"
-                                                            class="rounded border">
-
-                                                        <button type="button"
-                                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
-                                                            onclick="removeImage('instrumentImage_0')">
-                                                            ✕
-                                                        </button>
-                                                    </div>
-                                                @endif
                                             </div>
-
 
                                         </div>
                                     </div>
@@ -531,10 +488,10 @@
                                                 <select class="form-select @error('company_bank_id') is-invalid @enderror"
                                                     name="company_bank_id[]" required>
                                                     <option value="">Select Company Bank</option>
-                                                    @foreach ($companyBanks as $d)
+                                                    {{-- @foreach ($companyBanks as $d)
                                                         <option value="{{ $d->id }}">
                                                             {{ $d->bank_name . '-' . $d->account_number }}</option>
-                                                    @endforeach
+                                                    @endforeach --}}
                                                 </select>
                                                 @error('company_bank_id')
                                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -618,10 +575,10 @@
                             <label class="form-label ">From Company Bank *</label>
                             <select class="form-select" id="from_company_bank_id" name="from_company_bank_id" required>
                                 <option value="">Select Company Bank</option>
-                                @foreach ($companyBanks as $d)
+                                {{-- @foreach ($companyBanks as $d)
                                     <option value="{{ $d->id }}">
                                         {{ $d->bank_name . '-' . $d->account_number }}</option>
-                                @endforeach
+                                @endforeach --}}
                             </select>
 
                         </div>

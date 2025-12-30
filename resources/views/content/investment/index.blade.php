@@ -33,7 +33,78 @@
 
     <div class="row">
         <!-- TABLE SECTION -->
+
         <div class="col-12">
+            <form method="GET" action="{{ route('investment.els.index') }}">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="row g-3 align-items-end">
+
+                            <!-- From Date -->
+                            <div class="col-md-3">
+                                <label class="form-label">From Date</label>
+                                <input type="date" name="from_date" class="form-control"
+                                    value="{{ request('from_date') }}">
+                            </div>
+
+                            <!-- To Date -->
+                            <div class="col-md-3">
+                                <label class="form-label">To Date</label>
+                                <input type="date" name="to_date" class="form-control" value="{{ request('to_date') }}">
+                            </div>
+
+                            <!-- Scheme Name -->
+                            <div class="col-md-3">
+                                <label class="form-label">Scheme</label>
+                                <select name="scheme_id" class="form-select">
+                                    <option value="">All Schemes</option>
+                                    {{-- @foreach ($schemes as $scheme)
+                                        <option value="{{ $scheme->id }}"
+                                            {{ request('scheme_id') == $scheme->id ? 'selected' : '' }}>
+                                            {{ $scheme->scheme_name }}
+                                        </option>
+                                    @endforeach --}}
+                                </select>
+                            </div>
+
+                            <!-- Client Name -->
+                            <div class="col-md-3">
+                                <label class="form-label">Client Name</label>
+                                <input type="text" name="client_name" class="form-control" placeholder="Search client"
+                                    value="{{ request('client_name') }}">
+                            </div>
+
+                            <!-- Status -->
+                            <div class="col-md-3">
+                                <label class="form-label">Status</label>
+                                <select name="status" class="form-select">
+                                    <option value="">All</option>
+                                    <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending
+                                    </option>
+                                    <option value="approved" {{ request('status') == 'approved' ? 'selected' : '' }}>
+                                        Approved
+                                    </option>
+                                    <option value="matured" {{ request('status') == 'matured' ? 'selected' : '' }}>Matured
+                                    </option>
+                                </select>
+                            </div>
+
+                            <!-- Buttons -->
+                            <div class="col-md-3 d-flex gap-2">
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <i class="bx bx-search"></i> Go
+                                </button>
+
+                                <a href="{{ route('investment.els.index') }}" class="btn btn-outline-secondary w-100">
+                                    Reset
+                                </a>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </form>
+
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Investment List</h5>
@@ -65,7 +136,7 @@
                                 </tr>
                             </thead>
 
-                            
+
                             <tbody>
                                 @foreach ($investments as $index => $d)
                                     <tr>
@@ -141,18 +212,22 @@
                                                 <div class="dropdown-menu">
 
                                                     <a class="dropdown-item"
+                                                        href="{{ route('investment.els.edit', $d->id) }}">
+                                                        <i class="bx bx-edit me-1"></i> Edit
+                                                    </a>
+                                                    <a class="dropdown-item"
                                                         href="{{ route('investment.els.show', $d->id) }}">
                                                         <i class="bx bx-show me-1"></i> View
                                                     </a>
                                                     <a class="dropdown-item"
                                                         href="{{ route('investment.si.index', ['id' => $d->id]) }}">
-                                                        <i class="bx bx-show me-1"></i> investmen standing instruction
+                                                        <i class="bx bx-receipt me-1"></i> investmen standing instruction
                                                         {{ $d->id }}
                                                     </a>
 
                                                     <a class="dropdown-item"
                                                         href="{{ route('investment.els.show', $d->id) }}">
-                                                        <i class="bx bx-show me-1"></i> standing
+                                                        <i class="bx bx-check-circle me-1"></i> Standing
                                                     </a>
 
 
@@ -173,7 +248,7 @@
 
                                                     <a class="dropdown-item"
                                                         href="{{ route('investment.clients.welcomeLetter', $d->id) }}">
-                                                        <i class="bx bx-show me-1"></i> Welcome letter
+                                                        <i class="bx bx-mail-send me-1"></i> Welcome Letter
                                                     </a>
 
                                                     <a class="dropdown-item"
@@ -182,7 +257,7 @@
                                                     </a>
                                                     <a class="dropdown-item"
                                                         href="{{ route('calculate-investment-parameters', $d->id) }}">
-                                                        <i class="bx bx-envelope me-1"></i> show Payment-schedule
+                                                        <i class="bx bx-calendar-check me-1"></i> Show Payment Schedule
                                                     </a>
                                                 </div>
                                             </div>
