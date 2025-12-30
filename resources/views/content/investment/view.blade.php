@@ -388,7 +388,7 @@
                                 </td>
 
                                 <td>
-                                    {{ $schedule->actual_payout_date ? \Carbon\Carbon::parse($schedule->actual_payout_date)->format('d M Y') : '—' }}
+                                    {{ $schedule->actual_payout_date ? \Carbon\Carbon::parse($schedule->actual_payout_date)->format('d M Y H:i') : '—' }}
                                 </td>
 
                                 <td>
@@ -422,7 +422,7 @@
                                 </td>
 
                                 <td class="text-center">
-                                    @if ($schedule->status === 'pending')
+                                    @if (!$schedule->enable_marked_as_paid)
                                         <button class="btn btn-sm btn-outline-success" data-bs-toggle="modal"
                                             data-bs-target="#markPaidModal" data-id="{{ $schedule->id }}"
                                             data-amount="{{ $schedule->sch_payout_amount }}"
@@ -430,7 +430,7 @@
                                             Mark Paid
                                         </button>
                                     @else
-                                        Done
+                                        -
                                         </a>
                                     @endif
                                 </td>
