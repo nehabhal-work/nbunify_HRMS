@@ -215,7 +215,7 @@ class InvestmentService
             // If the previous schedule is paid, enable marking this as paid else disable
             if ($index === 0) {
                 // First schedule can always be marked as paid
-                $schedule->enable_marked_as_paid = true;
+                $schedule->enable_marked_as_paid = $schedule->status !== 'done';
             } else {
                 // Check if previous schedule is paid
                 $previousSchedule = $payschedule->payoutSchedules[$index - 1];
