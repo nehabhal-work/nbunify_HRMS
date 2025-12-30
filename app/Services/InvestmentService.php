@@ -219,7 +219,7 @@ class InvestmentService
             } else {
                 // Check if previous schedule is paid
                 $previousSchedule = $payschedule->payoutSchedules[$index - 1];
-                $schedule->enable_marked_as_paid = $previousSchedule->status === 'paid';
+                $schedule->enable_marked_as_paid = $previousSchedule->status === 'done' && $schedule->status !== 'done';
             }
         });
 
