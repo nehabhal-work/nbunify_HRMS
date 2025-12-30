@@ -28,8 +28,8 @@ return new class extends Migration
             $table->text('remarks')->nullable();
             $table->timestamps();
 
-            $table->foreign('customer_id')->references('id')->on('customers');
-            $table->index(['financial_year', 'customer_id']);
+            // $table->foreign('customer_id')->references('id')->on('customers');
+            // $table->index(['financial_year', 'customer_id']);
         });
     }
 

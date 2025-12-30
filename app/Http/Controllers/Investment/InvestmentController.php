@@ -72,7 +72,7 @@ class InvestmentController extends Controller
     {
         $investment = $this->investmentService->getById($id);
         $paySchdeule = $this->investmentService->getPaymentSchedule($id);
-        // return $bankInstrument;
+        
         $scheme = $this->schemeService->getAll();
         $clients = $this->clientService->getAll();
         $companyBanks = $this->companyService->getFirstCompanyBanks();

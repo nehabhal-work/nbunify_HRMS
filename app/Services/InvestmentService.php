@@ -208,6 +208,12 @@ class InvestmentService
     {
         $payschedule = Investment::with(['payoutSchedules.fromCompanyBank', 'payoutSchedules.toClientBank'])->findOrFail($id);
 
+        // Add serial numbers to payout schedules
+        $totalSchedules = $payschedule->payoutSchedules->count();
+        $payschedule->payoutSchedules->each(function ($schedule, $index) use ($totalSchedules) {
+            $schedule->sr_no = ($index + 1) . '/' . $totalSchedules;
+        });
+
         return $payschedule;
     }
 

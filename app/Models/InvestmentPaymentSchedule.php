@@ -25,7 +25,7 @@ class InvestmentPaymentSchedule extends Model
 
     protected $casts = [
         'payout_date' => 'date',
-        'actual_payout_date' => 'date',
+        'actual_payout_date' => 'datetime',
         'amount' => 'decimal:2',
         'actual_payout_amount' => 'decimal:2',
     ];

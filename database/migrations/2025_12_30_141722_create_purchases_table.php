@@ -28,7 +28,7 @@ return new class extends Migration
             $table->text('remarks')->nullable();
             $table->timestamps();
 
-            $table->foreign('vendor_id')->references('id')->on('vendors');
+            $table->foreign('vendor_id')->references('id')->on('account_vendors');
             $table->index(['financial_year', 'vendor_id']);
         });
     }
