@@ -116,7 +116,7 @@
 
 
                     <tr>
-                        <th>Payout Per Period</th>
+                        <th>Payout Per {{ ucfirst($investment->frequency) }}</th>
                         <td><b>₹ {{ number_format($investment->payout_per_period, 2) }}</b></td>
                         <th>First Payout Date</th>
                         <td><b>{{ \Carbon\Carbon::parse($investment->first_payout_date)->format('d M Y') }}</b></td>
@@ -190,15 +190,22 @@
                             <!-- Payment Start Date -->
                             <div class="col-md-3">
                                 <label class="form-label">
-                                    Payment Start Date <span class="text-danger">*</span>
+                                    Start Date <span class="text-danger">*</span>
                                 </label>
                                 <input type="date" name="si_start_date"
                                     class="form-control bg-secondary-subtle @error('si_start_date') is-invalid @enderror"
                                     value="{{ $investment->first_payout_date ? \Carbon\Carbon::parse($investment->first_payout_date)->format('Y-m-d') : '' }}"
                                     readonly>
-
-
-
+                            </div>
+                            <!-- Payment End Date -->
+                            <div class="col-md-3">
+                                <label class="form-label">
+                                    End Date <span class="text-danger">*</span>
+                                </label>
+                                <input type="date" name="si_end_date"
+                                    class="form-control bg-secondary-subtle @error('si_end_date') is-invalid @enderror"
+                                    value="{{ $investment->maturity_date ? \Carbon\Carbon::parse($investment->maturity_date)->format('Y-m-d') : '' }}"
+                                    readonly>
                             </div>
 
                             <!-- Amount -->
@@ -355,6 +362,7 @@
                         <tr>
                             <th>#</th>
                             <th>Reference No</th>
+                            <th>Status</th>
                             <th>Company Bank</th>
                             <th>Client Bank</th>
                             <th>Payment Start Date</th>
@@ -378,6 +386,18 @@
                                         {{ $d->si_number }}
                                     </a>
                                 </td>
+                                <td>
+                                    @if ($d->status === 'active')
+                                        <span class="badge bg-success text-white">
+                                            {{ ucfirst($d->status) }}
+                                        </span>
+                                    @else
+                                        <span class="badge bg-danger text-white">
+                                            {{ ucfirst($d->status) }}
+                                        </span>
+                                    @endif
+                                </td>
+
 
                                 <td>{{ $investment->fromCompanyBank->bank_name . ' - ' . $investment->fromCompanyBank->account_number }}
                                 </td>
@@ -388,7 +408,7 @@
                                 <td>{{ $d->si_amount }}</td>
                                 <td>instruction_001.jpg</td>
                                 <td>notes_001.jpg</td>
-                                
+
                                 <td
                                     class="{{ !empty($d->createdBy) ? 'table-warning fw-semibold rounded px-2 py-1' : '' }}">
                                     @if (!empty($d->createdBy))
@@ -448,7 +468,7 @@
                                                 <i class="bx bx-show-alt me-1"></i> View
                                             </a>
 
-                                            <form action="{{ route('investment.si.destroy', $d->id) }}" method="POST"
+                                            {{-- <form action="{{ route('investment.si.destroy', $d->id) }}" method="POST"
                                                 onsubmit="return confirmDelete()">
                                                 @csrf
                                                 @method('DELETE')
@@ -456,7 +476,7 @@
                                                 <button type="submit" class="dropdown-item text-danger">
                                                     Delete
                                                 </button>
-                                            </form>
+                                            </form> --}}
 
 
 
