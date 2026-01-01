@@ -2,11 +2,11 @@
 @section('title', 'Scheme Management')
 
 @section('content')
-<style>
-    .bigtext{
-        font-size: 16px;
-    }
-</style>
+    <style>
+        .bigtext {
+            font-size: 16px;
+        }
+    </style>
     <div>
         @if (session('success'))
             <x-alert-sweet type="success" :message="session('success')" />
@@ -127,13 +127,13 @@
                 <span class="badge bg-primary me-1">{{ ucfirst($freq) }}</span>
             @endforeach
         </b>
-<div class="p-3 text-end">
+        <div class="p-3 text-end">
 
-                <button type="button" class="btn btn-success px-4 {{ $scheme->approved ? '' : 'disabled' }}"
-                    {{ $scheme->approved ? '' : 'disabled' }}>
-                    Approved
-                </button>
-            </div>
+            <button type="button" class="btn btn-success px-4 {{ $scheme->approved ? '' : 'disabled' }}"
+                {{ $scheme->approved ? '' : 'disabled' }}>
+                Approved
+            </button>
+        </div>
     </div>
 
 

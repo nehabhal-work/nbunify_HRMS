@@ -58,12 +58,12 @@
                                 <label class="form-label">Scheme</label>
                                 <select name="scheme_id" class="form-select">
                                     <option value="">All Schemes</option>
-                                    {{-- @foreach ($schemes as $scheme)
+                                    @foreach ($schemes as $scheme)
                                         <option value="{{ $scheme->id }}"
                                             {{ request('scheme_id') == $scheme->id ? 'selected' : '' }}>
                                             {{ $scheme->scheme_name }}
                                         </option>
-                                    @endforeach --}}
+                                    @endforeach
                                 </select>
                             </div>
 
