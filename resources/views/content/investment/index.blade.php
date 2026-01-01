@@ -223,14 +223,11 @@
                                                     </a>
                                                     <a class="dropdown-item"
                                                         href="{{ route('investment.si.index', ['id' => $d->id]) }}">
-                                                        <i class="bx bx-receipt me-1"></i> investmen standing instruction
+                                                         <i class="bx bx-check-circle me-1"></i> Standing Instruction
                                                         {{ $d->id }}
                                                     </a>
 
-                                                    <a class="dropdown-item"
-                                                        href="{{ route('investment.els.show', $d->id) }}">
-                                                        <i class="bx bx-check-circle me-1"></i> Standing
-                                                    </a>
+                                                
 
 
                                                     <a class="dropdown-item"
