@@ -24,11 +24,41 @@ class SchemesMaster extends Model
         'exit_load_percent',
         'lock_in_period',
         'lock_in_period_type',
+        'created_by',
+        'approved_by',
+        'approved_at',
+        'approved2_by',
+        'approved2_on',
+        'approved3_by',
+        'approved3_on',
     ];
 
     protected $casts = [
         'frequency' => 'array',
         'start_date' => 'date',
         'end_date'   => 'date',
+        'approved_at' => 'datetime',
+        'approved2_on' => 'datetime',
+        'approved3_on' => 'datetime',
     ];
+
+    public function creator()
+    {
+        return $this->belongsTo(\App\Models\User::class, 'created_by');
+    }
+
+    public function approver()
+    {
+        return $this->belongsTo(\App\Models\User::class, 'approved_by');
+    }
+
+    public function approver2()
+    {
+        return $this->belongsTo(\App\Models\User::class, 'approved2_by');
+    }
+
+    public function approver3()
+    {
+        return $this->belongsTo(\App\Models\User::class, 'approved3_by');
+    }
 }

@@ -65,4 +65,13 @@ class SchemeController extends Controller
         $this->schemeService->delete($scheme);
         return redirect()->route('investment.scheme.index')->with('success', 'Scheme deleted successfully.');
     }
+
+    /**
+     * Approve the specified scheme.
+     */
+    public function approve($id)
+    {
+        $this->schemeService->approve($id);
+        return redirect()->back()->with('success', 'Scheme approved successfully.');
+    }
 }

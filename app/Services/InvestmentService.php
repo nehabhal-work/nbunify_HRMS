@@ -39,8 +39,12 @@ class InvestmentService
         // Add maker checker fields
         $data['created_by'] = auth()->id();
 
+        // Generate investment code
+        $data['investment_code'] = $this->generateInvestmentCode($data['scheme_id']);
+
         // Extract only fillable fields for Investment model
         $investmentData = [
+            'investment_code' => $data['investment_code'],
             'investment_date' => $data['investment_date'],
             'investment_type' => $data['investment_type'],
             'first_client_id' => $data['first_client_id'],
@@ -729,4 +733,18 @@ class InvestmentService
 
     //     return $data;
     // }
+
+    private function generateInvestmentCode(int $schemeId): string
+    {
+        $scheme = \App\Models\SchemesMaster::findOrFail($schemeId);
+        $baseCode = $scheme->scheme_code . '-';
+        $counter = 1;
+
+        do {
+            $code = $baseCode . str_pad($counter, 3, '0', STR_PAD_LEFT);
+            $counter++;
+        } while (Investment::where('investment_code', $code)->exists());
+
+        return $code;
+    }
 }

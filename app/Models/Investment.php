@@ -10,6 +10,7 @@ use App\Models\User;
 class Investment extends Model
 {
     protected $fillable = [
+        'investment_code',
         'investment_date',
         'investment_type',
         'first_client_id',

@@ -75,6 +75,7 @@ Route::middleware(['auth', 'verified'])->prefix('accounts')->name('accounts.')->
 
 Route::middleware(['auth', 'verified'])->prefix('investment')->name('investment.')->group(function () {
     Route::resource('scheme', SchemeController::class)->names('scheme');
+    Route::put('scheme-approve/{id}', [SchemeController::class, 'approve'])->name('scheme.approve');
 
     Route::resource('els', InvestmentController::class)->names('els');
     Route::resource('si', InvestmentSiController::class)->names('si');
