@@ -98,10 +98,22 @@
                             <!-- Payment Start Date -->
                             <div class="col-md-3">
                                 <label class="form-label">
-                                    Payment Start Date
+                                    Start Date <span class="text-danger">*</span>
                                 </label>
-                                <input type="date" name="si_start_date" class="form-control bg-secondary-subtle"
-                                    value="{{ $investmentSi->si_start_date?->format('Y-m-d') }}" readonly>
+                                <input type="date" name="si_start_date"
+                                    class="form-control bg-secondary-subtle @error('si_start_date') is-invalid @enderror"
+                                    value="{{ $investment->first_payout_date ? \Carbon\Carbon::parse($investment->first_payout_date)->format('Y-m-d') : '' }}"
+                                    readonly>
+                            </div>
+                            <!-- Payment End Date -->
+                            <div class="col-md-3">
+                                <label class="form-label">
+                                    End Date <span class="text-danger">*</span>
+                                </label>
+                                <input type="date" name="si_end_date"
+                                    class="form-control bg-secondary-subtle @error('si_end_date') is-invalid @enderror"
+                                    value="{{ $investment->maturity_date ? \Carbon\Carbon::parse($investment->maturity_date)->format('Y-m-d') : '' }}"
+                                    readonly>
                             </div>
 
                             <!-- Amount -->
