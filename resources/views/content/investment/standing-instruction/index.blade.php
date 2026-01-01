@@ -388,6 +388,7 @@
                                 <td>{{ $d->si_amount }}</td>
                                 <td>instruction_001.jpg</td>
                                 <td>notes_001.jpg</td>
+                                
                                 <td
                                     class="{{ !empty($d->createdBy) ? 'table-warning fw-semibold rounded px-2 py-1' : '' }}">
                                     @if (!empty($d->createdBy))
@@ -427,6 +428,8 @@
                                         -
                                     @endif
                                 </td>
+
+
                                 <td>
                                     <div class="dropdown">
                                         <button type="button" class="btn p-0 dropdown-toggle hide-arrow"

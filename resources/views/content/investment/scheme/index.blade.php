@@ -240,7 +240,9 @@
                                     <th>Tenure</th>
                                     <th>Frequency</th>
                                     <th>Created By</th>
-                                    <th>Approved By</th>
+                                    <th>Approved By 1</th>
+                                    <th>Approved By 2</th>
+                                    <th>Approved By 3</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -266,23 +268,45 @@
                                                 <span class="badge bg-primary me-1">{{ ucfirst($freq) }}</span>
                                             @endforeach
                                         </td>
-                                        <td
-                                            class="{{ !empty($d->created_by) ? 'table-warning fw-semibold rounded px-2 py-1' : '' }}">
-                                            @if (!empty($d->created_by))
-                                                {{ $d->created_by . ' - ' . ($d->created_at ?? '-') }}
-                                            @else
-                                                -
-                                            @endif
-                                        </td>
+                                           <td
+                                    class="{{ !empty($d->createdBy) ? 'table-warning fw-semibold rounded px-2 py-1' : '' }}">
+                                    @if (!empty($d->createdBy))
+                                        {{-- <div class="d-flex justify-content-center text-center"> --}}
+                                        {{ $d->createdBy->name }}
+                                        {{-- </div> --}}
+                                        <br>
+                                        {{ $d->created_at ?? '-' }}
+                                    @else
+                                        -
+                                    @endif
+                                </td>
 
-                                        <td
-                                            class="{{ !empty($d->approved_by) ? 'table-success fw-semibold rounded px-2 py-1' : '' }}">
-                                            @if (!empty($d->approved_by))
-                                                {{ $d->approved_by . ' - ' . ($d->approved_at ?? '-') }}
-                                            @else
-                                                -
-                                            @endif
-                                        </td>
+                                <td
+                                    class="{{ !empty($d->approvedBy) ? 'table-success fw-semibold rounded px-2 py-1' : '' }}">
+                                    @if (!empty($d->approvedBy))
+                                        {{ $d->approvedBy->name }} <br>{{ $d->approved_at ?? '-' }}
+                                    @else
+                                        -
+                                    @endif
+                                </td>
+
+                                <td
+                                    class="{{ !empty($d->approved2By) ? 'table-success fw-semibold rounded px-2 py-1' : '' }}">
+                                    @if (!empty($d->approved2By))
+                                        {{ $d->approved2By->name }} <br>{{ $d->approved2_on ?? '-' }}
+                                    @else
+                                        -
+                                    @endif
+                                </td>
+
+                                <td
+                                    class="{{ !empty($d->approved3By) ? 'table-success fw-semibold rounded px-2 py-1' : '' }}">
+                                    @if (!empty($d->approved3By))
+                                        {{ $d->approved3By->name }} <br>{{ $d->approved3_on ?? '-' }}
+                                    @else
+                                        -
+                                    @endif
+                                </td>
                                         <td>
                                             <div class="dropdown">
                                                 <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
