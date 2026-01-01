@@ -422,7 +422,7 @@
                                 </td>
 
                                 <td class="text-center">
-                                    @if (!$schedule->enable_marked_as_paid)
+                                    @if ($schedule->enable_marked_as_paid)
                                         <button class="btn btn-sm btn-outline-success" data-bs-toggle="modal"
                                             data-bs-target="#markPaidModal" data-id="{{ $schedule->id }}"
                                             data-amount="{{ $schedule->sch_payout_amount }}"
@@ -431,7 +431,6 @@
                                         </button>
                                     @else
                                         -
-                                        </a>
                                     @endif
                                 </td>
                             </tr>
@@ -590,71 +589,6 @@
 @endsection
 
 @push('scripts')
-    <script>
-        $('#calculateBtn').on('click', function() {
-
-            $.ajax({
-                url: "http://localhost:8000/api/calculate-investment-parameters",
-                type: "POST",
-                headers: {
-                    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr('content')
-                },
-                contentType: "application/json",
-                data: JSON.stringify({
-                    "investment_amount": 50000,
-                    "roi_percent": 12.5,
-                    "additional_roi_percent": 1,
-                    "frequency": "monthly",
-                    "tenure_count": 1,
-                    "tenure_type": "years",
-                    "investment_date": "2025-09-10"
-                }),
-
-
-                success: function(response) {
-                    console.log("API Response:", response);
-
-                    $('#resultCard').show();
-
-                    let data = response.data;
-
-                    $("#inv_amount").text("₹" + data.investment_amount.toLocaleString());
-                    $("#roi").text(data.roi_percent + "%");
-                    $("#add_roi").text(data.additional_roi_percent + "%");
-                    $("#frequency").text(data.frequency);
-                    $("#tenure").text(data.tenure_count + " " + data.tenure_type);
-                    $("#inv_date").text(data.investment_date);
-                    $("#maturity_date").text(data.maturity_date.substring(0, 10));
-
-                    $("#annual_payout").text("₹" + data.annual_payout);
-                    $("#period_payout").text("₹" + data.payout_per_period);
-                    $("#schedule_count").text(data.schedule_count);
-
-                    // Table
-                    let rows = "";
-                    data.payout_schedule.forEach((item, index) => {
-                        rows += `
-            <tr>
-                <td>${index + 1}</td>
-                <td>${item.payout_date}</td>
-                <td>₹${item.amount}</td>
-                <td><span class="badge bg-warning text-dark">${item.status}</span></td>
-                <td>${item.remarks ?? ""}</td>
-            </tr>`;
-                    });
-
-                    $("#schedule_table_body").html(rows);
-                    // You can show response inside HTML
-                    // $("#result").html(JSON.stringify(response));
-                },
-                error: function(xhr) {
-                    console.log("Error:", xhr.responseText);
-                }
-            });
-
-        });
-    </script>
-
     <script>
         var markPaidModal = document.getElementById('markPaidModal');
         markPaidModal.addEventListener('show.bs.modal', function(event) {

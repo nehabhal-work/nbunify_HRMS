@@ -110,7 +110,7 @@
 
                             <p style="margin-bottom:0;">
                                 Warm regards,<br>
-                                <strong>K & K Finserv</strong><br>
+                                <strong>Eeasy Life Solutions</strong><br>
                                 Investment & Wealth Management Team
                             </p>
                         </td>

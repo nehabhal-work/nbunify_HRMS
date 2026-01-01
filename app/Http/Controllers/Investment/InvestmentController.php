@@ -30,7 +30,9 @@ class InvestmentController extends Controller
     {
         // return 'index page called';
         $investments = $this->investmentService->getAll();
-        return view('content.investment.index', compact('investments'));
+        $schemes = $this->schemeService->getAll();
+        // return $schemes;
+        return view('content.investment.index', compact('investments', 'schemes'));
     }
 
     /**
@@ -79,7 +81,7 @@ class InvestmentController extends Controller
         $inputBank = \DB::table('investment_input_banks')
             ->where('investment_id', $id)
             ->first();
-        // return $investment;
+        // return $paySchdeule;
         return view(
             'content.investment.view',
             compact(
