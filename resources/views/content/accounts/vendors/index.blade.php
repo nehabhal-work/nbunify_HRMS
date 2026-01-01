@@ -31,7 +31,6 @@
 
     <div class="row">
         <!-- TABLE SECTION -->
-
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
@@ -53,9 +52,10 @@
                                     <th>Approved By 1</th>
                                     <th>Approved By 2</th>
                                     <th>Approved By 3</th>
-                                    <th>action</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
+
                             <tbody>
                                 @forelse($vendors as $d)
                                     <tr>
@@ -70,57 +70,47 @@
                                             {{ $d->opt_client_vendor }}
                                         </td>
 
-                                        <td>
-                                            {{ $d->res_state ?? '-' }}
-                                        </td>
+                                        <td>{{ $d->res_state ?? '-' }}</td>
 
-                                        <td>
-                                            {{ $d->vendor_mobile ?? ($d->contact_mobile ?? '-') }}
-                                        </td>
+                                        <td>{{ $d->vendor_mobile ?? ($d->contact_mobile ?? '-') }}</td>
 
-                                        <td>
-                                            {{ $d->vendor_email ?? ($d->contact_email ?? '-') }}
-                                        </td>
+                                        <td>{{ $d->vendor_email ?? ($d->contact_email ?? '-') }}</td>
 
                                         {{-- Created By --}}
-                                        <td
-                                            class="{{ $d->createdBy ? 'table-warning fw-semibold rounded px-2 py-1' : '' }}">
+                                        <td class="fw-semibold {{ $d->createdBy ? 'table-warning' : '' }}">
                                             @if ($d->createdBy)
                                                 {{ $d->createdBy->name }} <br>
-                                                <small>{{ $d->created_at }}</small>
+                                                <small>{{ $d->created_at?->format('d M Y') }}</small>
                                             @else
                                                 -
                                             @endif
                                         </td>
 
                                         {{-- Approved By 1 --}}
-                                        <td
-                                            class="{{ $d->approvedBy ? 'table-success fw-semibold rounded px-2 py-1' : '' }}">
+                                        <td class="fw-semibold {{ $d->approvedBy ? 'table-success' : '' }}">
                                             @if ($d->approvedBy)
                                                 {{ $d->approvedBy->name }} <br>
-                                                <small>{{ $d->approved_at }}</small>
+                                                <small>{{ $d->approved_at?->format('d M Y') }}</small>
                                             @else
                                                 -
                                             @endif
                                         </td>
 
                                         {{-- Approved By 2 --}}
-                                        <td
-                                            class="{{ $d->approved2By ? 'table-success fw-semibold rounded px-2 py-1' : '' }}">
+                                        <td class="fw-semibold {{ $d->approved2By ? 'table-success' : '' }}">
                                             @if ($d->approved2By)
                                                 {{ $d->approved2By->name }} <br>
-                                                <small>{{ $d->approved2_on }}</small>
+                                                <small>{{ $d->approved2_on?->format('d M Y') }}</small>
                                             @else
                                                 -
                                             @endif
                                         </td>
 
                                         {{-- Approved By 3 --}}
-                                        <td
-                                            class="{{ $d->approved3By ? 'table-success fw-semibold rounded px-2 py-1' : '' }}">
+                                        <td class="fw-semibold {{ $d->approved3By ? 'table-success' : '' }}">
                                             @if ($d->approved3By)
                                                 {{ $d->approved3By->name }} <br>
-                                                <small>{{ $d->approved3_on }}</small>
+                                                <small>{{ $d->approved3_on?->format('d M Y') }}</small>
                                             @else
                                                 -
                                             @endif
@@ -133,6 +123,7 @@
                                                     data-bs-toggle="dropdown">
                                                     <i class="bx bx-dots-vertical-rounded"></i>
                                                 </button>
+
                                                 <div class="dropdown-menu">
                                                     <a class="dropdown-item"
                                                         href="{{ route('client-families.index', ['client_id' => $d->id]) }}">
@@ -158,6 +149,7 @@
                                                         onsubmit="return confirmDelete()">
                                                         @csrf
                                                         @method('DELETE')
+
                                                         <button type="submit" class="dropdown-item text-danger">
                                                             <i class="bx bx-trash me-1"></i> Delete
                                                         </button>
@@ -166,15 +158,17 @@
                                             </div>
                                         </td>
                                     </tr>
-                                @empty
-                                    <tr>
-                                        <td colspan="11" class="text-center text-muted">No records found</td>
-                                    </tr>
-                                @endforelse
+                               @empty
+<tr>
+    <td colspan="11" class="text-center text-muted">
+        No records found
+    </td>
+</tr>
+@endforelse
+
 
                             </tbody>
                         </table>
-
                     </div>
                 </div>
             </div>
