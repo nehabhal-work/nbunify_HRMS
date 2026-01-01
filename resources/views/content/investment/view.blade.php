@@ -54,7 +54,7 @@
         <div class="card">
             <div class="card-header">
                 <h5 class="card-title">Investment Details</h5>
-                <h6>Investment ID : {{ $investment->id }}</h6>
+                {{-- <h6>Investment code : {{ $investment->investment_code }}</h6> --}}
 
                 <table class="table table-bordered mb-4 investment-view">
 

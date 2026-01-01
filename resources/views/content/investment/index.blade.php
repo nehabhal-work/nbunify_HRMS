@@ -104,7 +104,7 @@
                     </div>
                 </div>
             </form>
-
+{{-- {{ $investments }} --}}
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Investment List</h5>
@@ -116,6 +116,7 @@
                             <thead class="table-light">
                                 <tr>
                                     <th>#</th>
+                                    <th>Investment Code</th>
                                     <th>Investment Date</th>
                                     <th>Client Name</th>
                                     <th>Scheme Name</th>
@@ -142,6 +143,7 @@
                                     <tr>
                                         <!-- # -->
                                         <td>{{ $index + 1 }}</td>
+                                        <td>{{ $d->investment_code }}</td>
                                         <td>{{ \Carbon\Carbon::parse($d->investment_date)->format('d M Y') }}</td>
                                         <td>
                                             <b>
