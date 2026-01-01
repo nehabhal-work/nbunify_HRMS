@@ -84,8 +84,7 @@
                         {{-- Always show 1st Holder --}}
                         <tr>
                             <th>1st Holder</th>
-                            <td class="bg-warning-subtle"
-                                colspan="{{ $investment->investment_type === 'single' ? 5 : 1 }}">
+                            <td class="bg-warning-subtle" colspan="{{ $investment->investment_type === 'single' ? 5 : 1 }}">
                                 <b>{{ $clientNames[$investment->first_client_id] ?? '-' }}</b>
                             </td>
 
@@ -352,7 +351,7 @@
                                     {{ $b->instrument_type }}
                                 </td>
 
-                                <td class="text-center">—</td>
+                                {{-- <td class="text-center">—</td> --}}
                             </tr>
                         @empty
                             <tr>
