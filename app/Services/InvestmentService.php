@@ -171,6 +171,39 @@ class InvestmentService
             ->orderByDesc('id')->get();
     }
 
+    public function getAllWithFilters(array $filters = []): Collection
+    {
+        $query = Investment::with(['firstClient', 'secondClient', 'thirdClient', 'fourthClient', 'scheme', 'fromCompanyBank', 'toClientBank', 'createdBy', 'approvedBy', 'approved2By', 'approved3By', 'standingInstructions']);
+
+        if (!empty($filters['from_date'])) {
+            $query->whereDate('investment_date', '>=', $filters['from_date']);
+        }
+
+        if (!empty($filters['to_date'])) {
+            $query->whereDate('investment_date', '<=', $filters['to_date']);
+        }
+
+        if (!empty($filters['scheme_id'])) {
+            $query->where('scheme_id', $filters['scheme_id']);
+        }
+
+        if (!empty($filters['status'])) {
+            $query->where('status', $filters['status']);
+        }
+
+        if (!empty($filters['action_status'])) {
+            $query->where('action_status', $filters['action_status']);
+        }
+
+        if (!empty($filters['client_search'])) {
+            $query->whereHas('firstClient', function ($q) use ($filters) {
+                $q->where('name', 'like', '%' . $filters['client_search'] . '%');
+            });
+        }
+
+        return $query->orderByDesc('id')->get();
+    }
+
     public function getById(int $id): Investment
     {
         $investment = Investment::with([
