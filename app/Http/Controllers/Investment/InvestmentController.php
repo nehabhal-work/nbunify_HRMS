@@ -26,12 +26,20 @@ class InvestmentController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        // return 'index page called';
-        $investments = $this->investmentService->getAll();
+        $filters = [
+            'from_date' => $request->get('from_date'),
+            'to_date' => $request->get('to_date'),
+            'scheme_id' => $request->get('scheme_id'),
+            'status' => $request->get('status'),
+            'action_status' => $request->get('action_status'),
+            'client_search' => $request->get('client_search')
+        ];
+
+        $investments = $this->investmentService->getAllWithFilters($filters);
         $schemes = $this->schemeService->getAll();
-        // return $schemes;
+        
         return view('content.investment.index', compact('investments', 'schemes'));
     }
 
