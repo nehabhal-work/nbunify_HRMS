@@ -258,8 +258,12 @@
                                             to
                                             {{ \Carbon\Carbon::parse($d->end_date)->format('d-m-Y') }}
                                         </td>
-                                        <td data-bs-toggle="modal" data-bs-target="#viewSchemeModal{{ $d->id }}">
-                                            {{ $d->scheme_name }}</td>
+                                    
+                                        <td>
+                                            <a href="{{ route('investment.scheme.show', $d->id) }}" class="text-reset">
+                                             <b class="text-black">  {{ $d->scheme_name }}</b> 
+                                            </a>
+                                        </td>
                                         <td>{{ $d->roi_min }}% - {{ $d->roi_max }}%</td>
                                         <td>{{ $d->roi_min_additional }}% - {{ $d->roi_max_additional }}%</td>
                                         <td>{{ ucfirst($d->tenure_type) }}</td>
