@@ -300,7 +300,7 @@
 
                         <thead class="table-light">
                             <tr>
-                                <th>#</th>
+                                {{-- <th>#</th> --}}
                                 <th>Payout Date</th>
                                 <th class="text-end">Scheduled (₹)</th>
                                 <th class="text-end">Actual Paid (₹)</th>
@@ -320,9 +320,9 @@
                             {{-- ===================== --}}
                             @forelse($investment->investmentInputBank ?? [] as $loopIndex => $b)
                                 <tr class="table-light">
-                                    <td class="fw-semibold">
+                                    {{-- <td class="fw-semibold">
                                         CR-{{ $loopIndex + 1 }}
-                                    </td>
+                                    </td> --}}
 
                                     <td>
                                         {{ \Carbon\Carbon::parse($b->client_instrument_date)->format('d M Y') }}
