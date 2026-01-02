@@ -231,6 +231,7 @@
                         <table class="table srkdataTable ">
                             <thead>
                                 <tr>
+                                    <th hidden>#</th>
                                     <th>Scheme ID</th>
                                     <th>Date</th>
                                     <th>Name</th>
@@ -250,6 +251,7 @@
                             <tbody>
                                 @foreach ($schemes as $key => $d)
                                     <tr>
+                                        <td hidden>{{ $key + 1 }}</td>
                                         <td>{{ $d->scheme_code }}</td>
                                         <td>
                                             {{ \Carbon\Carbon::parse($d->start_date)->format('d-m-Y') }}
