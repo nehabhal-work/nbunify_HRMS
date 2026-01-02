@@ -127,12 +127,25 @@
                 <span class="badge bg-primary me-1">{{ ucfirst($freq) }}</span>
             @endforeach
         </b>
-        <div class="p-3 text-end">
 
-            <button type="button" class="btn btn-success px-4 {{ $scheme->approved ? '' : 'disabled' }}"
-                {{ $scheme->approved ? '' : 'disabled' }}>
-                Approved
-            </button>
+
+       
+
+        <div class="p-3 text-end">
+            @if (!$scheme->is_approved)
+                {{-- show approve button --}}
+                <form action="{{ route('investment.scheme.approve', $scheme->id) }}" method="post">
+                    @csrf
+                    @method('PUT')
+                    <button type="submit" class="btn btn-success px-4">
+                        Approve
+                    </button>
+                </form>
+            @else
+                {{-- hide button --}}
+            @endif
+
+
         </div>
     </div>
 

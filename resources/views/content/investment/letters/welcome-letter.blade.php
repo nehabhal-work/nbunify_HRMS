@@ -21,6 +21,10 @@
             font-size: 13px;
             color: #777;
         }
+        .companyNameHeading {
+    letter-spacing: 1.5px;
+}
+
     </style>
 
     <div>
@@ -39,7 +43,11 @@
 
         <!-- Company Header -->
         <div class="text-center mb-4">
-            <h2 class="fw-bold">{{ $company->name }}</h2>
+            <img src="https://www.erp.easylifesolutions.co.in/assets/img/branding/logo.png" alt="ELS Finserv1"
+                        width="150">
+<h2 class="fw-bold text-uppercase mt-3 companyNameHeading">
+    {{ $company->name }}
+</h2>
             <div class="header-line mx-auto"></div>
             <p class="text-muted mt-2">A Trusted Partner in Financial Growth</p>
         </div>
@@ -105,7 +113,38 @@
 
         <!-- Footer -->
         <p class="footer-text text-center mb-0">
-            This is an auto-generated welcome letter from {{ $company->name }}.
+               <!-- Footer -->
+            <tr>
+
+                <td align="center" style="padding:20px; border-top:1px solid #1e1d1d; ">
+                    <img src="https://www.erp.easylifesolutions.co.in/assets/img/branding/logo.png" alt="ELS Finserv1"
+                        width="200"><br><br>
+
+                    <!-- Social Icons -->
+                    <a href="https://www.facebook.com/elsolutionsofficial?rdid=GpqaDR8vMNRExBkg&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1GknSE1nS2%2F#"
+                        target="_blank">
+                        <img src="https://www.erp.easylifesolutions.co.in/assets/img/mail/fb.png" alt="Facebook"
+                            width="24" style="border:0;">
+                    </a>
+
+                    <a href="https://www.instagram.com/easylifesolutions.official/" target="_blank">
+                        <img src="https://www.erp.easylifesolutions.co.in/assets/img/mail/instag.png" alt="Instagram"
+                            width="24" style="border:0;">
+                    </a>
+
+
+                    <a href="https://wa.me/918424042885" target="_blank">
+                        <img src="https://www.erp.easylifesolutions.co.in/assets/img/mail/wp.png" alt="WhatsApp"
+                            width="24" style="border:0;">
+                    </a>
+
+                    <p style="font-size:12px; color:#666; margin-top:15px;" class="text-center">
+                        +91 98672 25059 | +91 96198 50696 | +91 98922 76058 | +91 84240 42885<br>
+                        info@elsolutions.co.in | www.elsolutions.co.in
+                    </p>
+                    <p class="text-center"> <small> This is an auto-generated welcome letter from {{ $company->name }}.</small></p>
+                </td>
+            </tr>
         </p>
 
     </div>

@@ -220,7 +220,7 @@
 
     <!-- TABLE SECTION -->
     <div class="row">
-        {{-- {{ $schemes }} --}}
+        {{-- {{ $ds }} --}}
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
@@ -231,6 +231,7 @@
                         <table class="table srkdataTable ">
                             <thead>
                                 <tr>
+                                    <th hidden>#</th>
                                     <th>Scheme ID</th>
                                     <th>Date</th>
                                     <th>Name</th>
@@ -248,65 +249,70 @@
                             </thead>
 
                             <tbody>
-                                @foreach ($schemes as $key => $scheme)
+                                @foreach ($schemes as $key => $d)
                                     <tr>
-                                        <td>{{ $scheme->scheme_code }}</td>
+                                        <td hidden>{{ $key + 1 }}</td>
+                                        <td>{{ $d->scheme_code }}</td>
                                         <td>
-                                            {{ \Carbon\Carbon::parse($scheme->start_date)->format('d-m-Y') }}
+                                            {{ \Carbon\Carbon::parse($d->start_date)->format('d-m-Y') }}
                                             to
-                                            {{ \Carbon\Carbon::parse($scheme->end_date)->format('d-m-Y') }}
+                                            {{ \Carbon\Carbon::parse($d->end_date)->format('d-m-Y') }}
                                         </td>
-                                        <td data-bs-toggle="modal" data-bs-target="#viewSchemeModal{{ $scheme->id }}">
-                                            {{ $scheme->scheme_name }}</td>
-                                        <td>{{ $scheme->roi_min }}% - {{ $scheme->roi_max }}%</td>
-                                        <td>{{ $scheme->roi_min_additional }}% - {{ $scheme->roi_max_additional }}%</td>
-                                        <td>{{ ucfirst($scheme->tenure_type) }}</td>
-                                        <td>{{ $scheme->tenure_min }} - {{ $scheme->tenure_max }}</td>
+                                    
+                                        <td>
+                                            <a href="{{ route('investment.scheme.show', $d->id) }}" class="text-reset">
+                                             <b class="text-black">  {{ $d->scheme_name }}</b> 
+                                            </a>
+                                        </td>
+                                        <td>{{ $d->roi_min }}% - {{ $d->roi_max }}%</td>
+                                        <td>{{ $d->roi_min_additional }}% - {{ $d->roi_max_additional }}%</td>
+                                        <td>{{ ucfirst($d->tenure_type) }}</td>
+                                        <td>{{ $d->tenure_min }} - {{ $d->tenure_max }}</td>
 
                                         <td>
-                                            @foreach ($scheme->frequency as $freq)
+                                            @foreach ($d->frequency as $freq)
                                                 <span class="badge bg-primary me-1">{{ ucfirst($freq) }}</span>
                                             @endforeach
                                         </td>
-                                           <td
-                                    class="{{ !empty($d->createdBy) ? 'table-warning fw-semibold rounded px-2 py-1' : '' }}">
-                                    @if (!empty($d->createdBy))
-                                        {{-- <div class="d-flex justify-content-center text-center"> --}}
-                                        {{ $d->createdBy->name }}
-                                        {{-- </div> --}}
-                                        <br>
-                                        {{ $d->created_at ?? '-' }}
-                                    @else
-                                        -
-                                    @endif
-                                </td>
+                                        <td
+                                            class="{{ !empty($d->createdBy) ? 'table-warning fw-semibold rounded px-2 py-1' : '' }}">
+                                            @if (!empty($d->createdBy))
+                                                {{-- <div class="d-flex justify-content-center text-center"> --}}
+                                                {{ $d->createdBy->name }}
+                                                {{-- </div> --}}
+                                                <br>
+                                                {{ $d->created_at ?? '-' }}
+                                            @else
+                                                -
+                                            @endif
+                                        </td>
 
-                                <td
-                                    class="{{ !empty($d->approvedBy) ? 'table-success fw-semibold rounded px-2 py-1' : '' }}">
-                                    @if (!empty($d->approvedBy))
-                                        {{ $d->approvedBy->name }} <br>{{ $d->approved_at ?? '-' }}
-                                    @else
-                                        -
-                                    @endif
-                                </td>
+                                        <td
+                                            class="{{ !empty($d->approvedBy) ? 'table-success fw-semibold rounded px-2 py-1' : '' }}">
+                                            @if (!empty($d->approvedBy))
+                                                {{ $d->approvedBy->name }} <br>{{ $d->approved_at ?? '-' }}
+                                            @else
+                                                -
+                                            @endif
+                                        </td>
 
-                                <td
-                                    class="{{ !empty($d->approved2By) ? 'table-success fw-semibold rounded px-2 py-1' : '' }}">
-                                    @if (!empty($d->approved2By))
-                                        {{ $d->approved2By->name }} <br>{{ $d->approved2_on ?? '-' }}
-                                    @else
-                                        -
-                                    @endif
-                                </td>
+                                        <td
+                                            class="{{ !empty($d->approved2By) ? 'table-success fw-semibold rounded px-2 py-1' : '' }}">
+                                            @if (!empty($d->approved2By))
+                                                {{ $d->approved2By->name }} <br>{{ $d->approved2_on ?? '-' }}
+                                            @else
+                                                -
+                                            @endif
+                                        </td>
 
-                                <td
-                                    class="{{ !empty($d->approved3By) ? 'table-success fw-semibold rounded px-2 py-1' : '' }}">
-                                    @if (!empty($d->approved3By))
-                                        {{ $d->approved3By->name }} <br>{{ $d->approved3_on ?? '-' }}
-                                    @else
-                                        -
-                                    @endif
-                                </td>
+                                        <td
+                                            class="{{ !empty($d->approved3By) ? 'table-success fw-semibold rounded px-2 py-1' : '' }}">
+                                            @if (!empty($d->approved3By))
+                                                {{ $d->approved3By->name }} <br>{{ $d->approved3_on ?? '-' }}
+                                            @else
+                                                -
+                                            @endif
+                                        </td>
                                         <td>
                                             <div class="dropdown">
                                                 <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
@@ -316,23 +322,23 @@
 
                                                 <div class="dropdown-menu">
                                                     <a class="dropdown-item"
-                                                        href="{{ route('investment.scheme.edit', $scheme->id) }}">
+                                                        href="{{ route('investment.scheme.edit', $d->id) }}">
                                                         <i class="bx bx-edit-alt me-1"></i> Edit
                                                     </a>
                                                     <a class="dropdown-item"
-                                                        href="{{ route('investment.scheme.show', $scheme->id) }}">
+                                                        href="{{ route('investment.scheme.show', $d->id) }}">
                                                         <i class="bx bx-show me-1"></i> View
                                                     </a>
 
 
 
-                                                    <form action="{{ route('investment.scheme.destroy', $scheme->id) }}"
+                                                    <form action="{{ route('investment.scheme.destroy', $d->id) }}"
                                                         method="post" onsubmit="return confirmDelete()">
                                                         @csrf
                                                         @method('DELETE')
                                                         <button type="submit"
                                                             class="dropdown-item text-danger delete-btn"
-                                                            data-id="{{ $scheme->id }}">
+                                                            data-id="{{ $d->id }}">
                                                             <i class="bx bx-trash me-1"></i> Delete
                                                         </button>
                                                     </form>

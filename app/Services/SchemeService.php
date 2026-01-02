@@ -12,7 +12,7 @@ class SchemeService
 
     public function getAll()
     {
-        return SchemesMaster::with(['creator', 'approver', 'approver2', 'approver3'])
+        return SchemesMaster::with(relations: ['createdBy', 'approvedBy', 'approved2By', 'approved3By'])
             ->orderByDesc('id')->get();
     }
 
