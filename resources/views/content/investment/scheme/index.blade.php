@@ -269,40 +269,40 @@
                                             @endforeach
                                         </td>
                                            <td
-                                    class="{{ !empty($d->createdBy) ? 'table-warning fw-semibold rounded px-2 py-1' : '' }}">
-                                    @if (!empty($d->createdBy))
+                                    class="{{ !empty($scheme->createdBy) ? 'table-warning fw-semibold rounded px-2 py-1' : '' }}">
+                                    @if (!empty($scheme->createdBy))
                                         {{-- <div class="d-flex justify-content-center text-center"> --}}
-                                        {{ $d->createdBy->name }}
+                                        {{ $scheme->createdBy->name }}
                                         {{-- </div> --}}
                                         <br>
-                                        {{ $d->created_at ?? '-' }}
+                                        {{ $scheme->created_at ?? '-' }}
                                     @else
                                         -
                                     @endif
                                 </td>
 
                                 <td
-                                    class="{{ !empty($d->approvedBy) ? 'table-success fw-semibold rounded px-2 py-1' : '' }}">
-                                    @if (!empty($d->approvedBy))
-                                        {{ $d->approvedBy->name }} <br>{{ $d->approved_at ?? '-' }}
+                                    class="{{ !empty($scheme->approvedBy) ? 'table-success fw-semibold rounded px-2 py-1' : '' }}">
+                                    @if (!empty($scheme->approvedBy))
+                                        {{ $scheme->approvedBy->name }} <br>{{ $scheme->approved_at ?? '-' }}
                                     @else
                                         -
                                     @endif
                                 </td>
 
                                 <td
-                                    class="{{ !empty($d->approved2By) ? 'table-success fw-semibold rounded px-2 py-1' : '' }}">
-                                    @if (!empty($d->approved2By))
-                                        {{ $d->approved2By->name }} <br>{{ $d->approved2_on ?? '-' }}
+                                    class="{{ !empty($scheme->approved2By) ? 'table-success fw-semibold rounded px-2 py-1' : '' }}">
+                                    @if (!empty($scheme->approved2By))
+                                        {{ $scheme->approved2By->name }} <br>{{ $scheme->approved2_on ?? '-' }}
                                     @else
                                         -
                                     @endif
                                 </td>
 
                                 <td
-                                    class="{{ !empty($d->approved3By) ? 'table-success fw-semibold rounded px-2 py-1' : '' }}">
-                                    @if (!empty($d->approved3By))
-                                        {{ $d->approved3By->name }} <br>{{ $d->approved3_on ?? '-' }}
+                                    class="{{ !empty($scheme->approved3By) ? 'table-success fw-semibold rounded px-2 py-1' : '' }}">
+                                    @if (!empty($scheme->approved3By))
+                                        {{ $scheme->approved3By->name }} <br>{{ $scheme->approved3_on ?? '-' }}
                                     @else
                                         -
                                     @endif
