@@ -50,7 +50,8 @@ Route::middleware(['auth', 'verified'])->prefix('master')->name('master.')->grou
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('clients', ClientController::class)->names('clients');
     Route::put('client-approve/{id}', [ClientController::class, 'approve'])->name('client.approve');
-    Route::put('investment-approve/{id}', [InvestmentController::class, 'approve'])->name('investment.approve');
+    Route::get('client-approve/{id}', [ClientController::class, 'approve'])->name('client.approve');
+
 
     Route::resource('client-families', ClientFamilyController::class);
     Route::get('client-families-create-from-existing', [ClientFamilyController::class, 'createFromExistingClient'])->name('client-families.create.existing');
@@ -62,6 +63,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('send-birthday-email');
     Route::post('/send-festival-mail', [ClientController::class, 'sendFestivalMail'])
         ->name('send.festival.mail');
+    Route::get('client-welcomeLetter/{id}', [ClientController::class, 'welcomeLetter'])
+        ->name('client.welcomeLetter');
 });
 
 Route::middleware(['auth', 'verified'])->prefix('accounts')->name('accounts.')->group(function () {
@@ -76,6 +79,7 @@ Route::middleware(['auth', 'verified'])->prefix('accounts')->name('accounts.')->
 Route::middleware(['auth', 'verified'])->prefix('investment')->name('investment.')->group(function () {
     Route::resource('scheme', SchemeController::class)->names('scheme');
     Route::put('scheme-approve/{id}', [SchemeController::class, 'approve'])->name('scheme.approve');
+    Route::put('investment-approve/{id}', [InvestmentController::class, 'approve'])->name('approve');
 
     Route::resource('els', InvestmentController::class)->names('els');
     Route::resource('si', InvestmentSiController::class)->names('si');
@@ -89,7 +93,7 @@ Route::middleware(['auth', 'verified'])->prefix('investment')->name('investment.
     Route::get('els-maturity-leteer', [InvestmentController::class, 'maturityLetter'])->name("maturity-letter");
     Route::get('els-maturity-kyc', [InvestmentController::class, 'maturityKYC'])->name("maturity-kyc");
 
-    Route::get('els-welcome-letter/{id}', [InvestmentController::class, 'welcomeLetter'])->name('clients.welcomeLetter');
+    Route::get('els-welcome-letter/{id}', [InvestmentController::class, 'welcomeLetter'])->name('welcomeLetter');
     Route::get('/investment/{id}/pdf', [InvestmentController::class, 'welcomeLetterDownloadPdf'])->name('welcome.pdf');
     Route::get('/investment/{id}/email', [InvestmentController::class, 'sendEmailWithPdf'])->name('welcome.email');
 

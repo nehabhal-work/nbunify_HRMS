@@ -104,7 +104,7 @@
                     </div>
                 </div>
             </form>
-
+{{-- {{ $investments }} --}}
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Investment List</h5>
@@ -116,6 +116,7 @@
                             <thead class="table-light">
                                 <tr>
                                     <th>#</th>
+                                    <th>Investment Code</th>
                                     <th>Investment Date</th>
                                     <th>Client Name</th>
                                     <th>Scheme Name</th>
@@ -142,6 +143,7 @@
                                     <tr>
                                         <!-- # -->
                                         <td>{{ $index + 1 }}</td>
+                                        <td>{{ $d->investment_code }}</td>
                                         <td>{{ \Carbon\Carbon::parse($d->investment_date)->format('d M Y') }}</td>
                                         <td>
                                             <b>
@@ -221,14 +223,11 @@
                                                     </a>
                                                     <a class="dropdown-item"
                                                         href="{{ route('investment.si.index', ['id' => $d->id]) }}">
-                                                        <i class="bx bx-receipt me-1"></i> investmen standing instruction
+                                                         <i class="bx bx-check-circle me-1"></i> Standing Instruction
                                                         {{ $d->id }}
                                                     </a>
 
-                                                    <a class="dropdown-item"
-                                                        href="{{ route('investment.els.show', $d->id) }}">
-                                                        <i class="bx bx-check-circle me-1"></i> Standing
-                                                    </a>
+                                                
 
 
                                                     <a class="dropdown-item"
@@ -247,7 +246,7 @@
                                                     </a>
 
                                                     <a class="dropdown-item"
-                                                        href="{{ route('investment.clients.welcomeLetter', $d->id) }}">
+                                                        href="{{ route('investment.welcomeLetter', $d->id) }}">
                                                         <i class="bx bx-mail-send me-1"></i> Welcome Letter
                                                     </a>
 

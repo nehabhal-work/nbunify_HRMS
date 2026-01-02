@@ -23,8 +23,7 @@ class ClientController extends Controller
         private ClientBankService $clientBankService,
         private FileStorageService $fileStorageService,
         private CompanyService $companyService,
-    ) {
-    }
+    ) {}
 
     public function index()
     {
@@ -200,5 +199,14 @@ class ClientController extends Controller
         }
 
         return back()->with('success', 'Festival emails processed successfully.');
+    }
+
+    public function welcomeLetter($id)
+    {
+        $client = $this->clientService->find($id);
+        $client->load(['banks', 'families']);
+        $company = $this->companyService->findFirstOrFail();
+        // return $client;
+        return view('content.clients.welcome-letter', compact('client', 'company'));
     }
 }
