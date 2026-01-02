@@ -42,22 +42,22 @@ class SchemesMaster extends Model
         'approved3_on' => 'datetime',
     ];
 
-    public function creator()
+    public function createdBy()
     {
         return $this->belongsTo(\App\Models\User::class, 'created_by');
     }
 
-    public function approver()
+    public function approvedBy()
     {
         return $this->belongsTo(\App\Models\User::class, 'approved_by');
     }
 
-    public function approver2()
+    public function approved2By()
     {
         return $this->belongsTo(\App\Models\User::class, 'approved2_by');
     }
 
-    public function approver3()
+    public function approved3By()
     {
         return $this->belongsTo(\App\Models\User::class, 'approved3_by');
     }
