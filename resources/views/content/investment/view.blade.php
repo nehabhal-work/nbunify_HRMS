@@ -370,9 +370,9 @@
                                 <tr
                                     class="{{ $schedule->sch_payout_amount == $investment->investment_amount ? 'table-info' : '' }}">
 
-                                    <td class="fw-semibold">
+                                    {{-- <td class="fw-semibold">
                                         {{ $index + 1 }}
-                                    </td>
+                                    </td> --}}
 
                                     <td>
                                         {{ \Carbon\Carbon::parse($schedule->sch_payout_date)->format('d M Y') }}
