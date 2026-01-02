@@ -50,7 +50,7 @@
 
     </div>
 
-    <div class="container">
+    <div class="container-fluid">
         <div class="card">
             <div class="card-header">
                 <h5 class="card-title">Investment Details</h5>
@@ -161,8 +161,6 @@
 
                 </table>
 
-
-
                 <h5 class="card-title">Bank / Instrument Details </h5>
                 <table class="table table-bordered mb-4">
                     <h6 class="text-warning">Client Instrument Details</h6>
@@ -210,6 +208,7 @@
                         </tr>
                     @endforelse
                 </table>
+
                 <table class="table table-bordered mb-4">
                     <h6 class="text-warning">Company Credit Details</h6>
                     {{-- Header Row --}}
@@ -239,9 +238,7 @@
                     @endforelse
                 </table>
 
-
                 <h5 class="card-title">Outward Bank / Payout Details</h5>
-
                 <table class="table table-bordered  mb-4">
                     <tbody>
                         <tr>
@@ -263,7 +260,6 @@
                     </tbody>
 
                 </table>
-
 
                 <h5 class="card-title">Nominee Details </h5>
                 <table class="table table-bordered mb-4 ">
@@ -297,167 +293,171 @@
 
 
                 <h5 class="card-title">Payment Schedule</h5>
-                <table class="table table-bordered ">
-                    <thead class="table-light">
-                        <tr>
-                            <th>#</th>
-                            <th>Payout Date</th>
-                            <th class="text-end">Scheduled (₹)</th>
-                            <th class="text-end">Actual Paid (₹)</th>
-                            <th>Paid Date</th>
-                            <th>UTR no.</th>
-                            <th>From Bank</th>
-                            <th>To Client Bank</th>
-                            <th>Status</th>
-                            <th>Remarks</th>
-                            <th class="text-center">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
+                <div class="table-responsive">
 
-                        {{-- ===================== --}}
-                        {{-- CREDIT / INVESTMENT ENTRY --}}
-                        {{-- ===================== --}}
-                        @forelse($investment->investmentInputBank ?? [] as $loopIndex => $b)
-                            <tr class="table-light">
-                                <td class="fw-semibold">
-                                    CR-{{ $loopIndex + 1 }}
-                                </td>
+                    {{-- <table class="table table-bordered "> --}}
+                    <table id="payoutTable" class="table table-bordered nowrap w-100">
 
-                                <td>
-                                    {{ \Carbon\Carbon::parse($b->client_instrument_date)->format('d M Y') }}
-                                </td>
-
-                                <td class="text-end fw-semibold text-success">
-                                    ₹ {{ number_format($b->amount, 2) }}
-                                </td>
-
-                                <td class="">—</td>
-                                <td>—</td>
-                                <td>—</td>
-
-                                <td>
-                                    {{ $b->client_reference_no ?? '—' }}
-                                </td>
-
-                                <td>—</td>
-                                <td>—</td>
-
-                                <td>
-                                    <span class="badge bg-info">Credit</span>
-                                </td>
-
-                                <td>
-                                    {{ $b->instrument_type }}
-                                </td>
-
-                                {{-- <td class="text-center">—</td> --}}
-                            </tr>
-                        @empty
+                        <thead class="table-light">
                             <tr>
-                                <td colspan="11" class="text-center text-muted">
-                                    No investment credit records found
-                                </td>
+                                <th>#</th>
+                                <th>Payout Date</th>
+                                <th class="text-end">Scheduled (₹)</th>
+                                <th class="text-end">Actual Paid (₹)</th>
+                                <th>Paid Date</th>
+                                <th>UTR no.</th>
+                                <th>From Bank</th>
+                                <th>To Client Bank</th>
+                                <th>Status</th>
+                                <th>Remarks</th>
+                                <th class="text-center">Action</th>
                             </tr>
-                        @endforelse
+                        </thead>
+                        <tbody>
+
+                            {{-- ===================== --}}
+                            {{-- CREDIT / INVESTMENT ENTRY --}}
+                            {{-- ===================== --}}
+                            @forelse($investment->investmentInputBank ?? [] as $loopIndex => $b)
+                                <tr class="table-light">
+                                    <td class="fw-semibold">
+                                        CR-{{ $loopIndex + 1 }}
+                                    </td>
+
+                                    <td>
+                                        {{ \Carbon\Carbon::parse($b->client_instrument_date)->format('d M Y') }}
+                                    </td>
+
+                                    <td class="text-end fw-semibold text-success">
+                                        ₹ {{ number_format($b->amount, 2) }}
+                                    </td>
+
+                                    <td class="">—</td>
+                                    <td>—</td>
+                                    <td>—</td>
+
+                                    <td>
+                                        {{ $b->client_reference_no ?? '—' }}
+                                    </td>
+
+                                    <td>—</td>
+                                    <td>—</td>
+
+                                    <td>
+                                        <span class="badge bg-info">Credit</span>
+                                    </td>
+
+                                    <td>
+                                        {{ $b->instrument_type }}
+                                    </td>
+
+                                    {{-- <td class="text-center">—</td> --}}
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="11" class="text-center text-muted">
+                                        No investment credit records found
+                                    </td>
+                                </tr>
+                            @endforelse
 
 
-                        {{-- ===================== --}}
-                        {{-- PAYOUT SCHEDULES --}}
-                        {{-- ===================== --}}
-                        @foreach ($paySchdeule->payoutSchedules as $index => $schedule)
-                            {{-- <h1>{{ $schedule }}</h1> --}}
-                            <tr
-                                class="{{ $schedule->sch_payout_amount == $investment->investment_amount ? 'table-info' : '' }}">
+                            {{-- ===================== --}}
+                            {{-- PAYOUT SCHEDULES --}}
+                            {{-- ===================== --}}
+                            @foreach ($paySchdeule->payoutSchedules as $index => $schedule)
+                                {{-- <h1>{{ $schedule }}</h1> --}}
+                                <tr
+                                    class="{{ $schedule->sch_payout_amount == $investment->investment_amount ? 'table-info' : '' }}">
 
-                                <td class="fw-semibold">
-                                    {{ $index + 1 }}
-                                </td>
+                                    <td class="fw-semibold">
+                                        {{ $index + 1 }}
+                                    </td>
 
-                                <td>
-                                    {{ \Carbon\Carbon::parse($schedule->sch_payout_date)->format('d M Y') }}
-                                </td>
+                                    <td>
+                                        {{ \Carbon\Carbon::parse($schedule->sch_payout_date)->format('d M Y') }}
+                                    </td>
 
-                                <td class="text-end fw-semibold">
-                                    ₹ {{ number_format($schedule->sch_payout_amount, 2) }}
-                                </td>
+                                    <td class="text-end fw-semibold">
+                                        ₹ {{ number_format($schedule->sch_payout_amount, 2) }}
+                                    </td>
 
-                                <td class="text-end">
-                                    {{ $schedule->actual_payout_amount ? '₹ ' . number_format($schedule->actual_payout_amount, 2) : '—' }}
-                                </td>
+                                    <td class="text-end">
+                                        {{ $schedule->actual_payout_amount ? '₹ ' . number_format($schedule->actual_payout_amount, 2) : '—' }}
+                                    </td>
 
-                                <td>
-                                    {{ $schedule->actual_payout_date ? \Carbon\Carbon::parse($schedule->actual_payout_date)->format('d M Y H:i') : '—' }}
-                                </td>
+                                    <td>
+                                        {{ $schedule->actual_payout_date ? \Carbon\Carbon::parse($schedule->actual_payout_date)->format('d M Y H:i') : '—' }}
+                                    </td>
 
-                                <td>
-                                    {{ $schedule->utr_no ?? '—' }}
-                                </td>
+                                    <td>
+                                        {{ $schedule->utr_no ?? '—' }}
+                                    </td>
 
-                                <td>
-                                    {{ $schedule->fromCompanyBank->bank_name ?? '-' }}<br>
-                                    <small class="text-muted">
-                                        {{ $schedule->fromCompanyBank->account_number ?? '' }}
-                                    </small>
-                                </td>
+                                    <td>
+                                        {{ $schedule->fromCompanyBank->bank_name ?? '-' }}<br>
+                                        <small class="text-muted">
+                                            {{ $schedule->fromCompanyBank->account_number ?? '' }}
+                                        </small>
+                                    </td>
 
-                                <td>
-                                    {{ $schedule->toClientBank->bank_name ?? '-' }}<br>
-                                    <small class="text-muted">
-                                        {{ $schedule->toClientBank->account_number ?? '' }}
-                                    </small>
-                                </td>
+                                    <td>
+                                        {{ $schedule->toClientBank->bank_name ?? '-' }}<br>
+                                        <small class="text-muted">
+                                            {{ $schedule->toClientBank->account_number ?? '' }}
+                                        </small>
+                                    </td>
 
-                                <td>
-                                    @if ($schedule->status === 'done')
-                                        <span class="badge bg-success">Paid</span>
-                                    @else
-                                        <span class="badge bg-warning text-dark">Pending</span>
-                                    @endif
-                                </td>
+                                    <td>
+                                        @if ($schedule->status === 'done')
+                                            <span class="badge bg-success">Paid</span>
+                                        @else
+                                            <span class="badge bg-warning text-dark">Pending</span>
+                                        @endif
+                                    </td>
 
-                                <td>
-                                    {{ $schedule->remarks ?? '—' }}
-                                </td>
+                                    <td>
+                                        {{ $schedule->remarks ?? '—' }}
+                                    </td>
 
-                                <td class="text-center">
-                                    @if ($schedule->enable_marked_as_paid)
-                                        <button class="btn btn-sm btn-outline-success" data-bs-toggle="modal"
-                                            data-bs-target="#markPaidModal" data-id="{{ $schedule->id }}"
-                                            data-amount="{{ $schedule->sch_payout_amount }}"
-                                            data-sr_no="{{ $schedule->sr_no }}">
-                                            Mark Paid
-                                        </button>
-                                    @else
-                                        -
-                                    @endif
-                                </td>
+                                    <td class="text-center">
+                                        @if ($schedule->enable_marked_as_paid)
+                                            <button class="btn btn-sm btn-outline-success" data-bs-toggle="modal"
+                                                data-bs-target="#markPaidModal" data-id="{{ $schedule->id }}"
+                                                data-amount="{{ $schedule->sch_payout_amount }}"
+                                                data-sr_no="{{ $schedule->sr_no }}">
+                                                Mark Paid
+                                            </button>
+                                        @else
+                                            -
+                                        @endif
+                                    </td>
+                                </tr>
+                            @endforeach
+
+                        </tbody>
+
+
+                        <tfoot class="table-light">
+                            <tr>
+                                <th colspan="2" class="text-end">Total</th>
+                                <th class="text-end">
+                                    ₹ {{ number_format($investment->payoutSchedules->sum('sch_payout_amount'), 2) }}
+                                </th>
+                                <th colspan="8"></th>
                             </tr>
-                        @endforeach
-
-                    </tbody>
-
-
-                    <tfoot class="table-light">
-                        <tr>
-                            <th colspan="2" class="text-end">Total</th>
-                            <th class="text-end">
-                                ₹ {{ number_format($investment->payoutSchedules->sum('sch_payout_amount'), 2) }}
-                            </th>
-                            <th colspan="7"></th>
-                        </tr>
-                        <tr>
-                            <th colspan="2" class="text-end">Rounding-off</th>
-                            <th class="text-end">
-                                {{ $schedule->rounding_off_amount ? '₹ ' . number_format($schedule->rounding_off_amount, 2) : '—' }}
-                            </th>
-                            <th colspan="7"></th>
-                        </tr>
-                    </tfoot>
+                            <tr>
+                                <th colspan="2" class="text-end">Rounding-off</th>
+                                <th class="text-end">
+                                    {{ $schedule->rounding_off_amount ? '₹ ' . number_format($schedule->rounding_off_amount, 2) : '—' }}
+                                </th>
+                                <th colspan="8"></th>
+                            </tr>
+                        </tfoot>
 
 
-                </table>
-
+                    </table>
+                </div>
                 <div class="p-3 text-end">
                     @if (!$investment->is_approved)
                         {{-- show approve button --}}
@@ -527,8 +527,11 @@
 
                         <div class="mb-3">
                             <label class="form-label">UTR No</label>
-                            <input type="text" class="form-control" name="utr_no" required>
+                            <input type="text" class="form-control" name="utr_no" required pattern="[A-Za-z0-9]+"
+                                title="Only letters and numbers are allowed"
+                                oninput="this.value = this.value.replace(/[^A-Za-z0-9]/g, '')">
                         </div>
+
 
                         <div class="mb-3">
                             <label class="form-label">Remarks</label>
@@ -596,6 +599,33 @@
             document.getElementById('actual_amount').value = button.getAttribute('data-amount');
             document.getElementById('mark_paid_remarks').value = 'Payment for SR No. ' + button.getAttribute(
                 'data-sr_no');
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#payoutTable').DataTable({
+                responsive: true,
+                pageLength: 10,
+                ordering: true,
+                autoWidth: false,
+                columnDefs: [{
+                        responsivePriority: 1,
+                        targets: 0
+                    }, // #
+                    {
+                        responsivePriority: 2,
+                        targets: 1
+                    }, // Payout Date
+                    {
+                        responsivePriority: 3,
+                        targets: 8
+                    }, // Status
+                    {
+                        responsivePriority: 4,
+                        targets: -1
+                    } // Action
+                ]
+            });
         });
     </script>
 @endpush

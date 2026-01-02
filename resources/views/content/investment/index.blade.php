@@ -246,7 +246,7 @@
                                                     </a>
 
                                                     <a class="dropdown-item"
-                                                        href="{{ route('investment.clients.welcomeLetter', $d->id) }}">
+                                                        href="{{ route('investment.welcomeLetter', $d->id) }}">
                                                         <i class="bx bx-mail-send me-1"></i> Welcome Letter
                                                     </a>
 
