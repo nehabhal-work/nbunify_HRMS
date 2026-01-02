@@ -194,6 +194,10 @@
                                                     <a class="dropdown-item" href="{{ route('clients.show', $d->id) }}">
                                                         <i class="bx bx-show me-1"></i> View
                                                     </a>
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('client.welcomeLetter', $d->id) }}">
+                                                        <i class="bx bx-show me-1"></i> Welcome letter
+                                                    </a>
 
 
                                                     <hr>
