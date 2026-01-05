@@ -156,7 +156,59 @@ class InvestmentService
 
     public function update(Investment $investment, array $data): Investment
     {
-        $investment->update($data);
+        $calculationFields = ['investment_date', 'investment_amount', 'tenure_type', 'tenure_count', 'frequency', 'roi_percent'];
+        
+        $needsRecalculation = false;
+        foreach ($calculationFields as $field) {
+            if (isset($data[$field]) && $data[$field] != $investment->$field) {
+                $needsRecalculation = true;
+                break;
+            }
+        }
+        
+        if ($needsRecalculation) {
+            $calculationData = array_merge($investment->toArray(), $data);
+            $calculatedData = $this->calculateInvestmentParameters($calculationData);
+            
+            $data = array_merge($data, [
+                'annual_payout' => $calculatedData['annual_payout'],
+                'payout_per_period' => $calculatedData['payout_per_period'],
+                'schedule_count' => $calculatedData['schedule_count'],
+                'maturity_date' => $calculatedData['maturity_date'],
+                'first_payout_date' => $calculatedData['first_payout_date'],
+                'actual_interest_amount' => $calculatedData['actual_interest_amount'],
+                'paid_interest_amount' => $calculatedData['paid_interest_amount'],
+                'rounding_off_amount' => $calculatedData['rounding_off_amount']
+            ]);
+            
+            if (isset($calculatedData['payout_schedule'])) {
+                DB::transaction(function () use ($investment, $data, $calculatedData) {
+                    $investment->payoutSchedules()->delete();
+                    
+                    foreach ($calculatedData['payout_schedule'] as $schedule) {
+                        InvestmentPayoutSchedule::create([
+                            'investment_id' => $investment->id,
+                            'sch_payout_date' => $schedule['payout_date'],
+                            'sch_payout_amount' => $schedule['amount'],
+                            'actual_payout_date' => null,
+                            'status' => $schedule['status'],
+                            'remarks' => null,
+                            'actual_payout_amount' => null,
+                            'utr_no' => null,
+                            'from_company_bank_id' => $investment->from_company_bank_id,
+                            'to_client_bank_id' => $investment->to_client_bank_id,
+                        ]);
+                    }
+                    
+                    $investment->update($data);
+                });
+            } else {
+                $investment->update($data);
+            }
+        } else {
+            $investment->update($data);
+        }
+        
         return $investment->fresh();
     }
 
@@ -407,7 +459,18 @@ class InvestmentService
             if ($returnPrincipalWithInterest) {
                 $data['payout_schedule'][] = [
                     'payout_date' => $data['maturity_date']->toDateString(),
-                    'amount' => round($data['payout_per_period'] + $data['investment_amount'] + $data['rounding_off_amount'], 0),
+                    'amount' => round($data['payout_per_period'], 0),
+                    'actual_payout_date' => null,
+                    'status' => 'pending',
+                    'remarks' => null,
+                    'actual_payout_amount' => 0,
+                    'utr_no' => null,
+                    'company_bank_id' => null,
+                    'client_bank_id' => null,
+                ];
+                $data['payout_schedule'][] = [
+                    'payout_date' => $data['maturity_date']->toDateString(),
+                    'amount' => round($data['investment_amount'] + $data['rounding_off_amount'], 0),
                     'actual_payout_date' => null,
                     'status' => 'pending',
                     'remarks' => null,
