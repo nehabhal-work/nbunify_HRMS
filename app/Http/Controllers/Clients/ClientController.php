@@ -209,4 +209,17 @@ class ClientController extends Controller
         // return $client;
         return view('content.clients.welcome-letter', compact('client', 'company'));
     }
+
+    public function downloadKycPdf($id)
+    {
+        $client = $this->clientService->find($id);
+        $client->load(['banks', 'families']);
+        $client = $this->addFileUrls($client);
+        $safeClientCode = preg_replace('/[\/\\\\]/', '-', $client->client_code);
+        $fileName = 'KYC_' . $safeClientCode . '.pdf';
+        $pdf = Pdf::loadView('content.clients.pdf.kyc', compact('client'))
+            ->setPaper('A4', 'portrait');
+
+        return $pdf->download($fileName);
+    }
 }

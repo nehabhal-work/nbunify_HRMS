@@ -51,6 +51,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('clients', ClientController::class)->names('clients');
     Route::put('client-approve/{id}', [ClientController::class, 'approve'])->name('client.approve');
     Route::get('client-approve/{id}', [ClientController::class, 'approve'])->name('client.approve');
+    Route::get('client/{id}/kyc-pdf', [ClientController::class, 'downloadKycPdf'])->name('client.kyc.pdf');
+
 
 
     Route::resource('client-families', ClientFamilyController::class);

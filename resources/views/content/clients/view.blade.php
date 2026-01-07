@@ -24,6 +24,10 @@
             {{-- <button type="button" class="btn btn-primary px-4">
                 Download PDF
             </button> --}}
+            <a href="{{ route('client.kyc.pdf', $client->id) }}" class="btn btn-primary">
+                Download KYC PDF
+            </a>
+
 
         </div>
         <div class="card shadow-sm mb-4">
@@ -77,7 +81,7 @@
                                 @if ($client->live_status === 'deceased')
                                     {{ $client->dod ? ' | ' . \Carbon\Carbon::parse($client->dod)->format('d-m-Y') : '' }}
                                 @endif
-                            </td>    
+                            </td>
                             <th>Email</th>
                             <td class="value">{{ $client->email ? strtolower($client->email) : '-' }}</td>
 
@@ -103,7 +107,7 @@
                             <td class="value">
                                 {{ $nationalities[$client->nationality] ?? '-' }}
                             </td> --}}
-                             <td class="value">
+                            <td class="value">
                                 {{ strtoupper(config('enum_client.nationality.' . $client->nationality) ?? $client->nationality) }}
                             </td>
 
@@ -192,7 +196,7 @@
                         </tr>
 
                         <tr>
-                           
+
 
                             <td class="value">
                                 @if ($client->attachment_pan_url)
