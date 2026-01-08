@@ -59,64 +59,63 @@
                 <table class="table table-bordered mb-4 investment-view">
 
                     <tbody>
+                        @php
+                            $holders = array_filter([
+                                $investment->first_client_id,
+                                $investment->second_client_id,
+                                $investment->third_client_id,
+                                $investment->fourth_client_id,
+                            ]);
+                        @endphp
+
                         <tr>
-                            <th>Investment ID</th>
-                            <td><b>{{ $investment->id }}</b></td>
 
-                            <th>Investment Date</th>
-                            <td><b>{{ \Carbon\Carbon::parse($investment->investment_date)->format('d M Y') }}</b></td>
+                            <th>Holders</th>
+                            <td class="bg-warning-subtle" colspan="5">
+                                @forelse ($holders as $index => $holderId)
+                                    <b>{{ $index + 1 }}. {{ $clientNames[$holderId] ?? '-' }}</b>
+                                    @if (!$loop->last)
+                                        ,
+                                    @endif
+                                @empty
+                                    -
+                                @endforelse
+                            </td>
 
-                            <th>Investment Type</th>
-                            <td><b>{{ ucfirst($investment->investment_type) }}</b></td>
                         </tr>
 
                         <tr>
+                            {{-- <th>Investment Code</th>
+                            <td><b>{{ $investment->investment_code }}</b></td> --}}
+                            <th>Investment Code</th>
+                            <td><b>{{ $investment->investment_code }}</b></td>
+                            <th>Investment Start Date</th>
+                            <td><b>{{ \Carbon\Carbon::parse($investment->investment_date)->format('d M Y') }}</b></td>
+                            <th>Investment End Date</th>
+                            <td>
+                                <b>{{ \Carbon\Carbon::parse($investment->maturity_date)->format('d M Y') }}</b>
+                            </td>
+
+                        </tr>
+
+                        <tr>
+                            <th>Investment Type</th>
+                            <td><b>{{ ucfirst($investment->investment_type) }}</b></td>
                             <th>Scheme Name</th>
                             <td><b>{{ $schemeNames[$investment->scheme_id] ?? '-' }}</b></td>
 
                             <th>Investment Amount</th>
                             <td><b>₹ {{ number_format($investment->investment_amount, 2) }}</b></td>
 
-                            <th>Interest Amount</th>
+
+                        </tr>
+
+
+
+
+                        <tr>
+                            <th>Total Interest Amount</th>
                             <td><b>₹ {{ number_format($investment->actual_interest_amount, 2) }}</b></td>
-                        </tr>
-
-                        {{-- Always show 1st Holder --}}
-                        <tr>
-                            <th>1st Holder</th>
-                            <td class="bg-warning-subtle" colspan="{{ $investment->investment_type === 'single' ? 5 : 1 }}">
-                                <b>{{ $clientNames[$investment->first_client_id] ?? '-' }}</b>
-                            </td>
-
-                            @if ($investment->investment_type !== 'single')
-                                <th>2nd Holder</th>
-                                <td class="bg-warning-subtle">
-                                    <b>{{ $clientNames[$investment->second_client_id] ?? '-' }}</b>
-                                </td>
-
-                                <th>3rd Holder</th>
-                                <td class="bg-warning-subtle">
-                                    <b>{{ $clientNames[$investment->third_client_id] ?? '-' }}</b>
-                                </td>
-                            @endif
-                        </tr>
-
-                        {{-- Show 4th holder only for joint --}}
-                        @if ($investment->investment_type !== 'single')
-                            <tr>
-                                <th>4th Holder</th>
-                                <td class="bg-warning-subtle" colspan="5">
-                                    <b>{{ $clientNames[$investment->fourth_client_id] ?? '-' }}</b>
-                                </td>
-                            </tr>
-                        @endif
-
-
-                        <tr>
-                            {{-- <th>4th Holder</th>
-                            <td class="bg-warning-subtle">
-                                <b>{{ $investment->investment_type !== 'single' ? $clientNames[$investment->fourth_client_id] ?? '-' : '-' }}</b>
-                            </td> --}}
 
                             <th>Tenure</th>
                             <td><b>{{ $investment->tenure_count }} {{ ucfirst($investment->tenure_type) }}</b></td>
@@ -152,10 +151,7 @@
                             <td>
                                 <b>{{ \Carbon\Carbon::parse($investment->first_payout_date)->format('d M Y') }}</b>
                             </td>
-                            <th>Maturity Date</th>
-                            <td>
-                                <b>{{ \Carbon\Carbon::parse($investment->maturity_date)->format('d M Y') }}</b>
-                            </td>
+
                         </tr>
                     </tbody>
 
@@ -214,7 +210,7 @@
                     {{-- Header Row --}}
                     <tr class="bg-warning-subtle">
 
-                        <th>Company Bank</th>
+                        <th>Company Input Bank</th>
                         <th>Credit Date</th>
                         <th>Company Bank Ref No</th>
                         <th>Instrument A mount</th>
@@ -242,7 +238,7 @@
                 <table class="table table-bordered  mb-4">
                     <tbody>
                         <tr>
-                            <th>Company Bank</th>
+                            <th>Company Input Bank</th>
                             <th>Company Account No</th>
                             <th>Client Bank</th>
                             <th>Client Account No</th>
@@ -300,7 +296,7 @@
 
                         <thead class="table-light">
                             <tr>
-                                {{-- <th>#</th> --}}
+                                <th hidden>#</th>
                                 <th>Payout Date</th>
                                 <th class="text-end">Scheduled (₹)</th>
                                 <th class="text-end">Actual Paid (₹)</th>
@@ -318,12 +314,13 @@
                             {{-- ===================== --}}
                             {{-- CREDIT / INVESTMENT ENTRY --}}
                             {{-- ===================== --}}
-                            @forelse($investment->investmentInputBank ?? [] as $loopIndex => $b)
+                            {{-- @forelse($investment->investmentInputBank ?? [] as $loopIndex => $b) --}}
+                            @foreach ($investment->investmentInputBank ?? [] as $loopIndex => $b)
                                 <tr class="table-light">
-                                    {{-- <td class="fw-semibold">
-                                        CR-{{ $loopIndex + 1 }}
-                                    </td> --}}
-
+                                    <td class="d-none">
+                                       {{ $loopIndex + 1 }}
+                                    </td>
+                                    {{-- <td>{{}}</td> --}}
                                     <td>
                                         {{ \Carbon\Carbon::parse($b->client_instrument_date)->format('d M Y') }}
                                     </td>
@@ -353,13 +350,14 @@
 
                                     {{-- <td class="text-center">—</td> --}}
                                 </tr>
-                            @empty
+                            @endforeach
+                            {{-- @empty
                                 <tr>
                                     <td colspan="11" class="text-center text-muted">
                                         No investment credit records found
                                     </td>
                                 </tr>
-                            @endforelse
+                            @endforelse --}}
 
 
                             {{-- ===================== --}}
@@ -370,9 +368,9 @@
                                 <tr
                                     class="{{ $schedule->sch_payout_amount == $investment->investment_amount ? 'table-info' : '' }}">
 
-                                    {{-- <td class="fw-semibold">
+                                    <td class="d-none">
                                         {{ $index + 1 }}
-                                    </td> --}}
+                                    </td>
 
                                     <td>
                                         {{ \Carbon\Carbon::parse($schedule->sch_payout_date)->format('d M Y') }}

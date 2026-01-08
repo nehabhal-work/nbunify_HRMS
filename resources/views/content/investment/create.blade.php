@@ -14,7 +14,17 @@
 
 
     </div>
+    <style>
+        /* Dropdown list items */
+        .select2-results__option {
+            text-transform: uppercase;
+        }
 
+        /* Selected value */
+        .select2-selection__rendered {
+            text-transform: uppercase;
+        }
+    </style>
     @if ($errors->any())
         <div class="alert alert-danger">
             <ul>
@@ -80,19 +90,27 @@
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
+
+
                             {{-- {{ $clients }} --}}
                             <!-- Investment Holder -->
                             <div class="col-md-3 " id="div_holder_single">
                                 <label for="client_id" class="form-label">Investment 1st Holder</label>
-                                <select class="form-select select2 @error('client_id') is-invalid @enderror" required
-                                    name="first_client_id" id="first_client_id">
+                                <select class="form-select select2 @error('client_id') is-invalid @enderror text-uppercase"
+                                    required name="first_client_id" id="first_client_id">
                                     <option value="">Select Holder</option>
                                     @foreach ($clients as $d)
-                                        <option value="{{ $d->id }}"
+                                        {{-- <option value="{{ $d->id }}"
                                             {{ old('client_id') == $d->id ? 'selected' : '' }}
                                             data-banks='@json($d->banks)'
                                             data-families='@json($d->families)'>
                                             {{ ucfirst(strtolower($d->name)) }}
+                                        </option> --}}
+                                        <option value="{{ $d->id }}"
+                                            {{ old('client_id') == $d->id ? 'selected' : '' }}
+                                            data-banks='@json($d->banks)'
+                                            data-families='@json($d->families)'>
+                                            {{ $d->name }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -246,12 +264,13 @@
                             </div>
 
                             <!-- ROI  -->
-                            <div class="col-md-2">
+                            <div class="col-md-2 d-none" id="roi-wrapper">
                                 <label for="roi_percent" class="form-label">ROI *</label>
                                 <div class="input-group">
                                     <input type="text" class="form-control @error('roi') is-invalid @enderror"
                                         name="roi_percent" id="roi_percent" maxlength="5"
                                         value="{{ old('roi_percent') }}" required>
+
                                     <span class="input-group-text">%</span>
                                 </div>
                                 <div id="roi-message"></div>
@@ -679,7 +698,7 @@
                                     <small class="text-muted">Required because nominee is minor</small>
                                 </div>
 
-                                <div class="col-md-2">
+                                <div class="col-md-2 d-none nominee-percentage-wrapper">
                                     <label>Percentage %</label>
                                     <div class="input-group">
                                         <input type="text" class="form-control nominee_percentage" name="percent[]"
@@ -687,6 +706,7 @@
                                         <span class="input-group-text">%</span>
                                     </div>
                                 </div>
+
 
                                 <div class="col-md-1 d-flex align-items-end">
                                     <button type="button" class="btn btn-danger removeNomineeRow">X</button>
@@ -1014,4 +1034,39 @@
             // ✅ Allow submit if everything is valid
         });
     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tenure = document.getElementById('tenure_count');
+            const roiWrapper = document.getElementById('roi-wrapper');
+
+            function toggleROI() {
+                if (tenure.value) {
+                    roiWrapper.classList.remove('d-none');
+                } else {
+                    roiWrapper.classList.add('d-none');
+                }
+            }
+
+            toggleROI();
+            tenure.addEventListener('change', toggleROI);
+        });
+    </script>
+  <script>
+$(document).ready(function () {
+
+    $(document).on('change', '.nominee_name', function () {
+        let $row = $(this).closest('.row');
+        let $percentageWrapper = $row.find('.nominee-percentage-wrapper');
+
+        if ($(this).val()) {
+            $percentageWrapper.removeClass('d-none');
+        } else {
+            $percentageWrapper.addClass('d-none');
+            $percentageWrapper.find('.nominee_percentage').val('');
+        }
+    });
+
+});
+</script>
+
 @endpush
