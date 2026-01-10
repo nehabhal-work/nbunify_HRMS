@@ -36,6 +36,7 @@ function loadSchemeData() {
     );
     $('#roi_percent').data('min', minRoi);
     $('#roi_percent').data('max', maxRoi);
+    $('#roi_percent').data('maxlength', maxRoi);
 
     // Additional ROI RANGE
     if (addiMin > 0) {
@@ -172,6 +173,8 @@ $(document).ready(function () {
 
 });
 // -----------------end------------------------
+
+
 $('#roi_percent').on('input', function () {
 
     let min = parseFloat($(this).data('min'));
@@ -191,10 +194,14 @@ $('#roi_percent').on('input', function () {
         $('#roi-message').html(
             `<small class="text-danger fw-bold">ROI must be between ${min}% and ${max}%</small>`
         );
+        $('#btnSubmit').prop('disabled', true);
+        $('#errSubmit').text('Please enter valid ROI before submitting.');
     } else {
         $('#roi-message').html(
             `<small class="text-success fw-bold">Valid ROI</small>`
         );
+        $('#btnSubmit').prop('disabled', false);
+        $('#errSubmit').text('');
     }
 });
 

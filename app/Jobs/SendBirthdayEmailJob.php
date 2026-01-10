@@ -23,11 +23,7 @@ class SendBirthdayEmailJob implements ShouldQueue
     {
         try {
             Mail::to($this->client->email)
-                // ->cc(
-
-                //     'cneha6106@gmail.com'
-                // )
-
+                ->bcc(['info@elsolutions.co.in', 'maddy2008@gmail.com'])
                 ->send(new BirthdayWishMail($this->client));
 
             // Update status to sent
