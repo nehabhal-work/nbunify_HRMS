@@ -267,7 +267,8 @@
                             <div class="col-md-2 d-none" id="roi-wrapper">
                                 <label for="roi_percent" class="form-label">ROI *</label>
                                 <div class="input-group">
-                                    <input type="text" class="form-control @error('roi') is-invalid @enderror"
+                                    <input type="text"
+                                        class="form-control onlydigit @error('roi') is-invalid @enderror"
                                         name="roi_percent" id="roi_percent" maxlength="5"
                                         value="{{ old('roi_percent') }}" required>
 
@@ -428,6 +429,10 @@
                                                     <option value="imps"
                                                         {{ old('instrument') == 'imps' ? 'selected' : '' }}>
                                                         IMPS
+                                                    </option>
+                                                    <option value="transfer"
+                                                        {{ old('instrument') == 'transfer' ? 'selected' : '' }}>
+                                                        TRANSFER
                                                     </option>
                                                 </select>
                                                 @error('instrument')
@@ -827,7 +832,8 @@
 
         <!-- Submit -->
         <div class="text-end mt-4">
-            <button type="submit" id="calculateBtn1" class="btn btn-primary px-4">Submit</button>
+            <button type="submit" id="btnSubmit" class="btn btn-primary px-4">Submit</button>
+            <small class="text-danger" id="errSubmit"></small>
         </div>
 
     </form>
@@ -1051,22 +1057,21 @@
             tenure.addEventListener('change', toggleROI);
         });
     </script>
-  <script>
-$(document).ready(function () {
+    <script>
+        $(document).ready(function() {
 
-    $(document).on('change', '.nominee_name', function () {
-        let $row = $(this).closest('.row');
-        let $percentageWrapper = $row.find('.nominee-percentage-wrapper');
+            $(document).on('change', '.nominee_name', function() {
+                let $row = $(this).closest('.row');
+                let $percentageWrapper = $row.find('.nominee-percentage-wrapper');
 
-        if ($(this).val()) {
-            $percentageWrapper.removeClass('d-none');
-        } else {
-            $percentageWrapper.addClass('d-none');
-            $percentageWrapper.find('.nominee_percentage').val('');
-        }
-    });
+                if ($(this).val()) {
+                    $percentageWrapper.removeClass('d-none');
+                } else {
+                    $percentageWrapper.addClass('d-none');
+                    $percentageWrapper.find('.nominee_percentage').val('');
+                }
+            });
 
-});
-</script>
-
+        });
+    </script>
 @endpush
