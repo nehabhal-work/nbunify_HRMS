@@ -51,13 +51,14 @@
                             {{-- Start Date --}}
                             <div class="col-md-2 mb-3">
                                 <label class="form-label">Start Date <span class="text-danger">*</span></label>
-                                {{-- <input type="text" id="start_date"
-                                    class="form-control datepicker @error('start_date') is-invalid @enderror"
-                                    name="start_date" value="{{ old('start_date', $scheme->start_date) }}"> --}}
                                 <input type="date" id="start_date"
+                                    class="form-control  @error('start_date') is-invalid @enderror"
+                                    name="start_date" 
+                                    value="{{ old('start_date', \Carbon\Carbon::parse($scheme->start_date)->format('Y-m-d')) }}">
+                                {{-- <input type="date" id="start_date"
                                     class="form-control datepicker1 @error('start_date') is-invalid @enderror"
                                     name="start_date"
-                                    value="{{ old('start_date', \Carbon\Carbon::parse($scheme->start_date)->format('d-m-Y')) }}">
+                                    value="{{ old('start_date', $scheme->start_date) }}"> --}}
 
                                 @error('start_date')
                                     <span class="invalid-feedback">{{ $message }}</span>
@@ -69,7 +70,7 @@
                                 <label class="form-label">End Date <span class="text-danger">*</span></label>
                                 <input type="date" id="end_date"
                                     class="form-control datepicker1 @error('end_date') is-invalid @enderror" name="end_date"
-                                    value="{{ old('end_date', \Carbon\Carbon::parse($scheme->end_date)->format('d-m-Y')) }}">
+                                    value="{{ old('end_date', \Carbon\Carbon::parse($scheme->end_date)->format('Y-m-d')) }}">
 
                                 @error('end_date')
                                     <span class="invalid-feedback">{{ $message }}</span>
