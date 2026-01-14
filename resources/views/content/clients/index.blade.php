@@ -44,7 +44,7 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Client List</h5>
                     <a class="btn btn-primary" href="{{ route('clients.create') }}" role="button">Add New</a>
-                    <a class="btn btn-primary" href="{{ route('client.form.download') }}" role="button">Blank form</a>
+                    <a class="btn btn-primary" href="{{ route('client.form.download') }}" role="button">Download Client Form PDF</a>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive text-nowrap">

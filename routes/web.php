@@ -33,7 +33,8 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('welcome/client-onboarding', [ClientController::class, 'clientOnboarding']);
+Route::get('welcome/client-onboarding', [ClientController::class, 'clientOnboarding'])->name('client.form');
+Route::post('welcome/client-onboarding', [ClientController::class, 'saveClientOnboarding'])->name('client.form.save');
 
 Route::middleware(['auth', 'verified'])->prefix('master')->name('master.')->group(function () {
     Route::resource('companies', CompanyController::class);
@@ -54,10 +55,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('client-approve/{id}', [ClientController::class, 'approve'])->name('client.approve');
     Route::get('client-approve/{id}', [ClientController::class, 'approve'])->name('client.approve');
     Route::get('client/{id}/kyc-pdf', [ClientController::class, 'downloadKycPdf'])->name('client.kyc.pdf');
-    Route::get('client-form/', [ClientController::class, 'createClientForm'])->name('client.form');
     Route::get('client-form-download', [ClientController::class, 'kycBalnkForm'])->name('client.form.download');
-
-
 
     Route::resource('client-families', ClientFamilyController::class);
     Route::get('client-families-create-from-existing', [ClientFamilyController::class, 'createFromExistingClient'])->name('client-families.create.existing');
