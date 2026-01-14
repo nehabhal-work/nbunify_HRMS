@@ -236,4 +236,12 @@ class ClientController extends Controller
 
         return $pdf->download($fileName);
     }
+
+    public function kycBalnkForm()
+    {
+        $pdf = Pdf::loadView('content.clients.client-primary-info-print')
+            ->setPaper('A4', 'portrait');
+        return $pdf->download('client_primary_information.pdf');
+        // return $pdf->stream('client_primary_information.pdf');
+    }
 }
