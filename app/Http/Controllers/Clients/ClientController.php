@@ -47,7 +47,7 @@ class ClientController extends Controller
     }
 
 
-    public function createClientForm()
+    public function clientOnboarding()
     {
         $data = getCountries();
         $country = $data['country'] ?? null;
