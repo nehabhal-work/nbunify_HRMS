@@ -9,6 +9,7 @@ use App\Models\ClientBank;
 use App\Services\ClientService;
 use App\Services\ClientBankService;
 use App\Services\CompanyService;
+use App\Services\FamilyRelationService;
 use App\Services\FileStorageService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
@@ -23,6 +24,7 @@ class ClientController extends Controller
         private ClientBankService $clientBankService,
         private FileStorageService $fileStorageService,
         private CompanyService $companyService,
+        private FamilyRelationService $familyRelationService
     ) {}
 
     public function index()
@@ -43,6 +45,18 @@ class ClientController extends Controller
         // return $cities;
         return view('content.clients.create', compact('country', 'states', 'cities'));
     }
+
+
+    public function createClientForm()
+    {
+        $data = getCountries();
+        $country = $data['country'] ?? null;
+        $states = $data['states'] ?? [];
+        $cities = $data['cities'] ?? [];
+        $relations = $this->familyRelationService->getByGender('male');
+        return view('content.clients.create-client-form', compact('country', 'states', 'cities', 'relations'));
+    }
+
 
     public function show($id)
     {

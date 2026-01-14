@@ -131,11 +131,52 @@ $(document).ready(function () {
 $(document).ready(function () {
 
     // when tenure changes
-    $('#tenure_count').on('change', function () {
+    // $('#tenure_count').on('change', function () {
 
-        let tenure = parseInt($(this).val(), 10);
+    //     let tenure = parseInt($(this).val(), 10);
 
-        if (!tenure) {
+    //     if (!tenure) {
+    //         $('#lock_in_period')
+    //             .prop('disabled', true)
+    //             .removeAttr('max')
+    //             .val('');
+    //         return;
+    //     }
+
+    //     // enable + set limits
+    //     $('#lock_in_period')
+    //         .prop('disabled', false)
+    //         .attr('max', tenure)
+    //         .val('');
+    // });
+
+    // block typing beyond max + limit to 2 digits
+    // $('#lock_in_period').on('input', function () {
+
+    //     let max = parseInt($(this).attr('max'), 10);
+    //     let val = this.value.replace(/\D/g, '');
+
+    //     // enforce 2 digits
+    //     if (val.length > 2) {
+    //         val = val.slice(0, 2);
+    //     }
+
+    //     let num = parseInt(val, 10);
+
+    //     // enforce max
+    //     if (num > max) {
+    //         val = max.toString();
+    //     }
+
+    //     this.value = val;
+    // });
+    function updateLockInMax() {
+
+        let tenureCount = parseInt($('#tenure_count').val(), 10);
+        let tenureType = $('#tenure_type').val(); // years / months
+        let lockType = $('#lock_in_period_type').val(); // years / months
+
+        if (!tenureCount || !tenureType || !lockType) {
             $('#lock_in_period')
                 .prop('disabled', true)
                 .removeAttr('max')
@@ -143,33 +184,45 @@ $(document).ready(function () {
             return;
         }
 
-        // enable + set limits
+        // Convert tenure to months
+        let tenureInMonths = tenureType === 'years'
+            ? tenureCount * 12
+            : tenureCount;
+
+        // Decide max lock-in
+        let maxLockIn = lockType === 'years'
+            ? Math.floor(tenureInMonths / 12)
+            : tenureInMonths;
+
         $('#lock_in_period')
             .prop('disabled', false)
-            .attr('max', tenure)
+            .attr('max', maxLockIn)
             .val('');
-    });
+    }
 
-    // block typing beyond max + limit to 2 digits
+    /* ---------- EVENTS ---------- */
+    $('#tenure_count, #lock_in_period_type').on('change', updateLockInMax);
+
+
     $('#lock_in_period').on('input', function () {
 
         let max = parseInt($(this).attr('max'), 10);
         let val = this.value.replace(/\D/g, '');
 
-        // enforce 2 digits
-        if (val.length > 2) {
-            val = val.slice(0, 2);
+        if (!val) {
+            this.value = '';
+            return;
         }
 
         let num = parseInt(val, 10);
 
-        // enforce max
         if (num > max) {
-            val = max.toString();
+            this.value = max;
+        } else {
+            this.value = num;
         }
-
-        this.value = val;
     });
+
 
 });
 // -----------------end------------------------
