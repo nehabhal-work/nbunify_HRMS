@@ -53,6 +53,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('client-approve/{id}', [ClientController::class, 'approve'])->name('client.approve');
     Route::get('client/{id}/kyc-pdf', [ClientController::class, 'downloadKycPdf'])->name('client.kyc.pdf');
     Route::get('client-form/', [ClientController::class, 'createClientForm'])->name('client.form');
+    Route::get('client-form-download', [ClientController::class, 'kycBalnkForm'])->name('client.form.download');
 
 
 
