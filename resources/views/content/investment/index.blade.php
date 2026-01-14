@@ -115,7 +115,7 @@
                         <table class="table srkdataTable">
                             <thead class="table-light">
                                 <tr>
-                                    <th>#</th>
+                                    <th hidden>#</th>
                                     <th>Investment Code</th>
                                     <th>Investment Date</th>
                                     <th>Client Name</th>
@@ -142,7 +142,7 @@
                                 @foreach ($investments as $index => $d)
                                     <tr>
                                         <!-- # -->
-                                        <td>{{ $index + 1 }}</td>
+                                        <td hidden>{{ $index + 1 }}</td>
                                         <td>{{ $d->investment_code }}</td>
                                         <td>{{ \Carbon\Carbon::parse($d->investment_date)->format('d M Y') }}</td>
                                         <td>

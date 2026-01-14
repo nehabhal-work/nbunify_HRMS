@@ -29,6 +29,10 @@
         table.table th {
             background-color: #f9f3fa !important;
         }
+
+        .onecolor {
+            color: #BC13BE;
+        }
     </style>
 
     @if ($errors->any())
@@ -53,111 +57,192 @@
     <div class="container-fluid">
         <div class="card">
             <div class="card-header">
-                <h5 class="card-title">Investment Details</h5>
+                <b class="card-title text-warning">Investment Details</b>
                 {{-- <h6>Investment code : {{ $investment->investment_code }}</h6> --}}
 
-                <table class="table table-bordered mb-4 investment-view">
 
-                    <tbody>
-                        @php
-                            $holders = array_filter([
-                                $investment->first_client_id,
-                                $investment->second_client_id,
-                                $investment->third_client_id,
-                                $investment->fourth_client_id,
-                            ]);
-                        @endphp
+                <div class="row ">
+                    <div class="col-md-12 p-0 m-0">
+                        <table class="table table-bordered  investment-view">
 
-                        <tr>
+                            <tbody>
 
-                            <th>Holders</th>
-                            <td class="bg-warning-subtle" colspan="5">
-                                @forelse ($holders as $index => $holderId)
-                                    <b>{{ $index + 1 }}. {{ $clientNames[$holderId] ?? '-' }}</b>
-                                    @if (!$loop->last)
-                                        ,
+                                @php
+                                    $holders = array_filter([
+                                        $investment->first_client_id,
+                                        $investment->second_client_id,
+                                        $investment->third_client_id,
+                                        $investment->fourth_client_id,
+                                    ]);
+                                @endphp
+
+                                <tr>
+
+                                    <th>Holders</th>
+                                    <td class="bg-warning-subtle" colspan="7">
+                                        @forelse ($holders as $index => $holderId)
+                                            <b>{{ $index + 1 }}. {{ $clientNames[$holderId] ?? '-' }}</b>
+                                            @if (!$loop->last)
+                                                ,
+                                            @endif
+                                        @empty
+                                            -
+                                        @endforelse
+                                    </td>
+
+                                </tr>
+                            </tbody>
+
+                        </table>
+                    </div>
+                    <div class="col-md-4 p-0 m-0">
+                        <table class="table table-bordered mb-4 investment-view">
+
+                            <tbody>
+
+                                @if ($investment->investment_code)
+                                    <tr>
+                                        <th>Investment Code</th>
+                                        <td><b>{{ $investment->investment_code }}</b></td>
+                                    </tr>
+                                @endif
+                                @if ($investment->investment_type)
+                                    <tr>
+                                        <th>Investment Type</th>
+                                        <td><b>{{ ucfirst($investment->investment_type) }}</b></td>
+                                    </tr>
+                                @endif
+                                @if ($investment->actual_interest_amount)
+                                    <tr>
+                                        <th>Total Interest Amount</th>
+                                        <td><b>₹ {{ number_format($investment->actual_interest_amount, 2) }}</b></td>
+                                    </tr>
+                                @endif
+                                @if ($investment->roi_percent !== null)
+                                    <tr>
+                                        <th>ROI (%)</th>
+                                        <td><b>{{ $investment->roi_percent }}%</b></td>
+                                    </tr>
+                                @endif
+                                @if ($investment->frequency)
+                                    <tr>
+                                        <th>Frequency</th>
+                                        <td><b>{{ ucfirst($investment->frequency) }}</b></td>
+                                    </tr>
+                                @endif
+                                @if ($investment->first_payout_date)
+                                    <tr>
+                                        <th>First Payout Date</th>
+                                        <td>
+                                            <b>{{ \Carbon\Carbon::parse($investment->first_payout_date)->format('d M Y') }}</b>
+                                        </td>
+                                    </tr>
+                                @endif
+                            </tbody>
+
+                        </table>
+                    </div>
+                    <div class="col-md-4 p-0 m-0">
+                        <table class="table table-bordered mb-4 investment-view">
+
+                            <tbody>
+
+                                @if ($investment->investment_date)
+                                    <tr>
+                                        <th>Investment Start Date</th>
+                                        <td>
+                                            <b>{{ \Carbon\Carbon::parse($investment->investment_date)->format('d M Y') }}</b>
+                                        </td>
+
+                                    </tr>
+                                @endif
+                                @if (!empty($schemeNames[$investment->scheme_id]))
+                                    <tr>
+                                        <th>Scheme Name</th>
+                                        <td><b>{{ $schemeNames[$investment->scheme_id] }}</b></td>
+                                    </tr>
+                                @endif
+
+                                @if ($investment->tenure_count && $investment->tenure_type)
+                                    <tr>
+                                        <th>Tenure</th>
+                                        <td>
+                                            <b>{{ $investment->tenure_count }} {{ ucfirst($investment->tenure_type) }}</b>
+                                        </td>
+                                    </tr>
+                                @endif
+
+                                @if ($investment->additional_roi_percent !== null)
+                                    <tr>
+                                        <th>Additional ROI</th>
+                                        <td><b>{{ $investment->additional_roi_percent }}%</b></td>
+                                    </tr>
+                                @endif
+
+                                @if ($investment->schedule_count)
+                                    <tr>
+                                        <th>Schedule Count</th>
+                                        <td><b>{{ $investment->schedule_count }}</b></td>
+                                    </tr>
+                                @endif
+
+                            </tbody>
+
+                        </table>
+                    </div>
+                    <div class="col-md-4 p-0 m-0">
+                        <table class="table table-bordered mb-4 investment-view">
+
+                            <tbody>
+
+
+                                <tr>
+
+
+                                    @if ($investment->maturity_date)
+                                        <th>Investment End Date</th>
+                                        <td>
+                                            <b>{{ \Carbon\Carbon::parse($investment->maturity_date)->format('d M Y') }}</b>
+                                        </td>
                                     @endif
-                                @empty
-                                    -
-                                @endforelse
-                            </td>
+                                </tr>
+                                @if ($investment->investment_amount)
+                                    <tr>
+                                        <th>Investment Amount</th>
+                                        <td><b>₹ {{ number_format($investment->investment_amount, 2) }}</b></td>
+                                    </tr>
+                                @endif
 
-                        </tr>
+                                @if ($investment->lock_in_period)
+                                    <tr>
+                                        <th>Lock-in Period</th>
+                                        <td><b>{{ $investment->lock_in_period }}</b></td>
+                                    </tr>
+                                @endif
 
-                        <tr>
-                            {{-- <th>Investment Code</th>
-                            <td><b>{{ $investment->investment_code }}</b></td> --}}
-                            <th>Investment Code</th>
-                            <td><b>{{ $investment->investment_code }}</b></td>
-                            <th>Investment Start Date</th>
-                            <td><b>{{ \Carbon\Carbon::parse($investment->investment_date)->format('d M Y') }}</b></td>
-                            <th>Investment End Date</th>
-                            <td>
-                                <b>{{ \Carbon\Carbon::parse($investment->maturity_date)->format('d M Y') }}</b>
-                            </td>
+                                @if (!is_null($investment->has_tds))
+                                    <tr>
+                                        <th>TDS Applicable</th>
+                                        <td><b>{{ $investment->has_tds ? 'Yes' : 'No' }}</b></td>
+                                    </tr>
+                                @endif
 
-                        </tr>
+                                @if ($investment->payout_per_period)
+                                    <tr>
+                                        <th>Payout Per Period</th>
+                                        <td><b>₹ {{ number_format($investment->payout_per_period, 2) }}</b></td>
+                                    </tr>
+                                @endif
 
-                        <tr>
-                            <th>Investment Type</th>
-                            <td><b>{{ ucfirst($investment->investment_type) }}</b></td>
-                            <th>Scheme Name</th>
-                            <td><b>{{ $schemeNames[$investment->scheme_id] ?? '-' }}</b></td>
+                            </tbody>
 
-                            <th>Investment Amount</th>
-                            <td><b>₹ {{ number_format($investment->investment_amount, 2) }}</b></td>
-
-
-                        </tr>
-
-
+                        </table>
+                    </div>
+                </div>
+               
 
 
-                        <tr>
-                            <th>Total Interest Amount</th>
-                            <td><b>₹ {{ number_format($investment->actual_interest_amount, 2) }}</b></td>
-
-                            <th>Tenure</th>
-                            <td><b>{{ $investment->tenure_count }} {{ ucfirst($investment->tenure_type) }}</b></td>
-
-                            <th>Lock-in Period</th>
-                            <td><b>{{ $investment->lock_in_period }}</b></td>
-                        </tr>
-
-                        <tr>
-                            <th>ROI (%)</th>
-                            <td><b>{{ $investment->roi_percent }}%</b></td>
-
-                            <th>Additional ROI</th>
-                            <td><b>{{ $investment->additional_roi_percent }}%</b></td>
-
-                            <th>TDS Applicable</th>
-                            <td><b>{{ $investment->has_tds ? 'Yes' : 'No' }}</b></td>
-                        </tr>
-
-                        <tr>
-                            <th>Frequency</th>
-                            <td><b>{{ ucfirst($investment->frequency) }}</b></td>
-
-                            <th>Schedule Count</th>
-                            <td><b>{{ $investment->schedule_count }}</b></td>
-                            <th>Payout Per Period</th>
-                            <td><b>₹ {{ number_format($investment->payout_per_period, 2) }}</b></td>
-
-                        </tr>
-
-                        <tr>
-                            <th>First Payout Date</th>
-                            <td>
-                                <b>{{ \Carbon\Carbon::parse($investment->first_payout_date)->format('d M Y') }}</b>
-                            </td>
-
-                        </tr>
-                    </tbody>
-
-                </table>
-
-                <h5 class="card-title">Bank / Instrument Details </h5>
+                <b class="card-title">Bank / Instrument Details </b>
                 <table class="table table-bordered mb-4">
                     <h6 class="text-warning">Client Instrument Details</h6>
                     {{-- Header Row --}}
@@ -234,14 +319,14 @@
                     @endforelse
                 </table>
 
-                <h5 class="card-title">Outward Bank / Payout Details</h5>
+                <b class="card-title">Outward Bank / Payout Details</b>
                 <table class="table table-bordered  mb-4">
                     <tbody>
                         <tr>
-                            <th>Company Input Bank</th>
-                            <th>Company Account No</th>
-                            <th>Client Bank</th>
-                            <th>Client Account No</th>
+                            <th>Company Output Bank</th>
+                            <th>Company Output Account No</th>
+                            <th>Client Input Bank</th>
+                            <th>Client Input Account No</th>
                         </tr>
 
                         <tr>
@@ -257,7 +342,7 @@
 
                 </table>
 
-                <h5 class="card-title">Nominee Details </h5>
+                <b class="card-title">Nominee Details </b>
                 <table class="table table-bordered mb-4 ">
                     <tbody>
                         <tr>
@@ -288,7 +373,7 @@
                 </table>
 
 
-                <h5 class="card-title">Payment Schedule</h5>
+                <b class="card-title">Payment Schedule</b>
                 <div class="table-responsive">
 
                     {{-- <table class="table table-bordered "> --}}
@@ -318,7 +403,7 @@
                             @foreach ($investment->investmentInputBank ?? [] as $loopIndex => $b)
                                 <tr class="table-light">
                                     <td class="d-none">
-                                       {{ $loopIndex + 1 }}
+                                        {{ $loopIndex + 1 }}
                                     </td>
                                     {{-- <td>{{}}</td> --}}
                                     <td>
