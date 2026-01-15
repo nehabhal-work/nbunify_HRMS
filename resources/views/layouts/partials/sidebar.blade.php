@@ -64,17 +64,17 @@
 
              </ul>
          </li>
-<li class="menu-item {{ request()->routeIs('preclients.*') ? 'active' : '' }}">
-    <a href="{{ route('preclients.index') }}" class="menu-link">
-        <i class="menu-icon bx bx-id-card"></i>
-        <div class="text-truncate">Pre Client Form</div>
-    </a>
-</li>
+         <li class="menu-item {{ request()->routeIs('preclients.*') ? 'active' : '' }}">
+             <a href="{{ route('preclients.index') }}" class="menu-link">
+                 <i class="menu-icon bx bx-id-card"></i>
+                 <div class="text-truncate">Pre Client Form</div>
+             </a>
+         </li>
 
          <li class="menu-item {{ request()->routeIs('preclients.*') ? 'active' : '' }}">
-             {{-- <a href="{{ route('preclients.create') }}" class="menu-link"> --}}
-                 <i class="menu-icon bx bx-id-card"></i>
-                 <div class="text-truncate">Client Onboarding</div>
+             <a href="{{ route('preclients.create') }}" class="menu-link">
+             <i class="menu-icon bx bx-id-card"></i>
+             <div class="text-truncate">Client Onboarding</div>
              </a>
          </li>
          <li class="menu-item {{ request()->routeIs('client*') ? 'active' : '' }}">
