@@ -20,13 +20,11 @@
 
     <div class="container">
         <div class="text-end mb-3">
-            <a href="{{ route('clients.index') }}" class="btn btn-secondary px-4">Go back</a>
-            {{-- <button type="button" class="btn btn-primary px-4">
-                Download PDF
-            </button> --}}
-            <a href="{{ route('client.kyc.pdf', $preclient->id) }}" class="btn btn-primary">
+            <a href="{{ route('preclients.index') }}" class="btn btn-secondary px-4">Go back</a>
+         
+            {{-- <a href="{{ route('preclients.kyc.pdf', $preclient->id) }}" class="btn btn-primary">
                 Download KYC PDF
-            </a>
+            </a> --}}
 
 
         </div>
@@ -388,8 +386,8 @@
 
             </div>
             <div class="p-3 text-end">
-                @if (!$preclient->is_approved)
-                    <form action="{{ route('client.approve', $preclient->id) }}" method="post">
+                {{-- @if (!$preclient->is_approved)
+                    <form action="{{ route('preclients.approve', $preclient->id) }}" method="post">
                         @csrf
                         @method('PUT')
                         <button type="submit" class="btn btn-success px-4">
@@ -397,7 +395,7 @@
                         </button>
                     </form>
                 @else
-                @endif
+                @endif --}}
 
 
             </div>

@@ -56,6 +56,7 @@ class PreClientService
     {
         $this->deleteFiles($client);
         return $client->delete();
+        
     }
 
     private function handleFileUploads(array $data, PreClient $client, string $mode): array

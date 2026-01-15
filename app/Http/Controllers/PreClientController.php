@@ -28,22 +28,7 @@ class PreClientController extends Controller
     }
 
 
-    // public function show($id)
-    // {
-    //     $preclient = $this->preClientService->find($id);
-    //     $preclient->load(['banks', 'families']);
-    //     $preclient = $this->addFileUrls($preclient);
-
-    //     $preclient_banks = PreClientBank::where('preclients', $id)->get();
-    //     return $preclient_banks;
-
-    //     $preclient_banks = $preclient_banks->map(function ($bank) {
-    //         return $this->preClientBankService->addFileUrls($bank);
-    //     });
-    //     // $client = $this->clientService->find($clientBank->client_id);
-    //     // return $clientBank;
-    //     return view('content.clients.preclients.view', compact('client', 'clientBank'));
-    // }
+  
 
 
     public function create()

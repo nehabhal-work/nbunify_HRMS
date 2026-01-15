@@ -59,9 +59,8 @@
                                 @foreach ($preclients as $d)
                                     <tr>
                                         <td>
-                                            <a href="{{ route('clients.edit', $d->id) }}" class="text-reset">
                                                 {{ $d->id }}
-                                            </a>
+                                         
                                         </td>
                                         <td>
                                             <div class="fw-semibold text-dark">
