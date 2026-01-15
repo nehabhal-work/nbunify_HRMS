@@ -36,6 +36,7 @@ Route::get('/dashboard', function () {
 
 Route::get('client-onboarding/create', [PreClientController::class, 'create'])->name('preclients.create');
 Route::post('client-onboarding', [PreClientController::class, 'store'])->name('preclients.store');
+Route::get('client-onboarding/{id}/view', [PreClientController::class, 'show'])->name('preclients.show');
 
 Route::middleware(['auth', 'verified'])->prefix('master')->name('master.')->group(function () {
     Route::resource('companies', CompanyController::class);
