@@ -22,7 +22,7 @@ class PreClientController extends Controller
     public function index()
     {
         $preclients = $this->preClientService->getAll()->sortByDesc('id');
-        return view('content.preclients.index', compact('preclients'));
+        return view('content.clients.preclients.index', compact('preclients'));
     }
 
     public function create()

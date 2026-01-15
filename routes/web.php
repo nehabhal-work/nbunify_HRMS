@@ -24,7 +24,6 @@ use App\Http\Controllers\Masters\CompanyController;
 use App\Http\Controllers\Masters\HeadOfficeController;
 use App\Http\Controllers\Masters\BranchController;
 use App\Http\Controllers\Investment\InvestmentSiController;
-use App\Http\Controllers\PreClientController;
 
 // MERGED
 Route::get('/', function () {
