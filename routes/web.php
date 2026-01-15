@@ -23,8 +23,6 @@ use App\Http\Controllers\Masters\HeadOfficeController;
 use App\Http\Controllers\Masters\BranchController;
 use App\Http\Controllers\Investment\InvestmentSiController;
 
-
-// MERGED
 Route::get('/', function () {
     return redirect()->route('dashboard');
 })->middleware(['auth', 'verified'])->name('home');

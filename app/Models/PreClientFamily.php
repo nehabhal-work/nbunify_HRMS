@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class PreClientFamily extends Model
 {
+    protected $table = 'preclient_families';
+
     protected $fillable = [
         'client_code',
         'preclient_id',
