@@ -32,6 +32,6 @@ class PreClientBank extends Model
 
     public function preclient(): BelongsTo
     {
-        return $this->belongsTo(PreClient::class);
+        return $this->belongsTo(PreClient::class,'preclient_id','id');
     }
 }

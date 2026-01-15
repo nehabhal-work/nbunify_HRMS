@@ -47,52 +47,6 @@ class ClientController extends Controller
     }
 
 
-    public function clientOnboarding()
-    {
-        $data = getCountries();
-        $country = $data['country'] ?? null;
-        $states = $data['states'] ?? [];
-        $cities = $data['cities'] ?? [];
-        $relations = $this->familyRelationService->getByGender('male');
-        return view('content.clients.create-client-form', compact('country', 'states', 'cities', 'relations'));
-    }
-
-    public function saveClientOnboarding(Request $request)
-    {
-        $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'mobile' => 'required|string|max:15',
-            'pan_number' => 'required|string|size:10',
-            'aadhar_number' => 'required|string|size:12',
-            'date_of_birth' => 'required|date',
-            'gender' => 'required|in:male,female,other',
-            'address' => 'required|string|max:500',
-            'city' => 'required|string|max:100',
-            'state' => 'required|string|max:100',
-            'country' => 'required|string|max:100',
-            'pincode' => 'required|string|max:10',
-        ], [], [
-            'first_name' => 'content.clients.create-client-form.first_name',
-            'last_name' => 'content.clients.create-client-form.last_name',
-            'email' => 'content.clients.create-client-form.email',
-            'mobile' => 'content.clients.create-client-form.mobile',
-            'pan_number' => 'content.clients.create-client-form.pan_number',
-            'aadhar_number' => 'content.clients.create-client-form.aadhar_number',
-            'date_of_birth' => 'content.clients.create-client-form.date_of_birth',
-            'gender' => 'content.clients.create-client-form.gender',
-            'address' => 'content.clients.create-client-form.address',
-            'city' => 'content.clients.create-client-form.city',
-            'state' => 'content.clients.create-client-form.state',
-            'country' => 'content.clients.create-client-form.country',
-            'pincode' => 'content.clients.create-client-form.pincode',
-        ]);
-
-        return redirect()->route('client.form')->with('success', 'Thank you for submitting the client onboarding form.');
-    }
-
-
     public function show($id)
     {
         $client = $this->clientService->find($id);

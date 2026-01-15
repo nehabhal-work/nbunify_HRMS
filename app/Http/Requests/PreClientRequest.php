@@ -63,6 +63,36 @@ class PreClientRequest extends FormRequest
             'attachment_signature_url' => ['nullable', 'url'],
             'attachment_ckyc_url' => ['nullable', 'url'],
             'attachment_other_documents_url' => ['nullable', 'url'],
+
+            // Family member validation
+            'family_name' => 'nullable|string|max:50',
+            'family_gender' => 'required_with:family_name|in:male,female,other',
+            'family_dob' => 'required_with:family_name|date|before:today',
+            'family_live_status' => 'nullable|in:alive,deceased',
+            'family_dod' => 'nullable|date',
+            'family_marital_status' => 'nullable|in:single,married,divorced,widowed',
+            'family_nationality' => 'nullable|in:ri,nro,nre,pio,oci,gch,trioc,fn,other',
+            'family_occupation' => 'nullable|in:private_sector,public_sector,government,business,education,professional,agriculture,student,doctor,housewife,retired,other',
+            'family_mobile_no' => 'nullable|string|max:15',
+            'family_whatsapp_no' => 'nullable|string|max:15',
+            'family_landline_no' => 'nullable|string|max:15',
+            'family_pan_no' => 'nullable|string|max:10|regex:/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/',
+            'family_aadhar_no' => 'nullable|string|max:12|regex:/^[0-9]{12}$/',
+            'family_email' => 'nullable|email',
+            'relation_id' => 'required_with:family_name|exists:family_relations,id',
+
+            // Bank details validation
+            'ifsc_code' => 'nullable|string|max:11',
+            'account_number' => 'required_with:ifsc_code|string|max:20',
+            'account_type' => 'required_with:ifsc_code|in:savings,current,nre,nro,fcnr',
+            'operation_mode' => 'required_with:ifsc_code|in:single,joint,either_or_survivor,anyone_or_survivor',
+            'holder_name_1' => 'required_with:ifsc_code|string|max:100',
+            'holder_name_2' => 'nullable|string|max:100',
+            'holder_name_3' => 'nullable|string|max:100',
+            'micrcode' => 'nullable|string|max:9',
+            'bank_name' => 'required|string|max:100',
+            'branch_name' => 'required|string|max:100',
+            'bank_code' => 'required|string|max:20',
         ];
     }
 

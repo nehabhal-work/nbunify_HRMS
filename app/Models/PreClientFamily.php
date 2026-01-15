@@ -53,11 +53,11 @@ class PreClientFamily extends Model
 
     public function preclient(): BelongsTo
     {
-        return $this->belongsTo(PreClient::class);
+        return $this->belongsTo(PreClient::class,'preclient_id','id');
     }
 
     public function relation(): BelongsTo
     {
-        return $this->belongsTo(FamilyRelation::class);
+        return $this->belongsTo(FamilyRelation::class,'relation_id','id');
     }
 }

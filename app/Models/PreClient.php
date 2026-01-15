@@ -12,7 +12,6 @@ class PreClient extends Model
     protected $table = 'preclients';
 
     protected $fillable = [
-        'client_code',
         'name',
         'gender',
         'dob',
@@ -72,12 +71,12 @@ class PreClient extends Model
 
     public function families(): HasMany
     {
-        return $this->hasMany(PreClientFamily::class);
+        return $this->hasMany(PreClientFamily::class, 'preclient_id');
     }
 
     public function banks(): HasMany
     {
-        return $this->hasMany(PreClientBank::class);
+        return $this->hasMany(PreClientBank::class, 'preclient_id');
     }
 
     public function createdBy(): BelongsTo

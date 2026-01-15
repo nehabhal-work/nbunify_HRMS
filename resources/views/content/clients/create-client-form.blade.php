@@ -17,7 +17,7 @@
 
     </header>
     <main class="container">
-        <form action="{{ route('preclient.store') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('preclients.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('post')
             <input type="hidden" name="res_country" id="res_country" value="India">
