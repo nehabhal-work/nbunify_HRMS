@@ -812,10 +812,10 @@
                                 <div class="col-md-4 mb-3">
                                     <label class="form-label" for="name">Full Name</label>
                                     <input type="text"
-                                        class="form-control onlyalpha @error('namef') is-invalid @enderror"
-                                        id="namef" name="namef" maxlength="50" value="{{ old('namef') }}"
-                                        maxlength="50">
-                                    @error('namef')
+                                        class="form-control onlyalpha @error('family_name') is-invalid @enderror"
+                                        id="family_name" name="family_name" maxlength="50"
+                                        value="{{ old('family_name') }}" maxlength="50">
+                                    @error('family_name')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -823,19 +823,22 @@
                                 {{-- Gender --}}
                                 <div class="col-md-2 mb-3">
                                     <label class="form-label" for="gender">Gender</label>
-                                    <select class="form-select @error('genderf') is-invalid @enderror" id="genderf"
-                                        name="genderf">
+                                    <select class="form-select @error('family_gender') is-invalid @enderror"
+                                        id="family_gender" name="family_gender">
                                         <option value="">Select</option>
-                                        <option value="male" {{ old('genderf') == 'male' ? 'selected' : '' }}>Male
+                                        <option value="male"
+                                            {{ old('family_gender') == 'male' ? 'selected' : '' }}>Male
                                         </option>
-                                        <option value="female" {{ old('genderf') == 'female' ? 'selected' : '' }}>
+                                        <option value="female"
+                                            {{ old('family_gender') == 'female' ? 'selected' : '' }}>
                                             Female
                                         </option>
-                                        <option value="other" {{ old('genderf') == 'other' ? 'selected' : '' }}>
+                                        <option value="other"
+                                            {{ old('family_gender') == 'other' ? 'selected' : '' }}>
                                             Other
                                         </option>
                                     </select>
-                                    @error('genderf')
+                                    @error('family_gender')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -843,11 +846,12 @@
 
                                 {{-- Date of Birth --}}
                                 <div class="col-md-2 mb-3">
-                                    <label class="form-label" for="dobf">Date of Birth</label>
-                                    <input type="date" class="form-control  @error('dobf') is-invalid @enderror"
-                                        id="dobf" name="dobf" value="{{ old('dobf') }}"
+                                    <label class="form-label" for="family_dob">Date of Birth</label>
+                                    <input type="date"
+                                        class="form-control  @error('family_dob') is-invalid @enderror"
+                                        id="family_dob" name="family_dob" value="{{ old('family_dob') }}"
                                         max="{{ now()->toDateString() }}" placeholder="Select Date">
-                                    @error('dobf')
+                                    @error('family_dob')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -855,19 +859,19 @@
 
                                 {{-- Live Status --}}
                                 <div class="col-md-2 mb-3">
-                                    <label class="form-label" for="live_statusf">Live Status</label>
-                                    <select class="form-select @error('live_statusf') is-invalid @enderror"
-                                        id="live_statusf" name="live_statusf">
+                                    <label class="form-label" for="family_live_status">Live Status</label>
+                                    <select class="form-select @error('family_live_status') is-invalid @enderror"
+                                        id="family_live_status" name="family_live_status">
                                         <option value="alive"
-                                            {{ old('live_statusf', 'alive') == 'alive' ? 'selected' : '' }}>
+                                            {{ old('family_live_status', 'alive') == 'alive' ? 'selected' : '' }}>
                                             Live
                                         </option>
                                         <option value="deceased"
-                                            {{ old('live_statusf') == 'deceased' ? 'selected' : '' }}>
+                                            {{ old('family_live_status') == 'deceased' ? 'selected' : '' }}>
                                             Deceased
                                         </option>
                                     </select>
-                                    @error('live_statusf')
+                                    @error('family_live_status')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -876,11 +880,11 @@
 
                                 {{-- Date of Death --}}
                                 <div class="col-md-2 mb-3 d-none">
-                                    <label for="dodf" class="form-label">Date of Death</label>
-                                    <input type="date" name="dodf" id="dodf" class="form-control "
-                                        value="{{ old('dodf') }}" placeholder="Select Date"
+                                    <label for="family_dod" class="form-label">Date of Death</label>
+                                    <input type="date" name="family_dod" id="family_dod" class="form-control "
+                                        value="{{ old('family_dod') }}" placeholder="Select Date"
                                         max="{{ now()->toDateString() }}">
-                                    @error('dodf')
+                                    @error('family_dod')
                                         <div class="text-danger small">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -888,29 +892,29 @@
 
                                 {{-- Marital Status --}}
                                 <div class="col-md-2 mb-3">
-                                    <label class="form-label" for="marital_statusf">Marital Status</label>
-                                    <select class="form-select @error('marital_statusf') is-invalid @enderror"
-                                        id="marital_statusf" name="marital_statusf">
+                                    <label class="form-label" for="family_marital_status">Marital Status</label>
+                                    <select class="form-select @error('family_marital_status') is-invalid @enderror"
+                                        id="family_marital_status" name="family_marital_status">
                                         <option value="">Select</option>
                                         <option value="single"
-                                            {{ old('marital_statusf') == 'single' ? 'selected' : '' }}>
+                                            {{ old('family_marital_status') == 'single' ? 'selected' : '' }}>
                                             Single
                                         </option>
                                         <option value="married"
-                                            {{ old('marital_statusf') == 'married' ? 'selected' : '' }}>
+                                            {{ old('family_marital_status') == 'married' ? 'selected' : '' }}>
                                             Married</option>
                                         <option value="divorced"
-                                            {{ old('marital_statusf') == 'divorced' ? 'selected' : '' }}>
+                                            {{ old('family_marital_status') == 'divorced' ? 'selected' : '' }}>
                                             divorced</option>
                                         <option value="widowed"
-                                            {{ old('marital_statusf') == 'widowed' ? 'selected' : '' }}>
+                                            {{ old('family_marital_status') == 'widowed' ? 'selected' : '' }}>
                                             widowed
                                         </option>
                                         <option value="other"
-                                            {{ old('marital_statusf') == 'other' ? 'selected' : '' }}>Other
+                                            {{ old('family_marital_status') == 'other' ? 'selected' : '' }}>Other
                                         </option>
                                     </select>
-                                    @error('marital_statusf')
+                                    @error('family_marital_status')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -918,39 +922,45 @@
 
                                 {{-- Nationality --}}
                                 <div class="col-md-2 mb-3">
-                                    <label class="form-label" for="nationalityf">Nationality</label>
-                                    <select class="form-select @error('nationalityf') is-invalid @enderror"
-                                        id="nationalityf" name="nationalityf">
+                                    <label class="form-label" for="family_nationality">Nationality</label>
+                                    <select class="form-select @error('family_nationality') is-invalid @enderror"
+                                        id="family_nationality" name="family_nationality">
                                         <option value="">Select</option>
-                                        <option value="ri" {{ old('nationalityf') == 'ri' ? 'selected' : '' }}>
+                                        <option value="ri"
+                                            {{ old('family_nationality') == 'ri' ? 'selected' : '' }}>
                                             Residential
                                             Individual</option>
-                                        <option value="nro" {{ old('nationalityf') == 'nro' ? 'selected' : '' }}>
+                                        <option value="nro"
+                                            {{ old('family_nationality') == 'nro' ? 'selected' : '' }}>
                                             NRO
                                         </option>
-                                        <option value="nre" {{ old('nationalityf') == 'nre' ? 'selected' : '' }}>
+                                        <option value="nre"
+                                            {{ old('family_nationality') == 'nre' ? 'selected' : '' }}>
                                             NRE
                                         </option>
-                                        <option value="pio" {{ old('nationalityf') == 'pio' ? 'selected' : '' }}>
+                                        <option value="pio"
+                                            {{ old('family_nationality') == 'pio' ? 'selected' : '' }}>
                                             OCI/PIO
                                         </option>
-                                        <option value="gch" {{ old('nationalityf') == 'gch' ? 'selected' : '' }}>
+                                        <option value="gch"
+                                            {{ old('family_nationality') == 'gch' ? 'selected' : '' }}>
                                             Green Card
                                             Holder</option>
                                         <option value="trioc"
-                                            {{ old('nationalityf') == 'trioc' ? 'selected' : '' }}>
+                                            {{ old('family_nationality') == 'trioc' ? 'selected' : '' }}>
                                             Tax
                                             Resident in Other Country</option>
-                                        <option value="fn" {{ old('nationalityf') == 'fn' ? 'selected' : '' }}>
+                                        <option value="fn"
+                                            {{ old('family_nationality') == 'fn' ? 'selected' : '' }}>
                                             Foreign
                                             National</option>
                                         <option value="other"
-                                            {{ old('nationalityf') == 'other' ? 'selected' : '' }}>
+                                            {{ old('family_nationality') == 'other' ? 'selected' : '' }}>
                                             Other
                                         </option>
                                     </select>
 
-                                    @error('nationalityf')
+                                    @error('family_nationality')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -958,52 +968,55 @@
 
                                 {{-- Occupation --}}
                                 <div class="col-md-2 mb-3">
-                                    <label class="form-label" for="occupationf">Occupation</label>
-                                    <select class="form-select @error('occupationf') is-invalid @enderror"
-                                        id="occupationf" name="occupationf">
+                                    <label class="form-label" for="family_occupation">Occupation</label>
+                                    <select class="form-select @error('family_occupation') is-invalid @enderror"
+                                        id="family_occupation" name="family_occupation">
                                         <option value="">Select</option>
                                         <option value="private_sector"
-                                            {{ old('occupationf') == 'private_sector' ? 'selected' : '' }}>Private
+                                            {{ old('family_occupation') == 'private_sector' ? 'selected' : '' }}>
+                                            Private
                                             Sector
                                         </option>
                                         <option value="public_sector"
-                                            {{ old('occupationf') == 'public_sector' ? 'selected' : '' }}>Public
+                                            {{ old('family_occupation') == 'public_sector' ? 'selected' : '' }}>Public
                                             Sector
                                         </option>
                                         <option value="government"
-                                            {{ old('occupationf') == 'government' ? 'selected' : '' }}>
+                                            {{ old('family_occupation') == 'government' ? 'selected' : '' }}>
                                             Government
                                             Service</option>
                                         <option value="business"
-                                            {{ old('occupationf') == 'business' ? 'selected' : '' }}>
+                                            {{ old('family_occupation') == 'business' ? 'selected' : '' }}>
                                             Business</option>
                                         <option value="professional"
-                                            {{ old('occupationf') == 'professional' ? 'selected' : '' }}>Professional
+                                            {{ old('family_occupation') == 'professional' ? 'selected' : '' }}>
+                                            Professional
                                         </option>
                                         <option value="agriculture"
-                                            {{ old('occupationf') == 'agriculture' ? 'selected' : '' }}>
+                                            {{ old('family_occupation') == 'agriculture' ? 'selected' : '' }}>
                                             Agriculture</option>
                                         <option value="retired"
-                                            {{ old('occupationf') == 'retired' ? 'selected' : '' }}>Retired
+                                            {{ old('family_occupation') == 'retired' ? 'selected' : '' }}>Retired
                                         </option>
                                         <option value="housewife"
-                                            {{ old('occupationf') == 'housewife' ? 'selected' : '' }}>
+                                            {{ old('family_occupation') == 'housewife' ? 'selected' : '' }}>
                                             Housewife</option>
                                         <option value="student"
-                                            {{ old('occupationf') == 'student' ? 'selected' : '' }}>Student
+                                            {{ old('family_occupation') == 'student' ? 'selected' : '' }}>Student
                                         </option>
                                         <option value="doctor"
-                                            {{ old('occupationf') == 'doctor' ? 'selected' : '' }}>
+                                            {{ old('family_occupation') == 'doctor' ? 'selected' : '' }}>
                                             Doctor
                                         </option>
                                         <option value="education"
-                                            {{ old('occupationf') == 'education' ? 'selected' : '' }}>
+                                            {{ old('family_occupation') == 'education' ? 'selected' : '' }}>
                                             Education</option>
-                                        <option value="other" {{ old('occupationf') == 'other' ? 'selected' : '' }}>
+                                        <option value="other"
+                                            {{ old('family_occupation') == 'other' ? 'selected' : '' }}>
                                             Other
                                         </option>
                                     </select>
-                                    @error('occupationf')
+                                    @error('family_occupation')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -1012,12 +1025,12 @@
 
                                 {{-- Mobile Number --}}
                                 <div class="col-md-2 mb-3">
-                                    <label class="form-label" for="mobile_nof">Mobile Number</label>
+                                    <label class="form-label" for="family_mobile_no">Mobile Number</label>
                                     <input type="text"
-                                        class="form-control onlyphone @error('mobile_nof') is-invalid @enderror"
-                                        id="mobile_nof" name="mobile_nof" maxlength="15"
-                                        value="{{ old('mobile_nof') }}">
-                                    @error('mobile_nof')
+                                        class="form-control onlyphone @error('family_mobile_no') is-invalid @enderror"
+                                        id="family_mobile_no" name="family_mobile_no" maxlength="15"
+                                        value="{{ old('family_mobile_no') }}">
+                                    @error('family_mobile_no')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -1025,11 +1038,11 @@
 
                                 {{-- WhatsApp Number --}}
                                 <div class="col-md-2 mb-3">
-                                    <label class="form-label" for="whatsapp_nof">WhatsApp Number</label>
+                                    <label class="form-label" for="family_whatsapp_no">WhatsApp Number</label>
                                     <input type="text"
-                                        class="form-control onlyphone @error('whatsapp_nof') is-invalid @enderror"
-                                        id="whatsapp_nof" name="whatsapp_nof" maxlength="15"
-                                        value="{{ old('whatsapp_nof') }}">
+                                        class="form-control onlyphone @error('family_whatsapp_no') is-invalid @enderror"
+                                        id="family_whatsapp_no" name="family_whatsapp_no" maxlength="15"
+                                        value="{{ old('family_whatsapp_no') }}">
                                     <label class="uk-margin-right"><input
                                             class="uk-checkbox chkbox_fwapp_same_as_mobile" type="checkbox"
                                             id="" value="ON">
@@ -1042,12 +1055,12 @@
 
                                 {{-- Landline No --}}
                                 <div class="col-md-2 mb-3">
-                                    <label class="form-label" for="landline_nof">Landline No.</label>
+                                    <label class="form-label" for="family_landline_no">Landline No.</label>
                                     <input type="text"
-                                        class="form-control @error('landline_nof') is-invalid @enderror"
-                                        id="landline_nof" name="landline_nof" maxlength="15"
-                                        value="{{ old('landline_nof') }}">
-                                    @error('landline_nof')
+                                        class="form-control @error('family_landline_no') is-invalid @enderror"
+                                        id="family_landline_no" name="family_landline_no" maxlength="15"
+                                        value="{{ old('family_landline_no') }}">
+                                    @error('family_landline_no')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -1055,12 +1068,14 @@
 
                                 {{-- PAN No. --}}
                                 <div class="col-md-2 mb-3">
-                                    <label class="form-label" for="pan_nof">PAN No.</label>
-                                    <input type="text" class="form-control @error('pan_nof') is-invalid @enderror"
-                                        id="pan_nof" name="pan_nof" maxlength="10" value="{{ old('pan_nof') }}"
+                                    <label class="form-label" for="family_pan_no">PAN No.</label>
+                                    <input type="text"
+                                        class="form-control @error('family_pan_no') is-invalid @enderror"
+                                        id="family_pan_no" name="family_pan_no" maxlength="10"
+                                        value="{{ old('family_pan_no') }}"
                                         oninput="this.value = this.value.toUpperCase()"
                                         onblur1="checkPanExists(this.value)">
-                                    @error('pan_nof')
+                                    @error('family_pan_no')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                     <span id="errpancardno" class="text-danger small"></span>
@@ -1069,12 +1084,12 @@
 
                                 {{-- Aadhaar No. --}}
                                 <div class="col-md-2 mb-3">
-                                    <label class="form-label" for="aadhar_no">Aadhaar No.</label>
+                                    <label class="form-label" for="family_aadhar_no">Aadhaar No.</label>
                                     <input type="text"
-                                        class="form-control onlydigit @error('aadhar_nof') is-invalid @enderror"
-                                        id="aadhar_nof" name="aadhar_nof" maxlength="12"
-                                        value="{{ old('aadhar_nof') }}">
-                                    @error('aadhar_nof')
+                                        class="form-control onlydigit @error('family_aadhar_no') is-invalid @enderror"
+                                        id="family_aadhar_no" name="family_aadhar_no" maxlength="12"
+                                        value="{{ old('family_aadhar_no') }}">
+                                    @error('family_aadhar_no')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -1082,10 +1097,11 @@
 
                                 {{-- Email --}}
                                 <div class="col-md-3 mb-3">
-                                    <label class="form-label" for="emailf">Email</label>
-                                    <input type="email" class="form-control @error('emailf') is-invalid @enderror"
-                                        id="emailf" name="emailf" value="{{ old('emailf') }}">
-                                    @error('emailf')
+                                    <label class="form-label" for="family_email">Email</label>
+                                    <input type="email"
+                                        class="form-control @error('family_email') is-invalid @enderror"
+                                        id="family_email" name="family_email" value="{{ old('family_email') }}">
+                                    @error('family_email')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
