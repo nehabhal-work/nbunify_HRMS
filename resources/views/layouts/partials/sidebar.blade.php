@@ -64,6 +64,12 @@
 
              </ul>
          </li>
+<li class="menu-item {{ request()->routeIs('preclients.*') ? 'active' : '' }}">
+    <a href="{{ route('preclients.index') }}" class="menu-link">
+        <i class="menu-icon bx bx-id-card"></i>
+        <div class="text-truncate">Pre Client Form</div>
+    </a>
+</li>
 
          <li class="menu-item {{ request()->routeIs('client.form*') ? 'active' : '' }}">
              <a href="{{ route('client.form') }}" class="menu-link">

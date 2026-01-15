@@ -369,7 +369,18 @@
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
+                            <!-- Remarks -->
+                            <div class="col-md-4">
+                                <label class="form-label">
+                                    Remarks 
+                                </label>
+                                <textarea name="remarks" rows="2" class="form-control @error('remarks') is-invalid @enderror"
+                                    placeholder="Write remarks">{{ old('remarks') }}</textarea>
 
+                                @error('remarks')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
 
                         </div>
                     </div>
@@ -390,8 +401,6 @@
                         <h5 class="mb-0">Bank / Instrument Details</h5>
                         <small class="text-muted float-end">Bank - Instrument Details</small>
                     </div>
-
-
 
                     <div class="card-body">
                         <div id="instrumentContainer">
@@ -674,9 +683,6 @@
                         <small class="text-muted float-end">Nominee Details</small>
                     </div>
 
-
-
-
                     <div class="card-body">
                         <div class="alert alert-info py-2">
                             <strong>Note:</strong> Total nominee percentage must be <strong>100%</strong> across all
@@ -730,10 +736,6 @@
                 </div>
             </div>
         </div>
-
-
-
-
 
 
         <div class="card shadow-sm mt-3" id="resultCard" style="display:none;">

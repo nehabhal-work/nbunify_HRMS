@@ -17,6 +17,8 @@ use App\Http\Controllers\Investment\InvestmentController;
 use App\Http\Controllers\Investment\SchemeController;
 use App\Http\Controllers\Masters\SubDepartmentController;
 use App\Http\Controllers\Masters\SubDesignationController;
+use App\Http\Controllers\PreClientController;
+use App\Models\PreClient;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Masters\CompanyController;
 use App\Http\Controllers\Masters\HeadOfficeController;
@@ -33,6 +35,7 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('preclients', [PreClientController::class, 'index'])->name('preclients.index');
 Route::get('welcome/client-onboarding', [ClientController::class, 'clientOnboarding'])->name('client.form');
 Route::post('welcome/client-onboarding', [ClientController::class, 'saveClientOnboarding'])->name('client.form.save');
 
