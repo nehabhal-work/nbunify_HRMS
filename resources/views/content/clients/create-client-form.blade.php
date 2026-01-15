@@ -11,6 +11,19 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
 </head>
+<style>
+    /* Make all form inputs uppercase */
+    input,
+    textarea,
+    select {
+        text-transform: uppercase;
+    }
+
+    /* Exclude email input */
+    input[type="email"] {
+        text-transform: none;
+    }
+</style>
 
 <body>
     <header>
@@ -18,7 +31,7 @@
     </header>
 
     <main class="container">
-        <form action="{{ route('preclients.store') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('preclients.store') }}" method="POST" enctype="multipart/form-data" class="mb-4">
             @csrf
             @method('post')
             <input type="hidden" name="res_country" id="res_country" value="India">
@@ -1493,7 +1506,7 @@
             </div>
 
             <!-- Submit -->
-            <div class="text-end mt-3">
+            <div class="text-end mb-5">
                 <button type="submit" class="btn btn-primary px-4">Save</button>
             </div>
 
