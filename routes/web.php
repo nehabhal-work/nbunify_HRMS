@@ -18,7 +18,6 @@ use App\Http\Controllers\Investment\SchemeController;
 use App\Http\Controllers\Masters\SubDepartmentController;
 use App\Http\Controllers\Masters\SubDesignationController;
 use App\Http\Controllers\PreClientController;
-use App\Models\PreClient;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Masters\CompanyController;
 use App\Http\Controllers\Masters\HeadOfficeController;
@@ -55,7 +54,6 @@ Route::middleware(['auth', 'verified'])->prefix('master')->name('master.')->grou
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('clients', ClientController::class)->names('clients');
     Route::put('client-approve/{id}', [ClientController::class, 'approve'])->name('client.approve');
-    Route::get('client-approve/{id}', [ClientController::class, 'approve'])->name('client.approve');
     Route::get('client/{id}/kyc-pdf', [ClientController::class, 'downloadKycPdf'])->name('client.kyc.pdf');
     Route::get('client-form-download', [ClientController::class, 'kycBalnkForm'])->name('client.form.download');
 
