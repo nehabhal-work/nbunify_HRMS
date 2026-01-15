@@ -34,10 +34,8 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('preclients', [PreClientController::class, 'index'])->name('preclients.index');
-Route::get('welcome/client-onboarding', [ClientController::class, 'clientOnboarding'])->name('client.form');
-// Route::post('welcome/client-onboarding', [ClientController::class, 'saveClientOnboarding'])->name('client.form.save');
-Route::resource('preclient', PreClientController::class);
+Route::get('client-onboarding/create', [PreClientController::class, 'create'])->name('preclients.create');
+Route::post('client-onboarding', [PreClientController::class, 'store'])->name('preclients.store');
 
 Route::middleware(['auth', 'verified'])->prefix('master')->name('master.')->group(function () {
     Route::resource('companies', CompanyController::class);
@@ -72,6 +70,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('send.festival.mail');
     Route::get('client-welcomeLetter/{id}', [ClientController::class, 'welcomeLetter'])
         ->name('client.welcomeLetter');
+    Route::get('client-onboarding', [PreClientController::class, 'index'])->name('preclients.index');
 });
 
 Route::middleware(['auth', 'verified'])->prefix('accounts')->name('accounts.')->group(function () {

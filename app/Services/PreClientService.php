@@ -38,7 +38,6 @@ class PreClientService
 
     public function create(array $data): PreClient
     {
-        $data['client_code'] = $this->generateClientCode();
         $data['created_by'] = auth()->id();
         $client = PreClient::create($data);
         $data = $this->handleFileUploads($data, $client, 'A');
@@ -124,18 +123,5 @@ class PreClientService
                 $this->fileStorageService->deleteFile($client->$field);
             }
         }
-    }
-
-    public function generateClientCode(): string
-    {
-        $baseCode = 'PCL';
-        $counter = 1;
-
-        do {
-            $code = $baseCode . str_pad($counter, 8, '0', STR_PAD_LEFT);
-            $counter++;
-        } while (PreClient::where('client_code', $code)->exists());
-
-        return $code;
     }
 }

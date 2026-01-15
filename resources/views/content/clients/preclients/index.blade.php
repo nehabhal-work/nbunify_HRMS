@@ -43,12 +43,11 @@
                         <table class="table table-bordered srkdataTable">
                             <thead class="table-light">
                                 <tr>
-                                    <th>client-code</th>
+                                    <th>id</th>
                                     <th>Client name</th>
                                     <th>pan no</th>
                                     <th>addhar no</th>
-                                    <th>phone</th>
-                                   
+                                    <th>phone</th>                               
                                     <th>Created By</th>
                                     <th>Approved By 1</th>
                                     <th>Approved By 2</th>
@@ -61,7 +60,7 @@
                                     <tr>
                                         <td>
                                             <a href="{{ route('clients.edit', $d->id) }}" class="text-reset">
-                                                {{ $d->client_code }}
+                                                {{ $d->id }}
                                             </a>
                                         </td>
                                         <td>
@@ -87,12 +86,7 @@
                                         <td>{{ $d->pan_no ?? '' }}</td>
                                         <td>{{ $d->aadhar_no ?? '' }}</td>
                                         <td>{{ $d->mobile_no ?? '' }}</td>
-                                        {{-- <td class="text-truncate" style="max-width: 250px;" data-bs-toggle="tooltip"
-                                            title="{{ strtoupper($d->res_address) }}">
-                                            {{ \Illuminate\Support\Str::limit(strtoupper($d->res_address), 200) }}
-                                        </td> --}}
-                                      
-
+                                       
                                         <td
                                             class="{{ !empty($d->createdBy) ? 'table-warning fw-semibold rounded px-2 py-1' : '' }}">
                                             @if (!empty($d->createdBy))
