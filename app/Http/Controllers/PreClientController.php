@@ -19,14 +19,33 @@ class PreClientController extends Controller
         private PreClientBankService $preClientBankService,
         private FileStorageService $fileStorageService,
         private FamilyRelationService $familyRelationService
-    ) {
-    }
+    ) {}
 
     public function index()
     {
         $preclients = $this->preClientService->getAll()->sortByDesc('id');
         return view('content.clients.preclients.index', compact('preclients'));
     }
+
+
+    public function show($id)
+    {
+        $client = $this->preClientService->find($id);
+        $client->load(['banks', 'families']);
+        $client = $this->addFileUrls($client);
+
+        // return $client;
+        $clientBank = PreClientBankService::where('client_id', $id)->get();
+
+        $clientBanks = $clientBank->map(function ($bank) {
+            return $this->preClientBankService->addFileUrls($bank);
+        });
+        // return $clientBank;
+        // $client = $this->clientService->find($clientBank->client_id);
+        // return $clientBank;
+        return view('content.clients.preclients.view', compact('client', 'clientBank'));
+    }
+
 
     public function create()
     {
@@ -137,6 +156,7 @@ class PreClientController extends Controller
                 }
             });
 
+            return view('content.clients.preclients.thankyou');
             return response()->json([
                 'message' => 'PreClient created successfully',
                 'preclient' => $preclient,
@@ -149,6 +169,7 @@ class PreClientController extends Controller
 
         // return redirect()->route('preclients.index')->with('success', 'PreClient created successfully');
     }
+
 
     // public function edit($id)
     // {

@@ -16,6 +16,7 @@
     <header>
 
     </header>
+
     <main class="container">
         <form action="{{ route('preclients.store') }}" method="POST" enctype="multipart/form-data">
             @csrf
