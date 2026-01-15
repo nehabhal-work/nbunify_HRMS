@@ -12,7 +12,6 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('preclient_families', function (Blueprint $table) {
-            $table->string('client_code', 20)->nullable()->after('id');
             $table->string('pan_no', 10)->nullable()->after('email');
             $table->string('aadhar_no', 12)->nullable()->after('pan_no');
             $table->string('res_country_code')->nullable()->after('res_country');
@@ -31,7 +30,6 @@ return new class extends Migration
     {
         Schema::table('preclient_families', function (Blueprint $table) {
             $table->dropColumn([
-                'client_code',
                 'pan_no',
                 'aadhar_no',
                 'res_country_code',
