@@ -1043,10 +1043,10 @@
                                         class="form-control onlyphone @error('family_whatsapp_no') is-invalid @enderror"
                                         id="family_whatsapp_no" name="family_whatsapp_no" maxlength="15"
                                         value="{{ old('family_whatsapp_no') }}">
-                                    <label class="uk-margin-right"><input
+                                    {{-- <label class="uk-margin-right"><input
                                             class="uk-checkbox chkbox_fwapp_same_as_mobile" type="checkbox"
                                             id="" value="ON">
-                                        Same as mobile no.</label>
+                                        Same as mobile no.</label> --}}
                                     @error('whatsapp_noff')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -1323,7 +1323,7 @@
                         </div>
 
                         <div class="card-body">
-                            <div class="row">
+                            <div class="bank-details-row row">
 
                                 <!-- IFSC Code -->
                                 <div class="col-md-3 mb-3">
@@ -1427,36 +1427,55 @@
                                 </div>
 
                                 <!-- Auto-filled Bank Details -->
-                                <div class="col-md-3 mb-3">
+                                <!-- MICR -->
+                                <div class="col-md-3">
                                     <label class="form-label">MICR Code</label>
-                                    <input type="text" name="micrcode"
-                                        class="form-control bg-secondary-subtle bg-gradient" readonly>
+                                    <input type="text" name="micrcode" value="{{ old('micrcode') }}"
+                                        class="form-control micrcode bg-secondary-subtle bg-gradient @error('micrcode') is-invalid @enderror"
+                                        readonly>
+                                    @error('micrcode')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
 
-                                <div class="col-md-3 mb-3">
+                                <!-- Bank Name -->
+                                <div class="col-md-3">
                                     <label class="form-label">Bank Name</label>
-                                    <input type="text" name="bank_name"
-                                        class="form-control bg-secondary-subtle bg-gradient" readonly>
+                                    <input type="text" name="bank_name" value="{{ old('bank_name') }}"
+                                        class="form-control bank_name bg-secondary-subtle bg-gradient @error('bank_name') is-invalid @enderror"
+                                        readonly>
+                                    @error('bank_name')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
 
-                                <div class="col-md-3 mb-3">
+                                <!-- Branch Name -->
+                                <div class="col-md-3">
                                     <label class="form-label">Branch Name</label>
-                                    <input type="text" name="branch_name"
-                                        class="form-control bg-secondary-subtle bg-gradient" readonly>
+                                    <input type="text" name="branch_name" value="{{ old('branch_name') }}"
+                                        class="form-control branch_name bg-secondary-subtle bg-gradient @error('branch_name') is-invalid @enderror"
+                                        readonly>
+                                    @error('branch_name')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
 
-                                <div class="col-md-3 mb-3">
+                                <!-- Bank Code -->
+                                <div class="col-md-3">
                                     <label class="form-label">Bank Code</label>
-                                    <input type="text" name="bank_code"
-                                        class="form-control bg-secondary-subtle bg-gradient" readonly>
+                                    <input type="text" name="bank_code" value="{{ old('bank_code') }}"
+                                        class="form-control bank_code bg-secondary-subtle bg-gradient @error('bank_code') is-invalid @enderror"
+                                        readonly>
+                                    @error('bank_code')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
                                 </div>
-
                                 <!-- Cancelled Cheque -->
-                                <div class="col-md-4 mb-3">
+                                {{-- <div class="col-md-4 mb-3">
                                     <label class="form-label">Cancelled Cheque</label>
                                     <input type="file" class="form-control" name="attachment_cancelled_cheque"
                                         accept=".jpg,.jpeg,.png,.pdf">
-                                </div>
+                                </div> --}}
 
                                 <!-- Primary Account -->
                                 {{-- <div class="col-md-2 mb-3">
@@ -1484,6 +1503,7 @@
         <!-- place footer here -->
     </footer>
     <!-- Bootstrap JavaScript Libraries -->
+    <script src="{{ asset('assets/vendor/libs/jquery/jquery.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
         integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous">
     </script>
@@ -1492,6 +1512,8 @@
         integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous">
     </script>
 
+    <script src="{{ asset('assets/vendor/libs/bootstrap-datepicker/bootstrap-datepicker.js') }}"></script>
+    <script src="{{ asset('assets/js/custom.js') }}"></script>
     <script>
         $(document).ready(function() {
             $('.chkbox_fwapp_same_as_mobile').on('change', function() {
@@ -1501,7 +1523,6 @@
                     $('#whatsapp_no').val('');
                 }
             });
-
         });
     </script>
 
@@ -1552,6 +1573,8 @@
             });
         });
     </script>
+
+
 </body>
 
 </html>
