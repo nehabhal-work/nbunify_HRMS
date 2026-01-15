@@ -9,6 +9,8 @@ use App\Models\User;
 
 class PreClient extends Model
 {
+    protected $table = 'preclients';
+
     protected $fillable = [
         'client_code',
         'name',

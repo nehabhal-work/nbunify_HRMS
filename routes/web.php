@@ -24,7 +24,7 @@ use App\Http\Controllers\Masters\CompanyController;
 use App\Http\Controllers\Masters\HeadOfficeController;
 use App\Http\Controllers\Masters\BranchController;
 use App\Http\Controllers\Investment\InvestmentSiController;
-
+use App\Http\Controllers\PreClientController;
 
 // MERGED
 Route::get('/', function () {
@@ -37,7 +37,8 @@ Route::get('/dashboard', function () {
 
 Route::get('preclients', [PreClientController::class, 'index'])->name('preclients.index');
 Route::get('welcome/client-onboarding', [ClientController::class, 'clientOnboarding'])->name('client.form');
-Route::post('welcome/client-onboarding', [ClientController::class, 'saveClientOnboarding'])->name('client.form.save');
+// Route::post('welcome/client-onboarding', [ClientController::class, 'saveClientOnboarding'])->name('client.form.save');
+Route::resource('preclient', PreClientController::class);
 
 Route::middleware(['auth', 'verified'])->prefix('master')->name('master.')->group(function () {
     Route::resource('companies', CompanyController::class);

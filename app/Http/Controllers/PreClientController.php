@@ -48,8 +48,10 @@ class PreClientController extends Controller
         return view('content.preclients.view', compact('preclient', 'preClientBanks'));
     }
 
+    // public function store(Request $request)
     public function store(PreClientRequest $request)
     {
+        return $request;
         $preclient = null;
         DB::transaction(function () use ($request, &$preclient) {
             $preclient = $this->preClientService->create($request->validated());
@@ -84,7 +86,7 @@ class PreClientController extends Controller
     public function update(PreClientRequest $request, $id)
     {
         $preclient = $this->preClientService->find($id);
-        
+
         DB::transaction(function () use ($request, $preclient) {
             $this->preClientService->update($preclient, $request->validated());
         });

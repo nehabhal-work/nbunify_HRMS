@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class PreClientBank extends Model
 {
+    protected $table = 'preclient_banks';
+
     protected $fillable = [
         'preclient_id',
         'ifsc_code',
