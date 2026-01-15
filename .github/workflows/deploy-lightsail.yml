@@ -25,19 +25,20 @@ jobs:
 
           cd $APP_DIR
 
-          # Clear All
-          $PHP_BIN artisan optimize:clear
-
           # Pull latest code
           git pull origin main
 
           # Install/update composer dependencies
           composer install --no-dev --optimize-autoloader
 
+          # Clear all caches AFTER pulling new code
+          $PHP_BIN artisan optimize:clear
+
           # Run migrations
           $PHP_BIN artisan migrate --force
           $PHP_BIN artisan db:seed --force
           $PHP_BIN artisan storage:link
+          
           # Optimize for production
           $PHP_BIN artisan optimize
 
