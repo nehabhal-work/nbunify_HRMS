@@ -31,7 +31,7 @@ class CompanyService
 
     public function findFirstOrFail()
     {
-        return Company::firstOrFail();
+        return Company::with('bankDetails')->firstOrFail();
     }
 
     public function create(array $data): Company

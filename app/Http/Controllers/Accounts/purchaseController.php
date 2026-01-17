@@ -5,15 +5,19 @@ namespace App\Http\Controllers\Accounts;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PurchaseRequest;
 use App\Models\Purchase;
+use App\Services\CompanyService;
 use App\Services\PurchaseService;
+
 
 class PurchaseController extends Controller
 {
     protected $purchaseService;
+    protected $companyService;
 
-    public function __construct(PurchaseService $purchaseService)
+    public function __construct(PurchaseService $purchaseService, CompanyService $companyService)
     {
         $this->purchaseService = $purchaseService;
+        $this->companyService = $companyService;
     }
 
     public function index()
@@ -40,8 +44,9 @@ class PurchaseController extends Controller
 
     public function show(Purchase $purchase)
     {
+        $company = $this->companyService->findFirstOrFail();
         $purchase->load('vendor', 'purchaseItems');
-        return view('content.accounts.purchases.show', compact('purchase'));
+        return view('content.accounts.purchases.show', compact('purchase', 'company'));
     }
 
     public function edit(Purchase $purchase)
