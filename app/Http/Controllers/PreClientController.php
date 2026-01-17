@@ -28,23 +28,7 @@ class PreClientController extends Controller
     }
 
 
-    public function show($id)
-    {
-        $client = $this->preClientService->find($id);
-        $client->load(['banks', 'families']);
-        $client = $this->addFileUrls($client);
-
-        // return $client;
-        $clientBank = PreClientBankService::where('client_id', $id)->get();
-
-        $clientBanks = $clientBank->map(function ($bank) {
-            return $this->preClientBankService->addFileUrls($bank);
-        });
-        // return $clientBank;
-        // $client = $this->clientService->find($clientBank->client_id);
-        // return $clientBank;
-        return view('content.clients.preclients.view', compact('client', 'clientBank'));
-    }
+  
 
 
     public function create()
@@ -57,19 +41,19 @@ class PreClientController extends Controller
         return view('content.clients.create-client-form', compact('country', 'states', 'cities', 'relations'));
     }
 
-    // public function show($id)
-    // {
-    //     $preclient = $this->preClientService->find($id);
-    //     $preclient->load(['banks', 'families']);
-    //     $preclient = $this->addFileUrls($preclient);
+    public function show($id)
+    {
+        $preclient = $this->preClientService->find($id);
+        $preclient->load(['banks', 'families']);
+        $preclient = $this->addFileUrls($preclient);
+// return $preclient;
+        $preClientBanks = PreClientBank::where('preclient_id', $id)->get();
+        $preClientBanks = $preClientBanks->map(function ($bank) {
+            return $this->preClientBankService->addFileUrls($bank);
+        });
 
-    //     $preClientBanks = PreClientBank::where('preclient_id', $id)->get();
-    //     $preClientBanks = $preClientBanks->map(function ($bank) {
-    //         return $this->preClientBankService->addFileUrls($bank);
-    //     });
-
-    //     return view('content.preclients.view', compact('preclient', 'preClientBanks'));
-    // }
+        return view('content.clients.preclients.view', compact('preclient', 'preClientBanks'));
+    }
 
     public function store(PreClientRequest $request)
     {
@@ -200,7 +184,7 @@ class PreClientController extends Controller
     {
         $preclient = $this->preClientService->find($id);
         $this->preClientService->delete($preclient);
-        return redirect()->route('preclients.index')->with('success', 'PreClient deleted successfully');
+        return redirect()->route('content.clients.preclients.index')->with('success', 'PreClient deleted successfully');
     }
 
     private function addFileUrls($preclient)

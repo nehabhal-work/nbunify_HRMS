@@ -59,14 +59,13 @@
                                 @foreach ($preclients as $d)
                                     <tr>
                                         <td>
-                                            <a href="{{ route('clients.edit', $d->id) }}" class="text-reset">
                                                 {{ $d->id }}
-                                            </a>
+                                         
                                         </td>
                                         <td>
                                             <div class="fw-semibold text-dark">
                                                 <i class="bx bx-show me-1"></i>
-                                                <a href="{{ route('clients.show', $d->id) }}"
+                                                <a href="{{ route('preclients.show', $d->id) }}"
                                                     class="text-dark text-decoration-none">
                                                     {{ strtoupper($d->name) }}
                                                 </a>
@@ -137,11 +136,11 @@
                                                 </button>
                                                 <div class="dropdown-menu">
                                                 
-                                                    <a class="dropdown-item edit-btn"
+                                                    {{-- <a class="dropdown-item edit-btn"
                                                         href="{{ route('clients.edit', $d->id) }}">
                                                         <i class="bx bx-edit-alt me-1"></i> Edit
-                                                    </a>
-                                                    <a class="dropdown-item" href="{{ route('clients.show', $d->id) }}">
+                                                    </a> --}}
+                                                    <a class="dropdown-item" href="{{ route('preclients.show', $d->id) }}">
                                                         <i class="bx bx-show me-1"></i> View
                                                     </a>
                                                  

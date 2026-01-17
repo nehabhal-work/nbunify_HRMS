@@ -11,14 +11,40 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous" />
 </head>
+<style>
+    /* Make all form inputs uppercase */
+    input,
+    textarea,
+    select {
+        text-transform: uppercase;
+    }
+
+    /* Exclude email input */
+    input[type="email"] {
+        text-transform: none;
+    }
+
+    h6,
+    label {
+        text-transform: uppercase;
+    }
+
+    .h6two {
+        border-left: 2px solid #b644dc;
+        color: #b644dc;
+        font-weight: bold;
+    }
+
+    .card {
+        background-color: #fefaff;
+    }
+</style>
 
 <body>
-    <header>
 
-    </header>
 
     <main class="container">
-        <form action="{{ route('preclients.store') }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('preclients.store') }}" method="POST" enctype="multipart/form-data" class="mb-4">
             @csrf
             @method('post')
             <input type="hidden" name="res_country" id="res_country" value="India">
@@ -29,16 +55,17 @@
             <input type="hidden" name="office_state" id="office_state" value="Maharashtra">
             <input type="hidden" name="office_city" id="office_city" value="Thane">
 
-            <div class="d-flex justify-content-between my-3">
-                <h3>Please enter your basic personal details exactly as per your official records</h3>
+            <div class="text-center justify-content-center my-3 text-uppercase">
+                <h5>Please enter your basic personal details exactly as per your official records</h5>
                 {{-- <a href="{{ route('clients.index') }}" class="btn btn-secondary px-4">Go Back</a> --}}
             </div>
             <div class="row align-items-stretch">
                 <div class="col-md-12">
                     <div class="card mb-4">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0">Primary Information</h5>
-                            <small class="text-muted float-end">client Basic Details</small>
+                        <div class="card-header d-flex justify-content-between align-items-center"
+                            style="background-color: #d3e0ff !important;">
+                            <h6 class="mb-0 text-uppercase">Primary Information</h6>
+                            <small class="text-muted float-end text-uppercase">client Basic Details</small>
                         </div>
                         <div class="card-body">
                             <div class="row">
@@ -151,7 +178,7 @@
                                 {{-- Nationality --}}
                                 <div class="col-md-2 mb-3">
                                     <label class="form-label" for="nationality">Nationality</label>
-                                    <select class="form-select @error('nationality') is-invalid @enderror"
+                                    <select class="form-select  @error('nationality') is-invalid @enderror"
                                         id="nationality" name="nationality">
                                         <option value="ri" {{ old('nationality') == 'ri' ? 'selected' : '' }}>
                                             Residential
@@ -363,7 +390,7 @@
                                 {{-- {{ dd($country) }} --}}
 
                                 <!-- Residential Address -->
-                                <h6 class="my-3">Residential Address</h6>
+                                <h6 class="my-3 h6two">Residential Address</h6>
                                 <div class="col-md-4 mb-3">
                                     <label class="form-label">Address</label>
                                     <input type="text" name="res_address" id="res_address"
@@ -446,7 +473,7 @@
 
 
                                 <!-- Office Address -->
-                                <h6 class="my-3">Office Address</h6>
+                                <h6 class="my-3 h6two">Office Address</h6>
                                 <div class="col-md-4 mb-3">
                                     <label class="form-label">Address</label>
                                     <input type="text" name="office_address" id="office_address"
@@ -534,9 +561,10 @@
                 {{-- Image Section --}}
                 <div id="divImageSection" class="col-md-12 ">
                     <div class="card mb-4">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0">Image Section</h5>
-                            <small class="text-muted float-end">Image Information</small>
+                        <div class="card-header d-flex justify-content-between align-items-center"
+                            style="background-color: #d3e0ff !important;">
+                            <h6 class="mb-0 text-uppercase">Image Section</h6>
+                            <small class="text-muted float-end text-uppercase">Image Information</small>
                         </div>
                         <div class="card-body">
                             <div class="row">
@@ -803,9 +831,10 @@
             <div id="FamilySection" class="" class="row align-items-stretch">
                 <div class="col-md-12">
                     <div class="card mb-4">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0">Family Information</h5>
-                            <small class="text-muted float-end">Family Basic Details</small>
+                        <div class="card-header d-flex justify-content-between align-items-center"
+                            style="background-color: #d3e0ff !important;">
+                            <h6 class="mb-0 text-uppercase">Family Information</h6>
+                            <small class="text-muted float-end text-uppercase">Family Basic Details</small>
                         </div>
                         <div class="card-body">
                             <div class="row">
@@ -1144,7 +1173,7 @@
 
 
                                 <!-- Residential Address -->
-                                <h6 class="my-3">Residential Address</h6>
+                                <h6 class="my-3 h6two">Residential Address</h6>
                                 <div class="col-md-4 mb-3">
                                     <label class="form-label">Address</label>
                                     <input type="text" name="res_address" id="res_address"
@@ -1227,7 +1256,7 @@
 
 
                                 <!-- Office Address -->
-                                <h6 class="my-3">Office Address</h6>
+                                <h6 class="my-3 h6two">Office Address</h6>
                                 <div class="col-md-4 mb-3">
                                     <label class="form-label">Address</label>
                                     <input type="text" name="office_address" id="office_address"
@@ -1318,9 +1347,10 @@
             <div id="BankSection" class="row align-items-stretch">
                 <div class="col-md-12">
                     <div class="card mb-4">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <h5 class="mb-0">Bank Information</h5>
-                            <small class="text-muted float-end">Bank Account Details</small>
+                        <div class="card-header d-flex justify-content-between align-items-center"
+                            style="background-color: #d3e0ff !important;">
+                            <h6 class="mb-0 text-uppercase">Bank Information</h6>
+                            <small class="text-muted float-end text-uppercase">Bank Account Details</small>
                         </div>
 
                         <div class="card-body">
@@ -1493,7 +1523,7 @@
             </div>
 
             <!-- Submit -->
-            <div class="text-end mt-3">
+            <div class="text-end mb-5">
                 <button type="submit" class="btn btn-primary px-4">Save</button>
             </div>
 
