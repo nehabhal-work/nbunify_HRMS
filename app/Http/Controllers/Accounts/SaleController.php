@@ -5,15 +5,18 @@ namespace App\Http\Controllers\Accounts;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SaleRequest;
 use App\Models\Sale;
+use App\Services\CompanyService;
 use App\Services\SaleService;
 
 class SaleController extends Controller
 {
     protected $saleService;
+    protected $companyService;
 
-    public function __construct(SaleService $saleService)
+    public function __construct(SaleService $saleService, CompanyService $companyService)
     {
         $this->saleService = $saleService;
+        $this->companyService = $companyService;
     }
 
     public function index()
@@ -40,8 +43,9 @@ class SaleController extends Controller
 
     public function show(Sale $sale)
     {
+        $company = $this->companyService->findFirstOrFail();
         $sale->load('customer', 'saleItems');
-        return view('content.accounts.sales.show', compact('sale'));
+        return view('content.accounts.sales.show', compact('sale','company'));
     }
 
     public function edit(Sale $sale)
