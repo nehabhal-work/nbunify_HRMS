@@ -770,6 +770,7 @@ $(document).ready(function () {
     initAddress('office');
     initAddress('registered');
     initAddress('additional');
+    initAddress('family_res');
 
 });
 

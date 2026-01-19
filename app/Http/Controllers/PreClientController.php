@@ -38,7 +38,7 @@ class PreClientController extends Controller
         $states = $data['states'] ?? [];
         $cities = $data['cities'] ?? [];
         $relations = $this->familyRelationService->getByGender('male');
-        return view('content.clients.create-client-form', compact('country', 'states', 'cities', 'relations'));
+        return view('content.clients.preclients.create', compact('country', 'states', 'cities', 'relations'));
     }
 
     public function show($id)
@@ -55,10 +55,10 @@ class PreClientController extends Controller
         return view('content.clients.preclients.view', compact('preclient', 'preClientBanks'));
     }
 
-    public function store(Request $request)
-    // public function store(PreClientRequest $request)
+    // public function store(Request $request)
+    public function store(PreClientRequest $request)
     {
-        // return $request;
+        return $request;
         try {
             $preclient = null;
             DB::transaction(function () use ($request, &$preclient) {

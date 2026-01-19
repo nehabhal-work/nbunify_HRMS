@@ -42,6 +42,15 @@
 
 <body>
 
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 
     <main class="container">
         <form action="{{ route('preclients.store') }}" method="POST" enctype="multipart/form-data" class="mb-4">
@@ -54,6 +63,10 @@
             <input type="hidden" name="office_country" id="office_country" value="India">
             <input type="hidden" name="office_state" id="office_state" value="Maharashtra">
             <input type="hidden" name="office_city" id="office_city" value="Thane">
+
+            <input type="hidden" name="family_res_country" id="family_res_country" value="India">
+            <input type="hidden" name="family_res_state" id="family_res_state" value="Maharashtra">
+            <input type="hidden" name="family_res_city" id="family_res_city" value="Thane">
 
             <div class="text-center justify-content-center my-3 text-uppercase">
                 <h5>Please enter your basic personal details exactly as per your official records</h5>
@@ -429,7 +442,7 @@
                                         @foreach ($states as $s)
                                             <option value="{{ $s['iso2'] }}"
                                                 {{ old('res_state_code', 'MH') == $s['iso2'] ? 'selected' : '' }}
-                                                data-country-name="{{ $s['name'] }}">
+                                                data-state-name="{{ $s['name'] }}">
                                                 {{ $s['name'] }} </option>
                                         @endforeach
 
@@ -1160,7 +1173,7 @@
                                 <div class="col-md-5 mb-3">
                                     <label class="form-label" for="remarks">Remarks / Note</label>
                                     <input type="text" class="form-control @error('remarks') is-invalid @enderror"
-                                        id="remarks" name="remarks" maxlength="100"
+                                        id="family_remarks" name="family_remarks" maxlength="100"
                                         value="{{ old('remarks') }}">
                                     @error('remarks')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -1176,10 +1189,10 @@
                                 <h6 class="my-3 h6two">Residential Address</h6>
                                 <div class="col-md-4 mb-3">
                                     <label class="form-label">Address</label>
-                                    <input type="text" name="res_address" id="res_address"
-                                        class="form-control @error('res_address') is-invalid @enderror"
-                                        value="{{ old('res_address') }}">
-                                    @error('res_address')
+                                    <input type="text" name="family_res_address" id="family_res_address"
+                                        class="form-control @error('family_res_address') is-invalid @enderror"
+                                        value="{{ old('family_res_address') }}">
+                                    @error('family_res_address')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -1187,19 +1200,19 @@
                                 {{-- COUNTRY --}}
                                 <div class="col-md-2 mb-3">
                                     <label class="form-label">Country</label>
-                                    <select name="res_country_code" id="res_country_code"
-                                        class="form-select select2 @error('res_country_code') is-invalid @enderror">
+                                    <select name="family_res_country_code" id="family_res_country_code"
+                                        class="form-select select2 @error('family_res_country_code') is-invalid @enderror">
 
                                         @foreach ($country as $c)
                                             <option value="{{ $c['iso2'] }}"
-                                                {{ old('res_country_code', 'IN') == $c['iso2'] ? 'selected' : '' }}
+                                                {{ old('family_res_country_code', 'IN') == $c['iso2'] ? 'selected' : '' }}
                                                 data-country-name="{{ $c['name'] }}">
                                                 {{ $c['name'] }}
                                             </option>
                                         @endforeach
 
                                     </select>
-                                    @error('res_country_code')
+                                    @error('family_res_country_code')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -1207,17 +1220,17 @@
                                 {{-- STATE --}}
                                 <div class="col-md-2 mb-3">
                                     <label class="form-label">State </label>
-                                    <select name="res_state_code" id="res_state_code"
-                                        class="form-select select2 @error('res_state_code') is-invalid @enderror">
+                                    <select name="family_res_state_code" id="family_res_state_code"
+                                        class="form-select select2 @error('family_res_state_code') is-invalid @enderror">
                                         @foreach ($states as $s)
                                             <option value="{{ $s['iso2'] }}"
-                                                {{ old('res_state_code', 'MH') == $s['iso2'] ? 'selected' : '' }}
-                                                data-country-name="{{ $s['name'] }}">
+                                                {{ old('family_res_state_code', 'MH') == $s['iso2'] ? 'selected' : '' }}
+                                                data-state-name="{{ $s['name'] }}">
                                                 {{ $s['name'] }} </option>
                                         @endforeach
 
                                     </select>
-                                    @error('res_state_code')
+                                    @error('family_res_state_code')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -1225,17 +1238,17 @@
                                 {{-- CITY --}}
                                 <div class="col-md-2 mb-3">
                                     <label class="form-label">City</label>
-                                    <select name="res_city_code" id="res_city_code"
-                                        class="form-select select2 @error('res_city_code') is-invalid @enderror">
+                                    <select name="family_res_city_code" id="family_res_city_code"
+                                        class="form-select select2 @error('family_res_city_code') is-invalid @enderror">
                                         @foreach ($cities as $c)
                                             <option value="{{ $c['id'] }}"
-                                                {{ old('res_city_code', '134138') == $c['id'] ? 'selected' : '' }}
+                                                {{ old('family_res_city_code', '134138') == $c['id'] ? 'selected' : '' }}
                                                 data-city-name="{{ $c['name'] }}">
                                                 {{ $c['name'] }}
                                             </option>
                                         @endforeach
                                     </select>
-                                    @error('res_city_code')
+                                    @error('family_res_city_code')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -1243,10 +1256,10 @@
                                 {{-- Pincode --}}
                                 <div class="col-md-2 mb-3">
                                     <label class="form-label">Pincode</label>
-                                    <input type="text" name="res_pincode" id="res_pincode"
-                                        class="form-control onlydigit @error('res_pincode') is-invalid @enderror"
-                                        value="{{ old('res_pincode') }}" maxlength="6">
-                                    @error('res_pincode')
+                                    <input type="text" name="family_res_pincode" id="family_res_pincode"
+                                        class="form-control onlydigit @error('family_res_pincode') is-invalid @enderror"
+                                        value="{{ old('family_res_pincode') }}" maxlength="6">
+                                    @error('family_res_pincode')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -1426,10 +1439,10 @@
                                     @enderror
                                 </div>
 
-                                <!-- Account Holders -->
+                                <!-- Holder 1 -->
                                 <div
-                                    class="col-md-3 mb-3 holder_names {{ old('operation_mode') != 'single' ? '' : 'd-none' }}">
-                                    <label class="form-label">Account Holder Name 1</label>
+                                    class="col-md-3 mb-3 holder_names {{ old('operation_mode') != 'single' ? '' : '' }}">
+                                    <label class="form-label">Holder Name 1</label>
                                     <input type="text" name="holder_name_1" value="{{ old('holder_name_1') }}"
                                         class="form-control @error('holder_name_1') is-invalid @enderror">
                                     @error('holder_name_1')
@@ -1602,6 +1615,31 @@
                     $container.append(`<div class="invalid-feedback">${message}</div>`);
                 }
             });
+        });
+    </script>
+
+    <script>
+        document.addEventListener("change", function(e) {
+            if (e.target.classList.contains("operation_mode")) {
+
+                let row = e.target.closest(".bank-details-row");
+                let holders = row.querySelectorAll(".holder_names");
+
+                // hide all holders first
+                holders.forEach(h => h.classList.add("d-none"));
+
+                let mode = e.target.value;
+
+                if (mode === "single") {
+                    // show only Holder 1
+                    if (holders[0]) holders[0].classList.remove("d-none");
+                }
+
+                if (mode === "joint") {
+                    // show all 3 holders
+                    holders.forEach(h => h.classList.remove("d-none"));
+                }
+            }
         });
     </script>
 
