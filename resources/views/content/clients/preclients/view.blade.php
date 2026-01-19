@@ -20,18 +20,16 @@
 
     <div class="container">
         <div class="text-end mb-3">
-            <a href="{{ route('clients.index') }}" class="btn btn-secondary px-4">Go back</a>
-            {{-- <button type="button" class="btn btn-primary px-4">
-                Download PDF
-            </button> --}}
-            <a href="{{ route('client.kyc.pdf', $preclient->id) }}" class="btn btn-primary">
+            <a href="{{ route('preclients.index') }}" class="btn btn-secondary px-4">Go back</a>
+         
+            {{-- <a href="{{ route('preclients.kyc.pdf', $preclient->id) }}" class="btn btn-primary">
                 Download KYC PDF
-            </a>
+            </a> --}}
 
 
         </div>
         <div class="card shadow-sm mb-4">
-            <div class="card-header text-white text-center" style="background-color: #ead3ff;">
+            <div class="card-header text-white text-center" style="background-color: #d3e0ff;">
                 <h5 class="mb-0">Pre-Client Informations</h5>
             </div>
 
@@ -45,7 +43,7 @@
                         <tr>
 
                             <th colspan="4" class="text-center section-heading"
-                                style="background-color: #ede1f8 !important; position: relative;">
+                                style="background-color: #d3e0ff !important; position: relative;">
 
                                 <b>Personal Details</b>
 
@@ -57,13 +55,19 @@
                         </tr>
 
                         <tr>
-                            <th>CLIENT CODE</th>
-                            <td class="value">{{ $preclient->client_code }}</td>
+                            {{-- <th>CLIENT CODE</th>
+                            <td class="value">{{ $preclient->client_code }}</td> --}}
                             <th>Name</th>
-                            <td class="value">{{ $preclient->name }}
-                                <img src="{{ $preclient->attachment_client_photo_url }}" alt="" srcset=""
-                                    width="200" height="200">
+
+                            <td class="value" colspan="6">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <span>{{ $preclient->name }}</span>
+
+                                    <img src="{{ $preclient->attachment_client_photo_url }}" alt="Client Photo"
+                                        width="200" height="200">
+                                </div>
                             </td>
+
                         </tr>
 
                         <tr>
@@ -91,22 +95,7 @@
                             <th>Marital Status</th>
                             <td class="value">{{ ucfirst($preclient->marital_status) }}</td>
                             <th>Nationality</th>
-                            {{-- @php
-                                $nationalities = [
-                                    'ri' => 'Residential Individual',
-                                    'nro' => 'NRO',
-                                    'nre' => 'NRE',
-                                    'pio' => 'OCI / PIO',
-                                    'gch' => 'Green Card Holder',
-                                    'trioc' => 'Tax Resident in Other Country',
-                                    'fn' => 'Foreign National',
-                                    'other' => 'Other',
-                                ];
-                            @endphp
-
-                            <td class="value">
-                                {{ $nationalities[$preclient->nationality] ?? '-' }}
-                            </td> --}}
+                         
                             <td class="value">
                                 {{ strtoupper(config('enum_client.nationality.' . $preclient->nationality) ?? $preclient->nationality) }}
                             </td>
@@ -138,8 +127,8 @@
                             <th>Landline</th>
                             <td class="value">{{ $preclient->landline_no }}</td>
 
-                            <th>Relationship Manager</th>
-                            <td class="value">{{ $preclient->relation_manager_id }}</td>
+                            <th>Remarks</th>
+                            <td class="value">{{ $preclient->remarks }}</td>
                         </tr>
 
 
@@ -169,6 +158,7 @@
                                 </td>
                             @endif
                         </tr>
+                       
                     </table>
                 </div>
 
@@ -180,7 +170,7 @@
 
                         <tr>
                             <th colspan="6" class="text-center section-heading"
-                                style="background-color: #ede1f8 !important;">
+                                style="background-color: #d3e0ff !important;">
                                 <b>Attachments</b>
                             </th>
                         </tr>
@@ -279,12 +269,12 @@
 
                         <tr>
                             <th colspan="6" class="text-center section-heading"
-                                style="background-color: #ede1f8 !important;">
+                                style="background-color: #d3e0ff !important;">
                                 <b>Family Information</b>
                             </th>
                         </tr>
 
-                        @if ($preclient->families->count() > 0)
+                        @if ($preclient->families->count())
                             <tr class="table-secondary">
                                 <th>Name</th>
                                 <th>Gender</th>
@@ -294,27 +284,29 @@
                                 <th>Relation</th>
                             </tr>
 
-                            {{-- @foreach ($preclient->families as $f)
+                            @foreach ($preclient->families as $family)
                                 <tr>
-                                    <td class="value">{{ $f->name ?? '-' }}</td>
-                                    <td class="value">{{ $f->gender ?? '-' }}</td>
+                                    <td class="value">{{ $family->name ?? '-' }}</td>
+                                    <td class="value">{{ ucfirst($family->gender) ?? '-' }}</td>
                                     <td class="value">
-                                        {{ $f->dob ? \Carbon\Carbon::parse($f->dob)->format('d-m-Y') : '-' }}</td>
-                                    <td class="value">{{ $f->live_status ?? '-' }}</td>
-                                    <td class="value">{{ $f->marital_status ?? '-' }}</td>
+                                        {{ $family->dob ? \Carbon\Carbon::parse($family->dob)->format('d-M-Y') : '-' }}
+                                    </td>
+                                    <td class="value">{{ ucfirst($family->live_status) ?? '-' }}</td>
+                                    <td class="value">{{ ucfirst($family->marital_status) ?? '-' }}</td>
                                     <td class="value">
-                                        {{ $f->relation->main_relation . ' - ' . $f->relation->relative_relation }}
+                                        {{ optional($family->relation)->main_relation ?? '-' }}
                                     </td>
                                 </tr>
                             @endforeach
                         @else
                             <tr>
-                                <td colspan="6" class="text-center text-muted">No families found.</td>
+                                <td colspan="6" class="text-center text-muted">No family records found</td>
                             </tr>
-                        @endif --}}
+                        @endif
 
                     </table>
                 </div>
+
 
 
                 <!-- BANK INFO -->
@@ -323,68 +315,79 @@
 
                         <tr>
                             <th colspan="7" class="text-center section-heading"
-                                style="background-color: #ede1f8 !important;">
+                                style="background-color: #d3e0ff !important;">
                                 <b>Bank Information</b>
                             </th>
                         </tr>
 
-                        {{-- @if ($preclient->banks->count() > 0)
+                        @if ($preClientBanks->count())
                             <tr class="table-secondary">
                                 <th>Holder Name</th>
                                 <th>Operation Mode</th>
-                                <th>Bank Name / IFSC</th>
+                                <th>Bank / IFSC</th>
                                 <th>Account No</th>
-                                <th>Branch / Bank Code</th>
+                                <th>Branch</th>
                                 <th>Primary</th>
-                                <th>cheque image</th>
-
+                                <th>Cancelled Cheque</th>
                             </tr>
 
-                            @foreach ($clientBank as $b)
+                            @foreach ($preClientBanks as $bank)
                                 <tr>
                                     <td class="value">
-                                        @if ($b->operation_mode === 'single')
-                                            {{ $b->holder_name_1 ?? '-' }}
-                                        @else
-                                            {{ $b->holder_name_1 ?? '-' }} <br>
-                                            {{ $b->holder_name_2 ?? '-' }} <br>
-                                            {{ $b->holder_name_3 ?? '-' }}
+                                        {{ $bank->holder_name_1 ?? '-' }}
+                                        @if ($bank->holder_name_2)
+                                            <br>{{ $bank->holder_name_2 }}
+                                        @endif
+                                        @if ($bank->holder_name_3)
+                                            <br>{{ $bank->holder_name_3 }}
                                         @endif
                                     </td>
-                                    <td class="value">{{ $b->operation_mode ?? '-' }}</td>
-                                    <td class="value">{{ $b->bank_name ?? '-' }} <br> {{ $b->ifsc_code ?? '-' }}
-                                    <td class="value">{{ $b->account_number ?? '-' }}</td>
-                                    <td class="value">{{ $b->branch_name ?? '-' }} <br> {{ $b->branch_code ?? '-' }}
-                                    <td class="value">{{ $b->is_primary ?? '-' }}</td>
+
+                                    <td class="value">{{ ucfirst($bank->operation_mode) ?? '-' }}</td>
+
                                     <td class="value">
-                                        @if ($b->attachment_cancelled_cheque_url)
-                                            <a href="{{ $b->attachment_cancelled_cheque_url }}" target="_blank"
+                                        {{ $bank->bank_name ?? '-' }} <br>
+                                        <small class="text-muted">{{ $bank->ifsc_code ?? '-' }}</small>
+                                    </td>
+
+                                    <td class="value">{{ $bank->account_number ?? '-' }}</td>
+
+                                    <td class="value">
+                                        {{ $bank->branch_name ?? '-' }} <br>
+                                        <small class="text-muted">{{ $bank->bank_code ?? '-' }}</small>
+                                    </td>
+
+                                    <td class="value">
+                                        {{ $bank->is_primary ? 'Yes' : 'No' }}
+                                    </td>
+
+                                    <td class="value">
+                                        @if ($bank->attachment_cancelled_cheque_url)
+                                            <a href="{{ $bank->attachment_cancelled_cheque_url }}" target="_blank"
                                                 class="text-primary text-decoration-underline">
-                                                Click to view
+                                                View
                                             </a>
                                         @else
                                             <span class="text-muted">Not available</span>
                                         @endif
                                     </td>
-
-
                                 </tr>
                             @endforeach
                         @else
                             <tr>
-                                <td colspan="6" class="text-center text-muted">No bank details found.</td>
+                                <td colspan="7" class="text-center text-muted">No bank details found</td>
                             </tr>
-                        @endif --}}
+                        @endif
 
                     </table>
                 </div>
 
 
+
             </div>
             <div class="p-3 text-end">
-                @if (!$preclient->is_approved)
-                    {{-- show approve button --}}
-                    <form action="{{ route('client.approve', $preclient->id) }}" method="post">
+                {{-- @if (!$preclient->is_approved)
+                    <form action="{{ route('preclients.approve', $preclient->id) }}" method="post">
                         @csrf
                         @method('PUT')
                         <button type="submit" class="btn btn-success px-4">
@@ -392,8 +395,7 @@
                         </button>
                     </form>
                 @else
-                    {{-- hide button --}}
-                @endif
+                @endif --}}
 
 
             </div>
@@ -401,5 +403,5 @@
 
     </div>
 @endsection
-@push('scripts')
-@endpush
+{{-- @push('scripts')
+@endpush --}}
