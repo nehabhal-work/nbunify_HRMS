@@ -73,6 +73,7 @@ class PreClientController extends Controller
 
     public function store(PreClientRequest $request)
     {
+        return $request;
         try {
             $preclient = null;
             DB::transaction(function () use ($request, &$preclient) {
