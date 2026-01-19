@@ -28,7 +28,7 @@ class PreClientController extends Controller
     }
 
 
-  
+
 
 
     public function create()
@@ -46,7 +46,7 @@ class PreClientController extends Controller
         $preclient = $this->preClientService->find($id);
         $preclient->load(['banks', 'families']);
         $preclient = $this->addFileUrls($preclient);
-// return $preclient;
+        // return $preclient;
         $preClientBanks = PreClientBank::where('preclient_id', $id)->get();
         $preClientBanks = $preClientBanks->map(function ($bank) {
             return $this->preClientBankService->addFileUrls($bank);
@@ -55,9 +55,10 @@ class PreClientController extends Controller
         return view('content.clients.preclients.view', compact('preclient', 'preClientBanks'));
     }
 
-    public function store(PreClientRequest $request)
+    public function store(Request $request)
+    // public function store(PreClientRequest $request)
     {
-        return $request;
+        // return $request;
         try {
             $preclient = null;
             DB::transaction(function () use ($request, &$preclient) {
