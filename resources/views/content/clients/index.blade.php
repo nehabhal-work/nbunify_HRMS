@@ -28,15 +28,16 @@
             <span class="text-muted fw-light">Master /</span> <a href="{{ route('clients.create') }}">Client</a>
         </h4>
     </div>
-    @if (Auth::user()->email == 'admin@els.com')
-        <form action="{{ route('send.festival.mail') }}" method="POST">
-            @csrf
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    @if(Auth::user()->email=='admin@els.com')
+        <form action="{{ route('send.festival.mail') }}" method="POST" class="mb-0">@csrf
             <input type="hidden" name="id">
-            <button type="submit" class="btn btn-success mb-3">
-                Send Festival Mail
-            </button>
+            <button type="submit" class="btn btn-success">Send Festival Mail</button>
         </form>
     @endif
+    <a class="btn btn-primary" href="{{ route('client.form.download') }}">Download Client Form PDF</a>
+</div>
+
     <div class="row">
         <!-- TABLE SECTION -->
         <div class="col-12">
@@ -44,7 +45,6 @@
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Client List</h5>
                     <a class="btn btn-primary" href="{{ route('clients.create') }}" role="button">Add New</a>
-                    <a class="btn btn-primary" href="{{ route('client.form.download') }}" role="button">Download Client Form PDF</a>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive text-nowrap">
