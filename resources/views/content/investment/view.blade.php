@@ -373,6 +373,60 @@
                 </table>
 
 
+                <b class="card-title">Payment Received Schedule</b>
+
+                <table id="payoutTable1" class="table table-bordered nowrap w-100 mb-5">
+
+                    <thead class="table-light">
+                        <tr>
+                            <th hidden>#</th>
+                            <th>Received Date</th>
+                            <th class="text-end">Scheduled (₹)</th>
+                            <th>UTR no.</th>
+                            <th>From Bank</th>
+                            <th>To Client Bank</th>
+                            <th>Status</th>
+                            <th>Remarks</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        {{-- ===================== --}}
+                        {{-- CREDIT / RECEIVED INVESTMENT ENTRY --}}
+                        {{-- ===================== --}}
+                        @foreach ($investment->investmentInputBank ?? [] as $loopIndex => $b)
+                            <tr class="table-light">
+                                <td class="d-none">{{ $loopIndex + 1 }}</td>
+                                <td> {{ \Carbon\Carbon::parse($b->client_instrument_date)->format('d M Y') }} </td>
+                                <td class="text-end fw-semibold text-success"> ₹ {{ number_format($b->amount, 2) }}
+                                </td>
+                                <td> {{ $b->client_reference_no ?? '—' }} </td>
+                                <td>from bank accoun no.</td>
+                                <td>to bank accoun no.</td>
+
+                                <td>
+                                    <span class="badge bg-info">Credit</span>
+                                </td>
+
+                                <td>
+                                    {{ $b->instrument_type }}
+                                </td>
+
+                                {{-- <td class="text-center">—</td> --}}
+                            </tr>
+                        @endforeach
+
+
+                    </tbody>
+
+
+
+
+
+                </table>
+
+
+
                 <b class="card-title">Payment Schedule</b>
                 <div class="table-responsive">
 
