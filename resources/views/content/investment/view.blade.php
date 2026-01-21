@@ -451,55 +451,6 @@
                         <tbody>
 
                             {{-- ===================== --}}
-                            {{-- CREDIT / INVESTMENT ENTRY --}}
-                            {{-- ===================== --}}
-                            {{-- @forelse($investment->investmentInputBank ?? [] as $loopIndex => $b) --}}
-                            @foreach ($investment->investmentInputBank ?? [] as $loopIndex => $b)
-                                <tr class="table-light">
-                                    <td class="d-none">
-                                        {{ $loopIndex + 1 }}
-                                    </td>
-                                    {{-- <td>{{}}</td> --}}
-                                    <td>
-                                        {{ \Carbon\Carbon::parse($b->client_instrument_date)->format('d M Y') }}
-                                    </td>
-
-                                    <td class="text-end fw-semibold text-success">
-                                        ₹ {{ number_format($b->amount, 2) }}
-                                    </td>
-
-                                    <td class="">—</td>
-                                    <td>—</td>
-                                    <td>—</td>
-
-                                    <td>
-                                        {{ $b->client_reference_no ?? '—' }}
-                                    </td>
-
-                                    <td>—</td>
-                                    <td>—</td>
-
-                                    <td>
-                                        <span class="badge bg-info">Credit</span>
-                                    </td>
-
-                                    <td>
-                                        {{ $b->instrument_type }}
-                                    </td>
-
-                                    {{-- <td class="text-center">—</td> --}}
-                                </tr>
-                            @endforeach
-                            {{-- @empty
-                                <tr>
-                                    <td colspan="11" class="text-center text-muted">
-                                        No investment credit records found
-                                    </td>
-                                </tr>
-                            @endforelse --}}
-
-
-                            {{-- ===================== --}}
                             {{-- PAYOUT SCHEDULES --}}
                             {{-- ===================== --}}
                             @foreach ($paySchdeule->payoutSchedules as $index => $schedule)
