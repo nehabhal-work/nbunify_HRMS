@@ -381,7 +381,7 @@
                         <tr>
                             <th hidden>#</th>
                             <th>Received Date</th>
-                            <th class="text-end">Scheduled (₹)</th>
+                            <th class="text-end">received amount (₹)</th>
                             <th>UTR no.</th>
                             <th>From Bank</th>
                             <th>To Client Bank</th>
