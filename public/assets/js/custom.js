@@ -834,3 +834,14 @@ function checkPanExists(pan) {
         }
     });
 }
+
+// --------------Listing scrollable-------------------
+    document.querySelectorAll('.table-responsive').forEach(wrapper => {
+        wrapper.addEventListener('wheel', function (e) {
+            if (e.deltaY !== 0) {
+                e.preventDefault();
+                this.scrollLeft += e.deltaY;
+            }
+        }, { passive: false });
+    });
+// --------------ENDListing scrollable-------------------

@@ -36,3 +36,7 @@ td {
 .email {
     text-transform: lowercase;
 }
+
+.table-responsive {
+    scroll-behavior: auto;
+}
