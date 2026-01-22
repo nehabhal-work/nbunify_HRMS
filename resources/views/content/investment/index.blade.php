@@ -112,7 +112,7 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive text-nowrap">
-                        <table class="table srkdataTable">
+                        <table class="table table-sm srkdataTable">
                             <thead class="table-light">
                                 <tr>
                                     <th hidden>#</th>
@@ -120,10 +120,10 @@
                                     <th>Investment Date</th>
                                     <th>Client Name</th>
                                     <th>Scheme Name</th>
-                                    <th>Investment Amount</th>
-                                    <th>Tenure</th>
-                                    <th>Frequency</th>
-                                    <th>ROI (%)</th>
+                                    <th>Investment Amt /ROI%</th>
+                                    <th>Tenure /Frequency</th>
+                                    {{-- <th>Frequency</th> --}}
+                                    {{-- <th>ROI (%)</th> --}}
                                     <th>Standing Instruction</th>
                                     <th>Status</th>
 
@@ -149,18 +149,18 @@
                                             <b>
                                                 <a href="{{ route('investment.els.show', $d->id) }}"
                                                     class="text-decoration-none">
-                                                    {{ ucfirst($d->firstClient->name ?? '-') }}
+                                                  <b class="text-black">  {{ ucfirst($d->firstClient->name ?? '-') }}</b>
                                                 </a>
                                             </b>
                                         </td>
                                         <td>{{ $d->scheme->scheme_name ?? '-' }}</td>
-                                        <td>₹{{ number_format($d->investment_amount, 2) }}</td>
-                                        <td>{{ $d->tenure_count }} {{ ucfirst($d->tenure_type) }}</td>
+                                        <td>₹{{ number_format($d->investment_amount, 2) }} <br><b> {{ ($d->roi_percent ?? 0) . ' + ' . ($d->additional_roi_percent ?? 0) }}%</b></td>
+                                        <td>{{ $d->tenure_count }} {{ ucfirst($d->tenure_type) }} <br> <b> {{ ucfirst($d->frequency) }}</b> </td>
 
 
-                                        <td> {{ ucfirst($d->frequency) }}</td> <!-- Frequency -->
-                                        <td>{{ $d->roi_percent . '+' . $d->additional_roi_percent }}%</td><!-- ROI -->
-                                        <td>show after approval</td>
+                                        {{-- <td> {{ ucfirst($d->frequency) }}</td> <!-- Frequency --> --}}
+                                        {{-- <td>{{ $d->roi_percent . '+' . $d->additional_roi_percent }}%</td><!-- ROI --> --}}
+                                        <td>pending</td>
                                         <td> {{ $d->staus . '' . $d->action_status }}</td> <!-- Status -->
 
                                         <td
@@ -221,6 +221,7 @@
                                                         href="{{ route('investment.els.show', $d->id) }}">
                                                         <i class="bx bx-show me-1"></i> View
                                                     </a>
+
                                                     <a class="dropdown-item"
                                                         href="{{ route('investment.si.index', ['id' => $d->id]) }}">
                                                          <i class="bx bx-check-circle me-1"></i> Standing Instruction
@@ -274,6 +275,7 @@
 
 
     </div>
+
 
 
 @endsection
