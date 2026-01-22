@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Clients;
 
+use App\Traits\AuthorizesPermissions;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ClientRequest;
 use App\Models\Client;
@@ -19,6 +20,7 @@ use Illuminate\Support\Facades\Mail;
 
 class ClientController extends Controller
 {
+    use AuthorizesPermissions;
     public function __construct(
         private ClientService $clientService,
         private ClientBankService $clientBankService,
@@ -159,7 +161,7 @@ class ClientController extends Controller
 
     public function approve($id)
     {
-        // return 'approve';
+        $this->authorizePermission('clients.approve');
         $this->clientService->approve($id);
         return redirect()->route('clients.index')->with('success', 'Client approved successfully');
     }
