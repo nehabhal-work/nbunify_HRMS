@@ -31,7 +31,27 @@
                 </ul>
             </div>
         </div>
+        <style>
+            /* .navbar .dropdown-menu {
+                overflow: visible !important;
+            } */
 
+            /* .submenu {
+                display: none;
+                position: absolute;
+                top: 0;
+                left: 100%;
+                margin-left: 4px;
+                z-index: 1050;
+            } */
+
+           /* .submenu .dropdown-item {
+    font-size: 13px;
+    padding-left: 2.2rem;
+    opacity: 0.9;
+} */
+
+        </style>
         @php
             $name = Auth::user()->name ?? '';
             $words = explode(' ', $name);
@@ -82,12 +102,25 @@
                             <span class="align-middle">My Profile</span>
                         </a>
                     </li>
-                    <li>
-                        <a class="dropdown-item" href="#">
-                            <i class="bx bx-cog me-2"></i>
-                            <span class="align-middle">Settings</span>
+                    <li class="position-relative">
+                        <a class="dropdown-item d-flex justify-content-between align-items-center" href="#"
+                            data-bs-toggle="submenu">
+                            <span>
+                                <i class="bx bx-cog me-2"></i> Settings
+                            </span>
+                            <i class="bx bx-chevron-right"></i>
                         </a>
+
+                        <ul class="dropdown-menu submenu">
+                            <li>
+                                <a class="dropdown-item" href="#">
+                                    <i class="bx bx-user me-2"></i> User
+                                </a>
+                            </li>
+                        </ul>
                     </li>
+
+
                     <li>
                         <a class="dropdown-item" href="#">
                             <span class="d-flex align-items-center align-middle">
@@ -113,7 +146,30 @@
                     </li>
                 </ul>
             </li>
-            <!--/ User -->
+
+
         </ul>
+
+
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('[data-bs-toggle="submenu"]').forEach(el => {
+                el.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    const submenu = this.nextElementSibling;
+
+                    // close others
+                    document.querySelectorAll('.submenu').forEach(sm => {
+                        if (sm !== submenu) sm.style.display = 'none';
+                    });
+
+                    submenu.style.display =
+                        submenu.style.display === 'block' ? 'none' : 'block';
+                });
+            });
+        });
+    </script>
 </nav>
