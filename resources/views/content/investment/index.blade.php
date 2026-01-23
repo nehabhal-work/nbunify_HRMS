@@ -104,7 +104,7 @@
                     </div>
                 </div>
             </form>
-{{-- {{ $investments }} --}}
+            {{-- {{ $investments }} --}}
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5 class="mb-0">Investment List</h5>
@@ -149,13 +149,16 @@
                                             <b>
                                                 <a href="{{ route('investment.els.show', $d->id) }}"
                                                     class="text-decoration-none">
-                                                  <b class="text-black">  {{ ucfirst($d->firstClient->name ?? '-') }}</b>
+                                                    <b class="text-black"> {{ ucfirst($d->firstClient->name ?? '-') }}</b>
                                                 </a>
                                             </b>
                                         </td>
                                         <td>{{ $d->scheme->scheme_name ?? '-' }}</td>
-                                        <td>₹{{ number_format($d->investment_amount, 2) }} <br><b> {{ ($d->roi_percent ?? 0) . ' + ' . ($d->additional_roi_percent ?? 0) }}%</b></td>
-                                        <td>{{ $d->tenure_count }} {{ ucfirst($d->tenure_type) }} <br> <b> {{ ucfirst($d->frequency) }}</b> </td>
+                                        <td>₹{{ number_format($d->investment_amount, 2) }} <br><b>
+                                                {{ ($d->roi_percent ?? 0) . ' + ' . ($d->additional_roi_percent ?? 0) }}%</b>
+                                        </td>
+                                        <td>{{ $d->tenure_count }} {{ ucfirst($d->tenure_type) }} <br> <b>
+                                                {{ ucfirst($d->frequency) }}</b> </td>
 
 
                                         {{-- <td> {{ ucfirst($d->frequency) }}</td> <!-- Frequency --> --}}
@@ -222,13 +225,16 @@
                                                         <i class="bx bx-show me-1"></i> View
                                                     </a>
 
-                                                    <a class="dropdown-item"
-                                                        href="{{ route('investment.si.index', ['id' => $d->id]) }}">
-                                                         <i class="bx bx-check-circle me-1"></i> Standing Instruction
-                                                        {{ $d->id }}
-                                                    </a>
+                                                    @if (!empty($d->approved3By))
+                                                        <a class="dropdown-item"
+                                                            href="{{ route('investment.si.index', ['id' => $d->id]) }}">
+                                                            <i class="bx bx-check-circle me-1"></i>
+                                                            Standing Instruction {{ $d->id }}
+                                                        </a>
+                                                    @endif
 
-                                                
+
+
 
 
                                                     <a class="dropdown-item"
