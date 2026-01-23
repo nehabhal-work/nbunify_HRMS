@@ -37,6 +37,7 @@ class Investment extends Model
         'paid_interest_amount',
         'rounding_off_amount',
         'status',
+        'remarks',
         'action_status',
         'exit_load_percent',
         'lock_in_period',

@@ -70,6 +70,7 @@ class InvestmentService
             'paid_interest_amount' => $data['paid_interest_amount'],
             'rounding_off_amount' => $data['rounding_off_amount'],
             'status' => $data['status'] ?? 'open',
+            'remarks' => $data['remarks'] ?? null,
             'action_status' => $data['action_status'] ?? 'new',
             'exit_load_percent' => $data['exit_load_percent'] ?? 0,
             'lock_in_period' => $data['lock_in_period'] ?? 0,
