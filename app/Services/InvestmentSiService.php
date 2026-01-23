@@ -28,25 +28,14 @@ class InvestmentSiService
             'siClientBank',
             'siCompanyBank',
             'createdBy',
-            'approvedBy',
-            'approved2By',
-            'approved3By'
+            'approvedBy'
         ])->findOrFail($id);
 
-        // Set is_approved based on user level and approval status (same logic as Client)
+        // Set is_approved based on user level and approval status
         if (auth()->id() == $investmentSi->created_by) {
             $investmentSi->is_approved = true;
         } else {
-            $user = User::find(auth()->id());
-            if ($user->level == 1) {
-                $investmentSi->is_approved = $investmentSi->approved_by != null ? true : false;
-            } else if ($user->level == 2 && $investmentSi->approved_by != null) {
-                $investmentSi->is_approved = $investmentSi->approved2_by != null ? true : false;
-            } else if ($user->level == 3 && $investmentSi->approved2_by != null) {
-                $investmentSi->is_approved = $investmentSi->approved3_by != null ? true : false;
-            } else {
-                $investmentSi->is_approved = true;
-            }
+            $investmentSi->is_approved = $investmentSi->approved_by != null;
         }
         return $investmentSi;
     }
@@ -61,9 +50,7 @@ class InvestmentSiService
             'siClientBank',
             'siCompanyBank',
             'createdBy',
-            'approvedBy',
-            'approved2By',
-            'approved3By'
+            'approvedBy'
         ])->findOrFail($id);
     }
 
