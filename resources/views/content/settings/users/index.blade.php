@@ -65,7 +65,7 @@
 
                             <!-- Password -->
                             <div class="col-md-3 mb-3">
-                                <label class="form-label">Password</label>
+                                <label class="form-label">Password <span class="text-danger">*</span></label>
 
                                 <div class="input-group">
                                     <input type="password" name="password" id="password"
