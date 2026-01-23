@@ -371,8 +371,8 @@
                             <th>Notes Image</th>
                             <th>Created By</th>
                             <th>Approved By 1</th>
-                            <th>Approved By 2</th>
-                            <th>Approved By 3</th>
+                            {{-- <th>Approved By 2</th>
+                            <th>Approved By 3</th> --}}
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -431,7 +431,7 @@
                                     @endif
                                 </td>
 
-                                <td
+                                {{-- <td
                                     class="{{ !empty($d->approved2By) ? 'table-success fw-semibold rounded px-2 py-1' : '' }}">
                                     @if (!empty($d->approved2By))
                                         {{ $d->approved2By->name }} <br>{{ $d->approved2_on ?? '-' }}
@@ -447,7 +447,7 @@
                                     @else
                                         -
                                     @endif
-                                </td>
+                                </td> --}}
 
 
                                 <td>
