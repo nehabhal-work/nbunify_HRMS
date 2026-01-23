@@ -69,7 +69,7 @@
 
                                 <div class="input-group">
                                     <input type="password" name="password" id="password"
-                                        class="form-control @error('password') is-invalid @enderror">
+                                        class="form-control @error('password') is-invalid @enderror text-lowercase">
 
                                     <span class="input-group-text" onclick="togglePassword()" style="cursor:pointer">
                                         <i class="bx bx-show" id="toggleIcon"></i>
