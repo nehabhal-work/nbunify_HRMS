@@ -51,10 +51,14 @@ class InvestmentSiController extends Controller
      */
     public function store(InvestmentSiRequest $request)
     {
-        $data = $request->validated();
-        $data['created_by'] = auth()->id();
-        $this->investmentSiService->create($data);
-        return redirect()->route('investment.si.index', ['id' => $request->investment_id])->with('success', 'Standing Instruction created successfully.');
+        try {
+            $data = $request->validated();
+            $data['created_by'] = auth()->id();
+            $this->investmentSiService->create($data);
+            return redirect()->route('investment.si.index', ['id' => $request->investment_id])->with('success', 'Standing Instruction created successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('error', $e->getMessage());
+        }
     }
 
     /**

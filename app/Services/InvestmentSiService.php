@@ -59,6 +59,14 @@ class InvestmentSiService
      */
     public function create(array $data): InvestmentSi
     {
+        $existingActiveSi = InvestmentSi::where('investment_id','=', $data['investment_id'])
+            ->where('status', 'active')
+            ->exists();
+
+        if ($existingActiveSi) {
+            throw new \Exception('An active standing instruction already exists for this investment.');
+        }
+
         $investmentSi = InvestmentSi::create($data);
 
         // Handle file uploads after creating the record to get the ID
