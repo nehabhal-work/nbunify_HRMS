@@ -836,12 +836,20 @@ function checkPanExists(pan) {
 }
 
 // --------------Listing scrollable-------------------
-    document.querySelectorAll('.table-responsive').forEach(wrapper => {
-        wrapper.addEventListener('wheel', function (e) {
-            if (e.deltaY !== 0) {
-                e.preventDefault();
-                this.scrollLeft += e.deltaY;
-            }
-        }, { passive: false });
-    });
+
+document.querySelectorAll('.table-responsive').forEach(wrapper => {
+    wrapper.addEventListener('wheel', function (e) {
+
+        const canScrollHorizontally = this.scrollWidth > this.clientWidth;
+
+        // only convert vertical scroll → horizontal IF horizontal scroll exists
+        if (canScrollHorizontally && e.deltaY !== 0) {
+            e.preventDefault();
+            this.scrollLeft += e.deltaY;
+        }
+
+        // otherwise, let the page scroll normally (top ↕ bottom)
+    }, { passive: false });
+});
+
 // --------------ENDListing scrollable-------------------

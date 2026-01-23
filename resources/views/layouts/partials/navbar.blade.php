@@ -32,25 +32,24 @@
             </div>
         </div>
         <style>
-            /* .navbar .dropdown-menu {
+            .navbar .dropdown-menu {
                 overflow: visible !important;
-            } */
+            }
 
-            /* .submenu {
+            .submenu {
                 display: none;
                 position: absolute;
                 top: 0;
-                left: 100%;
+                right: 100%;
                 margin-left: 4px;
                 z-index: 1050;
-            } */
+            }
 
-           /* .submenu .dropdown-item {
-    font-size: 13px;
-    padding-left: 2.2rem;
-    opacity: 0.9;
-} */
-
+            .submenu .dropdown-item {
+                font-size: 13px;
+                padding-left: 2.2rem;
+                opacity: 0.9;
+            }
         </style>
         @php
             $name = Auth::user()->name ?? '';
@@ -113,8 +112,15 @@
 
                         <ul class="dropdown-menu submenu">
                             <li>
-                                <a class="dropdown-item" href="#">
-                                    <i class="bx bx-user me-2"></i> User
+                                <a class="dropdown-item" href="{{ route('settings.users.index') }}">
+                                    <i class="bx bx-group me-2"></i> Users
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{{ route('settings.roles-permissions') }}">
+                                    <i class="bx bx-key me-2"></i> Roles & Permissions
+
+
                                 </a>
                             </li>
                         </ul>
