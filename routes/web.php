@@ -88,7 +88,8 @@ Route::middleware(['auth', 'verified'])->prefix('accounts')->name('accounts.')->
 Route::middleware(['auth', 'verified'])->prefix('investment')->name('investment.')->group(function () {
     Route::resource('scheme', SchemeController::class)->names('scheme')->middleware('permission:schemes.view,schemes.create,schemes.edit,schemes.delete');
     Route::put('scheme-approve/{id}', [SchemeController::class, 'approve'])->name('scheme.approve')->middleware('permission:schemes.approve');
-    Route::put('investment-approve/{id}', [InvestmentController::class, 'approve'])->name('approve')->middleware('permission:investments.approve,investment-si.approve');
+    Route::put('investment-approve/{id}', [InvestmentController::class, 'approve'])->name('approve')->middleware('permission:investments.approve');
+    Route::put('investment-approve-payouts/{id}', [InvestmentController::class, 'approvePayouts'])->name('approve.payouts')->middleware('permission:investment-si.approve');
 
     Route::resource('els', InvestmentController::class)->names('els')->middleware('permission:investments.view,investments.create,investments.edit,investments.delete');
     Route::resource('si', InvestmentSiController::class)->names('si')->middleware('permission:investment-si.view,investment-si.create,investment-si.edit,investment-si.delete');

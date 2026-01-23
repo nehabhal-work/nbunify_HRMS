@@ -505,6 +505,20 @@ class InvestmentService
         return $data;
     }
 
+    public function approvePayouts($id) {
+        $investment = Investment::findOrFail($id);
+
+        if($investment->approved3_by == null) {
+            throw new \Exception("Investment must be approved level 3 before approving payouts.");
+        }
+        if($idnvestment->approved4_by != null) {
+            throw new \Exception("Investment payouts are already approved.");
+        }
+        $investment->approved4_by = auth()->id();
+        $investment->approved4_on = now();
+        $investment->save();
+    }
+
     public function approve($id)
     {
         $investment = Investment::findOrFail($id);
@@ -521,10 +535,6 @@ class InvestmentService
             } else if ($user->level == 3 && $investment->approved3_by == null) {
                 $investment->approved3_by = auth()->id();
                 $investment->approved3_on = now();
-                $investment->save();
-            } else if ($investment->approved3_by != null && $investment->approved4_by == null) {
-                $investment->approved4_by = auth()->id();
-                $investment->approved4_on = now();
                 $investment->save();
             } else {
                 return abort(401, 'User level not found');

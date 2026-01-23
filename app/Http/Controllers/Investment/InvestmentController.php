@@ -39,7 +39,7 @@ class InvestmentController extends Controller
 
         $investments = $this->investmentService->getAllWithFilters($filters);
         $schemes = $this->schemeService->getAll();
-        
+
         return view('content.investment.index', compact('investments', 'schemes'));
     }
 
@@ -174,8 +174,23 @@ class InvestmentController extends Controller
 
     public function approve(string $id)
     {
-        $this->investmentService->approve($id);
-        return redirect()->back()->with('success', 'Investment approved successfully.');
+        try {
+            $this->investmentService->approve($id);
+            return redirect()->back()->with('success', 'Investment approved successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Error approving investment: ' . $e->getMessage());
+        }
+
+    }
+
+    public function approvePayouts(string $id)
+    {
+        try {
+            $this->investmentService->approvePayouts($id);
+            return redirect()->back()->with('success', 'Investment schedule approved successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Error approving investment: ' . $e->getMessage());
+        }
     }
 
     public function welcomeLetter($id)
