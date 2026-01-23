@@ -281,19 +281,16 @@ class InvestmentService
         } else {
             $user = User::find(auth()->id());
             if ($user->level == 1) {
-                $investment->is_approved = $investment->approved_by != null ? true : false;
-            } else if ($user->level == 2 && $investment->approved_by != null) {
-                $investment->is_approved = $investment->approved2_by != null ? true : false;
-            } else if ($user->level == 3 && $investment->approved2_by != null) {
-                $investment->is_approved = $investment->approved3_by != null ? true : false;
-            } else if ($investment->approved3_by != null) {
-                // Check if investment has at least 1 approved investment SI
-                $hasApprovedSi = $investment->standingInstructions()->whereNotNull('approved_by')->exists();
-                if($hasApprovedSi) {
-                    $investment->is_approved = $investment->approved4_by != null ? true : false;
+                if ($investment->approved_by == null) {
+                    $investment->is_approved = false;
                 } else {
-                    $investment->is_approved = true;
+                    $hasApprovedSi = $investment->standingInstructions()->whereNotNull('approved_by')->exists();
+                    $investment->is_approved = !$hasApprovedSi || $investment->approved4_by != null;
                 }
+            } else if ($user->level == 2 && $investment->approved_by != null) {
+                $investment->is_approved = $investment->approved2_by != null;
+            } else if ($user->level == 3 && $investment->approved2_by != null) {
+                $investment->is_approved = $investment->approved3_by != null;
             } else {
                 $investment->is_approved = true;
             }
