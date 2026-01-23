@@ -81,6 +81,7 @@ class InvestmentRequest extends FormRequest
 
             // Maker checker fields
             'status' => 'nullable|string|in:open,closed',
+            'remarks' => 'nullable|string|max:1000',
             'action_status' => 'nullable|string|in:new,renewed,matured,merged,claimed,withdraw',
             'exit_load_percent' => 'nullable|numeric|min:0|max:100',
             'lock_in_period' => 'nullable|integer|min:0',
