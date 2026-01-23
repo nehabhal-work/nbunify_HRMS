@@ -14,13 +14,17 @@ class UserManagementController extends Controller
     public function index()
     {
         $users = User::with('roles')->get();
+              $roles = Role::where('is_active', true)->get();
+        // return $users;
         // VIEW: Create this blade file at resources/views/content/settings/users/index.blade.php
-        return view('content.settings.users.index', compact('users'));
+        return view('content.settings.users.index', compact('users', 'roles'));
     }
 
     public function create()
     {
+       
         $roles = Role::where('is_active', true)->get();
+        // return $roles;
         // VIEW: Create this blade file at resources/views/content/settings/users/create.blade.php
         return view('content.settings.users.create', compact('roles'));
     }
@@ -32,7 +36,7 @@ class UserManagementController extends Controller
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:8',
             'level' => 'required|integer',
-            'role_ids' => 'required|array',
+            'role_ids' => 'required|string',
             'role_ids.*' => 'exists:roles,id'
         ]);
 
@@ -53,6 +57,7 @@ class UserManagementController extends Controller
     {
         $user = User::with('roles.permissions')->findOrFail($id);
         $permissions = $user->getAllPermissions();
+        // return $user;
         // VIEW: Create this blade file at resources/views/content/settings/users/view.blade.php
         return view('content.settings.users.view', compact('user', 'permissions'));
     }
@@ -74,7 +79,7 @@ class UserManagementController extends Controller
             'email' => 'required|email|unique:users,email,' . $id,
             'password' => 'nullable|string|min:8',
             'level' => 'required|integer',
-            'role_ids' => 'required|array',
+            'role_ids' => 'required|string',
             'role_ids.*' => 'exists:roles,id'
         ]);
 
@@ -97,7 +102,7 @@ class UserManagementController extends Controller
     public function destroy(string $id)
     {
         $user = User::findOrFail($id);
-        
+
         if ($user->id === auth()->id()) {
             return redirect()->back()->with('error', 'Cannot delete your own account');
         }

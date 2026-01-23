@@ -12,8 +12,8 @@ class RolePermissionViewController extends Controller
     {
         $roles = Role::with('permissions')->where('is_active', true)->get();
         $permissionsByModule = Permission::all()->groupBy('module');
-        
+        // return $permissionsByModule;
         // VIEW: Create this blade file at resources/views/content/settings/roles-permissions/index.blade.php
-        return view('content.settings.roles-permissions.index', compact('roles', 'permissionsByModule'));
+        return view('content.settings.users.role-permissions.index', compact('roles', 'permissionsByModule'));
     }
 }

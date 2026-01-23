@@ -1,28 +1,30 @@
 <?php
 
-use App\Http\Controllers\Accounts\ExpensesController;
-use App\Http\Controllers\Accounts\LedgerController;
-use App\Http\Controllers\Accounts\PurchaseOrderController;
-use App\Http\Controllers\Accounts\PurchaseController;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PreClientController;
 use App\Http\Controllers\Accounts\SaleController;
-use App\Http\Controllers\Accounts\VendorsController;
-use App\Http\Controllers\Masters\DepartmentController;
-use App\Http\Controllers\Masters\DesignationController;
-use App\Http\Controllers\Masters\EmployeeController;
 use App\Http\Controllers\Clients\ClientController;
-use App\Http\Controllers\Clients\ClientFamilyController;
+use App\Http\Controllers\Masters\BranchController;
+use App\Http\Controllers\Accounts\LedgerController;
+use App\Http\Controllers\Masters\CompanyController;
+use App\Http\Controllers\Accounts\VendorsController;
+use App\Http\Controllers\Masters\EmployeeController;
+use App\Http\Controllers\Accounts\ExpensesController;
+use App\Http\Controllers\Accounts\PurchaseController;
+use App\Http\Controllers\Investment\SchemeController;
 use App\Http\Controllers\Clients\ClientBankController;
 use App\Http\Controllers\Clients\ClientBDayController;
-use App\Http\Controllers\Investment\InvestmentController;
-use App\Http\Controllers\Investment\SchemeController;
-use App\Http\Controllers\Masters\SubDepartmentController;
-use App\Http\Controllers\Masters\SubDesignationController;
-use App\Http\Controllers\PreClientController;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Masters\CompanyController;
+use App\Http\Controllers\Masters\DepartmentController;
 use App\Http\Controllers\Masters\HeadOfficeController;
-use App\Http\Controllers\Masters\BranchController;
+use App\Http\Controllers\Masters\DesignationController;
+use App\Http\Controllers\Clients\ClientFamilyController;
+use App\Http\Controllers\Investment\InvestmentController;
+use App\Http\Controllers\Masters\SubDepartmentController;
+use App\Http\Controllers\Accounts\PurchaseOrderController;
+use App\Http\Controllers\Masters\SubDesignationController;
 use App\Http\Controllers\Investment\InvestmentSiController;
+use App\Http\Controllers\Settings\UserManagementController;
+use App\Http\Controllers\Settings\RolePermissionViewController;
 
 // MERGED
 Route::get('/', function () {
@@ -50,6 +52,8 @@ Route::middleware(['auth', 'verified'])->prefix('master')->name('master.')->grou
     Route::get('employees-letter-pdf/{type}/{id}', [EmployeeController::class, 'hrLetterPdf'])->name('employees.hr-letter.pdf')->middleware('permission:employees.view');
     Route::get('employees-letter-email/{type}/{id}', [EmployeeController::class, 'hrLetterEmail'])->name('employees.hr-letter.email')->middleware('permission:employees.view');
 });
+Route::resource('user-management', UserManagementController::class);
+Route::resource('role-permission', RolePermissionViewController::class);
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('clients', ClientController::class)->names('clients')->middleware('permission:clients.view,clients.create,clients.edit,clients.delete');
