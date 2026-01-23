@@ -51,6 +51,7 @@ class Investment extends Model
         'approved3_on',
         'approved4_by',
         'approved4_on',
+        'welcome_letter_sent_at',
     ];
 
     protected $casts = [
@@ -71,6 +72,7 @@ class Investment extends Model
         'approved2_on' => 'datetime:d-m-Y h:i',
         'approved3_on' => 'datetime:d-m-Y h:i',
         'approved4_on' => 'datetime:d-m-Y h:i',
+        'welcome_letter_sent_at' => 'datetime:d-m-Y h:i',
     ];
 
     public function firstClient(): BelongsTo
