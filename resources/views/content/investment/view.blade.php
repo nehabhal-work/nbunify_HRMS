@@ -425,127 +425,132 @@
 
                 </table>
 
+                @if ($investment->has_approved_si === true)
 
 
-                <b class="card-title">Payment Schedule</b>
-                <div class="table-responsive">
+                    <b class="card-title">Payment Schedule</b>
+                    <div class="table-responsive">
 
-                    {{-- <table class="table table-bordered "> --}}
-                    <table id="payoutTable" class="table table-bordered nowrap w-100">
+                        {{-- <table class="table table-bordered "> --}}
+                        <table id="payoutTable" class="table table-bordered nowrap w-100">
 
-                        <thead class="table-light">
-                            <tr>
-                                <th hidden>#</th>
-                                <th>Payout Date</th>
-                                <th class="text-end">Scheduled (₹)</th>
-                                <th class="text-end">Actual Paid (₹)</th>
-                                <th>Paid Date</th>
-                                <th>UTR no.</th>
-                                <th>From Bank</th>
-                                <th>To Client Bank</th>
-                                <th>Status</th>
-                                <th>Remarks</th>
-                                <th class="text-center">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-                            {{-- ===================== --}}
-                            {{-- PAYOUT SCHEDULES --}}
-                            {{-- ===================== --}}
-                            @foreach ($paySchdeule->payoutSchedules as $index => $schedule)
-                                {{-- <h1>{{ $schedule }}</h1> --}}
-                                <tr
-                                    class="{{ $schedule->sch_payout_amount == $investment->investment_amount ? 'table-info' : '' }}">
-
-                                    <td class="d-none">
-                                        {{ $index + 1 }}
-                                    </td>
-
-                                    <td>
-                                        {{ \Carbon\Carbon::parse($schedule->sch_payout_date)->format('d M Y') }}
-                                    </td>
-
-                                    <td class="text-end fw-semibold">
-                                        ₹ {{ number_format($schedule->sch_payout_amount, 2) }}
-                                    </td>
-
-                                    <td class="text-end">
-                                        {{ $schedule->actual_payout_amount ? '₹ ' . number_format($schedule->actual_payout_amount, 2) : '—' }}
-                                    </td>
-
-                                    <td>
-                                        {{ $schedule->actual_payout_date ? \Carbon\Carbon::parse($schedule->actual_payout_date)->format('d M Y H:i') : '—' }}
-                                    </td>
-
-                                    <td>
-                                        {{ $schedule->utr_no ?? '—' }}
-                                    </td>
-
-                                    <td>
-                                        {{ $schedule->fromCompanyBank->bank_name ?? '-' }}<br>
-                                        <small class="text-muted">
-                                            {{ $schedule->fromCompanyBank->account_number ?? '' }}
-                                        </small>
-                                    </td>
-
-                                    <td>
-                                        {{ $schedule->toClientBank->bank_name ?? '-' }}<br>
-                                        <small class="text-muted">
-                                            {{ $schedule->toClientBank->account_number ?? '' }}
-                                        </small>
-                                    </td>
-
-                                    <td>
-                                        @if ($schedule->status === 'done')
-                                            <span class="badge bg-success">Paid</span>
-                                        @else
-                                            <span class="badge bg-warning text-dark">Pending</span>
-                                        @endif
-                                    </td>
-
-                                    <td>
-                                        {{ $schedule->remarks ?? '—' }}
-                                    </td>
-
-                                    <td class="text-center">
-                                        @if ($schedule->enable_marked_as_paid)
-                                            <button class="btn btn-sm btn-outline-success" data-bs-toggle="modal"
-                                                data-bs-target="#markPaidModal" data-id="{{ $schedule->id }}"
-                                                data-amount="{{ $schedule->sch_payout_amount }}"
-                                                data-sr_no="{{ $schedule->sr_no }}">
-                                                Mark Paid
-                                            </button>
-                                        @else
-                                            -
-                                        @endif
-                                    </td>
+                            <thead class="table-light">
+                                <tr>
+                                    <th hidden>#</th>
+                                    <th>Payout Date</th>
+                                    <th class="text-end">Scheduled (₹)</th>
+                                    <th class="text-end">Actual Paid (₹)</th>
+                                    <th>Paid Date</th>
+                                    <th>UTR no.</th>
+                                    <th>From Bank</th>
+                                    <th>To Client Bank</th>
+                                    <th>Status</th>
+                                    <th>Remarks</th>
+                                    <th class="text-center">Action</th>
                                 </tr>
-                            @endforeach
+                            </thead>
+                            <tbody>
 
-                        </tbody>
+                                {{-- ===================== --}}
+                                {{-- PAYOUT SCHEDULES --}}
+                                {{-- ===================== --}}
+                                @foreach ($paySchdeule->payoutSchedules as $index => $schedule)
+                                    {{-- <h1>{{ $schedule }}</h1> --}}
+                                    <tr
+                                        class="{{ $schedule->sch_payout_amount == $investment->investment_amount ? 'table-info' : '' }}">
+
+                                        <td class="d-none">
+                                            {{ $index + 1 }}
+                                        </td>
+
+                                        <td>
+                                            {{ \Carbon\Carbon::parse($schedule->sch_payout_date)->format('d M Y') }}
+                                        </td>
+
+                                        <td class="text-end fw-semibold">
+                                            ₹ {{ number_format($schedule->sch_payout_amount, 2) }}
+                                        </td>
+
+                                        <td class="text-end">
+                                            {{ $schedule->actual_payout_amount ? '₹ ' . number_format($schedule->actual_payout_amount, 2) : '—' }}
+                                        </td>
+
+                                        <td>
+                                            {{ $schedule->actual_payout_date ? \Carbon\Carbon::parse($schedule->actual_payout_date)->format('d M Y H:i') : '—' }}
+                                        </td>
+
+                                        <td>
+                                            {{ $schedule->utr_no ?? '—' }}
+                                        </td>
+
+                                        <td>
+                                            {{ $schedule->fromCompanyBank->bank_name ?? '-' }}<br>
+                                            <small class="text-muted">
+                                                {{ $schedule->fromCompanyBank->account_number ?? '' }}
+                                            </small>
+                                        </td>
+
+                                        <td>
+                                            {{ $schedule->toClientBank->bank_name ?? '-' }}<br>
+                                            <small class="text-muted">
+                                                {{ $schedule->toClientBank->account_number ?? '' }}
+                                            </small>
+                                        </td>
+
+                                        <td>
+                                            @if ($schedule->status === 'done')
+                                                <span class="badge bg-success">Paid</span>
+                                            @else
+                                                <span class="badge bg-warning text-dark">Pending</span>
+                                            @endif
+                                        </td>
+
+                                        <td>
+                                            {{ $schedule->remarks ?? '—' }}
+                                        </td>
+
+                                        <td class="text-center">
+                                            @if ($schedule->enable_marked_as_paid)
+                                                <button class="btn btn-sm btn-outline-success" data-bs-toggle="modal"
+                                                    data-bs-target="#markPaidModal" data-id="{{ $schedule->id }}"
+                                                    data-amount="{{ $schedule->sch_payout_amount }}"
+                                                    data-sr_no="{{ $schedule->sr_no }}">
+                                                    Mark Paid
+                                                </button>
+                                            @else
+                                                -
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endforeach
+
+                            </tbody>
 
 
-                        <tfoot class="table-light">
-                            <tr>
-                                <th colspan="2" class="text-end">Total</th>
-                                <th class="text-end">
-                                    ₹ {{ number_format($investment->payoutSchedules->sum('sch_payout_amount'), 2) }}
-                                </th>
-                                <th colspan="8"></th>
-                            </tr>
-                            <tr>
-                                <th colspan="2" class="text-end">Rounding-off</th>
-                                <th class="text-end">
-                                    {{ $schedule->rounding_off_amount ? '₹ ' . number_format($schedule->rounding_off_amount, 2) : '—' }}
-                                </th>
-                                <th colspan="8"></th>
-                            </tr>
-                        </tfoot>
+                            <tfoot class="table-light">
+                                <tr>
+                                    <th colspan="2" class="text-end">Total</th>
+                                    <th class="text-end">
+                                        ₹ {{ number_format($investment->payoutSchedules->sum('sch_payout_amount'), 2) }}
+                                    </th>
+                                    <th colspan="8"></th>
+                                </tr>
+                                <tr>
+                                    <th colspan="2" class="text-end">Rounding-off</th>
+                                    <th class="text-end">
+                                        {{ $schedule->rounding_off_amount ? '₹ ' . number_format($schedule->rounding_off_amount, 2) : '—' }}
+                                    </th>
+                                    <th colspan="8"></th>
+                                </tr>
+                            </tfoot>
 
 
-                    </table>
-                </div>
+                        </table>
+                    </div>
+                @else
+                    {{-- hide button --}}
+                @endif
+
                 <div class="p-3 text-end">
                     @if (!$investment->is_approved)
                         {{-- show approve button --}}
@@ -570,7 +575,6 @@
     </div>
 
 
-
     @if ($errors->any() && old('scheme_id'))
         <script>
             $(document).ready(function() {
@@ -579,10 +583,8 @@
         </script>
     @endif
 
+
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
-
-
     <div class="modal fade" id="markPaidModal" tabindex="-1">
         <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
             <div class="modal-content">
@@ -697,8 +699,6 @@
             </div>
         </div>
     </div>
-
-
 @endsection
 
 @push('scripts')

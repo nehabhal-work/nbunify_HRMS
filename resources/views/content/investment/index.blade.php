@@ -252,10 +252,13 @@
                                                         <i class="bx bx-timer me-1"></i> Maturity
                                                     </a>
 
-                                                    <a class="dropdown-item"
-                                                        href="{{ route('investment.welcomeLetter', $d->id) }}">
-                                                        <i class="bx bx-mail-send me-1"></i> Welcome Letter
-                                                    </a>
+                                                    {{-- @if (!empty($d->standing_instruction)) --}}
+                                                        <a class="dropdown-item"
+                                                            href="{{ route('investment.welcomeLetter', $d->id) }}">
+                                                            <i class="bx bx-mail-send me-1"></i> Welcome Letter
+                                                        </a>
+                                                    {{-- @endif --}}
+
 
                                                     <a class="dropdown-item"
                                                         href="{{ route('investment.maturity-letter', $d->id) }}">
