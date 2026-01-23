@@ -276,6 +276,8 @@ class InvestmentService
             'standingInstructions'
         ])->findOrFail($id);
 
+        $investment->has_approved_si = $investment->standingInstructions()->whereNotNull('approved_by')->exists();
+
         if (auth()->id() == $investment->created_by) {
             $investment->is_approved = true;
         } else {
@@ -284,8 +286,7 @@ class InvestmentService
                 if ($investment->approved_by == null) {
                     $investment->is_approved = false;
                 } else {
-                    $hasApprovedSi = $investment->standingInstructions()->whereNotNull('approved_by')->exists();
-                    $investment->is_approved = !$hasApprovedSi || $investment->approved4_by != null;
+                    $investment->is_approved = !$investment->has_approved_si || $investment->approved4_by != null;
                 }
             } else if ($user->level == 2 && $investment->approved_by != null) {
                 $investment->is_approved = $investment->approved2_by != null;
