@@ -157,7 +157,7 @@ class InvestmentService
     public function update(Investment $investment, array $data): Investment
     {
         $calculationFields = ['investment_date', 'investment_amount', 'tenure_type', 'tenure_count', 'frequency', 'roi_percent'];
-        
+
         $needsRecalculation = false;
         foreach ($calculationFields as $field) {
             if (isset($data[$field]) && $data[$field] != $investment->$field) {
@@ -165,11 +165,11 @@ class InvestmentService
                 break;
             }
         }
-        
+
         if ($needsRecalculation) {
             $calculationData = array_merge($investment->toArray(), $data);
             $calculatedData = $this->calculateInvestmentParameters($calculationData);
-            
+
             $data = array_merge($data, [
                 'annual_payout' => $calculatedData['annual_payout'],
                 'payout_per_period' => $calculatedData['payout_per_period'],
@@ -180,11 +180,11 @@ class InvestmentService
                 'paid_interest_amount' => $calculatedData['paid_interest_amount'],
                 'rounding_off_amount' => $calculatedData['rounding_off_amount']
             ]);
-            
+
             if (isset($calculatedData['payout_schedule'])) {
                 DB::transaction(function () use ($investment, $data, $calculatedData) {
                     $investment->payoutSchedules()->delete();
-                    
+
                     foreach ($calculatedData['payout_schedule'] as $schedule) {
                         InvestmentPayoutSchedule::create([
                             'investment_id' => $investment->id,
@@ -199,7 +199,7 @@ class InvestmentService
                             'to_client_bank_id' => $investment->to_client_bank_id,
                         ]);
                     }
-                    
+
                     $investment->update($data);
                 });
             } else {
@@ -208,7 +208,7 @@ class InvestmentService
         } else {
             $investment->update($data);
         }
-        
+
         return $investment->fresh();
     }
 
@@ -219,13 +219,13 @@ class InvestmentService
 
     public function getAll(): Collection
     {
-        return Investment::with(['firstClient', 'secondClient', 'thirdClient', 'fourthClient', 'scheme', 'fromCompanyBank', 'toClientBank', 'createdBy', 'approvedBy', 'approved2By', 'approved3By', 'standingInstructions',])
+        return Investment::with(['firstClient', 'secondClient', 'thirdClient', 'fourthClient', 'scheme', 'fromCompanyBank', 'toClientBank', 'createdBy', 'approvedBy', 'approved2By', 'approved3By', 'approved4By', 'standingInstructions',])
             ->orderByDesc('id')->get();
     }
 
     public function getAllWithFilters(array $filters = []): Collection
     {
-        $query = Investment::with(['firstClient', 'secondClient', 'thirdClient', 'fourthClient', 'scheme', 'fromCompanyBank', 'toClientBank', 'createdBy', 'approvedBy', 'approved2By', 'approved3By', 'standingInstructions']);
+        $query = Investment::with(['firstClient', 'secondClient', 'thirdClient', 'fourthClient', 'scheme', 'fromCompanyBank', 'toClientBank', 'createdBy', 'approvedBy', 'approved2By', 'approved3By', 'approved4By', 'standingInstructions']);
 
         if (!empty($filters['from_date'])) {
             $query->whereDate('investment_date', '>=', $filters['from_date']);
@@ -270,6 +270,7 @@ class InvestmentService
             'approvedBy',
             'approved2By',
             'approved3By',
+            'approved4By',
             'nominees.clientFamily',
             'InvestmentInputBank',
             'standingInstructions'
@@ -285,6 +286,14 @@ class InvestmentService
                 $investment->is_approved = $investment->approved2_by != null ? true : false;
             } else if ($user->level == 3 && $investment->approved2_by != null) {
                 $investment->is_approved = $investment->approved3_by != null ? true : false;
+            } else if ($investment->approved3_by != null) {
+                // Check if investment has at least 1 approved investment SI
+                $hasApprovedSi = $investment->standingInstructions()->whereNotNull('approved_by')->exists();
+                if($hasApprovedSi) {
+                    $investment->is_approved = $investment->approved4_by != null ? true : false;
+                } else {
+                    $investment->is_approved = true;
+                }
             } else {
                 $investment->is_approved = true;
             }
@@ -502,17 +511,21 @@ class InvestmentService
         $investment = Investment::findOrFail($id);
         $user = User::find(auth()->id());
         if ($investment != null) {
-            if ($user->level == 1) {
+            if ($user->level == 1 && $investment->approved_by == null) {
                 $investment->approved_by = auth()->id();
                 $investment->approved_at = now();
                 $investment->save();
-            } else if ($user->level == 2) {
+            } else if ($user->level == 2 && $investment->approved2_by == null) {
                 $investment->approved2_by = auth()->id();
                 $investment->approved2_on = now();
                 $investment->save();
-            } else if ($user->level == 3) {
+            } else if ($user->level == 3 && $investment->approved3_by == null) {
                 $investment->approved3_by = auth()->id();
                 $investment->approved3_on = now();
+                $investment->save();
+            } else if ($investment->approved3_by != null && $investment->approved4_by == null) {
+                $investment->approved4_by = auth()->id();
+                $investment->approved4_on = now();
                 $investment->save();
             } else {
                 return abort(401, 'User level not found');

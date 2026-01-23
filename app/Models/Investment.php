@@ -48,6 +48,8 @@ class Investment extends Model
         'approved2_on',
         'approved3_by',
         'approved3_on',
+        'approved4_by',
+        'approved4_on',
     ];
 
     protected $casts = [
@@ -67,6 +69,7 @@ class Investment extends Model
         'approved_at' => 'datetime:d-m-Y h:i',
         'approved2_on' => 'datetime:d-m-Y h:i',
         'approved3_on' => 'datetime:d-m-Y h:i',
+        'approved4_on' => 'datetime:d-m-Y h:i',
     ];
 
     public function firstClient(): BelongsTo
@@ -148,5 +151,10 @@ class Investment extends Model
     public function approved3By(): BelongsTo
     {
         return $this->belongsTo(User::class, 'approved3_by');
+    }
+
+    public function approved4By(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'approved4_by');
     }
 }
