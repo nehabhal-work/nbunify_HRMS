@@ -44,7 +44,7 @@ class RoleSeeder extends Seeder
                 'description' => 'Accounts module access',
                 'permissions' => [
                     'vendors.*', 'purchases.*', 'sales.*', 'expenses.*', 'ledger.view',
-                    'clients.view', 'investments.view'
+                    'clients.view', 'investments.view', 'investment-si.*'
                 ]
             ],
             [

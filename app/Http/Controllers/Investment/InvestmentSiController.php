@@ -155,22 +155,10 @@ class InvestmentSiController extends Controller
     {
         $investmentSi = $this->investmentSiService->getById($id);
 
-        $user = auth()->user();
-
-        if ($user->level == 1 && !$investmentSi->approved_by) {
+        if (!$investmentSi->approved_by) {
             $investmentSi->update([
-                'approved_by' => $user->id,
+                'approved_by' => auth()->id(),
                 'approved_at' => now()
-            ]);
-        } elseif ($user->level == 2 && $investmentSi->approved_by && !$investmentSi->approved2_by) {
-            $investmentSi->update([
-                'approved2_by' => $user->id,
-                'approved2_on' => now()
-            ]);
-        } elseif ($user->level == 3 && $investmentSi->approved2_by && !$investmentSi->approved3_by) {
-            $investmentSi->update([
-                'approved3_by' => $user->id,
-                'approved3_on' => now()
             ]);
         }
 

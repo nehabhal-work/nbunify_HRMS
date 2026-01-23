@@ -13,21 +13,35 @@ class UserSeeder extends Seeder
     {
         $users = [
             [
-                'email' => 'admin@els.com',
+                'email' => 'dataentry@els.com',
                 'level' => 1,
                 'name' => 'IT Dept 1',
                 'password' => 'password',
                 'role' => 'data-entry'
             ],
             [
-                'email' => 'admin2@els.com',
+                'email' => 'accounts@els.com',
+                'level' => 1,
+                'name' => 'IT Dept - Accounts',
+                'password' => 'password',
+                'role' => 'accountant'
+            ],
+            [
+                'email' => 'manager@els.com',
                 'level' => 2,
                 'name' => 'IT Dept 2',
                 'password' => 'password',
                 'role' => 'manager'
             ],
             [
-                'email' => 'admin3@els.com',
+                'email' => 'admin@els.com',
+                'level' => 3,
+                'name' => 'IT Dept 3',
+                'password' => 'password',
+                'role' => 'admin'
+            ],
+            [
+                'email' => 'superadmin@els.com',
                 'level' => 3,
                 'name' => 'IT Dept 3',
                 'password' => 'password',
