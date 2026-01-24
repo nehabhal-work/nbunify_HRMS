@@ -195,10 +195,8 @@ class InvestmentController extends Controller
 
     public function welcomeLetter($id)
     {
-        // $client = $this->clientService->find($id);
         $company = $this->companyService->findFirstOrFail();
         $investment = $this->investmentService->getById($id);
-        // return $investment;
         return view('content.investment.letters.welcome-letter', compact('investment', 'company'));
     }
 

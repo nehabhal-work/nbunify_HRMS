@@ -56,7 +56,7 @@ class RoleSeeder extends Seeder
                     'client-families.view', 'client-families.create', 'client-families.edit',
                     'client-banks.view', 'client-banks.create', 'client-banks.edit',
                     'preclients.*',
-                    'investments.view', 'investments.create', 'investments.edit',
+                    'investments.*',
                     'investment-si.view', 'investment-si.create', 'investment-si.edit'
                 ]
             ],
