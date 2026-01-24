@@ -278,17 +278,14 @@ class InvestmentService
         ])->findOrFail($id);
 
         $investment->has_approved_si = $investment->standingInstructions()->whereNotNull('approved_by')->exists();
+        $investment->is_payout_approved = $investment->has_approved_si && $investment->approved4_by != null;
 
         if (auth()->id() == $investment->created_by) {
             $investment->is_approved = true;
         } else {
             $user = User::find(auth()->id());
             if ($user->level == 1) {
-                if ($investment->approved_by == null) {
-                    $investment->is_approved = false;
-                } else {
-                    $investment->is_approved = !$investment->has_approved_si || $investment->approved4_by != null;
-                }
+                $investment->is_approved = $investment->approved_by != null;
             } else if ($user->level == 2 && $investment->approved_by != null) {
                 $investment->is_approved = $investment->approved2_by != null;
             } else if ($user->level == 3 && $investment->approved2_by != null) {
@@ -511,7 +508,7 @@ class InvestmentService
         if($investment->approved3_by == null) {
             throw new \Exception("Investment must be approved level 3 before approving payouts.");
         }
-        if($idnvestment->approved4_by != null) {
+        if($investment->approved4_by != null) {
             throw new \Exception("Investment payouts are already approved.");
         }
         $investment->approved4_by = auth()->id();
