@@ -31,7 +31,6 @@ class InvestmentSiService
             'approvedBy'
         ])->findOrFail($id);
 
-        // Set is_approved based on user level and approval status
         if (auth()->id() == $investmentSi->created_by) {
             $investmentSi->is_approved = true;
         } else {
@@ -59,12 +58,23 @@ class InvestmentSiService
      */
     public function create(array $data): InvestmentSi
     {
-        $existingActiveSi = InvestmentSi::where('investment_id','=', $data['investment_id'])
+        $existingActiveSi = InvestmentSi::where('investment_id', $data['investment_id'])
+            ->where('instruction_type', $data['instruction_type'])
             ->where('status', 'active')
             ->exists();
 
         if ($existingActiveSi) {
-            throw new \Exception('An active standing instruction already exists for this investment.');
+            throw new \Exception('An active ' . $data['instruction_type'] . ' instruction already exists for this investment.');
+        }
+
+        $investment = \App\Models\Investment::findOrFail($data['investment_id']);
+
+        if ($data['instruction_type'] === 'schedule' && $data['si_no_of_payments'] != 1) {
+            throw new \Exception('Schedule instruction must have exactly 1 payout.');
+        }
+
+        if ($data['instruction_type'] === 'standing' && $data['si_no_of_payments'] > ($investment->schedule_count - 1)) {
+            throw new \Exception('Standing instruction cannot have more than ' . ($investment->schedule_count - 1) . ' payouts.');
         }
 
         $investmentSi = InvestmentSi::create($data);
@@ -96,6 +106,26 @@ class InvestmentSiService
      */
     public function update(InvestmentSi $investmentSi, array $data): InvestmentSi
     {
+        $existingActiveSi = InvestmentSi::where('investment_id', $investmentSi->investment_id)
+            ->where('instruction_type', $data['instruction_type'])
+            ->where('status', 'active')
+            ->where('id', '!=', $investmentSi->id)
+            ->exists();
+
+        if ($existingActiveSi) {
+            throw new \Exception('An active ' . $data['instruction_type'] . ' instruction already exists for this investment.');
+        }
+
+        $investment = \App\Models\Investment::findOrFail($investmentSi->investment_id);
+
+        if ($data['instruction_type'] === 'schedule' && $data['si_no_of_payments'] != 1) {
+            throw new \Exception('Schedule instruction must have exactly 1 payout.');
+        }
+
+        if ($data['instruction_type'] === 'standing' && $data['si_no_of_payments'] > ($investment->schedule_count - 1)) {
+            throw new \Exception('Standing instruction cannot have more than ' . ($investment->schedule_count - 1) . ' payouts.');
+        }
+
         // Handle file uploads
         if (isset($data['attachment_si_image'])) {
             // Delete old file if exists
@@ -152,5 +182,38 @@ class InvestmentSiService
         return InvestmentSi::with(['siClientBank', 'siCompanyBank'])
             ->where('investment_id', $investmentId)
             ->get();
+    }
+
+    /**
+     * Approve an investment SI
+     */
+    public function approve(int $id): InvestmentSi
+    {
+        $investmentSi = $this->getById($id);
+
+        if ($investmentSi->approved_by) {
+            throw new \Exception('This instruction is already approved.');
+        }
+
+        $hasActiveStanding = InvestmentSi::where('investment_id', $investmentSi->investment_id)
+            ->where('instruction_type', 'standing')
+            ->where('status', 'active')
+            ->exists();
+
+        $hasActiveSchedule = InvestmentSi::where('investment_id', $investmentSi->investment_id)
+            ->where('instruction_type', 'schedule')
+            ->where('status', 'active')
+            ->exists();
+
+        if (!$hasActiveStanding || !$hasActiveSchedule) {
+            throw new \Exception('Both standing and schedule instructions must be active before approval.');
+        }
+
+        $investmentSi->update([
+            'approved_by' => auth()->id(),
+            'approved_at' => now()
+        ]);
+
+        return $investmentSi->fresh();
     }
 }

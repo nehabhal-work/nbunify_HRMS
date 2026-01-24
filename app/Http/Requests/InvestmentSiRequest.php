@@ -24,6 +24,7 @@ class InvestmentSiRequest extends FormRequest
         return [
             'investment_id' => 'required|exists:investments,id',
             'si_number' => 'required|string|max:255|unique:investment_si,si_number,' . $this->route('si'),
+            'instruction_type' => 'required|in:standing,schedule',
             'si_client_bank_id' => 'required|exists:client_banks,id',
             'si_company_bank_id' => 'required|exists:company_bank_details,id',
             'si_start_date' => 'required|date',
@@ -46,6 +47,8 @@ class InvestmentSiRequest extends FormRequest
             'investment_id.exists' => 'Selected investment does not exist.',
             'si_number.required' => 'SI Number is required.',
             'si_number.unique' => 'This SI Number already exists.',
+            'instruction_type.required' => 'Instruction type is required.',
+            'instruction_type.in' => 'Instruction type must be either standing or schedule.',
             'si_client_bank_id.required' => 'Please select a client bank.',
             'si_company_bank_id.required' => 'Please select a company bank.',
             'si_start_date.required' => 'SI Start Date is required.',

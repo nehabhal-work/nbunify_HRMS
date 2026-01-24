@@ -153,16 +153,12 @@ class InvestmentSiController extends Controller
      */
     public function approve($id)
     {
-        $investmentSi = $this->investmentSiService->getById($id);
-
-        if (!$investmentSi->approved_by) {
-            $investmentSi->update([
-                'approved_by' => auth()->id(),
-                'approved_at' => now()
-            ]);
+        try {
+            $this->investmentSiService->approve($id);
+            return redirect()->route('investment.si.index', ['id' => $this->investmentSiService->getById($id)->investment_id])->with('success', 'Standing Instruction approved successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', $e->getMessage());
         }
-
-        return redirect()->route('investment.si.index', ['id' => $investmentSi->investment_id])->with('success', 'Standing Instruction approved successfully.');
     }
 
 
