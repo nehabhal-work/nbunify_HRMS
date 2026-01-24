@@ -18,7 +18,8 @@ class InvestmentSiService
      */
     public function getAll(): Collection
     {
-        return InvestmentSi::with(['investment', 'siClientBank', 'siCompanyBank'])->get();
+        return InvestmentSi::with(['investment', 'siClientBank', 'siCompanyBank'])
+        ->get();
     }
 
     public function showById(int $id): InvestmentSi

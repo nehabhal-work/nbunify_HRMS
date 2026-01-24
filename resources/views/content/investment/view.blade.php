@@ -149,7 +149,7 @@
 
                                 @if ($investment->investment_date)
                                     <tr>
-                                        <th>Investment Start Date</th>
+                                        <th>Inv. Start Date</th>
                                         <td>
                                             <b>{{ \Carbon\Carbon::parse($investment->investment_date)->format('d M Y') }}</b>
                                         </td>
@@ -200,7 +200,7 @@
 
 
                                     @if ($investment->maturity_date)
-                                        <th>Investment End Date</th>
+                                        <th>Inv. End Date</th>
                                         <td>
                                             <b>{{ \Carbon\Carbon::parse($investment->maturity_date)->format('d M Y') }}</b>
                                         </td>
@@ -208,7 +208,7 @@
                                 </tr>
                                 @if ($investment->investment_amount)
                                     <tr>
-                                        <th>Investment Amount</th>
+                                        <th>Inv. Amount</th>
                                         <td><b>₹ {{ number_format($investment->investment_amount, 2) }}</b></td>
                                     </tr>
                                 @endif
