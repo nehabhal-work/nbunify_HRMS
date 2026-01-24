@@ -74,10 +74,10 @@ class InvestmentSiService
             throw new \Exception('Schedule instruction must have exactly 1 payout.');
         }
 
-        if ($data['instruction_type'] === 'standing' && $data['si_no_of_payments'] > ($investment->schedule_count - 1)) {
+        if ($data['instruction_type'] === 'standing' && $data['si_no_of_payments'] > $investment->schedule_count) {
             throw new \Exception('Standing instruction cannot have more than ' . ($investment->schedule_count - 1) . ' payouts.');
         }
-
+        
         $investmentSi = InvestmentSi::create($data);
 
         // Handle file uploads after creating the record to get the ID
