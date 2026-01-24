@@ -42,7 +42,6 @@
         @method('post')
 
         <input type="hidden" name="investment_id" value="{{ request()->get('id') }}">
-        <input type="hidden" name="si_no_of_payments" value="{{ $investment->schedule_count }}">
 
         {{-- Set standing instruction --}}
         <div class="card p-3 mb-3">
@@ -95,7 +94,7 @@
 
                     <tr>
                         <th>Schedule Count</th>
-                        <td><b>{{ $investment->schedule_count }}</b></td>
+                        <td><b>{{ $investment->si_no_of_payments }}</b></td>
 
                         <th>Investment Amount</th>
                         <td><b>₹ {{ number_format($investment->investment_amount, 2) }}</b></td>
@@ -234,21 +233,16 @@
                                     placeholder="Enter amount" value="{{ $investment->payout_per_period }}">
 
                             </div>
-                            {{-- "schedule_count": 6, --}}
 
                             <div class="col-md-3">
                                 <label class="form-label">
                                     Payout Count <span class="text-danger">*</span>
                                 </label>
-                                {{-- <input type="number" name="schedule_count" id="scheduleCount" class="form-control"
-                                    value="{{ $investment->schedule_count ?? 1 }}"> --}}
-                                <input type="number" id="originalPayoutCount" name="schedule_count"
-                                    class="form-control bg-secondary-subtle @error('schedule_count') is-invalid @enderror"
-                                    value="{{ $investment->schedule_count ?? 1 }}" hidden readonly>
-
-                                <input type="number" name="schedule_count" id="scheduleCount"
-                                    class="form-control  @error('schedule_count') is-invalid @enderror">
-
+                                <input type="number" id="originalPayoutCount" name="si_no_of_payments"
+                                    class="form-control bg-secondary-subtle @error('si_no_of_payments') is-invalid @enderror"
+                                    value="{{ $investment->si_no_of_payments ?? 1 }}" hidden readonly>
+                                <input type="number" name="si_no_of_payments" id="scheduleCount"
+                                    class="form-control  @error('si_no_of_payments') is-invalid @enderror">
                             </div>
 
 
