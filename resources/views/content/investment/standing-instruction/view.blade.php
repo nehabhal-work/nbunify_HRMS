@@ -125,7 +125,7 @@
                     </table>
 
                        <div class="p-3 text-end">
-                    @if (!$investmentSi->is_approved)
+@if ($investmentSi->status === 'active' && $investmentSi->is_approved != 1)
                         {{-- show approve button --}}
                         <form action="{{ route('investment.si.approve', $investmentSi->id) }}" method="post">
                             @csrf

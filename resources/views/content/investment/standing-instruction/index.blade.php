@@ -242,7 +242,7 @@
                                 </label>
                                 {{-- <input type="number" name="schedule_count" id="scheduleCount" class="form-control"
                                     value="{{ $investment->schedule_count ?? 1 }}"> --}}
-                                <input type="number" id="originalPayoutCount" name="schedule_count"
+                                <input type="number" id="originalPayoutCount" name="si_no_of_payments"
                                     class="form-control bg-secondary-subtle @error('schedule_count') is-invalid @enderror"
                                     value="{{ $investment->schedule_count ?? 1 }}" hidden readonly>
 
