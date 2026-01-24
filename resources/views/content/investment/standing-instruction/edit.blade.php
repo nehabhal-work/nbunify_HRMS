@@ -69,7 +69,23 @@
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
-
+                            <!--  Instruction Type -->
+                            <div class="col-md-3">
+                                <label class="form-label">
+                                    Instruction Type <span class="text-danger">*</span>
+                                </label>
+                                <select class="form-select @error('instruction_type') is-invalid @enderror"
+                                    name="instruction_type" id="instructionType" required>
+                                    <option value="standing"
+                                        {{ $investment->instruction_type === 'standing' ? 'selected' : '' }}>
+                                        standing
+                                    </option>
+                                    <option value="schedule"
+                                        {{ $investment->instruction_type === 'schedule' ? 'selected' : '' }}>
+                                        schedule
+                                    </option>
+                                </select>
+                            </div>
                             <!-- Company Bank -->
                             <div class="col-md-3">
                                 <label class="form-label">
@@ -129,9 +145,14 @@
                                 <label class="form-label">
                                     Payout Count <span class="text-danger">*</span>
                                 </label>
-                                <input type="text" step="0.01" name="schedule_count"
-                                    class="form-control  @error('amount') is-invalid @enderror" placeholder="Enter amount"
-                                    value="{{ $investment->schedule_count }}">
+                                {{-- <input type="number" name="schedule_count" id="scheduleCount" class="form-control"
+                                    value="{{ $investment->schedule_count ?? 1 }}"> --}}
+                                <input type="number" id="originalPayoutCount" name="schedule_count"
+                                    class="form-control bg-secondary-subtle @error('schedule_count') is-invalid @enderror"
+                                    value="{{ $investment->schedule_count ?? 1 }}" hidden readonly>
+
+                                <input type="number" name="schedule_count" id="scheduleCount"
+                                    class="form-control  @error('schedule_count') is-invalid @enderror">
 
                             </div>
 
@@ -304,4 +325,27 @@
 
 @push('scripts')
     <script src="{{ asset('assets/js/investment.js') }}"></script>
+     <script>
+        const instructionType = document.getElementById('instructionType');
+        const scheduleCount = document.getElementById('scheduleCount');
+        const originalPayout = document.getElementById('originalPayoutCount').value;
+
+        function applyRules() {
+            if (instructionType.value === 'schedule') {
+                scheduleCount.value = 1;
+                scheduleCount.readOnly = true;
+
+                // background for readonly state
+                scheduleCount.classList.add('bg-secondary', 'bg-opacity-10');
+            } else {
+                scheduleCount.value = Math.max(originalPayout - 1, 0);
+                scheduleCount.readOnly = false;
+
+                scheduleCount.classList.remove('bg-secondary', 'bg-opacity-10');
+            }
+        }
+
+        instructionType.addEventListener('change', applyRules);
+        applyRules();
+    </script>
 @endpush

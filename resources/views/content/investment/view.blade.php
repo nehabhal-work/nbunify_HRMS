@@ -102,13 +102,13 @@
 
                                 @if ($investment->investment_code)
                                     <tr>
-                                        <th>Investment Code</th>
+                                        <th>Inv. Code</th>
                                         <td><b>{{ $investment->investment_code }}</b></td>
                                     </tr>
                                 @endif
                                 @if ($investment->investment_type)
                                     <tr>
-                                        <th>Investment Type</th>
+                                        <th>Inv. Type</th>
                                         <td><b>{{ ucfirst($investment->investment_type) }}</b></td>
                                     </tr>
                                 @endif
@@ -415,19 +415,81 @@
                                 {{-- <td class="text-center">—</td> --}}
                             </tr>
                         @endforeach
-
-
                     </tbody>
-
-
-
-
-
                 </table>
 
+
                 @if ($investment->has_approved_si === true)
+                    <b class="card-title">Approved Standing Instruction Details</b>
+
+                    <table class="table table-bordered table-sm mb-0 align-middle">
+                        <tbody class="table-light">
+
+                            <tr>
+
+                                <th class="bg-light px-3 py-2">Status</th>
+                                <td class="px-3 py-2">
+                                    <span
+                                        class="fw-semibold badge {{ $investment->approved_standing_instructions->status == 'active' ? 'bg-success-subtle text-success' : 'bg-danger-subtle text-danger' }}">
+                                        {{ ucfirst($investment->approved_standing_instructions->status) }}
+                                    </span>
+                                </td>
 
 
+                                <th class="bg-light px-3 py-2">Reference No</th>
+                                <td class="px-3 py-2 fw-semibold">
+                                    {{ $investment->approved_standing_instructions->si_number ?? '-' }}
+                                </td>
+
+
+                            </tr>
+
+                            <tr>
+                                <th class="bg-light px-3 py-2">Company Bank</th>
+                                <td class="px-3 py-2">
+                                    {{ $investment->approved_standing_instructions->siCompanyBank->bank_name ?? '-' }}
+                                    <span class="text-muted">
+                                        –
+                                        {{ $investment->approved_standing_instructions->siCompanyBank->account_number ?? '-' }}
+                                    </span>
+                                </td>
+
+                                <th class="bg-light px-3 py-2">Client Bank</th>
+                                <td class="px-3 py-2">
+                                    {{ $investment->approved_standing_instructions->siClientBank->bank_name ?? '-' }}
+                                    <span class="text-muted">
+                                        –
+                                        {{ $investment->approved_standing_instructions->siClientBank->account_number ?? '-' }}
+                                    </span>
+                                </td>
+
+                            </tr>
+
+                            <tr>
+                                <th class="bg-light px-3 py-2">Payment Start Date</th>
+                                <td class="px-3 py-2">
+                                    {{ $investment->approved_standing_instructions->si_start_date?->format('d M Y') ?? '-' }}
+                                </td>
+
+                                <th class="bg-light px-3 py-2">Payout Count</th>
+                                <td class="px-3 py-2 fw-semibold">
+                                    {{ $investment->approved_standing_instructions->si_no_of_payments ?? '-' }}
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <th class="bg-light px-3 py-2">Amount</th>
+                                <td class="px-3 py-2 fw-bold text-primary">
+                                    ₹ {{ number_format($investment->approved_standing_instructions->si_amount, 2) }}
+                                </td>
+  <th class="bg-light px-3 py-2">Remarks</th>
+                                <td class="px-3 py-3 bg-warning-subtle fst-italic">
+                                    {{ $investment->approved_standing_instructions->remarks ?? '-' }}
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
                     <b class="card-title">Payment Schedule</b>
                     <div class="table-responsive">
 
@@ -565,6 +627,19 @@
                     @else
                         {{-- hide button --}}
                     @endif
+                    @if ($investment->is_payout_approved == false)
+                        {{-- show approve button --}}
+                        <form action="{{ route('investment.approve.payouts', $investment->id) }}" method="post">
+                            @csrf
+                            @method('PUT')
+                            <button type="submit" class="btn btn-success px-4">
+                                Payout Approve
+                            </button>
+
+                        </form>
+                    @else
+                        {{-- hide button --}}
+                    @endif
                 </div>
 
 
@@ -608,12 +683,20 @@
                                     <input type="number" step="0.01" class="form-control bg-secondary-subtle"
                                         name="actual_payout_amount" id="actual_amount" readonly>
                                 </div>
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label">Standing Reference Number</label>
+                                    <input type="text" class="form-control bg-secondary-subtle" name="si_number"
+                                        id="si_number" readonly
+                                        value="{{ optional($investment->standingInstructions()->where('status', 'active')->first())->si_number }}">
+                                </div>
 
                                 <div class="col-md-4 mb-3">
                                     <label class="form-label">Actual Payout Date & Time</label>
                                     <input type="datetime-local" class="form-control" name="actual_payout_date"
-                                        min="{{ now()->format('Y-m-d\TH:i') }}"
+                                        min="2000-01-01T00:00" max="2099-12-31T23:59"
                                         value="{{ now()->format('Y-m-d\TH:i') }}" required>
+
+
                                 </div>
 
 
@@ -626,7 +709,13 @@
                                 </div>
                                 <div class="col-md-4 mb-3">
                                     <label class="form-label">Extra Charge</label>
-                                    <select class="form-select" name="extra_charge" id="extra_charge">
+                                    <input type="text" class="form-control" name="extra_charge" id="extra_charge">
+                                </div>
+
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label">Reason of Extra Charge</label>
+
+                                    <select class="form-select" name="reason_extra_charge" id="reason_extra_charge">
                                         <option value="">Select Extra Charge</option>
                                         <option value="bank_charges">Bank Charges</option>
                                         <option value="gst">GST</option>
@@ -635,12 +724,6 @@
                                         <option value="penalty">Penalty</option>
                                         <option value="other">Other</option>
                                     </select>
-                                </div>
-
-                                <div class="col-md-4 mb-3">
-                                    <label class="form-label">Reason of Extra Charge</label>
-                                    <input type="text" class="form-control" name="reason_extra_charge"
-                                        id="reason_extra_charge">
                                 </div>
 
 
