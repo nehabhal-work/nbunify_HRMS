@@ -100,12 +100,7 @@
                                     required name="first_client_id" id="first_client_id">
                                     <option value="">Select Holder</option>
                                     @foreach ($clients as $d)
-                                        {{-- <option value="{{ $d->id }}"
-                                            {{ old('client_id') == $d->id ? 'selected' : '' }}
-                                            data-banks='@json($d->banks)'
-                                            data-families='@json($d->families)'>
-                                            {{ ucfirst(strtolower($d->name)) }}
-                                        </option> --}}
+                                       
                                         <option value="{{ $d->id }}"
                                             {{ old('client_id') == $d->id ? 'selected' : '' }}
                                             data-banks='@json($d->banks)'
@@ -128,7 +123,9 @@
                                         <option value="">Select Holder</option>
                                         @foreach ($clients as $d)
                                             <option value="{{ $d->id }}"
-                                                {{ old('second_client_id') == $d->id ? 'selected' : '' }}>
+                                                {{ old('second_client_id') == $d->id ? 'selected' : '' }}
+                                                data-banks='@json($d->banks)'
+                                                data-families='@json($d->families)'>
                                                 {{ ucfirst(strtolower($d->name)) }}
                                             </option>
                                         @endforeach
@@ -142,7 +139,9 @@
                                         <option value="">Select Holder</option>
                                         @foreach ($clients as $d)
                                             <option value="{{ $d->id }}"
-                                                {{ old('third_client_id') == $d->id ? 'selected' : '' }}>
+                                                {{ old('third_client_id') == $d->id ? 'selected' : '' }}
+                                                   data-banks='@json($d->banks)'
+                                                data-families='@json($d->families)'>
                                                 {{ ucfirst(strtolower($d->name)) }}
                                             </option>
                                         @endforeach
@@ -156,7 +155,9 @@
                                         <option value="">Select Holder</option>
                                         @foreach ($clients as $d)
                                             <option value="{{ $d->id }}"
-                                                {{ old('fourth_client_id') == $d->id ? 'selected' : '' }}>
+                                                {{ old('fourth_client_id') == $d->id ? 'selected' : '' }}
+                                                   data-banks='@json($d->banks)'
+                                                data-families='@json($d->families)'>
                                                 {{ ucfirst(strtolower($d->name)) }}
                                             </option>
                                         @endforeach
@@ -664,7 +665,9 @@
                             <label class="form-label ">To Client Bank *</label>
                             <select class="form-select to_client_bank" name="to_client_bank_id" id="to_client_bank_id"
                                 required>
-                                <option value="">Select Client Bank</option>
+                                {{-- <option value="">Select Client Bank</option> --}}
+                                <option data-banks='@json($d->banks)'>...</option>
+
                             </select>
                         </div>
                     </div>

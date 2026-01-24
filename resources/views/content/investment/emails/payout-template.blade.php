@@ -46,7 +46,7 @@
                                 </tr>
                                 <tr>
                                     <td width="40%">Investment ID</td>
-                                    <td><strong>#{{ $schedule->investment->id }}</strong></td>
+                                    <td><strong>#{{ $schedule->investment->investment_code }}</strong></td>
                                 </tr>
                                 <tr>
                                     <td>Payout Schedule ID</td>
@@ -110,8 +110,13 @@
 
                             <p style="margin-bottom:0;">
                                 Warm regards,<br>
-                                <strong>Eeasy Life Solutions</strong><br>
-                                Investment & Wealth Management Team
+                                <strong>Easy Life Solutions</strong><br>
+                                Investment & Wealth Management Team <br>
+                                <small>
+                                    <a href="mailto:info@elsolutions.co.in">info@elsolutions.co.in</a><br>
+                                    <a href="tel:+9184240 42885">+91 84240 42885</a>
+                                </small>
+
                             </p>
                         </td>
                     </tr>

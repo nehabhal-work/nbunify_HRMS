@@ -93,7 +93,7 @@ class InvestmentSiController extends Controller
     {
         // Standing Instruction
         $investmentSi = $this->investmentSiService->showById($id);
-
+// return $investmentSi;
         // Parent Investment (REQUIRED)
         $investment = $this->investmentService->getById(
             $investmentSi->investment_id

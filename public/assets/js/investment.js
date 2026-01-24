@@ -392,16 +392,64 @@ $('#first_client_id').on('change', function () {
     });
 
     // Load client banks
-    $('.clientOutputBank, .to_client_bank').each(function () {
-        let bankDD = $(this);
-        bankDD.empty().append(`<option value="">Select Bank</option>`);
+   
+
+});
+// Load client multiple  banks to outward bank amd Client Output Bank dropdown
+function populateAllClientBanks() {
+
+    let selectors = [
+        '#first_client_id',
+        '#second_client',
+        '#third_client',
+        '#fourth_client'
+    ];
+
+    let allBanks = [];
+
+    selectors.forEach(sel => {
+        let opt = $(sel).find(':selected');
+        if (!opt.val()) return;
+
+        let clientName = opt.text().trim();
+        let banks = opt.data('banks') || [];
+
         banks.forEach(b => {
-            bankDD.append(`<option value="${b.id}">${b.bank_name} - ${b.account_number}</option>`);
+            allBanks.push({
+                id: b.id,
+                label: `${clientName} — ${b.bank_name} (${b.account_number})`
+            });
         });
     });
 
-});
+    // Apply to BOTH dropdown types
+    $('.clientOutputBank, .to_client_bank').each(function () {
 
+        let dd = $(this);
+        dd.empty().append(`<option value="">Select Bank</option>`);
+
+        allBanks.forEach(b => {
+            dd.append(`<option value="${b.id}">${b.label}</option>`);
+        });
+    });
+}
+
+$('#first_client_id, #second_client, #third_client, #fourth_client')
+    .on('change', populateAllClientBanks);
+
+// $('#investment_type').on('change', populateAllClientBanks);
+
+$('#investment_type').on('change', function () {
+
+    if ($(this).val() === 'joined') {
+        $('#div_other_holders').removeClass('d-none');
+    } else {
+        $('#div_other_holders').addClass('d-none');
+    }
+
+    populateClientBanks();
+});
+// End Load client multiple  banks to outward bank dropdown
 
 // -------------------------------
 // When nominee is selected
