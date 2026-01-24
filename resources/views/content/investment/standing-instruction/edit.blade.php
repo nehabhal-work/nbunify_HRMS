@@ -145,16 +145,16 @@
                                 <label class="form-label">
                                     Payout Count <span class="text-danger">*</span>
                                 </label>
-                                {{-- <input type="number" name="schedule_count" id="scheduleCount" class="form-control"
-                                    value="{{ $investment->schedule_count ?? 1 }}"> --}}
-                                <input type="number" id="originalPayoutCount" name="schedule_count"
-                                    class="form-control bg-secondary-subtle @error('schedule_count') is-invalid @enderror"
-                                    value="{{ $investment->schedule_count ?? 1 }}" hidden readonly>
 
+                                {{-- source value (DO NOT submit) --}}
+                                <input type="number" id="originalPayoutCount"
+                                    value="{{ $investment->schedule_count ?? 1 }}" hidden>
+
+                                {{-- visible + submitted field --}}
                                 <input type="number" name="schedule_count" id="scheduleCount"
-                                    class="form-control  @error('schedule_count') is-invalid @enderror">
-
+                                    class="form-control @error('schedule_count') is-invalid @enderror">
                             </div>
+
 
                             <!-- Instruction Image -->
                             <div class="col-md-3 mb-3">
@@ -325,27 +325,24 @@
 
 @push('scripts')
     <script src="{{ asset('assets/js/investment.js') }}"></script>
-     <script>
+    <script>
         const instructionType = document.getElementById('instructionType');
         const scheduleCount = document.getElementById('scheduleCount');
-        const originalPayout = document.getElementById('originalPayoutCount').value;
+        const originalPayout = Number(document.getElementById('originalPayoutCount').value);
 
         function applyRules() {
             if (instructionType.value === 'schedule') {
                 scheduleCount.value = 1;
                 scheduleCount.readOnly = true;
-
-                // background for readonly state
                 scheduleCount.classList.add('bg-secondary', 'bg-opacity-10');
             } else {
                 scheduleCount.value = Math.max(originalPayout - 1, 0);
                 scheduleCount.readOnly = false;
-
                 scheduleCount.classList.remove('bg-secondary', 'bg-opacity-10');
             }
         }
 
         instructionType.addEventListener('change', applyRules);
-        applyRules();
+        applyRules(); // critical for edit mode
     </script>
 @endpush

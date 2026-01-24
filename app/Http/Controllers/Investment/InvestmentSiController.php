@@ -48,8 +48,10 @@ class InvestmentSiController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+    // public function store(Request $request)
     public function store(InvestmentSiRequest $request)
     {
+        // return $request;
         try {
             $data = $request->validated();
             $data['created_by'] = auth()->id();
