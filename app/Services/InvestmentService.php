@@ -277,7 +277,11 @@ class InvestmentService
         ])->findOrFail($id);
 
         $investment->has_approved_si = $investment->standingInstructions()->whereNotNull('approved_by')->exists();
-        $investment->is_payout_approved = $investment->has_approved_si && $investment->approved4_by != null;
+        if($investment->has_approved_si && $investment->approved4_by == null) {
+            $investment->is_payout_approved = false;
+        } else {
+            $investment->is_payout_approved = true;    
+        }
 
         if($investment->has_approved_si) {
             $investment->approved_standing_instructions = $investment->standingInstructions()->whereNotNull('approved_by')->first();

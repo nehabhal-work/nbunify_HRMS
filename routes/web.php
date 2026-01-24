@@ -52,8 +52,6 @@ Route::middleware(['auth', 'verified'])->prefix('master')->name('master.')->grou
     Route::get('employees-letter-pdf/{type}/{id}', [EmployeeController::class, 'hrLetterPdf'])->name('employees.hr-letter.pdf')->middleware('permission:employees.view');
     Route::get('employees-letter-email/{type}/{id}', [EmployeeController::class, 'hrLetterEmail'])->name('employees.hr-letter.email')->middleware('permission:employees.view');
 });
-Route::resource('user-management', UserManagementController::class);
-Route::resource('role-permission', RolePermissionViewController::class);
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('clients', ClientController::class)->names('clients')->middleware('permission:clients.view,clients.create,clients.edit,clients.delete');
