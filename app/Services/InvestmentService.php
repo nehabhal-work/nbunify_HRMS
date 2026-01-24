@@ -274,11 +274,16 @@ class InvestmentService
             'approved4By',
             'nominees.clientFamily',
             'InvestmentInputBank',
-            'standingInstructions'
         ])->findOrFail($id);
 
         $investment->has_approved_si = $investment->standingInstructions()->whereNotNull('approved_by')->exists();
         $investment->is_payout_approved = $investment->has_approved_si && $investment->approved4_by != null;
+
+        if($investment->has_approved_si) {
+            $investment->approved_standing_instructions = $investment->standingInstructions()->whereNotNull('approved_by')->first();
+        } else {
+            $investment->approved_standing_instructions = null;
+        }
 
         if (auth()->id() == $investment->created_by) {
             $investment->is_approved = true;
