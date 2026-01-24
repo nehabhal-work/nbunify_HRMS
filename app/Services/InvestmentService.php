@@ -266,7 +266,7 @@ class InvestmentService
             'fourthClient',
             'scheme',
             'fromCompanyBank',
-            'toClientBank',
+            'toClientBank.client',
             'createdBy',
             'approvedBy',
             'approved2By',
@@ -276,6 +276,7 @@ class InvestmentService
             'InvestmentInputBank',
         ])->findOrFail($id);
 
+        
         $investment->has_approved_si = $investment->standingInstructions()->whereNotNull('approved_by')->exists();
         if($investment->has_approved_si && $investment->approved4_by == null) {
             $investment->is_payout_approved = false;
