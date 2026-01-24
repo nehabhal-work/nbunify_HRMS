@@ -4,10 +4,10 @@ namespace App\Http\Controllers\Investment;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\InvestmentSiRequest;
-use App\Services\InvestmentSiService;
-use App\Services\InvestmentService;
 use App\Services\ClientBankService;
 use App\Services\CompanyService;
+use App\Services\InvestmentService;
+use App\Services\InvestmentSiService;
 use Illuminate\Http\Request;
 
 class InvestmentSiController extends Controller
@@ -17,8 +17,7 @@ class InvestmentSiController extends Controller
         private InvestmentService $investmentService,
         private ClientBankService $clientBankService,
         private CompanyService $companyService,
-    ) {
-    }
+    ) {}
 
     /**
      * Display a listing of the resource.
@@ -55,6 +54,7 @@ class InvestmentSiController extends Controller
             $data = $request->validated();
             $data['created_by'] = auth()->id();
             $this->investmentSiService->create($data);
+
             return redirect()->route('investment.si.index', ['id' => $request->investment_id])->with('success', 'Standing Instruction created successfully.');
         } catch (\Exception $e) {
             return redirect()->back()->withInput()->with('error', $e->getMessage());
@@ -125,18 +125,21 @@ class InvestmentSiController extends Controller
     // }
     public function update(InvestmentSiRequest $request, string $id)
     {
-        $investmentSi = $this->investmentSiService->getById($id);
+        try {
+            $investmentSi = $this->investmentSiService->getById($id);
 
-        $this->investmentSiService->update(
-            $investmentSi,
-            $request->validated()
-        );
+            $this->investmentSiService->update(
+                $investmentSi,
+                $request->validated()
+            );
 
-        return redirect()
-            ->route('investment.si.index', ['id' => $investmentSi->investment_id])
-            ->with('success', 'Standing Instruction updated successfully.');
+            return redirect()
+                ->route('investment.si.index', ['id' => $investmentSi->investment_id])
+                ->with('success', 'Standing Instruction updated successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->withInput()->with('error', $e->getMessage());
+        }
     }
-
 
     /**
      * Remove the specified resource from storage.
@@ -145,6 +148,7 @@ class InvestmentSiController extends Controller
     {
         $investmentSi = $this->investmentSiService->getById($si);
         $this->investmentSiService->delete($investmentSi);
+
         return redirect()->route('investment.si.index', ['id' => $investmentSi->investment_id])->with('success', 'Standing Instruction deleted successfully.');
     }
 
@@ -155,11 +159,10 @@ class InvestmentSiController extends Controller
     {
         try {
             $this->investmentSiService->approve($id);
+
             return redirect()->route('investment.si.index', ['id' => $this->investmentSiService->getById($id)->investment_id])->with('success', 'Standing Instruction approved successfully.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', $e->getMessage());
         }
     }
-
-
 }
