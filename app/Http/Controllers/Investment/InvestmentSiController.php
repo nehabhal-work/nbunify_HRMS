@@ -51,7 +51,6 @@ class InvestmentSiController extends Controller
     // public function store(Request $request)
     public function store(InvestmentSiRequest $request)
     {
-        // return $request;
         try {
             $data = $request->validated();
             $data['created_by'] = auth()->id();

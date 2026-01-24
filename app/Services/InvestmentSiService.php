@@ -119,7 +119,7 @@ class InvestmentSiService
 
         $investment = \App\Models\Investment::findOrFail($investmentSi->investment_id);
 
-        if ($data['instruction_type'] === 'schedule' && $data['si_no_of_payments'] != 1) {
+        if ($data['instruction_type'] === 'schedule' && $data['si_no_of_payments'] != "1") {
             throw new \Exception('Schedule instruction must have exactly 1 payout.');
         }
 
