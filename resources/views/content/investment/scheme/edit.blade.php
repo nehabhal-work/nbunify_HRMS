@@ -221,17 +221,19 @@
                                 <label class="form-label fw-semibold">
                                     Lock-in Period Type <span class="text-danger">*</span>
                                 </label>
+                                {{-- Lock-in Period Type --}}
                                 <select class="form-select @error('lock_in_period_type') is-invalid @enderror"
-                                    name="lock_in_period_type" required>
+                                    name="lock_in_period_type" id="lock_in_period_type" required>
                                     <option value="">Select</option>
-                                    <option value="months" {{ old('lock_in_period_type') == 'months' ? 'selected' : '' }}>
+                                    <option value="months"
+                                        {{ old('lock_in_period_type', $scheme->lock_in_period_type) == 'months' ? 'selected' : '' }}>
                                         Months
                                     </option>
-                                    <option value="years" {{ old('lock_in_period_type') == 'years' ? 'selected' : '' }}>
+                                    <option value="years"
+                                        {{ old('lock_in_period_type', $scheme->lock_in_period_type) == 'years' ? 'selected' : '' }}>
                                         Years
                                     </option>
                                 </select>
-
 
                                 @error('lock_in_period_type')
                                     <small class="text-danger">{{ $message }}</small>
@@ -244,13 +246,11 @@
                                 <label class="form-label fw-semibold">
                                     Lock-in Period <span class="text-danger">*</span>
                                 </label>
-
-
+                                {{-- Lock-in Period --}}
                                 <input type="number" min="1"
                                     class="form-control onlydigit @error('lock_in_period') is-invalid @enderror"
-                                    name="lock_in_period" value="{{ old('lock_in_period') }}" placeholder="Enter period"
-                                    required {{ old('lock_in_period_type') ? '' : 'disabled' }}>
-
+                                    name="lock_in_period" id="lock_in_period"
+                                    value="{{ old('lock_in_period', $scheme->lock_in_period) }}" required>
 
                                 @error('lock_in_period')
                                     <small class="text-danger">{{ $message }}</small>
@@ -324,7 +324,25 @@
             endDate: false // disallow future dates
         });
 
+        $(document).ready(function() {
 
-        
+            function toggleLockInPeriod() {
+                let type = $('#lock_in_period_type').val();
+
+                if (type) {
+                    $('#lock_in_period').prop('disabled', false);
+                } else {
+                    $('#lock_in_period').prop('disabled', true).val('');
+                }
+            }
+
+            // On change
+            $('#lock_in_period_type').on('change', function() {
+                toggleLockInPeriod();
+            });
+
+            // On page load (IMPORTANT for edit page)
+            toggleLockInPeriod();
+        });
     </script>
 @endpush
