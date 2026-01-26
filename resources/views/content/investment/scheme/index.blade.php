@@ -200,6 +200,45 @@
                                 @enderror
                             </div>
 
+                            {{-- Lock-in Period Type --}}
+                            <div class="col-md-2 mb-3">
+                                <label class="form-label fw-semibold">
+                                    Lock-in Period Type <span class="text-danger">*</span>
+                                </label>
+                                <select class="form-select @error('lock_in_period_type') is-invalid @enderror"
+                                    name="lock_in_period_type" id="lock_in_period_type" required>
+                                    <option value="">Select</option>
+                                    <option value="months" {{ old('lock_in_period_type') == 'months' ? 'selected' : '' }}>
+                                        Months
+                                    </option>
+                                    <option value="years" {{ old('lock_in_period_type') == 'years' ? 'selected' : '' }}>
+                                        Years
+                                    </option>
+                                </select>
+
+                                @error('lock_in_period_type')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+
+                            {{-- Lock-in Period --}}
+                            <div class="col-md-2 mb-3">
+                                <label class="form-label fw-semibold">
+                                    Lock-in Period <span class="text-danger">*</span>
+                                </label>
+
+
+                                <input type="number" min="1"
+                                    class="form-control onlydigit @error('lock_in_period') is-invalid @enderror"
+                                    name="lock_in_period" id="lock_in_period" placeholder="Enter period"
+                                    value="{{ old('lock_in_period') }}" required disabled>
+
+                                @error('lock_in_period')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
 
                         </div>
 
@@ -258,10 +297,10 @@
                                             to
                                             {{ \Carbon\Carbon::parse($d->end_date)->format('d-m-Y') }}
                                         </td>
-                                    
+
                                         <td>
                                             <a href="{{ route('investment.scheme.show', $d->id) }}" class="text-reset">
-                                             <b class="text-black">  {{ $d->scheme_name }}</b> 
+                                                <b class="text-black"> {{ $d->scheme_name }}</b>
                                             </a>
                                         </td>
                                         <td>{{ $d->roi_min }}% - {{ $d->roi_max }}%</td>
@@ -425,5 +464,26 @@
         // document.getElementById('start_date').addEventListener('change', function() {
         //     document.getElementById('end_date').setAttribute('min', this.value);
         // });
+
+        $(document).ready(function() {
+
+            function toggleLockInPeriod() {
+                let type = $('#lock_in_period_type').val();
+
+                if (type) {
+                    $('#lock_in_period').prop('disabled', false);
+                } else {
+                    $('#lock_in_period').prop('disabled', true).val('');
+                }
+            }
+
+            // On change
+            $('#lock_in_period_type').on('change', function() {
+                toggleLockInPeriod();
+            });
+
+            // On page load (IMPORTANT for edit page)
+            toggleLockInPeriod();
+        });
     </script>
 @endpush

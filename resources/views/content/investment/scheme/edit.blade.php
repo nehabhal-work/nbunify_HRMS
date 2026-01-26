@@ -52,8 +52,7 @@
                             <div class="col-md-2 mb-3">
                                 <label class="form-label">Start Date <span class="text-danger">*</span></label>
                                 <input type="date" id="start_date"
-                                    class="form-control  @error('start_date') is-invalid @enderror"
-                                    name="start_date" 
+                                    class="form-control  @error('start_date') is-invalid @enderror" name="start_date"
                                     value="{{ old('start_date', \Carbon\Carbon::parse($scheme->start_date)->format('Y-m-d')) }}">
                                 {{-- <input type="date" id="start_date"
                                     class="form-control datepicker1 @error('start_date') is-invalid @enderror"
@@ -217,6 +216,47 @@
                                 @enderror
                             </div>
 
+                            {{-- Lock-in Period Type --}}
+                            <div class="col-md-2 mb-3">
+                                <label class="form-label fw-semibold">
+                                    Lock-in Period Type <span class="text-danger">*</span>
+                                </label>
+                                <select class="form-select @error('lock_in_period_type') is-invalid @enderror"
+                                    name="lock_in_period_type" required>
+                                    <option value="">Select</option>
+                                    <option value="months" {{ old('lock_in_period_type') == 'months' ? 'selected' : '' }}>
+                                        Months
+                                    </option>
+                                    <option value="years" {{ old('lock_in_period_type') == 'years' ? 'selected' : '' }}>
+                                        Years
+                                    </option>
+                                </select>
+
+
+                                @error('lock_in_period_type')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+
+                            {{-- Lock-in Period --}}
+                            <div class="col-md-2 mb-3">
+                                <label class="form-label fw-semibold">
+                                    Lock-in Period <span class="text-danger">*</span>
+                                </label>
+
+
+                                <input type="number" min="1"
+                                    class="form-control onlydigit @error('lock_in_period') is-invalid @enderror"
+                                    name="lock_in_period" value="{{ old('lock_in_period') }}" placeholder="Enter period"
+                                    required {{ old('lock_in_period_type') ? '' : 'disabled' }}>
+
+
+                                @error('lock_in_period')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
                         </div>
 
                         {{-- Submit --}}
@@ -283,5 +323,8 @@
             clearBtn: true,
             endDate: false // disallow future dates
         });
+
+
+        
     </script>
 @endpush
