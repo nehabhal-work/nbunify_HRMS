@@ -49,7 +49,6 @@ class SchemeService
 
     public function create(array $data): SchemesMaster
     {
-        $data['scheme_code'] = $this->generateSchemeCode($data['scheme_name']);
         $data['exit_load_percent'] = $data['exit_load_percent'] ?? 0;
         $data['created_by'] = auth()->id();
         return SchemesMaster::create($data);
@@ -82,6 +81,7 @@ class SchemeService
             } else if ($user->level == 3) {
                 $scheme->approved3_by = auth()->id();
                 $scheme->approved3_on = now();
+                $scheme->scheme_code = $this->generateSchemeCode($scheme->scheme_name);
                 $scheme->save();
             } else {
                 return abort(401, 'User level not found');
