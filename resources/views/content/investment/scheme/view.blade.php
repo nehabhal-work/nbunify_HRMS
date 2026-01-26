@@ -103,24 +103,32 @@
         <!-- Tenure Details -->
         <h6 class="fw-bold mt-3 mb-2">Tenure Details</h6>
         <div class="row gy-2 mb-3">
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="bigtext ">Tenure Type</div>
                 <b>
                     {{ ucfirst($scheme->tenure_type) }}</b>
             </div>
 
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="bigtext ">Minimum Tenure</div>
                 <b>{{ $scheme->tenure_min }}</b>
             </div>
 
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="bigtext ">Maximum Tenure</div>
                 <b>{{ $scheme->tenure_max }}</b>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
                 <div class="bigtext ">Exit Load %</div>
                 <b>{{ $scheme->exit_load_percent }}</b>
+            </div>       
+            <div class="col-md-4">
+                <div class="bigtext ">Lock in Period Type</div>
+                <b>{{ $scheme->lock_in_period_type }}</b>
+            </div>
+            <div class="col-md-4">
+                <div class="bigtext ">Lock in Period</div>
+                <b>{{ $scheme->lock_in_period }}</b>
             </div>
         </div>
 
