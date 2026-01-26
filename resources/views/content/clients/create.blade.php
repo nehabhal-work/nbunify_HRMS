@@ -55,7 +55,7 @@
                         <div class="row">
                             {{-- Full Name --}}
                             <div class="col-md-4 mb-3">
-                                <label class="form-label" for="name">Full Name</label>
+                                <label class="form-label" for="name">Full Name <small class="text-info"> (Full Name as Per Aadhar.) </small></label>
                                 <input type="text" class="form-control onlyalpha @error('name') is-invalid @enderror"
                                     id="name" name="name" maxlength="50" value="{{ old('name') }}" maxlength="50">
                                 @error('name')
@@ -614,7 +614,7 @@
 
                             <!-- aadhar Card front-->
                             <div class="col-md-4 mb-3">
-                                <label class="form-label">aadhar Card front</label>
+                                <label class="form-label">aadhar image</label>
                                 <div class="input-group">
                                     <input type="file" onchange="uploadTempFile(this, 'attachment_aadhar_front')"
                                         class="form-control @error('attachment_aadhar_front') is-invalid @enderror"
@@ -648,7 +648,7 @@
 
                             <!-- aadhar Card back -->
                             <div class="col-md-4 mb-3">
-                                <label class="form-label">aadhar Card Back</label>
+                                <label class="form-label">Mask aadhar image</label>
                                 <div class="input-group">
                                     <input type="file" onchange="uploadTempFile(this, 'attachment_aadhar_back')"
                                         class="form-control @error('attachment_aadhar_back') is-invalid @enderror"
