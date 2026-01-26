@@ -808,6 +808,7 @@ $(document).ready(function () {
 });
 // --------------------END Client family section -------------
 
+// ----------------PAN no api----------
 
 function checkPanExists(pan) {
     pan = pan.trim().toUpperCase();
@@ -830,6 +831,62 @@ function checkPanExists(pan) {
                 $("#pan_no").addClass("is-invalid");
             } else {
                 $("#pan_no").removeClass("is-invalid");
+            }
+        }
+    });
+}
+
+// ----------------Aadhaar no api----------
+
+
+function checkAadharExists(aadhar) {
+    aadhar = aadhar.trim();
+
+    $("#erraadharno").text("");
+
+    if (aadhar.length !== 12) {
+        $("#erraadharno").text("Invalid Aadhaar number");
+        return;
+    }
+
+    $.ajax({
+        url: "/api/check-client-aadhar-exists",
+        method: "POST",
+        data: { aadhar_no: aadhar },
+
+        success: function (response) {
+            if (response.data.exists) {
+                $("#erraadharno").text("Aadhaar already exists in the system!");
+                $("#aadhar_no").addClass("is-invalid");
+            } else {
+                $("#aadhar_no").removeClass("is-invalid");
+            }
+        }
+    });
+}
+// ----------------ckyc no api----------
+
+function checkCKYCExists(ckyc) {
+    ckyc = ckyc.trim();
+
+    $("#errckycno").text("");
+
+    if (ckyc.length !== 14) {
+        $("#errckycno").text("Invalid CKYC number");
+        return;
+    }
+
+    $.ajax({
+        url: "/api/check-client-ckyc-exists",
+        method: "POST",
+        data: { ckyc_no: ckyc },
+
+        success: function (response) {
+            if (response.data.exists) {
+                $("#errckycno").text("CKYC already exists in the system!");
+                $("#ckyc_no").addClass("is-invalid");
+            } else {
+                $("#ckyc_no").removeClass("is-invalid");
             }
         }
     });

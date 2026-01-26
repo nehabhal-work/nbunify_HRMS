@@ -420,77 +420,61 @@
 
 
                 @if ($investment->has_approved_si === true)
-                    <b class="card-title">Approved Standing Instruction Details</b>
+                    <b class="card-title text-warning mb-3">Approved Standing Instruction Details</b>
 
                     <table class="table table-bordered table-sm mb-0 align-middle">
-                        <tbody class="table-light">
-
+                          <thead class="table-light">
+                        <tr>
+                            <th>#</th>
+                            <th>Reference No</th>
+                            <th>Status</th>
+                            <th>Instrument Type</th>
+                            <th>Company Output Bank</th>
+                            <th>Client Input Bank</th>
+                            <th>Payment Start Date</th>
+                            <th>Amount</th>
+                          
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach ($investment->approved_standing_instructions as $d)
                             <tr>
-
-                                <th class="bg-light px-3 py-2">Status</th>
-                                <td class="px-3 py-2">
-                                    <span
-                                        class="fw-semibold badge {{ $investment->approved_standing_instructions->status == 'active' ? 'bg-success-subtle text-success' : 'bg-danger-subtle text-danger' }}">
-                                        {{ ucfirst($investment->approved_standing_instructions->status) }}
-                                    </span>
+                                <td>1</td>
+                                <td>
+                                    <a href="{{ route('investment.si.show', $d->id) }}"
+                                        class="fw-semibold text-primary text-decoration-none">
+                                        {{ $d->si_number }}
+                                    </a>
                                 </td>
-
-
-                                <th class="bg-light px-3 py-2">Reference No</th>
-                                <td class="px-3 py-2 fw-semibold">
-                                    {{ $investment->approved_standing_instructions->si_number ?? '-' }}
+                                <td>
+                                    @if ($d->status === 'active')
+                                        <span class="badge bg-success text-white">
+                                            {{ ucfirst($d->status) }}
+                                        </span>
+                                    @else
+                                        <span class="badge bg-danger text-white">
+                                            {{ ucfirst($d->status) }}
+                                        </span>
+                                    @endif
                                 </td>
+                                <td>{{ $d->instruction_type }}</td>
 
-
+                                <td>{{ $investment->fromCompanyBank->bank_name . ' - ' . $investment->fromCompanyBank->account_number }}
+                                </td>
+                                <td>{{ $investment->ToClientBank->bank_name . ' - ' . $investment->ToClientBank->account_number }}
+                                </td>
+                                <td>{{ \Carbon\Carbon::parse($d->si_start_date)->format('d M Y') }}
+                                </td>
+                                <td>{{ $d->si_amount }}</td>
+              
                             </tr>
+                        @endforeach
 
-                            <tr>
-                                <th class="bg-light px-3 py-2">Company Bank</th>
-                                <td class="px-3 py-2">
-                                    {{ $investment->approved_standing_instructions->siCompanyBank->bank_name ?? '-' }}
-                                    <span class="text-muted">
-                                        –
-                                        {{ $investment->approved_standing_instructions->siCompanyBank->account_number ?? '-' }}
-                                    </span>
-                                </td>
 
-                                <th class="bg-light px-3 py-2">Client Bank</th>
-                                <td class="px-3 py-2">
-                                    {{ $investment->approved_standing_instructions->siClientBank->bank_name ?? '-' }}
-                                    <span class="text-muted">
-                                        –
-                                        {{ $investment->approved_standing_instructions->siClientBank->account_number ?? '-' }}
-                                    </span>
-                                </td>
-
-                            </tr>
-
-                            <tr>
-                                <th class="bg-light px-3 py-2">Payment Start Date</th>
-                                <td class="px-3 py-2">
-                                    {{ $investment->approved_standing_instructions->si_start_date?->format('d M Y') ?? '-' }}
-                                </td>
-
-                                <th class="bg-light px-3 py-2">Payout Count</th>
-                                <td class="px-3 py-2 fw-semibold">
-                                    {{ $investment->approved_standing_instructions->si_no_of_payments ?? '-' }}
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <th class="bg-light px-3 py-2">Amount</th>
-                                <td class="px-3 py-2 fw-bold text-primary">
-                                    ₹ {{ number_format($investment->approved_standing_instructions->si_amount, 2) }}
-                                </td>
-  <th class="bg-light px-3 py-2">Remarks</th>
-                                <td class="px-3 py-3 bg-warning-subtle fst-italic">
-                                    {{ $investment->approved_standing_instructions->remarks ?? '-' }}
-                                </td>
-                            </tr>
-
-                        </tbody>
+                    </tbody>
+                       
                     </table>
-                    <b class="card-title">Payment Schedule</b>
+                    <b class="card-title mt-3">Payment Schedule</b>
                     <div class="table-responsive">
 
                         {{-- <table class="table table-bordered "> --}}
