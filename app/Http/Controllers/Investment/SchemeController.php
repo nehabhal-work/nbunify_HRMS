@@ -33,7 +33,7 @@ class SchemeController extends Controller
      */
     public function show($id)
     {
-        $scheme = $this->schemeService->find($id);
+        $scheme = $this->schemeService->getById($id);
         return view('content.investment.scheme.view', compact('scheme'));
     }
 

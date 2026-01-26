@@ -23,8 +23,7 @@ class SchemeService
             ->orderByDesc('id')->get();
     }
 
-    public function find($id)
-    {
+    public function getById($id) {
         $scheme = SchemesMaster::findOrFail($id);
         if (auth()->id() == $scheme->created_by) {
             $scheme->is_approved = true;
@@ -41,6 +40,11 @@ class SchemeService
             }
         }
         return $scheme;
+    }
+
+    public function find($id)
+    {
+        return SchemesMaster::findOrFail($id);
     }
 
     public function create(array $data): SchemesMaster
