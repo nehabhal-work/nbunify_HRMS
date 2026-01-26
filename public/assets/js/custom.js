@@ -809,28 +809,33 @@ $(document).ready(function () {
 // --------------------END Client family section -------------
 
 // ----------------PAN no api----------
-
 function checkPanExists(pan) {
     pan = pan.trim().toUpperCase();
 
-    $("#errpancardno").text("");
+    $("#errpancardno").text("").removeClass("text-danger text-success");
 
-    if (pan.length !== 10) {
-        $("#errpancardno").text("Invalid PAN number");
+    // PAN format: ABCDE1234F
+    if (!/^[A-Z]{5}[0-9]{4}[A-Z]$/.test(pan)) {
+        $("#errpancardno").text("Invalid PAN number")
+            .addClass("text-danger");
+        $("#pan_no").addClass("is-invalid").removeClass("is-valid");
         return;
     }
 
     $.ajax({
         url: "/api/check-client-pan-exists",
         method: "POST",
-        data: { pan_no: pan, },
+        data: { pan_no: pan },
 
         success: function (response) {
             if (response.data.exists) {
-                $("#errpancardno").text("PAN already exists in the system!");
-                $("#pan_no").addClass("is-invalid");
+                $("#errpancardno").text("PAN already exists in the system!")
+                    .addClass("text-danger");
+                $("#pan_no").addClass("is-invalid").removeClass("is-valid");
             } else {
-                $("#pan_no").removeClass("is-invalid");
+                $("#errpancardno").text("PAN is valid")
+                    .addClass("text-success");
+                $("#pan_no").removeClass("is-invalid").addClass("is-valid");
             }
         }
     });
