@@ -20,6 +20,13 @@ class UserSeeder extends Seeder
                 'role' => 'data-entry'
             ],
             [
+                'email' => 'dataentr2@els.com',
+                'level' => 1,
+                'name' => 'IT Dept 1',
+                'password' => 'password',
+                'role' => 'data-entry'
+            ],
+            [
                 'email' => 'accounts@els.com',
                 'level' => 1,
                 'name' => 'IT Dept - Accounts',
