@@ -38,12 +38,9 @@ class InvestmentService
         // Add maker checker fields
         $data['created_by'] = auth()->id();
 
-        // Generate investment code
-        $data['investment_code'] = $this->generateInvestmentCode($data['scheme_id']);
-
         // Extract only fillable fields for Investment model
         $investmentData = [
-            'investment_code' => $data['investment_code'],
+            'investment_code' => null,
             'investment_date' => $data['investment_date'],
             'investment_type' => $data['investment_type'],
             'first_client_id' => $data['first_client_id'],
@@ -557,6 +554,7 @@ class InvestmentService
             } elseif ($user->level == 3 && $investment->approved3_by == null) {
                 $investment->approved3_by = auth()->id();
                 $investment->approved3_on = now();
+                $investment->investment_code = $this->generateInvestmentCode($investment->scheme_id);
                 $investment->save();
             } else {
                 return abort(401, 'User level not found');
