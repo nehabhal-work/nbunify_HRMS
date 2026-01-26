@@ -52,7 +52,7 @@ class RoleSeeder extends Seeder
                 'slug' => 'data-entry',
                 'description' => 'Basic data entry access',
                 'permissions' => [
-                    'clients.view', 'clients.create', 'clients.edit',
+                    'clients.*',
                     'client-families.view', 'client-families.create', 'client-families.edit',
                     'client-banks.view', 'client-banks.create', 'client-banks.edit',
                     'preclients.*',

@@ -31,7 +31,7 @@ class ClientController extends Controller
 
     public function index()
     {
-        $clients = $this->clientService->getAll()->sortByDesc('id');
+        $clients = $this->clientService->getAll();
         // return $clients;
         return view('content.clients.index', compact('clients'));
     }
