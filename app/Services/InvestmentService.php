@@ -277,13 +277,13 @@ class InvestmentService
 
         $hasStanding = $investment->standingInstructions()
             ->whereNotNull('approved_by')
-            ->where('investment_type', 'standing')
+            ->where('instruction_type', 'standing')
             ->where('status', 'active')
             ->exists();
         
         $hasScheduled = $investment->standingInstructions()
             ->whereNotNull('approved_by')
-            ->where('investment_type', 'schedule')
+            ->where('instruction_type', 'schedule')
             ->where('status', 'active')
             ->exists();
         
