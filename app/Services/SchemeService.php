@@ -16,6 +16,13 @@ class SchemeService
             ->orderByDesc('id')->get();
     }
 
+    public function getAllApproved()
+    {
+        return SchemesMaster::whereNotNull('approved3_by')
+            ->with(relations: ['createdBy', 'approvedBy', 'approved2By', 'approved3By'])
+            ->orderByDesc('id')->get();
+    }
+
     public function find($id)
     {
         $scheme = SchemesMaster::findOrFail($id);

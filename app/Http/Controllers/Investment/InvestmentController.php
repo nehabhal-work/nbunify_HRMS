@@ -49,8 +49,8 @@ class InvestmentController extends Controller
     public function create()
     {
 
-        $scheme = $this->schemeService->getAll();
-        $clients = $this->clientService->getAll();
+        $scheme = $this->schemeService->getAllApproved();
+        $clients = $this->clientService->getAllApproved();
         $companyBanks = $this->companyService->getFirstCompanyBanks();
 
         return view('content.investment.create', compact('scheme', 'clients', 'companyBanks'));
@@ -82,8 +82,8 @@ class InvestmentController extends Controller
     {
         $investment = $this->investmentService->getById($id);
         $paySchdeule = $this->investmentService->getPaymentSchedule($id);
-        $scheme = $this->schemeService->getAll();
-        $clients = $this->clientService->getAll();
+        $scheme = $this->schemeService->getAllApproved();
+        $clients = $this->clientService->getAllApproved();
         $companyBanks = $this->companyService->getFirstCompanyBanks();
 
         $inputBank = \DB::table('investment_input_banks')

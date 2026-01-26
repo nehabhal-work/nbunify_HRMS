@@ -16,6 +16,13 @@ class ClientService
             ->orderByDesc('id')->get();
     }
 
+    public function getAllApproved()
+    {
+        return Client::whereNotNull('approved3_by')
+            ->with(['createdBy', 'approvedBy', 'families', 'banks', 'approved2By', 'approved3By'])
+            ->orderByDesc('id')->get();
+    }
+
     public function getAllExcept(array $clientIds = [])
     {
         return Client::whereNotIn('id', [$clientIds])->get();

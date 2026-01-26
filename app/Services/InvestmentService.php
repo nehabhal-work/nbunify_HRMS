@@ -5,18 +5,17 @@ namespace App\Services;
 use App\Models\Investment;
 use App\Models\InvestmentInputBank;
 use App\Models\InvestmentNominee;
-use App\Models\InvestmentSi;
 use App\Models\InvestmentPayoutSchedule;
+use App\Models\InvestmentSi;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Collection;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 
 class InvestmentService
 {
-    public function __construct(private FileStorageService $fileStorageService)
-    {
-    }
+    public function __construct(private FileStorageService $fileStorageService) {}
+
     public function create(array $data)
     {
         // Transform form data to expected structure
@@ -24,13 +23,13 @@ class InvestmentService
 
         // Validate all data before starting transaction
         $this->validateInvestmentData($data);
-        if (isset($data['input_banks']) && !empty($data['input_banks'])) {
+        if (isset($data['input_banks']) && ! empty($data['input_banks'])) {
             $this->validateInputBanks($data['input_banks']);
         }
-        if (isset($data['nominees']) && !empty($data['nominees'])) {
+        if (isset($data['nominees']) && ! empty($data['nominees'])) {
             $this->validateNominees($data['nominees']);
         }
-        if (isset($data['standing_instructions']) && !empty($data['standing_instructions'])) {
+        if (isset($data['standing_instructions']) && ! empty($data['standing_instructions'])) {
             $this->validateStandingInstructions($data['standing_instructions']);
         }
 
@@ -179,7 +178,7 @@ class InvestmentService
                 'first_payout_date' => $calculatedData['first_payout_date'],
                 'actual_interest_amount' => $calculatedData['actual_interest_amount'],
                 'paid_interest_amount' => $calculatedData['paid_interest_amount'],
-                'rounding_off_amount' => $calculatedData['rounding_off_amount']
+                'rounding_off_amount' => $calculatedData['rounding_off_amount'],
             ]);
 
             if (isset($calculatedData['payout_schedule'])) {
@@ -220,7 +219,7 @@ class InvestmentService
 
     public function getAll(): Collection
     {
-        return Investment::with(['firstClient', 'secondClient', 'thirdClient', 'fourthClient', 'scheme', 'fromCompanyBank', 'toClientBank', 'createdBy', 'approvedBy', 'approved2By', 'approved3By', 'approved4By', 'standingInstructions',])
+        return Investment::with(['firstClient', 'secondClient', 'thirdClient', 'fourthClient', 'scheme', 'fromCompanyBank', 'toClientBank', 'createdBy', 'approvedBy', 'approved2By', 'approved3By', 'approved4By', 'standingInstructions'])
             ->orderByDesc('id')->get();
     }
 
@@ -228,29 +227,29 @@ class InvestmentService
     {
         $query = Investment::with(['firstClient', 'secondClient', 'thirdClient', 'fourthClient', 'scheme', 'fromCompanyBank', 'toClientBank', 'createdBy', 'approvedBy', 'approved2By', 'approved3By', 'approved4By', 'standingInstructions']);
 
-        if (!empty($filters['from_date'])) {
+        if (! empty($filters['from_date'])) {
             $query->whereDate('investment_date', '>=', $filters['from_date']);
         }
 
-        if (!empty($filters['to_date'])) {
+        if (! empty($filters['to_date'])) {
             $query->whereDate('investment_date', '<=', $filters['to_date']);
         }
 
-        if (!empty($filters['scheme_id'])) {
+        if (! empty($filters['scheme_id'])) {
             $query->where('scheme_id', $filters['scheme_id']);
         }
 
-        if (!empty($filters['status'])) {
+        if (! empty($filters['status'])) {
             $query->where('status', $filters['status']);
         }
 
-        if (!empty($filters['action_status'])) {
+        if (! empty($filters['action_status'])) {
             $query->where('action_status', $filters['action_status']);
         }
 
-        if (!empty($filters['client_search'])) {
+        if (! empty($filters['client_search'])) {
             $query->whereHas('firstClient', function ($q) use ($filters) {
-                $q->where('name', 'like', '%' . $filters['client_search'] . '%');
+                $q->where('name', 'like', '%'.$filters['client_search'].'%');
             });
         }
 
@@ -276,16 +275,22 @@ class InvestmentService
             'InvestmentInputBank',
         ])->findOrFail($id);
 
-        
-        $investment->has_approved_si = $investment->standingInstructions()->whereNotNull('approved_by')->exists();
-        if($investment->has_approved_si && $investment->approved4_by == null) {
+        $investment->has_approved_si = $investment->standingInstructions()
+            ->whereNotNull('approved_by')
+            ->where('status', 'active')
+            ->exists();
+
+        if ($investment->has_approved_si && $investment->approved4_by == null) {
             $investment->is_payout_approved = false;
         } else {
-            $investment->is_payout_approved = true;    
+            $investment->is_payout_approved = true;
         }
 
-        if($investment->has_approved_si) {
-            $investment->approved_standing_instructions = $investment->standingInstructions()->whereNotNull('approved_by')->first();
+        if ($investment->has_approved_si) {
+            $investment->approved_standing_instructions = $investment->standingInstructions()
+                ->whereNotNull('approved_by')
+                ->where('status', 'active')
+                ->get();
         } else {
             $investment->approved_standing_instructions = null;
         }
@@ -296,9 +301,9 @@ class InvestmentService
             $user = User::find(auth()->id());
             if ($user->level == 1) {
                 $investment->is_approved = $investment->approved_by != null;
-            } else if ($user->level == 2 && $investment->approved_by != null) {
+            } elseif ($user->level == 2 && $investment->approved_by != null) {
                 $investment->is_approved = $investment->approved2_by != null;
-            } else if ($user->level == 3 && $investment->approved2_by != null) {
+            } elseif ($user->level == 3 && $investment->approved2_by != null) {
                 $investment->is_approved = $investment->approved3_by != null;
             } else {
                 $investment->is_approved = true;
@@ -315,7 +320,7 @@ class InvestmentService
         // Add serial numbers to payout schedules
         $totalSchedules = $payschedule->payoutSchedules->count();
         $payschedule->payoutSchedules->each(function ($schedule, $index) use ($totalSchedules, $payschedule) {
-            $schedule->sr_no = ($index + 1) . '/' . $totalSchedules;
+            $schedule->sr_no = ($index + 1).'/'.$totalSchedules;
             // If the previous schedule is paid, enable marking this as paid else disable
             if ($index === 0) {
                 // First schedule can always be marked as paid
@@ -371,7 +376,7 @@ class InvestmentService
             'monthly' => ['divisor' => 12, 'months_multiplier' => 1, 'years_multiplier' => 12, 'add_months' => 1],
             'quarterly' => ['divisor' => 4, 'months_multiplier' => 1 / 3, 'years_multiplier' => 4, 'add_months' => 3],
             'half-yearly' => ['divisor' => 2, 'months_multiplier' => 1 / 6, 'years_multiplier' => 2, 'add_months' => 6],
-            'yearly' => ['divisor' => 1, 'months_multiplier' => 1 / 12, 'years_multiplier' => 1, 'add_years' => 1]
+            'yearly' => ['divisor' => 1, 'months_multiplier' => 1 / 12, 'years_multiplier' => 1, 'add_years' => 1],
         ];
 
         // CALCULATE PAYOUT PER PERIOD, SCHEDULE COUNT AND FIRST PAYOUT DATE
@@ -512,14 +517,15 @@ class InvestmentService
         return $data;
     }
 
-    public function approvePayouts($id) {
+    public function approvePayouts($id)
+    {
         $investment = Investment::findOrFail($id);
 
-        if($investment->approved3_by == null) {
-            throw new \Exception("Investment must be approved level 3 before approving payouts.");
+        if ($investment->approved3_by == null) {
+            throw new \Exception('Investment must be approved level 3 before approving payouts.');
         }
-        if($investment->approved4_by != null) {
-            throw new \Exception("Investment payouts are already approved.");
+        if ($investment->approved4_by != null) {
+            throw new \Exception('Investment payouts are already approved.');
         }
         $investment->approved4_by = auth()->id();
         $investment->approved4_on = now();
@@ -535,11 +541,11 @@ class InvestmentService
                 $investment->approved_by = auth()->id();
                 $investment->approved_at = now();
                 $investment->save();
-            } else if ($user->level == 2 && $investment->approved2_by == null) {
+            } elseif ($user->level == 2 && $investment->approved2_by == null) {
                 $investment->approved2_by = auth()->id();
                 $investment->approved2_on = now();
                 $investment->save();
-            } else if ($user->level == 3 && $investment->approved3_by == null) {
+            } elseif ($user->level == 3 && $investment->approved3_by == null) {
                 $investment->approved3_by = auth()->id();
                 $investment->approved3_on = now();
                 $investment->save();
@@ -556,7 +562,7 @@ class InvestmentService
         $required = ['investment_date', 'investment_type', 'first_client_id', 'scheme_id', 'investment_amount', 'tenure_type', 'tenure_count', 'frequency', 'roi_percent', 'from_company_bank_id', 'to_client_bank_id'];
 
         foreach ($required as $field) {
-            if (!isset($data[$field]) || empty($data[$field])) {
+            if (! isset($data[$field]) || empty($data[$field])) {
                 throw new \InvalidArgumentException("Required field '{$field}' is missing or empty.");
             }
         }
@@ -568,7 +574,7 @@ class InvestmentService
             $required = ['from_client_bank_id', 'to_company_bank_id', 'instrument_type', 'client_instrument_date', 'amount', 'company_instrument_date'];
 
             foreach ($required as $field) {
-                if (!isset($inputBank[$field]) || ($inputBank[$field] === '' || $inputBank[$field] === null)) {
+                if (! isset($inputBank[$field]) || ($inputBank[$field] === '' || $inputBank[$field] === null)) {
                     throw new \InvalidArgumentException("Required field '{$field}' is missing in input bank #{$index}.");
                 }
             }
@@ -589,7 +595,7 @@ class InvestmentService
             $required = ['client_family_id', 'percent'];
 
             foreach ($required as $field) {
-                if (!isset($nominee[$field]) || ($nominee[$field] === '' || $nominee[$field] === null)) {
+                if (! isset($nominee[$field]) || ($nominee[$field] === '' || $nominee[$field] === null)) {
                     throw new \InvalidArgumentException("Required field '{$field}' is missing in nominee #{$index}.");
                 }
             }
@@ -612,7 +618,7 @@ class InvestmentService
         $required = ['si_number', 'si_client_bank_id', 'si_company_bank_id', 'si_start_date', 'si_amount', 'si_no_of_payments'];
 
         foreach ($required as $field) {
-            if (!isset($siData[$field]) || ($siData[$field] === '' || $siData[$field] === null)) {
+            if (! isset($siData[$field]) || ($siData[$field] === '' || $siData[$field] === null)) {
                 throw new \InvalidArgumentException("Required field '{$field}' is missing in standing instructions.");
             }
         }
@@ -626,7 +632,7 @@ class InvestmentService
             $count = count($data['instrument']);
 
             for ($i = 0; $i < $count; $i++) {
-                if (!empty($data['instrument'][$i])) {
+                if (! empty($data['instrument'][$i])) {
                     // Handle file upload - store temporarily and get URL
                     $attachmentUrl = null;
                     if (isset($data['instrumentImage'][$i]) && $data['instrumentImage'][$i]) {
@@ -634,7 +640,7 @@ class InvestmentService
                         if ($file instanceof \Illuminate\Http\UploadedFile) {
                             // Store file temporarily and get URL
                             $tempPath = $file->store('temp/instruments', 'public');
-                            $attachmentUrl = asset('storage/' . $tempPath);
+                            $attachmentUrl = asset('storage/'.$tempPath);
                         }
                     }
 
@@ -672,14 +678,14 @@ class InvestmentService
             $count = count($data['client_family_id']);
 
             for ($i = 0; $i < $count; $i++) {
-                if (!empty($data['client_family_id'][$i])) {
+                if (! empty($data['client_family_id'][$i])) {
                     $nominee = [
                         'client_family_id' => $data['client_family_id'][$i],
                         'percent' => $data['percent'][$i] ?? 0,
                     ];
 
                     // Only add guardian if provided and not empty
-                    if (isset($data['guardian_client_family_id'][$i]) && !empty($data['guardian_client_family_id'][$i])) {
+                    if (isset($data['guardian_client_family_id'][$i]) && ! empty($data['guardian_client_family_id'][$i])) {
                         $nominee['guardian_client_family_id'] = $data['guardian_client_family_id'][$i];
                     } else {
                         // Default to self if no guardian provided
@@ -697,15 +703,12 @@ class InvestmentService
         // Handle TDS attachment file upload
         if (isset($data['attachment_tds']) && $data['attachment_tds'] instanceof \Illuminate\Http\UploadedFile) {
             $tempPath = $data['attachment_tds']->store('temp/tds', 'public');
-            $data['attachment_tds_url'] = asset('storage/' . $tempPath);
+            $data['attachment_tds_url'] = asset('storage/'.$tempPath);
             unset($data['attachment_tds']);
         }
 
         return $data;
     }
-
-
-
 
     // {
     //     $data['annual_payout'] = ($data['investment_amount'] * ($data['roi_percent'] + $data['additional_roi_percent'] ?? 0)) / 100;
@@ -862,11 +865,11 @@ class InvestmentService
     private function generateInvestmentCode(int $schemeId): string
     {
         $scheme = \App\Models\SchemesMaster::findOrFail($schemeId);
-        $baseCode = $scheme->scheme_code . '-';
+        $baseCode = $scheme->scheme_code.'-';
         $counter = 1;
 
         do {
-            $code = $baseCode . str_pad($counter, 3, '0', STR_PAD_LEFT);
+            $code = $baseCode.str_pad($counter, 3, '0', STR_PAD_LEFT);
             $counter++;
         } while (Investment::where('investment_code', $code)->exists());
 
