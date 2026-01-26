@@ -94,7 +94,7 @@
 
                     <tr>
                         <th>Schedule Count</th>
-                        <td><b>{{ $investment->si_no_of_payments }}</b></td>
+                        <td><b>{{ $investment->schedule_count }}</b></td>
 
                         <th>Investment Amount</th>
                         <td><b>₹ {{ number_format($investment->investment_amount, 2) }}</b></td>
@@ -240,7 +240,7 @@
                                 </label>
                                 <input type="number" id="originalPayoutCount" name="si_no_of_payments"
                                     class="form-control bg-secondary-subtle @error('si_no_of_payments') is-invalid @enderror"
-                                    value="{{ $investment->si_no_of_payments ?? 1 }}" hidden readonly>
+                                    value="{{ $investment->schedule_count ?? 1 }}" hidden readonly>
                                 <input type="number" name="si_no_of_payments" id="scheduleCount"
                                     class="form-control  @error('si_no_of_payments') is-invalid @enderror">
                             </div>
@@ -379,6 +379,7 @@
                             <th>#</th>
                             <th>Reference No</th>
                             <th>Status</th>
+                            <th>Instrument Type</th>
                             <th>Company Bank</th>
                             <th>Client Bank</th>
                             <th>Payment Start Date</th>
@@ -413,7 +414,7 @@
                                         </span>
                                     @endif
                                 </td>
-
+                                <td>{{ $d->instruction_type }}</td>
 
                                 <td>{{ $investment->fromCompanyBank->bank_name . ' - ' . $investment->fromCompanyBank->account_number }}
                                 </td>

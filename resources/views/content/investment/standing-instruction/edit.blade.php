@@ -77,14 +77,15 @@
                                 <select class="form-select @error('instruction_type') is-invalid @enderror"
                                     name="instruction_type" id="instructionType" required>
                                     <option value="standing"
-                                        {{ $investment->instruction_type === 'standing' ? 'selected' : '' }}>
+                                        {{ $investmentSi->instruction_type === 'standing' ? 'selected' : '' }}>
                                         standing
                                     </option>
                                     <option value="schedule"
-                                        {{ $investment->instruction_type === 'schedule' ? 'selected' : '' }}>
+                                        {{ $investmentSi->instruction_type === 'schedule' ? 'selected' : '' }}>
                                         schedule
                                     </option>
                                 </select>
+
                             </div>
                             <!-- Company Bank -->
                             <div class="col-md-3">
@@ -141,19 +142,39 @@
                                     value="{{ $investmentSi->si_amount }}" readonly>
                             </div>
 
+                            {{-- <div class="col-md-3">
+                                <label class="form-label">
+                                    Payout Count <span class="text-danger">*</span>
+                                </label>
+                                <input type="number" id="originalPayoutCount" name="si_no_of_payments"
+                                    class="form-control bg-secondary-subtle @error('si_no_of_payments') is-invalid @enderror"
+                                    value="{{ $investment->schedule_count ?? 1 }}" hidden readonly>
+                                <input type="number" name="si_no_of_payments" id="scheduleCount"
+                                    class="form-control  @error('si_no_of_payments') is-invalid @enderror">
+
+                                </div> --}}
                             <div class="col-md-3">
                                 <label class="form-label">
                                     Payout Count <span class="text-danger">*</span>
                                 </label>
 
-                                {{-- source value (DO NOT submit) --}}
+                                {{-- ORIGINAL value (reference only, NOT submitted) --}}
                                 <input type="number" id="originalPayoutCount"
                                     value="{{ $investment->schedule_count ?? 1 }}" hidden>
 
-                                {{-- visible + submitted field --}}
-                                <input type="number" name="schedule_count" id="scheduleCount"
-                                    class="form-control @error('schedule_count') is-invalid @enderror">
+                                {{-- VISIBLE + SUBMITTED --}}
+                                <input type="number" name="si_no_of_payments" id="scheduleCount"
+                                    class="form-control @error('si_no_of_payments') is-invalid @enderror"
+                                    value="{{ $investment->schedule_count ?? '-' }}">
                             </div>
+
+                            {{-- source value (DO NOT submit) --}}
+                            {{-- <input type="number" id="originalPayoutCount"
+                                    value="{{ $investment->schedule_count ?? 1 }}" hidden> --}}
+
+                            {{-- visible + submitted field --}}
+                            {{-- <input type="number" name="schedule_count" id="scheduleCount"
+                                    class="form-control @error('schedule_count') is-invalid @enderror"> --}}
 
 
                             <!-- Instruction Image -->
@@ -343,6 +364,6 @@
         }
 
         instructionType.addEventListener('change', applyRules);
-        applyRules(); // critical for edit mode
+        applyRules(); // MUST run on edit load
     </script>
 @endpush

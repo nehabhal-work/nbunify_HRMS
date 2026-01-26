@@ -115,8 +115,10 @@
                             </tr>
 
                             <tr>
+                                <th class="bg-light px-3 py-2">Instruction Type</th>
+                                <td class="text-warning"> <b> {{ $investmentSi->instruction_type }}</b></td>
                                 <th class="bg-light px-3 py-2">Remarks</th>
-                                <td colspan="3" class="px-3 py-3 bg-warning-subtle fst-italic">
+                                <td  class="px-3 py-3 bg-warning-subtle fst-italic">
                                     {{ $investmentSi->remarks ?? '-' }}
                                 </td>
                             </tr>
@@ -124,21 +126,21 @@
                         </tbody>
                     </table>
 
-                       <div class="p-3 text-end">
-@if ($investmentSi->status === 'active' && $investmentSi->is_approved != 1)
-                        {{-- show approve button --}}
-                        <form action="{{ route('investment.si.approve', $investmentSi->id) }}" method="post">
-                            @csrf
-                            @method('PUT')
-                            <button type="submit" class="btn btn-success px-4">
-                                Approve
-                            </button>
+                    <div class="p-3 text-end">
+                        @if ($investmentSi->status === 'active' && $investmentSi->is_approved != 1)
+                            {{-- show approve button --}}
+                            <form action="{{ route('investment.si.approve', $investmentSi->id) }}" method="post">
+                                @csrf
+                                @method('PUT')
+                                <button type="submit" class="btn btn-success px-4">
+                                    Approve
+                                </button>
 
-                        </form>
-                    @else
-                        {{-- hide button --}}
-                    @endif
-                </div>
+                            </form>
+                        @else
+                            {{-- hide button --}}
+                        @endif
+                    </div>
                 </div>
 
             </div>
