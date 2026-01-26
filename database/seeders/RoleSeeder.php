@@ -35,7 +35,8 @@ class RoleSeeder extends Seeder
                 'permissions' => [
                     'clients.view', 'clients.approve', 'clients.edit','clients.create',
                     'client-families.view', 'client-banks.view',
-                    'schemes.view', 'schemes.approve', 'investments.view', 'investments.approve', 'investment-si.view', 'investment-si.approve',
+                    'schemes.view', 'schemes.create', 'schemes.edit','schemes.approve',
+                    'investments.view', 'investments.approve', 'investment-si.view', 'investment-si.approve',
                     'vendors.view', 'purchases.view', 'sales.view', 'expenses.view', 'ledger.view'
                 ]
             ],
@@ -57,6 +58,7 @@ class RoleSeeder extends Seeder
                     'client-families.view', 'client-families.create', 'client-families.edit',
                     'client-banks.view', 'client-banks.create', 'client-banks.edit',
                     'preclients.*',
+                    'schemes.view', 'schemes.create', 'schemes.edit','schemes.approve',
                     'investments.*',
                     'investment-si.view', 'investment-si.create', 'investment-si.edit'
                 ]
