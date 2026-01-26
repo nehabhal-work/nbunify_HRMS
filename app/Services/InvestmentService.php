@@ -275,10 +275,19 @@ class InvestmentService
             'InvestmentInputBank',
         ])->findOrFail($id);
 
-        $investment->has_approved_si = $investment->standingInstructions()
+        $hasStanding = $investment->standingInstructions()
             ->whereNotNull('approved_by')
+            ->where('investment_type', 'standing')
             ->where('status', 'active')
             ->exists();
+        
+        $hasScheduled = $investment->standingInstructions()
+            ->whereNotNull('approved_by')
+            ->where('investment_type', 'schedule')
+            ->where('status', 'active')
+            ->exists();
+        
+        $investment->has_approved_si = $hasStanding && $hasScheduled;
 
         if ($investment->has_approved_si && $investment->approved4_by == null) {
             $investment->is_payout_approved = false;
