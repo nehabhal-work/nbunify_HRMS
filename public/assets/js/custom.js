@@ -836,16 +836,17 @@ function checkPanExists(pan) {
     });
 }
 
-// ----------------Aadhaar no api----------
-
+// ---------------- Aadhaar no api ----------------
 
 function checkAadharExists(aadhar) {
     aadhar = aadhar.trim();
 
-    $("#erraadharno").text("");
+    $("#erraadharno").text("").removeClass("text-danger text-success");
 
-    if (aadhar.length !== 12) {
-        $("#erraadharno").text("Invalid Aadhaar number");
+    if (!/^\d{12}$/.test(aadhar)) {
+        $("#erraadharno").text("Invalid Aadhaar number")
+            .addClass("text-danger");
+        $("#aadhar_no").addClass("is-invalid").removeClass("is-valid");
         return;
     }
 
@@ -856,23 +857,29 @@ function checkAadharExists(aadhar) {
 
         success: function (response) {
             if (response.data.exists) {
-                $("#erraadharno").text("Aadhaar already exists in the system!");
-                $("#aadhar_no").addClass("is-invalid");
+                $("#erraadharno").text("Aadhaar already exists in the system!")
+                    .addClass("text-danger");
+                $("#aadhar_no").addClass("is-invalid").removeClass("is-valid");
             } else {
-                $("#aadhar_no").removeClass("is-invalid");
+                $("#erraadharno").text("Aadhaar is valid")
+                    .addClass("text-success");
+                $("#aadhar_no").removeClass("is-invalid").addClass("is-valid");
             }
         }
     });
 }
-// ----------------ckyc no api----------
+
+// ---------------- CKYC no api ----------------
 
 function checkCKYCExists(ckyc) {
     ckyc = ckyc.trim();
 
-    $("#errckycno").text("");
+    $("#errckycno").text("").removeClass("text-danger text-success");
 
-    if (ckyc.length !== 14) {
-        $("#errckycno").text("Invalid CKYC number");
+    if (!/^\d{14}$/.test(ckyc)) {
+        $("#errckycno").text("Invalid CKYC number")
+            .addClass("text-danger");
+        $("#ckyc_no").addClass("is-invalid").removeClass("is-valid");
         return;
     }
 
@@ -883,14 +890,18 @@ function checkCKYCExists(ckyc) {
 
         success: function (response) {
             if (response.data.exists) {
-                $("#errckycno").text("CKYC already exists in the system!");
-                $("#ckyc_no").addClass("is-invalid");
+                $("#errckycno").text("CKYC already exists in the system!")
+                    .addClass("text-danger");
+                $("#ckyc_no").addClass("is-invalid").removeClass("is-valid");
             } else {
-                $("#ckyc_no").removeClass("is-invalid");
+                $("#errckycno").text("CKYC is valid")
+                    .addClass("text-success");
+                $("#ckyc_no").removeClass("is-invalid").addClass("is-valid");
             }
         }
     });
 }
+
 
 // --------------Listing scrollable-------------------
 

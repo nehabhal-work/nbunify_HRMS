@@ -230,7 +230,7 @@
 
 
                             {{-- Aadhaar No. --}}
-                            <div class="col-md-2 mb-3">
+                            {{-- <div class="col-md-2 mb-3">
                                 <label class="form-label" for="aadhar_no">Aadhaar No.</label>
                                 <input type="text"
                                     class="form-control onlydigit @error('aadhar_no') is-invalid @enderror" id="aadhar_no"
@@ -238,11 +238,24 @@
                                 @error('aadhar_no')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
+                            </div> --}}
+                            <div class="col-md-2 mb-3">
+                                <label class="form-label" for="aadhar_no">Aadhaar No.</label>
+                                <input type="text"
+                                    class="form-control onlydigit @error('aadhar_no') is-invalid @enderror" id="aadhar_no"
+                                    name="aadhar_no" maxlength="12" value="{{ old('aadhar_no') }}"
+                                    onblur="checkAadharExists(this.value)">
+
+                                @error('aadhar_no')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                                <span id="erraadharno" class="small"></span>
                             </div>
 
 
+
                             {{-- CKYC No --}}
-                            <div class="col-md-2 mb-3">
+                            {{-- <div class="col-md-2 mb-3">
                                 <label class="form-label" for="ckyc_no">CKYC No.</label>
                                 <input type="text"
                                     class="form-control onlydigit @error('ckyc_no') is-invalid @enderror" id="ckyc_no"
@@ -250,7 +263,20 @@
                                 @error('ckyc_no')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
+                            </div> --}}
+                            <div class="col-md-2 mb-3">
+                                <label class="form-label" for="ckyc_no">CKYC No.</label>
+                                <input type="text"
+                                    class="form-control onlydigit @error('ckyc_no') is-invalid @enderror" id="ckyc_no"
+                                    name="ckyc_no" maxlength="14" value="{{ old('ckyc_no') }}"
+                                    onblur="checkCKYCExists(this.value)">
+
+                                @error('ckyc_no')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                                <span id="errckycno" class="small"></span>
                             </div>
+
 
 
 
