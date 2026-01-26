@@ -51,6 +51,7 @@
                         <table class="table table-bordered srkdataTable">
                             <thead class="table-light">
                                 <tr>
+                                    <th hidden>#</th>
                                     <th>client-code</th>
                                     <th>Client name</th>
                                     <th>pan no</th>
@@ -68,6 +69,9 @@
                             <tbody>
                                 @foreach ($clients as $d)
                                     <tr>
+                                        <td hidden>
+                                            {{ $loop->iteration }}
+                                        </td>
                                         <td>
                                             <a href="{{ route('clients.edit', $d->id) }}" class="text-reset">
                                                 {{ $d->client_code }}
@@ -227,4 +231,5 @@
 @endsection
 
 @push('scripts')
+
 @endpush
