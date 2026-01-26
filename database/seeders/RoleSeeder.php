@@ -33,7 +33,8 @@ class RoleSeeder extends Seeder
                 'slug' => 'manager',
                 'description' => 'Manager with approval permissions',
                 'permissions' => [
-                    'clients.view', 'clients.approve', 'client-families.view', 'client-banks.view',
+                    'clients.view', 'clients.approve', 'clients.edit','clients.create',
+                    'client-families.view', 'client-banks.view',
                     'schemes.view', 'schemes.approve', 'investments.view', 'investments.approve', 'investment-si.view', 'investment-si.approve',
                     'vendors.view', 'purchases.view', 'sales.view', 'expenses.view', 'ledger.view'
                 ]
@@ -52,7 +53,7 @@ class RoleSeeder extends Seeder
                 'slug' => 'data-entry',
                 'description' => 'Basic data entry access',
                 'permissions' => [
-                    'clients.*',
+                    'clients.view', 'clients.approve', 'clients.edit','clients.create',
                     'client-families.view', 'client-families.create', 'client-families.edit',
                     'client-banks.view', 'client-banks.create', 'client-banks.edit',
                     'preclients.*',
