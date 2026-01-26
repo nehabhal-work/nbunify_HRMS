@@ -15,6 +15,7 @@ class SchemesMasterRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'scheme_code'    => ['nullable', 'string', 'max:50'],
             'start_date'     => ['required', 'date'],
             'end_date'       => ['required', 'date', 'after_or_equal:start_date'],
 
@@ -29,9 +30,12 @@ class SchemesMasterRequest extends FormRequest
             'tenure_min'     => ['required', 'integer', 'min:1'],
             'tenure_max'     => ['required', 'integer', 'gte:tenure_min'],
 
-            // ⭐ MULTIPLE FREQUENCIES
             'frequency'      => ['required', 'array'],
             'frequency.*'    => ['in:monthly,quarterly,half-yearly,yearly,compounding'],
+
+            'exit_load_percent' => ['nullable', 'numeric', 'min:0', 'max:100'],
+            'lock_in_period'    => ['nullable', 'integer', 'min:0'],
+            'lock_in_period_type' => ['nullable', 'in:days,months,years'],
         ];
     }
     public function messages(): array
