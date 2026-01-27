@@ -13,7 +13,7 @@
     </style>
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h4 class="fw-bold py-3 mb-4">
-            <span class="text-muted fw-light">Master /</span> <a href="{{ route('clients.create') }}">Client view</a>
+            <span class="text-muted fw-light">Master /</span>>Client view</a>
         </h4>
     </div>
     {{-- {{ $client }} --}}
