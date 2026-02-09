@@ -58,49 +58,49 @@ class UserSeeder extends Seeder
                 'email' => 'sanjanajrcl@els.com',
                 'level' => 1,
                 'name' => 'Sanjana - JR CL',
-                'password' => 'K8mN2pQ7xZ9v',
+                'password' => 'sanjana123',
                 'role' => 'data-entry'
             ],
             [
                 'email' => 'sulochana@els.com',
                 'level' => 1,
                 'name' => 'Sulochana - JR CR',
-                'password' => 'R5tY8uI3oP1a',
+                'password' => 'sulochana123',
                 'role' => 'data-entry'
             ],
             [
                 'email' => 'sanjanam@els.com',
                 'level' => 1,
                 'name' => 'Sanjana M - SR CR',
-                'password' => 'L9wE6rT4yU2i',
+                'password' => 'sanjana123',
                 'role' => 'data-entry'
             ],
             [
                 'email' => 'sulochanab@els.com',
                 'level' => 1,
                 'name' => 'Sulochana B - SR CR',
-                'password' => 'M3nB7vC1xZ5k',
+                'password' => 'sulochana123',
                 'role' => 'data-entry'
             ],
             [
                 'email' => 'mandar@els.com',
                 'level' => 2,
                 'name' => 'Mandar - Supervisor',
-                'password' => 'Q6hJ9gF2dS8a',
+                'password' => 'mandar123',
                 'role' => 'manager'
             ],
             [
                 'email' => 'mandard@els.com',
                 'level' => 2,
                 'name' => 'Mandard - JR Officer',
-                'password' => 'P4kL7mN0bV3c',
+                'password' => 'mandar123',
                 'role' => 'manager'
             ],
             [
                 'email' => 'mandark@els.com',
                 'level' => 3,
                 'name' => 'Mandark - SR Officer',
-                'password' => 'X8zA5sD2fG9h',
+                'password' => 'mandar123',
                 'role' => 'admin'
             ],
         ];
