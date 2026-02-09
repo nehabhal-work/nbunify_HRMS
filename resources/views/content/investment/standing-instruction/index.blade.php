@@ -151,6 +151,7 @@
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
+                            <!-- Instruction Type -->
                             <div class="col-md-3">
                                 <label class="form-label">
                                     Instruction Type <span class="text-danger">*</span>
@@ -159,11 +160,11 @@
                                     name="instruction_type" id="instructionType" required>
                                     <option value="standing"
                                         {{ $investment->instruction_type === 'standing' ? 'selected' : '' }}>
-                                        standing
+                                        Standing
                                     </option>
                                     <option value="schedule"
                                         {{ $investment->instruction_type === 'schedule' ? 'selected' : '' }}>
-                                        schedule
+                                        Schedule
                                     </option>
                                 </select>
                             </div>
@@ -203,8 +204,8 @@
                             </div>
 
                             <!-- Payment Start Date -->
-                            <div class="col-md-3">
-                                <label class="form-label">
+                            <div class="col-md-3" id="startDateWrapper">
+                                <label class="form-label" id="startDateLabel">
                                     Start Date <span class="text-danger">*</span>
                                 </label>
                                 <input type="date" name="si_start_date"
@@ -212,9 +213,10 @@
                                     value="{{ $investment->first_payout_date ? \Carbon\Carbon::parse($investment->first_payout_date)->format('Y-m-d') : '' }}"
                                     readonly>
                             </div>
-                            <!-- Payment End Date -->
-                            <div class="col-md-3">
-                                <label class="form-label">
+
+                            <!-- Payment End / Payout Date -->
+                            <div class="col-md-3" id="endDateWrapper">
+                                <label class="form-label" id="endDateLabel">
                                     End Date <span class="text-danger">*</span>
                                 </label>
                                 <input type="date" name="si_end_date"
@@ -550,6 +552,34 @@
     </script>
 
 
+    <script>
+        function toggleInstructionFields() {
+            const type = document.getElementById('instructionType').value;
+
+            const startWrapper = document.getElementById('startDateWrapper');
+            const endLabel = document.getElementById('endDateLabel');
+
+            if (type === 'schedule') {
+                // Hide start date
+                startWrapper.style.display = 'none';
+
+                // Change end date label
+                endLabel.innerHTML = 'Payout Date <span class="text-danger">*</span>';
+            } else {
+                // Show start date
+                startWrapper.style.display = 'block';
+
+                // Reset label
+                endLabel.innerHTML = 'End Date <span class="text-danger">*</span>';
+            }
+        }
+
+        // On change
+        document.getElementById('instructionType').addEventListener('change', toggleInstructionFields);
+
+        // On page load
+        document.addEventListener('DOMContentLoaded', toggleInstructionFields);
+    </script>
 
 
 
