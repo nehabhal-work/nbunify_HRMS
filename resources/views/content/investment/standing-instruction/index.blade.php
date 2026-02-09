@@ -331,7 +331,7 @@
                                 <label class="form-label">
                                     Status <span class="text-danger">*</span>
                                 </label>
-                                <select name="status" class="form-control @error('status') is-invalid @enderror">
+                                <select name="status" class="form-select @error('status') is-invalid @enderror">
                                     {{-- <option value="">Select Status</option> --}}
                                     <option value="active" {{ old('status') == 'active' ? 'selected' : '' }}>Active
                                     </option>
@@ -340,6 +340,24 @@
                                 </select>
 
                                 @error('status')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <!-- intruction -->
+                            <div class="col-md-3">
+                                <label class="form-label">
+                                    intruction <span class="text-danger">*</span>
+                                </label>
+                                <select name="intruction" class="form-select @error('intruction') is-invalid @enderror">
+                                    {{-- <option value="">Select Status</option> --}}
+                                    <option value="maturity" {{ old('status') == 'maturity' ? 'selected' : '' }}>maturity
+                                    </option>
+                                    <option value="other" {{ old('status') == 'other' ? 'selected' : '' }}>other
+                                    </option>
+                                </select>
+
+                                @error('intruction')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
