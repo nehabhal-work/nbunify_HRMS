@@ -78,6 +78,31 @@
                                 @enderror
                             </div>
 
+
+                            <!-- Scheme Name Type -->
+                            <div class="col-md-4 mb-3">
+                                <label for="name_type" class="form-label">
+                                    Scheme Name type <span class="text-danger">*</span>
+                                </label>
+
+                                <select name="name_type" id="name_type"
+                                    class="form-select @error('name_type') is-invalid @enderror" required>
+                                    <option value="">-- Select Scheme --</option>
+
+                                    @foreach (config('scheme.name_types') as $code => $label)
+                                        <option value="{{ $code }}"
+                                            {{ old('name_type') == $code ? 'selected' : '' }}>
+                                            {{ $label }}
+                                        </option>
+                                    @endforeach
+                                </select>
+
+                                @error('name_type')
+                                    <span class="invalid-feedback">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+
                             <!-- Min ROI -->
                             <div class="col-md-2 mb-3">
                                 <label for="roi_min" class="form-label">Min ROI (%)</label>
@@ -169,7 +194,7 @@
                             <div class="col-md-4 mb-3">
                                 <label for="frequency" class="form-label">Payout Frequency <span
                                         class="text-danger">*</span></label>
-                                <select name="frequency[]" id="frequency" multiple
+                                <select name="frequency[]" id="frequency"
                                     class="form-control select2 @error('frequency') is-invalid @enderror">
                                     <option value="monthly" {{ old('frequency') == 'monthly' ? 'selected' : '' }}
                                         selected>Monthly

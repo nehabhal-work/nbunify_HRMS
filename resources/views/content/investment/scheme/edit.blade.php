@@ -87,6 +87,32 @@
                                 @enderror
                             </div>
 
+
+                            <!-- Scheme Name Type -->
+                            <div class="col-md-4 mb-3">
+                                <label for="name_type" class="form-label">
+                                    Scheme Name Type <span class="text-danger">*</span>
+                                </label>
+
+                                <select name="name_type" id="name_type"
+                                    class="form-select @error('name_type') is-invalid @enderror" required>
+                                    <option value="">-- Select Scheme --</option>
+
+                                    @foreach (config('scheme.name_types') as $code => $label)
+                                        <option value="{{ $code }}"
+                                            {{ old('name_type', $scheme->name_type ?? '') == $code ? 'selected' : '' }}>
+                                            {{ $label }}
+                                        </option>
+                                    @endforeach
+                                </select>
+
+                                @error('name_type')
+                                    <span class="invalid-feedback">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+
+
                             {{-- Min ROI --}}
                             <div class="col-md-2 mb-3">
                                 <label class="form-label">Min ROI (%)</label>
@@ -180,7 +206,7 @@
                             {{-- Frequency --}}
                             <div class="col-md-4 mb-3">
                                 <label class="form-label">Payout Frequency <span class="text-danger">*</span></label>
-                                <select name="frequency[]" multiple
+                                <select name="frequency[]"
                                     class="form-control select2 @error('frequency') is-invalid @enderror">
 
                                     @php
@@ -203,6 +229,9 @@
                                     <span class="invalid-feedback">{{ $message }}</span>
                                 @enderror
                             </div>
+
+
+
 
                             <!-- exit_load_percent -->
                             <div class="col-md-2 mb-3">
