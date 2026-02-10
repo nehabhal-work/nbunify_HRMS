@@ -20,6 +20,7 @@ class SchemesMasterRequest extends FormRequest
             'end_date'       => ['required', 'date', 'after_or_equal:start_date'],
 
             'scheme_name'    => ['required', 'string', 'max:100'],
+            'name_type'      => ['required', 'string', 'in:' . implode(',', array_keys(config('scheme.name_types')))],
 
             'roi_min'        => ['required', 'numeric', 'min:0'],
             'roi_max'        => ['required', 'numeric', 'min:0', 'gte:roi_min'],

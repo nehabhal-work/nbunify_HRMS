@@ -16,7 +16,8 @@ class SchemeController extends Controller
     public function index()
     {
         $schemes = $this->schemeService->getAll();
-        return view('content.investment.scheme.index', compact('schemes'));
+        $nameTypes = config('scheme.name_types');
+        return view('content.investment.scheme.index', compact('schemes', 'nameTypes'));
     }
 
     /**
@@ -34,7 +35,8 @@ class SchemeController extends Controller
     public function show($id)
     {
         $scheme = $this->schemeService->getById($id);
-        return view('content.investment.scheme.view', compact('scheme'));
+        $nameTypes = config('scheme.name_types');
+        return view('content.investment.scheme.view', compact('scheme', 'nameTypes'));
     }
 
     /**
@@ -43,7 +45,8 @@ class SchemeController extends Controller
     public function edit($id)
     {
         $scheme = $this->schemeService->find($id);
-        return view('content.investment.scheme.edit', compact('scheme'));
+        $nameTypes = config('scheme.name_types');
+        return view('content.investment.scheme.edit', compact('scheme', 'nameTypes'));
     }
 
     /**

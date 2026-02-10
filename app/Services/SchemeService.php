@@ -81,7 +81,7 @@ class SchemeService
             } else if ($user->level == 3) {
                 $scheme->approved3_by = auth()->id();
                 $scheme->approved3_on = now();
-                $scheme->scheme_code = $this->generateSchemeCode($scheme->scheme_name);
+                $scheme->scheme_code = $this->generateSchemeCode($scheme);
                 $scheme->save();
             } else {
                 return abort(401, 'User level not found');
@@ -102,13 +102,16 @@ class SchemeService
         return SchemesMaster::whereNotNull('approved_by')->get();
     }
 
-    public function generateSchemeCode(string $schemeName): string
+    public function generateSchemeCode(SchemesMaster $scheme): string
     {
-        $baseCode = 'ELS-' . strtoupper(substr(preg_replace('/\s+/', '', $schemeName), 0, 3)) . '-';
+        $periodCodes = config('scheme.period_codes');
+        $periodCode = $periodCodes[$scheme->frequency[0]] ?? '00';
+        
+        $baseCode = '530020' . $scheme->name_type . $periodCode;
         $counter = 1;
 
         do {
-            $code = $baseCode . str_pad($counter, 4, '0', STR_PAD_LEFT);
+            $code = $baseCode . str_pad($counter, 2, '0', STR_PAD_LEFT);
             $counter++;
         } while (SchemesMaster::where('scheme_code', $code)->exists());
 

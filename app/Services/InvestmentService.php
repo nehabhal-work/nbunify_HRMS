@@ -482,42 +482,17 @@ class InvestmentService
 
             $data['rounding_off_amount'] = $data['actual_interest_amount'] - $data['paid_interest_amount'];
 
-            if ($returnPrincipalWithInterest) {
-                $data['payout_schedule'][] = [
-                    'payout_date' => $data['maturity_date']->toDateString(),
-                    'amount' => round($data['payout_per_period'], 0),
-                    'actual_payout_date' => null,
-                    'status' => 'pending',
-                    'remarks' => null,
-                    'actual_payout_amount' => 0,
-                    'utr_no' => null,
-                    'company_bank_id' => null,
-                    'client_bank_id' => null,
-                ];
-                $data['payout_schedule'][] = [
-                    'payout_date' => $data['maturity_date']->toDateString(),
-                    'amount' => round($data['investment_amount'] + $data['rounding_off_amount'], 0),
-                    'actual_payout_date' => null,
-                    'status' => 'pending',
-                    'remarks' => null,
-                    'actual_payout_amount' => 0,
-                    'utr_no' => null,
-                    'company_bank_id' => null,
-                    'client_bank_id' => null,
-                ];
-            } else {
-                $data['payout_schedule'][] = [
-                    'payout_date' => $data['maturity_date']->toDateString(),
-                    'amount' => round($data['investment_amount'] + $data['rounding_off_amount'], 0),
-                    'actual_payout_date' => null,
-                    'status' => 'pending',
-                    'remarks' => null,
-                    'actual_payout_amount' => 0,
-                    'utr_no' => null,
-                    'company_bank_id' => null,
-                    'client_bank_id' => null,
-                ];
-            }
+            $data['payout_schedule'][] = [
+                'payout_date' => $data['maturity_date']->toDateString(),
+                'amount' => round($data['payout_per_period'] + $data['rounding_off_amount'], 0),
+                'actual_payout_date' => null,
+                'status' => 'pending',
+                'remarks' => null,
+                'actual_payout_amount' => 0,
+                'utr_no' => null,
+                'company_bank_id' => null,
+                'client_bank_id' => null,
+            ];
         }
 
         return $data;

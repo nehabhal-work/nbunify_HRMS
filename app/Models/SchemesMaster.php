@@ -13,6 +13,7 @@ class SchemesMaster extends Model
         'start_date',
         'end_date',
         'scheme_name',
+        'name_type',
         'roi_min',
         'roi_max',
         'roi_min_additional',
