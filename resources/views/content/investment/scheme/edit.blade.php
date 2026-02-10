@@ -89,7 +89,7 @@
 
 
                             <!-- Scheme Name Type -->
-                            <div class="col-md-4 mb-3">
+                            <div class="col-md-2 mb-3">
                                 <label for="name_type" class="form-label">
                                     Scheme Name Type <span class="text-danger">*</span>
                                 </label>
@@ -111,6 +111,31 @@
                                 @enderror
                             </div>
 
+
+                            <div class="col-md-2 mb-3">
+                                <label for="investment_category" class="form-label">
+                                    Investment Category <span class="text-danger">*</span>
+                                </label>
+
+                                <select name="investment_category" id="investment_category"
+                                    class="form-select @error('investment_category') is-invalid @enderror" required>
+                                    <option value="">-- Select Category --</option>
+
+                                    <option value="individual"
+                                        {{ old('investment_category', $scheme->investment_category ?? '') == 'individual' ? 'selected' : '' }}>
+                                        Individual
+                                    </option>
+
+                                    <option value="joint"
+                                        {{ old('investment_category', $scheme->investment_category ?? '') == 'joint' ? 'selected' : '' }}>
+                                        Joint
+                                    </option>
+                                </select>
+
+                                @error('investment_category')
+                                    <span class="invalid-feedback">{{ $message }}</span>
+                                @enderror
+                            </div>
 
 
                             {{-- Min ROI --}}
@@ -163,7 +188,8 @@
                             {{-- Tenure Type --}}
                             <div class="col-md-2 mb-3">
                                 <label class="form-label">Tenure Type <span class="text-danger">*</span></label>
-                                <select name="tenure_type" class="form-control @error('tenure_type') is-invalid @enderror">
+                                <select name="tenure_type"
+                                    class="form-control @error('tenure_type') is-invalid @enderror">
                                     <option value="" disabled>Select Tenure Type</option>
                                     <option value="days"
                                         {{ old('tenure_type', $scheme->tenure_type) == 'days' ? 'selected' : '' }}>Days
@@ -285,6 +311,51 @@
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
+
+                            <div class="col-md-2 mb-3">
+                                <label class="form-label">
+                                    Min Investment <span class="text-danger">*</span>
+                                </label>
+
+                                <input type="number" name="min_investment"
+                                    class="form-control @error('min_investment') is-invalid @enderror" x min="0"
+                                    value="{{ old('min_investment', $scheme->min_investment ?? '') }}">
+
+                                @error('min_investment')
+                                    <span class="invalid-feedback">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-2 mb-3">
+                                <label class="form-label">
+                                    Max Investment <span class="text-danger">*</span>
+                                </label>
+
+                                <input type="number" name="max_investment"
+                                    class="form-control @error('max_investment') is-invalid @enderror" min="0"
+                                    value="{{ old('max_investment', $scheme->max_investment ?? '') }}">
+
+                                @error('max_investment')
+                                    <span class="invalid-feedback">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+
+                            <div class="col-md-2 mb-3">
+                                <label class="form-label">
+                                    Investment Multiple
+                                </label>
+
+                                <input type="number" name="multiple_off"
+                                    class="form-control @error('multiple_off') is-invalid @enderror" min="1"
+                                    value="{{ old('multiple_off', $scheme->multiple_off ?? '') }}">
+
+                                @error('multiple_off')
+                                    <span class="invalid-feedback">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+
 
                         </div>
 

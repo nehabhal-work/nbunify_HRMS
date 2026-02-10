@@ -234,13 +234,13 @@
 
                             <div class="col-md-3">
                                 <label class="form-label">
-                                    Payout Count <span class="text-danger">*</span>{{ $investment->schedule_count ?? 1 }}
+                                    Payout Count
                                 </label>
-                                <input type="number" id="originalPayoutCount" name="si_no_of_payments"
+                                <input type="text" id="originalPayoutCount" name="si_no_of_payments"
                                     class="form-control bg-secondary-subtle @error('si_no_of_payments') is-invalid @enderror"
-                                    value="{{ $investment->schedule_count ?? 1 }}" hidden readonly>
-                                <input type="number" name="si_no_of_payments" id="scheduleCount"
-                                    class="form-control  @error('si_no_of_payments') is-invalid @enderror">
+                                    value="{{ $investment->schedule_count ?? 1 }}" hidden1 readonly>
+                                <input type="number" name="si_no_of_payments" id="scheduleCount" hidden
+                                    class="form-control   @error('si_no_of_payments') is-invalid @enderror">
                             </div>
 
 
