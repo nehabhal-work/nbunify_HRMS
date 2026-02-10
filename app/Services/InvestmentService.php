@@ -280,7 +280,14 @@ class InvestmentService
             ->where('status', 'active')
             ->exists();
 
-        $hasScheduled = true;
+        // TODO: If last payout date starts with 01 then we can consider hasScheduled as true otherwise we need to check payout schedule table for any approved standing instruction and if exists then we can consider hasScheduled as true
+        $hasScheduled = $investment->last_payout_date && str_starts_with($investment->last_payout_date->format('d'), '01')
+            ? true
+            : $investment->standingInstructions()
+                ->whereNotNull('approved_by')
+                ->where('instruction_type', 'schedule')
+                ->where('status', 'active')
+                ->exists();
 
         $investment->has_approved_si = $hasStanding && $hasScheduled;
 
@@ -383,8 +390,6 @@ class InvestmentService
             'yearly' => ['divisor' => 1, 'months_multiplier' => 1 / 12, 'years_multiplier' => 1, 'add_years' => 1],
         ];
 
-        $earlyPayout = false;
-
         // CALCULATE PAYOUT PER PERIOD, SCHEDULE COUNT AND FIRST PAYOUT DATE
         if ($data['tenure_type'] == 'days') {
             // FOR DAILY TENURE, WE ASSUME LUMP SUM PAYMENT AT MATURITY
@@ -404,7 +409,6 @@ class InvestmentService
                 $data['first_payout_date'] = $investmentDate->day < 20
                     ? $investmentDate->copy()->addMonths(1)->startOfMonth()
                     : $investmentDate->copy()->addMonths(2)->startOfMonth();
-                $earlyPayout = $investmentDate->day >= 20;
             } elseif (isset($config['add_years'])) {
                 $data['first_payout_date'] = $investmentDate->copy()->addYears($config['add_years'])->startOfMonth();
             } else {
@@ -420,6 +424,7 @@ class InvestmentService
             $data['last_payout_date'] = $data['maturity_date'];
         }
         $data['payout_schedule'] = [];
+        $earlyPayout = false;
 
         if ($data['schedule_count'] == 1) {
             $data['last_payout_date'] = $data['first_payout_date'];
