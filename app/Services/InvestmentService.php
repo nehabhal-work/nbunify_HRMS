@@ -280,11 +280,7 @@ class InvestmentService
             ->where('status', 'active')
             ->exists();
 
-        $hasScheduled = $investment->standingInstructions()
-            ->whereNotNull('approved_by')
-            ->where('instruction_type', 'schedule')
-            ->where('status', 'active')
-            ->exists();
+        $hasScheduled = true;
 
         $investment->has_approved_si = $hasStanding && $hasScheduled;
 
