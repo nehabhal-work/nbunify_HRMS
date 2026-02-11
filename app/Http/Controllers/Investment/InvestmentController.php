@@ -21,7 +21,8 @@ class InvestmentController extends Controller
         private SchemeService $schemeService,
         private ClientService $clientService,
         private CompanyService $companyService,
-    ) {}
+    ) {
+    }
 
     /**
      * Display a listing of the resource.
@@ -52,7 +53,7 @@ class InvestmentController extends Controller
         $scheme = $this->schemeService->getAllApproved();
         $clients = $this->clientService->getAllApproved();
         $companyBanks = $this->companyService->getFirstCompanyBanks();
-
+        return $scheme;
         return view('content.investment.create', compact('scheme', 'clients', 'companyBanks'));
     }
 

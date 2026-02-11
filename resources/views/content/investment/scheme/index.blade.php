@@ -103,23 +103,23 @@
                             </div>
 
                             <div class="col-md-2 mb-3">
-                                <label for="investment_category" class="form-label">
-                                    Investment Category <span class="text-danger">*</span>
+                                <label for="investment_type" class="form-label">
+                                    Investment type <span class="text-danger">*</span>
                                 </label>
 
-                                <select name="investment_category" id="investment_category"
-                                    class="form-select @error('investment_category') is-invalid @enderror" required>
+                                <select name="investment_type" id="investment_type"
+                                    class="form-select @error('investment_type') is-invalid @enderror" required>
                                     <option value="">-- Select Category --</option>
-                                    <option value="individual"
-                                        {{ old('investment_category') == 'individual' ? 'selected' : '' }}>
+                                    <option value="single"
+                                        {{ old('investment_type') == 'single' ? 'selected' : '' }}>
                                         Individual
                                     </option>
-                                    <option value="joint" {{ old('investment_category') == 'joint' ? 'selected' : '' }}>
+                                    <option value="joint" {{ old('investment_type') == 'joint' ? 'selected' : '' }}>
                                         Joint
                                     </option>
                                 </select>
 
-                                @error('investment_category')
+                                @error('investment_type')
                                     <span class="invalid-feedback">{{ $message }}</span>
                                 @enderror
                             </div>
@@ -312,9 +312,9 @@
                                 @enderror
                             </div>
 
-                            <div class="col-md-2 mb-3">
+                            <div class="col-md-3 mb-3">
                                 <label class="form-label">
-                                    Multiple_off value
+                                 Investment Multiple off value
                                 </label>
                                 <input type="number" name="multiple_off"
                                     class="form-control @error('multiple_off') is-invalid @enderror" min="1"
