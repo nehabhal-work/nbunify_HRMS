@@ -423,56 +423,56 @@
                     <b class="card-title text-warning mb-3">Approved Standing Instruction Details</b>
 
                     <table class="table table-bordered table-sm mb-0 align-middle">
-                          <thead class="table-light">
-                        <tr>
-                            <th>#</th>
-                            <th>Reference No</th>
-                            <th>Status</th>
-                            <th>Instrument Type</th>
-                            <th>Company Output Bank</th>
-                            <th>Client Input Bank</th>
-                            <th>Payment Start Date</th>
-                            <th>Amount</th>
-                          
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($investment->approved_standing_instructions as $d)
+                        <thead class="table-light">
                             <tr>
-                                <td>1</td>
-                                <td>
-                                    <a href="{{ route('investment.si.show', $d->id) }}"
-                                        class="fw-semibold text-primary text-decoration-none">
-                                        {{ $d->si_number }}
-                                    </a>
-                                </td>
-                                <td>
-                                    @if ($d->status === 'active')
-                                        <span class="badge bg-success text-white">
-                                            {{ ucfirst($d->status) }}
-                                        </span>
-                                    @else
-                                        <span class="badge bg-danger text-white">
-                                            {{ ucfirst($d->status) }}
-                                        </span>
-                                    @endif
-                                </td>
-                                <td>{{ $d->instruction_type }}</td>
+                                <th>#</th>
+                                <th>Reference No</th>
+                                <th>Status</th>
+                                <th>Instrument Type</th>
+                                <th>Company Output Bank</th>
+                                <th>Client Input Bank</th>
+                                <th>Payment Start Date</th>
+                                <th>Amount</th>
 
-                                <td>{{ $investment->fromCompanyBank->bank_name . ' - ' . $investment->fromCompanyBank->account_number }}
-                                </td>
-                                <td>{{ $investment->ToClientBank->bank_name . ' - ' . $investment->ToClientBank->account_number }}
-                                </td>
-                                <td>{{ \Carbon\Carbon::parse($d->si_start_date)->format('d M Y') }}
-                                </td>
-                                <td>{{ $d->si_amount }}</td>
-              
                             </tr>
-                        @endforeach
+                        </thead>
+                        <tbody>
+                            @foreach ($investment->approved_standing_instructions as $d)
+                                <tr>
+                                    <td>1</td>
+                                    <td>
+                                        <a href="{{ route('investment.si.show', $d->id) }}"
+                                            class="fw-semibold text-primary text-decoration-none">
+                                            {{ $d->si_number }}
+                                        </a>
+                                    </td>
+                                    <td>
+                                        @if ($d->status === 'active')
+                                            <span class="badge bg-success text-white">
+                                                {{ ucfirst($d->status) }}
+                                            </span>
+                                        @else
+                                            <span class="badge bg-danger text-white">
+                                                {{ ucfirst($d->status) }}
+                                            </span>
+                                        @endif
+                                    </td>
+                                    <td>{{ $d->instruction_type }}</td>
+
+                                    <td>{{ $investment->fromCompanyBank->bank_name . ' - ' . $investment->fromCompanyBank->account_number }}
+                                    </td>
+                                    <td>{{ $investment->ToClientBank->bank_name . ' - ' . $investment->ToClientBank->account_number }}
+                                    </td>
+                                    <td>{{ \Carbon\Carbon::parse($d->si_start_date)->format('d M Y') }}
+                                    </td>
+                                    <td>{{ $d->si_amount }}</td>
+
+                                </tr>
+                            @endforeach
 
 
-                    </tbody>
-                       
+                        </tbody>
+
                     </table>
                     <b class="card-title mt-3">Payment Schedule</b>
                     <div class="table-responsive">

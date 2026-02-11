@@ -78,6 +78,55 @@
                                 @enderror
                             </div>
 
+
+                            <!-- Scheme Name Type -->
+                            <div class="col-md-2 mb-3">
+                                <label for="name_type" class="form-label">
+                                    Scheme Name type <span class="text-danger">*</span>
+                                </label>
+
+                                <select name="name_type" id="name_type"
+                                    class="form-select @error('name_type') is-invalid @enderror" required>
+                                    <option value="">-- Select Scheme --</option>
+
+                                    @foreach (config('scheme.name_types') as $code => $label)
+                                        <option value="{{ $code }}"
+                                            {{ old('name_type') == $code ? 'selected' : '' }}>
+                                            {{ $label }}
+                                        </option>
+                                    @endforeach
+                                </select>
+
+                                @error('name_type')
+                                    <span class="invalid-feedback">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-2 mb-3">
+                                <label for="investment_category" class="form-label">
+                                    Investment Category <span class="text-danger">*</span>
+                                </label>
+
+                                <select name="investment_category" id="investment_category"
+                                    class="form-select @error('investment_category') is-invalid @enderror" required>
+                                    <option value="">-- Select Category --</option>
+                                    <option value="individual"
+                                        {{ old('investment_category') == 'individual' ? 'selected' : '' }}>
+                                        Individual
+                                    </option>
+                                    <option value="joint" {{ old('investment_category') == 'joint' ? 'selected' : '' }}>
+                                        Joint
+                                    </option>
+                                </select>
+
+                                @error('investment_category')
+                                    <span class="invalid-feedback">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+
+
+
                             <!-- Min ROI -->
                             <div class="col-md-2 mb-3">
                                 <label for="roi_min" class="form-label">Min ROI (%)</label>
@@ -169,7 +218,7 @@
                             <div class="col-md-4 mb-3">
                                 <label for="frequency" class="form-label">Payout Frequency <span
                                         class="text-danger">*</span></label>
-                                <select name="frequency[]" id="frequency" multiple
+                                <select name="frequency[]" id="frequency"
                                     class="form-control select2 @error('frequency') is-invalid @enderror">
                                     <option value="monthly" {{ old('frequency') == 'monthly' ? 'selected' : '' }}
                                         selected>Monthly
@@ -236,6 +285,42 @@
 
                                 @error('lock_in_period')
                                     <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-2 mb-3">
+                                <label class="form-label">
+                                    Min Investment value <span class="text-danger">*</span>
+                                </label>
+                                <input type="number" name="min_investment"
+                                    class="form-control @error('min_investment') is-invalid @enderror" min="0"
+                                    value="{{ old('min_investment') }}">
+                                @error('min_investment')
+                                    <span class="invalid-feedback">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-2 mb-3">
+                                <label class="form-label">
+                                    Max Investment value <span class="text-danger">*</span>
+                                </label>
+                                <input type="number" name="max_investment"
+                                    class="form-control @error('max_investment') is-invalid @enderror" min="0"
+                                    value="{{ old('max_investment') }}">
+                                @error('max_investment')
+                                    <span class="invalid-feedback">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-2 mb-3">
+                                <label class="form-label">
+                                    Multiple_off value
+                                </label>
+                                <input type="number" name="multiple_off"
+                                    class="form-control @error('multiple_off') is-invalid @enderror" min="1"
+                                    value="{{ old('multiple_off') }}">
+                                @error('multiple_off')
+                                    <span class="invalid-feedback">{{ $message }}</span>
                                 @enderror
                             </div>
 

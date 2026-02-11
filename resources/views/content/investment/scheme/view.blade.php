@@ -121,7 +121,7 @@
             <div class="col-md-4">
                 <div class="bigtext ">Exit Load %</div>
                 <b>{{ $scheme->exit_load_percent }}</b>
-            </div>       
+            </div>
             <div class="col-md-4">
                 <div class="bigtext ">Lock in Period Type</div>
                 <b>{{ $scheme->lock_in_period_type }}</b>
@@ -141,7 +141,7 @@
         </b>
 
 
-       
+
 
         <div class="p-3 text-end">
             @if (!$scheme->is_approved)

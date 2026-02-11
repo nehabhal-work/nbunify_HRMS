@@ -33,10 +33,6 @@
         <a href="{{ route('investment.els.index') }}" class="btn btn-secondary px-4">Go back</a>
 
     </div>
-    <style>
-
-
-    </style>
     <form action="{{ route('investment.si.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('post')
@@ -221,7 +217,7 @@
                                 </label>
                                 <input type="date" name="si_end_date"
                                     class="form-control bg-secondary-subtle @error('si_end_date') is-invalid @enderror"
-                                    value="{{ $investment->maturity_date ? \Carbon\Carbon::parse($investment->maturity_date)->format('Y-m-d') : '' }}"
+                                    value="{{ $investment->last_payout_date ? \Carbon\Carbon::parse($investment->last_payout_date)->format('Y-m-d') : '' }}"
                                     readonly>
                             </div>
 
@@ -238,13 +234,13 @@
 
                             <div class="col-md-3">
                                 <label class="form-label">
-                                    Payout Count <span class="text-danger">*</span>
+                                    Payout Count
                                 </label>
-                                <input type="number" id="originalPayoutCount" name="si_no_of_payments"
+                                <input type="text" id="originalPayoutCount" name="si_no_of_payments"
                                     class="form-control bg-secondary-subtle @error('si_no_of_payments') is-invalid @enderror"
-                                    value="{{ $investment->schedule_count ?? 1 }}" hidden readonly>
-                                <input type="number" name="si_no_of_payments" id="scheduleCount"
-                                    class="form-control  @error('si_no_of_payments') is-invalid @enderror">
+                                    value="{{ $investment->schedule_count ?? 1 }}" hidden1 readonly>
+                                <input type="number" name="si_no_of_payments" id="scheduleCount" hidden
+                                    class="form-control   @error('si_no_of_payments') is-invalid @enderror">
                             </div>
 
 
@@ -558,7 +554,8 @@
                 // background for readonly state
                 scheduleCount.classList.add('bg-secondary', 'bg-opacity-10');
             } else {
-                scheduleCount.value = Math.max(originalPayout - 1, 0);
+                scheduleCount.value = Math.max(originalPayout, 0);
+                // scheduleCount.value = Math.max(originalPayout - 1, 0);
                 scheduleCount.readOnly = false;
 
                 scheduleCount.classList.remove('bg-secondary', 'bg-opacity-10');
