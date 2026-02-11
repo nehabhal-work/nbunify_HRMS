@@ -100,7 +100,6 @@
                                     required name="first_client_id" id="first_client_id">
                                     <option value="">Select Holder</option>
                                     @foreach ($clients as $d)
-                                       
                                         <option value="{{ $d->id }}"
                                             {{ old('client_id') == $d->id ? 'selected' : '' }}
                                             data-banks='@json($d->banks)'
@@ -140,7 +139,7 @@
                                         @foreach ($clients as $d)
                                             <option value="{{ $d->id }}"
                                                 {{ old('third_client_id') == $d->id ? 'selected' : '' }}
-                                                   data-banks='@json($d->banks)'
+                                                data-banks='@json($d->banks)'
                                                 data-families='@json($d->families)'>
                                                 {{ ucfirst(strtolower($d->name)) }}
                                             </option>
@@ -156,7 +155,7 @@
                                         @foreach ($clients as $d)
                                             <option value="{{ $d->id }}"
                                                 {{ old('fourth_client_id') == $d->id ? 'selected' : '' }}
-                                                   data-banks='@json($d->banks)'
+                                                data-banks='@json($d->banks)'
                                                 data-families='@json($d->families)'>
                                                 {{ ucfirst(strtolower($d->name)) }}
                                             </option>
@@ -251,17 +250,18 @@
                             </div>
 
                             <!-- Frequency -->
+
                             <div class="col-md-2">
                                 <label for="frequency" class="form-label">Frequency *</label>
-                                <select class="form-select @error('frequency') is-invalid @enderror" name="frequency"
-                                    id="frequency" required>
-                                    <!-- Loaded via jQuery -->
-                                </select>
+                                <input type="text"
+                                    class="form-control bg-secondary-subtle @error('frequency') is-invalid @enderror"
+                                    name="frequency" id="frequency" readonly>
 
                                 @error('frequency')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
+
 
                             <!-- ROI  -->
                             <div class="col-md-2 d-none" id="roi-wrapper">
@@ -342,8 +342,6 @@
                                 <label class="form-label fw-semibold">
                                     Lock-in Period <span class="text-danger">*</span>
                                 </label>
-
-
                                 <input type="number" min="1"
                                     class="form-control onlydigit @error('lock_in_period') is-invalid @enderror"
                                     name="lock_in_period" id="lock_in_period" placeholder="Enter period"
@@ -372,7 +370,7 @@
                             <!-- Remarks -->
                             <div class="col-md-4">
                                 <label class="form-label">
-                                    Remarks 
+                                    Remarks
                                 </label>
                                 <textarea name="remarks" rows="2" class="form-control @error('remarks') is-invalid @enderror"
                                     placeholder="Write remarks">{{ old('remarks') }}</textarea>

@@ -53,16 +53,13 @@ class InvestmentController extends Controller
         $scheme = $this->schemeService->getAllApproved();
         $clients = $this->clientService->getAllApproved();
         $companyBanks = $this->companyService->getFirstCompanyBanks();
-<<<<<<< HEAD
-        return $scheme;
-=======
+        // return $scheme;
     
         if ($scheme->isEmpty() || $clients->isEmpty() || empty($companyBanks)) {
             return redirect()->route('investment.els.index')
                 ->with('error', 'Cannot create investment. Please ensure there are approved schemes, clients, and company banks.');
         }
 
->>>>>>> 061d8181fb0c401c66590b3a409d2a1da6a43638
         return view('content.investment.create', compact('scheme', 'clients', 'companyBanks'));
     }
 
