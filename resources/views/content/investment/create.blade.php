@@ -62,10 +62,10 @@
                             <!-- Investment Date -->
                             <div class="col-md-2">
                                 <label for="investment_date" class="form-label">Investment Date</label>
-                                <input type="date"
-                                    class="form-control invDate @error('investment_date') is-invalid @enderror"
-                                    name="investment_date" id="investment_date"
-                                    value="{{ old('investment_date', date('Y-m-d')) }}" max="{{ date('Y-m-d') }}">
+                                <input type="date" class="form-control invDate" name="investment_date"
+                                    id="investment_date" value="{{ old('investment_date', date('Y-m-d')) }}"
+                                    max="{{ date('Y-m-d') }}">
+
 
                                 @error('investment_date')
                                     <small class="text-danger">{{ $message }}</small>
@@ -316,20 +316,14 @@
                             </div>
 
                             {{-- Lock-in Period Type --}}
+
                             <div class="col-md-2 mb-3">
                                 <label class="form-label fw-semibold">
                                     Lock-in Period Type <span class="text-danger">*</span>
                                 </label>
-                                <select class="form-select @error('lock_in_period_type') is-invalid @enderror"
-                                    name="lock_in_period_type" id="lock_in_period_type" required>
-                                    <option value="">Select</option>
-                                    <option value="months" {{ old('lock_in_period_type') == 'months' ? 'selected' : '' }}>
-                                        Months
-                                    </option>
-                                    <option value="years" {{ old('lock_in_period_type') == 'years' ? 'selected' : '' }}>
-                                        Years
-                                    </option>
-                                </select>
+                                <input type="text"
+                                    class="form-control bg-secondary-subtle @error('lock_in_period_type') is-invalid @enderror"
+                                    name="lock_in_period_type" id="lock_in_period_type" readonly>
 
                                 @error('lock_in_period_type')
                                     <small class="text-danger">{{ $message }}</small>
@@ -337,20 +331,22 @@
                             </div>
 
 
+
                             {{-- Lock-in Period --}}
+
                             <div class="col-md-2 mb-3">
                                 <label class="form-label fw-semibold">
                                     Lock-in Period <span class="text-danger">*</span>
                                 </label>
-                                <input type="number" min="1"
-                                    class="form-control onlydigit @error('lock_in_period') is-invalid @enderror"
-                                    name="lock_in_period" id="lock_in_period" placeholder="Enter period"
-                                    value="{{ old('lock_in_period') }}" required disabled>
+                                <input type="number"
+                                    class="form-control bg-secondary-subtle @error('lock_in_period') is-invalid @enderror"
+                                    name="lock_in_period" id="lock_in_period" readonly>
 
                                 @error('lock_in_period')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
+
 
 
 
@@ -979,21 +975,25 @@
                         $.each(response, function(key, s) {
 
                             $schemeSelect.append(`
-                        <option value="${s.id}"
-                            data-tenure-type="${s.tenure_type}"
-                            data-min-tenure="${s.tenure_min}"
-                            data-max-tenure="${s.tenure_max}"
-                            data-frequencies='${JSON.stringify(s.frequency)}'
-                            data-min-roi="${s.roi_min}"
-                            data-max-roi="${s.roi_max}"
-                            data-addi-roi-min="${s.roi_min_additional}"
-                            data-addi-roi-max="${s.roi_max_additional}"
-                            data-scheme-name="${s.scheme_name}"
-                            data-start-date="${s.start_date}"
-                            data-end-date="${s.end_date}">
-                            ${s.scheme_name}
-                        </option>
-                    `);
+    <option value="${s.id}"
+        data-tenure-type="${s.tenure_type}"
+        data-min-tenure="${s.tenure_min}"
+        data-max-tenure="${s.tenure_max}"
+        data-frequencies='${JSON.stringify(s.frequency)}'
+        data-min-roi="${s.roi_min}"
+        data-max-roi="${s.roi_max}"
+        data-addi-roi-min="${s.roi_min_additional}"
+        data-addi-roi-max="${s.roi_max_additional}"
+        data-lock-in-period="${s.lock_in_period}"
+data-lock-in-period-type="${s.lock_in_period_type}"
+
+        data-scheme-name="${s.scheme_name}"
+        data-start-date="${s.start_date}"
+        data-end-date="${s.end_date}">
+        ${s.scheme_name}
+    </option>
+`);
+
                         });
                     }
 
@@ -1074,6 +1074,49 @@
                 }
             });
 
+        });
+    </script>
+    <script>
+        $('#scheme_id').on('change', function() {
+
+            let selected = $(this).find(':selected');
+
+            let lockInPeriod = selected.data('lock-in-period');
+            let lockInType = selected.data('lock-in-period-type');
+
+            // If no scheme selected, clear fields
+            if (!lockInPeriod || !lockInType) {
+                $('#lock_in_period').val('');
+                $('#lock_in_period_type').val('');
+                return;
+            }
+
+            // Auto-fill + lock
+            $('#lock_in_period')
+                .val(lockInPeriod)
+                .prop('readonly', true)
+                .addClass('bg-secondary-subtle');
+
+            $('#lock_in_period_type')
+                .val(lockInType)
+                .prop('readonly', true)
+                .addClass('bg-secondary-subtle');
+        });
+    </script>
+    <script>
+        $(document).on('input change', '#investment_date', function() {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            if (!this.value) return;
+
+            const selected = new Date(this.value);
+            selected.setHours(0, 0, 0, 0);
+
+            // If future date → snap back to today
+            if (selected > today) {
+                this.value = today.toISOString().split('T')[0];
+            }
         });
     </script>
 @endpush
