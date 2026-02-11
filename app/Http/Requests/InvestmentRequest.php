@@ -86,6 +86,7 @@ class InvestmentRequest extends FormRequest
             'exit_load_percent' => 'nullable|numeric|min:0|max:100',
             'lock_in_period' => 'nullable|integer|min:0',
             'lock_in_period_type' => 'nullable|string|in:days,months,years',
+            'early_payout' => 'nullable|boolean',
         ];
     }
 

@@ -22,6 +22,11 @@ class SchemesMasterRequest extends FormRequest
             'scheme_name'    => ['required', 'string', 'max:100'],
             'name_type'      => ['required', 'string', 'in:' . implode(',', array_keys(config('scheme.name_types')))],
 
+            'investment_type' => ['required', 'in:single,joined'],
+            'min_investment'  => ['nullable', 'numeric', 'min:0'],
+            'max_investment'  => ['nullable', 'numeric', 'min:0', 'gte:min_investment'],
+            'investment_denomination' => ['nullable', 'numeric', 'min:0'],
+
             'roi_min'        => ['required', 'numeric', 'min:0'],
             'roi_max'        => ['required', 'numeric', 'min:0', 'gte:roi_min'],
             'roi_min_additional' => ['nullable', 'numeric', 'min:0'],
@@ -44,6 +49,7 @@ class SchemesMasterRequest extends FormRequest
         return [
             'end_date.after_or_equal' => 'The end date must be a date after or equal to start date.',
             'roi_max.gte'             => 'The maximum ROI must be greater than or equal to minimum ROI.',
+            'max_investment.gte'      => 'The maximum investment must be greater than or equal to minimum investment.',
             'tenure_max.gte'          => 'The maximum tenure must be greater than or equal to minimum tenure.',
             'frequency.required'      => 'Please select at least one payout frequency.',
             'frequency.array'         => 'Invalid format for frequency selection.',

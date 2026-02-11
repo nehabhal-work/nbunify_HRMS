@@ -66,6 +66,7 @@ class InvestmentService
             'actual_interest_amount' => $data['actual_interest_amount'],
             'paid_interest_amount' => $data['paid_interest_amount'],
             'rounding_off_amount' => $data['rounding_off_amount'],
+            'early_payout' => $data['early_payout'] ?? false,
             'status' => $data['status'] ?? 'open',
             'remarks' => $data['remarks'] ?? null,
             'action_status' => $data['action_status'] ?? 'new',
@@ -178,6 +179,7 @@ class InvestmentService
                 'actual_interest_amount' => $calculatedData['actual_interest_amount'],
                 'paid_interest_amount' => $calculatedData['paid_interest_amount'],
                 'rounding_off_amount' => $calculatedData['rounding_off_amount'],
+                'early_payout' => $calculatedData['early_payout'] ?? false,
             ]);
 
             if (isset($calculatedData['payout_schedule'])) {
@@ -424,7 +426,7 @@ class InvestmentService
             $data['last_payout_date'] = $data['maturity_date'];
         }
         $data['payout_schedule'] = [];
-        $earlyPayout = false;
+        $data['early_payout'] = false;
 
         if ($data['schedule_count'] == 1) {
             $data['last_payout_date'] = $data['first_payout_date'];
@@ -480,7 +482,7 @@ class InvestmentService
                         'client_bank_id' => null,
                     ];
                 } else {
-                    $earlyPayout = true;
+                    $data['early_payout'] = true;
                     break;
                 }
             }
@@ -490,7 +492,7 @@ class InvestmentService
 
             $data['rounding_off_amount'] = $data['actual_interest_amount'] - $data['paid_interest_amount'];
 
-            if ($earlyPayout) {
+            if ($data['early_payout']) {
                 $lastPayoutDate = $data['maturity_date'];
                 $data['payout_schedule'][] = [
                     'payout_date' => $data['maturity_date']->toDateString(),
