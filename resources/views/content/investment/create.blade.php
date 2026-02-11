@@ -245,7 +245,6 @@
                                     name="tenure_count" id="tenure_count" required>
                                     <!-- options loaded by JS -->
                                 </select>
-
                                 @error('tenure_count')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
