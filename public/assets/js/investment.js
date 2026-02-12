@@ -23,20 +23,55 @@ function loadSchemeData() {
     }
 
     // LOAD FREQUENCY OPTIONS
-    let freqSelect = $('#frequency');
-    freqSelect.empty().append(`<option value="">Select Frequency</option>`);
-    frequencies.forEach(f => {
-        freqSelect.append(`<option value="${f}">${f}</option>`);
-    });
+    // let freqSelect = $('#frequency');
+    // freqSelect.empty().append(`<option value="">Select Frequency</option>`);
+    // frequencies.forEach(f => {
+    //     freqSelect.append(`<option value="${f}">${f}</option>`);
+    // });
+    if (frequencies.length > 0) {
+        $('#frequency').val(frequencies[0]);
+    }
+
+
 
     // ROI RANGE
-    $('#roi_percent').val('');
-    $('#roi-message').html(
-        `<small class="text-primary fw-bold">Allowed ROI Range: ${minRoi}% to ${maxRoi}%</small>`
-    );
-    $('#roi_percent').data('min', minRoi);
-    $('#roi_percent').data('max', maxRoi);
-    $('#roi_percent').data('maxlength', maxRoi);
+    // $('#roi_percent').val('');
+    // $('#roi-message').html(
+    //     `<small class="text-primary fw-bold">Allowed ROI Range: ${minRoi}% to ${maxRoi}%</small>`
+    // );
+    // $('#roi_percent').data('min', minRoi);
+    // $('#roi_percent').data('max', maxRoi);
+    // $('#roi_percent').data('maxlength', maxRoi);
+    // ROI RANGE / FIXED LOGIC
+    $('#roi-wrapper').removeClass('d-none');
+
+    if (minRoi === maxRoi) {
+        // 🌿 fixed ROI
+        $('#roi_percent')
+            .val(minRoi)
+            .prop('readonly', true)
+            .addClass('bg-secondary-subtle');
+
+        $('#roi-message').html(
+            `<small class="text-success  fw-bold">Fixed ROI: ${minRoi}%</small>`
+        );
+
+    } else {
+        // 🌾 variable ROI
+        $('#roi_percent')
+            .val('')
+            .prop('readonly', false)
+            .removeClass('bg-secondary-subtle')
+            .data('min', minRoi)
+            .data('max', maxRoi);
+
+        $('#roi-message').html(
+            `<small class="text-primary fw-bold">
+            Allowed ROI Range: ${minRoi}% to ${maxRoi}%
+         </small>`
+        );
+    }
+
 
     // Additional ROI RANGE
     if (addiMin > 0) {
@@ -57,6 +92,7 @@ function loadSchemeData() {
 $('#scheme_id').on('change', function () {
     loadSchemeData();
 });
+
 // -----------1st , 2nd , 3rd, 4th holder select  validation----------
 
 
@@ -392,7 +428,7 @@ $('#first_client_id').on('change', function () {
     });
 
     // Load client banks
-   
+
 
 });
 // Load client multiple  banks to outward bank amd Client Output Bank dropdown
