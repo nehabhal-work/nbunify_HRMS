@@ -53,13 +53,14 @@ class InvestmentController extends Controller
         return view('content.investment.create', compact('clients', 'companyBanks'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(InvestmentRequest $request)
-    // public function store(Request $request)
     {
-        $this->investmentService->create($request->validated());
+        try {
+            $this->investmentService->create($request->validated());
+        } catch (\Exception $e) {
+            \Log::error('Error creating investment: ' . $e->getMessage());
+            return redirect()->back()->with('error', $e->getMessage())->withInput();
+        }
         return redirect()->route('investment.els.index')->with('success', 'Investment created successfully.');
     }
 

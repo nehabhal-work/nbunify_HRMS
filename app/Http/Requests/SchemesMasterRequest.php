@@ -23,9 +23,9 @@ class SchemesMasterRequest extends FormRequest
             'name_type'      => ['required', 'string', 'in:' . implode(',', array_keys(config('scheme.name_types')))],
 
             'investment_type' => ['required', 'in:single,joined'],
-            'min_investment'  => ['nullable', 'numeric', 'min:0'],
-            'max_investment'  => ['nullable', 'numeric', 'min:0', 'gte:min_investment'],
-            'investment_denomination' => ['nullable', 'numeric', 'min:0'],
+            'min_investment'  => ['required', 'numeric', 'min:0'],
+            'max_investment'  => ['required', 'numeric', 'min:0', 'gte:min_investment'],
+            'investment_denomination' => ['required', 'numeric', 'min:0'],
 
             'roi_min'        => ['required', 'numeric', 'min:0'],
             'roi_max'        => ['required', 'numeric', 'min:0', 'gte:roi_min'],
