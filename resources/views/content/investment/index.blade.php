@@ -154,7 +154,9 @@
                                                 </a>
                                             </b>
                                         </td>
-                                        <td>{{ $d->scheme->scheme_name ?? '-' }}-{{ $d->scheme->scheme_name ?? '-' }}</td>
+                                        <td>{{ $d->scheme->name_type_value ?? '-' }} -
+                                            {{ $d->scheme->scheme_name ?? '-' }}
+                                        </td>
                                         <td>₹{{ number_format($d->investment_amount, 2) }} <br><b>
                                                 {{ ($d->roi_percent ?? 0) . ' + ' . ($d->additional_roi_percent ?? 0) }}%</b>
                                         </td>

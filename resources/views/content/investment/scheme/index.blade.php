@@ -66,19 +66,6 @@
                             </div>
 
 
-                            <!-- Scheme Name -->
-                            <div class="col-md-4 mb-3">
-                                <label for="scheme_name" class="form-label">Scheme Name <span
-                                        class="text-danger">*</span></label>
-                                <input type="text" class="form-control @error('scheme_name') is-invalid @enderror"
-                                    id="scheme_name" name="scheme_name" placeholder="Enter scheme name"
-                                    value="{{ old('scheme_name') }}">
-                                @error('scheme_name')
-                                    <span class="invalid-feedback">{{ $message }}</span>
-                                @enderror
-                            </div>
-
-
                             <!-- Scheme Name Type -->
                             <div class="col-md-2 mb-3">
                                 <label for="name_type" class="form-label">
@@ -101,6 +88,22 @@
                                     <span class="invalid-feedback">{{ $message }}</span>
                                 @enderror
                             </div>
+
+
+                            <!-- Scheme Name -->
+                            <div class="col-md-4 mb-3">
+                                <label for="scheme_name" class="form-label">Scheme Name <span
+                                        class="text-danger">*</span></label>
+                                <input type="text" class="form-control @error('scheme_name') is-invalid @enderror"
+                                    id="scheme_name" name="scheme_name" placeholder="Enter scheme name"
+                                    value="{{ old('scheme_name') }}">
+                                @error('scheme_name')
+                                    <span class="invalid-feedback">{{ $message }}</span>
+                                @enderror
+                            </div>
+
+
+
 
                             <div class="col-md-2 mb-3">
                                 <label for="investment_type" class="form-label">

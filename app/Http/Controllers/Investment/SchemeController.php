@@ -16,7 +16,7 @@ class SchemeController extends Controller
     public function index()
     {
         $schemes = $this->schemeService->getAll();
-        return $schemes;
+        // return $schemes;
         $nameTypes = config('scheme.name_types');
         return view('content.investment.scheme.index', compact('schemes', 'nameTypes'));
     }

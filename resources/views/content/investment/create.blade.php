@@ -72,6 +72,40 @@
                                 @enderror
                             </div>
 
+
+                            <!-- Scheme -->
+                            <div class="col-md-4">
+                                <label for="scheme_id" class="form-label">Scheme Name *</label>
+                                <select class="form-select select21 @error('scheme_id') is-invalid @enderror"
+                                    name="scheme_id" id="scheme_id" required>
+
+                                    <option value="">Select Scheme</option>
+
+                                    {{-- @forelse ($scheme as $s)
+                                        <option value="{{ $s->id }}"
+                                            {{ old('scheme_id') == $s->id ? 'selected' : '' }}
+                                            data-tenure-type="{{ $s->tenure_type }}"
+                                            data-min-tenure="{{ $s->tenure_min }}" data-max-tenure="{{ $s->tenure_max }}"
+                                            data-frequencies='@json($s->frequency)'
+                                            data-min-roi="{{ $s->roi_min }}" data-max-roi="{{ $s->roi_max }}"
+                                            data-addi-roi-min="{{ $s->roi_min_additional }}"
+                                            data-addi-roi-max="{{ $s->roi_max_additional }}"
+                                            data-scheme-name="{{ $s->scheme_name }}"
+                                            data-start-date="{{ $s->scheme_name }}"
+                                            data-end-date="{{ $s->scheme_name }}">
+
+                                            {{ $s->scheme_name }}
+                                        </option>
+                                    @empty
+                                        <option value="">No Schemes Available</option>
+                                    @endforelse --}}
+                                </select>
+                                @error('scheme_id')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+
                             <!-- Investment Type -->
                             <div class="col-md-2">
                                 <label for="investment_type" class="form-label">Investment Type</label>
@@ -178,37 +212,7 @@
 
                             </div>
 
-                            <!-- Scheme -->
-                            <div class="col-md-4">
-                                <label for="scheme_id" class="form-label">Scheme Name *</label>
-                                <select class="form-select select21 @error('scheme_id') is-invalid @enderror"
-                                    name="scheme_id" id="scheme_id" required>
 
-                                    <option value="">Select Scheme</option>
-
-                                    {{-- @forelse ($scheme as $s)
-                                        <option value="{{ $s->id }}"
-                                            {{ old('scheme_id') == $s->id ? 'selected' : '' }}
-                                            data-tenure-type="{{ $s->tenure_type }}"
-                                            data-min-tenure="{{ $s->tenure_min }}" data-max-tenure="{{ $s->tenure_max }}"
-                                            data-frequencies='@json($s->frequency)'
-                                            data-min-roi="{{ $s->roi_min }}" data-max-roi="{{ $s->roi_max }}"
-                                            data-addi-roi-min="{{ $s->roi_min_additional }}"
-                                            data-addi-roi-max="{{ $s->roi_max_additional }}"
-                                            data-scheme-name="{{ $s->scheme_name }}"
-                                            data-start-date="{{ $s->scheme_name }}"
-                                            data-end-date="{{ $s->scheme_name }}">
-
-                                            {{ $s->scheme_name }}
-                                        </option>
-                                    @empty
-                                        <option value="">No Schemes Available</option>
-                                    @endforelse --}}
-                                </select>
-                                @error('scheme_id')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
 
 
                             <!-- Total Invested Amount -->
