@@ -449,6 +449,10 @@ class InvestmentService
             $data['rounding_off_amount'] = 0;
 
         } else {
+            $data['actual_interest_amount'] = $data['payout_per_period'] * $data['schedule_count'];
+            $data['paid_interest_amount'] = round($data['payout_per_period'], 0) * $data['schedule_count'];
+            $data['rounding_off_amount'] = $data['actual_interest_amount'] - $data['paid_interest_amount'];
+            
             $lastPayoutDate = null;
             for ($i = 0; $i < $data['schedule_count']; $i++) {
                 switch ($data['frequency']) {
@@ -471,9 +475,10 @@ class InvestmentService
 
                 if ($payoutDate->lessThan($data['maturity_date'])) {
                     $lastPayoutDate = $payoutDate;
+                    $isLastPayout = ($i == $data['schedule_count'] - 1);
                     $data['payout_schedule'][] = [
                         'payout_date' => $payoutDate->toDateString(),
-                        'amount' => round($data['payout_per_period'], 0),
+                        'amount' => $isLastPayout ? round($data['payout_per_period'] + $data['rounding_off_amount'], 0) : round($data['payout_per_period'], 0),
                         'actual_payout_date' => null,
                         'status' => 'pending',
                         'remarks' => null,
@@ -487,11 +492,6 @@ class InvestmentService
                     break;
                 }
             }
-
-            $data['actual_interest_amount'] = $data['payout_per_period'] * $data['schedule_count'];
-            $data['paid_interest_amount'] = round($data['payout_per_period'], 2) * $data['schedule_count'];
-
-            $data['rounding_off_amount'] = $data['actual_interest_amount'] - $data['paid_interest_amount'];
 
             if ($data['early_payout']) {
                 $lastPayoutDate = $data['maturity_date'];
