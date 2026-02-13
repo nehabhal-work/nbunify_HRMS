@@ -116,8 +116,8 @@
                                     <option value="single" {{ old('investment_type') == 'single' ? 'selected' : '' }}>
                                         Individual
                                     </option>
-                                    <option value="joint" {{ old('investment_type') == 'joint' ? 'selected' : '' }}>
-                                        Joint
+                                    <option value="joined" {{ old('investment_type') == 'joined' ? 'selected' : '' }}>
+                                        joined
                                     </option>
                                 </select>
 
@@ -316,7 +316,7 @@
 
                             <div class="col-md-3 mb-3">
                                 <label class="form-label">
-                                    Investment Multiple off value
+                                    Investment Multiple off value <span class="text-danger">*</span>
                                 </label>
                                 <input type="number" name="investment_denomination"
                                     class="form-control @error('investment_denomination') is-invalid @enderror"
