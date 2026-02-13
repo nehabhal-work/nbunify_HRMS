@@ -47,6 +47,8 @@ class SchemesMaster extends Model
         'approved3_on' => 'datetime',
     ];
 
+    protected $appends = ['name_type_value'];
+
     public function createdBy()
     {
         return $this->belongsTo(\App\Models\User::class, 'created_by');
@@ -65,5 +67,10 @@ class SchemesMaster extends Model
     public function approved3By()
     {
         return $this->belongsTo(\App\Models\User::class, 'approved3_by');
+    }
+
+    public function getNameTypeValueAttribute()
+    {
+        return config('scheme.name_types')[$this->name_type] ?? $this->name_type;
     }
 }
