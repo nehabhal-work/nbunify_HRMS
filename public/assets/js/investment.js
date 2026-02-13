@@ -21,6 +21,7 @@ function loadSchemeData() {
 
     let invType = selected.data('investment_type'); // "single" or "joint"
 
+    console.log('Scheme data loaded:', invType);
     if (invType === 'single') {
         $('#investment_type').val('single').trigger('change');
     }
