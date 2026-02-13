@@ -7,6 +7,7 @@ use App\Models\InvestmentInputBank;
 use App\Models\InvestmentNominee;
 use App\Models\InvestmentPayoutSchedule;
 use App\Models\InvestmentSi;
+use App\Models\SchemeMaster;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
@@ -561,6 +562,17 @@ class InvestmentService
             if (! isset($data[$field]) || empty($data[$field])) {
                 throw new \InvalidArgumentException("Required field '{$field}' is missing or empty.");
             }
+        }
+
+        $scheme = SchemesMaster::findOrFail($data['scheme_id']);
+        $amount = $data['investment_amount'];
+
+        if ($amount < $scheme->min_investment || $amount > $scheme->max_investment) {
+            throw new \InvalidArgumentException("Investment amount must be between {$scheme->min_investment} and {$scheme->max_investment}.");
+        }
+
+        if ($scheme->investment_denomination > 0 && $amount % $scheme->investment_denomination !== 0) {
+            throw new \InvalidArgumentException("Investment amount must be in multiples of {$scheme->investment_denomination}.");
         }
     }
 

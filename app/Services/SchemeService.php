@@ -23,6 +23,18 @@ class SchemeService
             ->orderByDesc('id')->get();
     }
 
+    public function getApprovedByDate($date)
+    {
+        // TODO: Incoming date format is in Y-m-d.
+        return SchemesMaster::whereNotNull('approved3_by')
+            ->where('start_date','<=', $date)
+            ->where('end_date','>=', $date)
+            ->with(relations: ['createdBy', 'approvedBy', 'approved2By', 'approved3By'])
+            ->orderByDesc('id')->get();
+    }
+
+
+
     public function getById($id) {
         $scheme = SchemesMaster::findOrFail($id);
         if (auth()->id() == $scheme->created_by) {
