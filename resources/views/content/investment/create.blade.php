@@ -998,6 +998,7 @@ data-lock-in-period-type="${s.lock_in_period_type}"
         data-min-investment="${s.min_investment}"
         data-max-investment="${s.max_investment}"
         data-investment-denomination="${s.investment_denomination}"
+        data-investment_type="${s.investment_type}"
         >
         ${s.scheme_name}
     </option>

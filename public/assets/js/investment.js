@@ -19,6 +19,15 @@ function loadSchemeData() {
     let maxInvAmt = Number(selected.data('max-investment'));
     let invDenom = Number(selected.data('investment-denomination'));
 
+    let invType = selected.data('investment_type'); // "single" or "joint"
+
+    if (invType === 'single') {
+        $('#investment_type').val('single').trigger('change');
+    }
+    else if (invType === 'joined') {
+        $('#investment_type').val('joined').trigger('change');
+    }
+
     // SET TENURE TYPE
     $('#tenure_type').val(tenureType);
 
