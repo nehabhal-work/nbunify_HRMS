@@ -149,9 +149,10 @@ class InvestmentController extends Controller
         // $client = $this->clientService->find($id);
         return view('content.investment.renew');
     }
-    public function claim()
+    public function claim(Request $request)
     {
-        return view('content.investment.claim');
+        $investment = $this->investmentService->getById($request->investment_id);
+        return view('content.investment.claim', compact('investment'));
     }
     public function merge()
     {
