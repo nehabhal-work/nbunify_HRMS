@@ -121,7 +121,7 @@
                                     class="form-select @error('investment_type') is-invalid @enderror" required>
                                     <option value="">-- Select Category --</option>
 
-                                    <option value="individual"
+                                    <option value="single"
                                         {{ old('investment_type', $scheme->investment_type ?? '') == 'single' ? 'selected' : '' }}>
                                         Individual
                                     </option>
