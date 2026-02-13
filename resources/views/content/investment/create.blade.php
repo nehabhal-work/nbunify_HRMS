@@ -269,7 +269,7 @@
 
 
                             <!-- ROI  -->
-                            <div class="col-md-2 d-none" id="roi-wrapper">
+                            <div class="col-md-2 " id="roi-wrapper">
                                 <label for="roi_percent" class="form-label">ROI *</label>
                                 <div class="input-group">
                                     <input type="text"
@@ -1055,12 +1055,13 @@ data-lock-in-period-type="${s.lock_in_period_type}"
         document.addEventListener('DOMContentLoaded', function() {
             const tenure = document.getElementById('tenure_count');
             const roiWrapper = document.getElementById('roi-wrapper');
+            const roiInput = roiWrapper.querySelector('input, select');
 
             function toggleROI() {
                 if (tenure.value) {
-                    roiWrapper.classList.remove('d-none');
+                    roiInput.readOnly = false;
                 } else {
-                    roiWrapper.classList.add('d-none');
+                    roiInput.readOnly = true;
                 }
             }
 
