@@ -228,7 +228,7 @@
                                 @error('investment_amount')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
-                                <small class="text-danger errmsg "></small>
+                                <small class="text-danger errorMsg"></small>
                             </div>
 
                             <!-- Tenure Type -->

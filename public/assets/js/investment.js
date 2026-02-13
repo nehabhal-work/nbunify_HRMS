@@ -117,6 +117,8 @@ function loadSchemeData() {
         })
         .removeClass('is-invalid')
         .find('.errmsg').text('');
+
+    calculateROI();
 }
 
 
@@ -140,11 +142,10 @@ $('#investment_amount').on('input', function () {
     }
 
     if (errorMsg) {
-        $(this).addClass('is-invalid');
-        $err.text(errorMsg);
+        $('.errorMsg').text(errorMsg);
     } else {
-        $(this).removeClass('is-invalid');
-        $err.text('');
+
+        $('.errorMsg').text('');
     }
 });
 
@@ -874,7 +875,8 @@ function calculateROI() {
             finalAmount = yearlyInterest;
     }
 
-    $('#roi_amount').val(finalAmount.toFixed(2));
+    $('#roi_amount').val(Math.ceil(finalAmount));
+
 }
 
 $('#investment_amount, #roi_percent, #frequency').on('keyup change', function () {
