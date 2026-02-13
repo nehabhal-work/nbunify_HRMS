@@ -83,7 +83,7 @@
 
                                 <th class="bg-light px-3 py-2">Payout Count</th>
                                 <td class="px-3 py-2 fw-semibold">
-                                    {{ $investmentSi->is_no_of_payments }}
+                                    {{ $investmentSi->si_no_of_payments }}
                                 </td>
                             </tr>
 
