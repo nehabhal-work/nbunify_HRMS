@@ -110,8 +110,7 @@
                                 <select name="investment_type" id="investment_type"
                                     class="form-select @error('investment_type') is-invalid @enderror" required>
                                     <option value="">-- Select Category --</option>
-                                    <option value="single"
-                                        {{ old('investment_type') == 'single' ? 'selected' : '' }}>
+                                    <option value="single" {{ old('investment_type') == 'single' ? 'selected' : '' }}>
                                         Individual
                                     </option>
                                     <option value="joint" {{ old('investment_type') == 'joint' ? 'selected' : '' }}>
@@ -314,12 +313,12 @@
 
                             <div class="col-md-3 mb-3">
                                 <label class="form-label">
-                                 Investment Multiple off value
+                                    Investment Multiple off value
                                 </label>
-                                <input type="number" name="multiple_off"
-                                    class="form-control @error('multiple_off') is-invalid @enderror" min="1"
-                                    value="{{ old('multiple_off') }}">
-                                @error('multiple_off')
+                                <input type="number" name="investment_denomination"
+                                    class="form-control @error('investment_denomination') is-invalid @enderror"
+                                    min="1" value="{{ old('investment_denomination') }}">
+                                @error('investment_denomination')
                                     <span class="invalid-feedback">{{ $message }}</span>
                                 @enderror
                             </div>

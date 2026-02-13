@@ -140,6 +140,7 @@
 
                             <tbody>
                                 @foreach ($investments as $index => $d)
+                                    {{ $d }}
                                     <tr>
                                         <!-- # -->
                                         <td hidden>{{ $index + 1 }}</td>
@@ -153,7 +154,7 @@
                                                 </a>
                                             </b>
                                         </td>
-                                        <td>{{ $d->scheme->scheme_name ?? '-' }}</td>
+                                        <td>{{ $d->scheme->scheme_name ?? '-' }}-{{ $d->scheme->scheme_name ?? '-' }}</td>
                                         <td>₹{{ number_format($d->investment_amount, 2) }} <br><b>
                                                 {{ ($d->roi_percent ?? 0) . ' + ' . ($d->additional_roi_percent ?? 0) }}%</b>
                                         </td>
@@ -229,7 +230,7 @@
                                                         <a class="dropdown-item"
                                                             href="{{ route('investment.si.index', ['id' => $d->id]) }}">
                                                             <i class="bx bx-check-circle me-1"></i>
-                                                            Standing Instruction  <span hidden> {{ $d->id }}</span> 
+                                                            Standing Instruction <span hidden> {{ $d->id }}</span>
                                                         </a>
                                                     @endif
 
@@ -253,10 +254,10 @@
                                                     </a>
 
                                                     {{-- @if (!empty($d->standing_instruction)) --}}
-                                                        <a class="dropdown-item"
-                                                            href="{{ route('investment.welcomeLetter', $d->id) }}">
-                                                            <i class="bx bx-mail-send me-1"></i> Welcome Letter
-                                                        </a>
+                                                    <a class="dropdown-item"
+                                                        href="{{ route('investment.welcomeLetter', $d->id) }}">
+                                                        <i class="bx bx-mail-send me-1"></i> Welcome Letter
+                                                    </a>
                                                     {{-- @endif --}}
 
 

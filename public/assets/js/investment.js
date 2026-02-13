@@ -12,6 +12,13 @@ function loadSchemeData() {
     let addiMin = parseFloat(selected.data('addi-roi-min'));
     let addiMax = parseFloat(selected.data('addi-roi-max'));
 
+    let lockInPeriod = selected.data('lock-in-period');
+    let lockInType = selected.data('lock-in-period-type');
+
+    let minInvAmt = Number(selected.data('min-investment'));
+    let maxInvAmt = Number(selected.data('max-investment'));
+    let invDenom = Number(selected.data('investment-denomination'));
+
     // SET TENURE TYPE
     $('#tenure_type').val(tenureType);
 
@@ -87,7 +94,61 @@ function loadSchemeData() {
 
     $('#addi_roi').data('min', addiMin);
     $('#addi_roi').data('max', addiMax);
+
+
+
+    // Auto-fill + lock
+    $('#lock_in_period')
+        .val(lockInPeriod)
+        .prop('readonly', true)
+        .addClass('bg-secondary-subtle');
+
+    $('#lock_in_period_type')
+        .val(lockInType)
+        .prop('readonly', true)
+        .addClass('bg-secondary-subtle');
+
+    $('#investment_amount')
+        .val(minInvAmt)
+        .attr({
+            min: minInvAmt,
+            max: maxInvAmt,
+            step: invDenom
+        })
+        .removeClass('is-invalid')
+        .find('.errmsg').text('');
 }
+
+
+$('#investment_amount').on('input', function () {
+
+    let value = Number($(this).val());
+    let min = Number($(this).attr('min'));
+    let max = Number($(this).attr('max'));
+    let step = Number($(this).attr('step'));
+
+    let errorMsg = '';
+
+    if (value < min) {
+        errorMsg = `Minimum investment is ₹${min}`;
+    }
+    else if (value > max) {
+        errorMsg = `Maximum investment is ₹${max}`;
+    }
+    else if ((value - min) % step !== 0) {
+        errorMsg = `Investment must be in multiples of ₹${step}`;
+    }
+
+    if (errorMsg) {
+        $(this).addClass('is-invalid');
+        $err.text(errorMsg);
+    } else {
+        $(this).removeClass('is-invalid');
+        $err.text('');
+    }
+});
+
+
 
 $('#scheme_id').on('change', function () {
     loadSchemeData();

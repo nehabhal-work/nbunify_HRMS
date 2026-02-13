@@ -224,6 +224,7 @@
                                 @error('investment_amount')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
+                                <small class="text-danger errmsg "></small>
                             </div>
 
                             <!-- Tenure Type -->
@@ -989,7 +990,11 @@ data-lock-in-period-type="${s.lock_in_period_type}"
 
         data-scheme-name="${s.scheme_name}"
         data-start-date="${s.start_date}"
-        data-end-date="${s.end_date}">
+        data-end-date="${s.end_date}"
+        data-min-investment="${s.min_investment}"
+        data-max-investment="${s.max_investment}"
+        data-investment-denomination="${s.investment_denomination}"
+        >
         ${s.scheme_name}
     </option>
 `);
@@ -1076,33 +1081,7 @@ data-lock-in-period-type="${s.lock_in_period_type}"
 
         });
     </script>
-    <script>
-        $('#scheme_id').on('change', function() {
 
-            let selected = $(this).find(':selected');
-
-            let lockInPeriod = selected.data('lock-in-period');
-            let lockInType = selected.data('lock-in-period-type');
-
-            // If no scheme selected, clear fields
-            if (!lockInPeriod || !lockInType) {
-                $('#lock_in_period').val('');
-                $('#lock_in_period_type').val('');
-                return;
-            }
-
-            // Auto-fill + lock
-            $('#lock_in_period')
-                .val(lockInPeriod)
-                .prop('readonly', true)
-                .addClass('bg-secondary-subtle');
-
-            $('#lock_in_period_type')
-                .val(lockInType)
-                .prop('readonly', true)
-                .addClass('bg-secondary-subtle');
-        });
-    </script>
     <script>
         $(document).on('input change', '#investment_date', function() {
             const today = new Date();

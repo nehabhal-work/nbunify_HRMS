@@ -346,11 +346,12 @@
                                     Investment Multiple off value
                                 </label>
 
-                                <input type="number" name="multiple_off"
-                                    class="form-control @error('multiple_off') is-invalid @enderror" min="1"
-                                    value="{{ old('multiple_off', $scheme->multiple_off ?? '') }}">
+                                <input type="number" name="investment_denomination"
+                                    class="form-control @error('investment_denomination') is-invalid @enderror"
+                                    min="1"
+                                    value="{{ old('investment_denomination', $scheme->investment_denomination ?? '') }}">
 
-                                @error('multiple_off')
+                                @error('investment_denomination')
                                     <span class="invalid-feedback">{{ $message }}</span>
                                 @enderror
                             </div>
