@@ -122,7 +122,7 @@
                                     <option value="">-- Select Category --</option>
 
                                     <option value="individual"
-                                        {{ old('investment_type', $scheme->investment_type ?? '') == 'individual' ? 'selected' : '' }}>
+                                        {{ old('investment_type', $scheme->investment_type ?? '') == 'single' ? 'selected' : '' }}>
                                         Individual
                                     </option>
 
