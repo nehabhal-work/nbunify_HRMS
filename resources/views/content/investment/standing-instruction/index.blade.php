@@ -341,12 +341,11 @@
                             </div>
 
                             <!-- intruction -->
-                            <div class="col-md-3">
+                            {{-- <div class="col-md-3">
                                 <label class="form-label">
                                     intruction <span class="text-danger">*</span>
                                 </label>
                                 <select name="intruction" class="form-select @error('intruction') is-invalid @enderror">
-                                    {{-- <option value="">Select Status</option> --}}
                                     <option value="maturity" {{ old('status') == 'maturity' ? 'selected' : '' }}>maturity
                                     </option>
                                     <option value="other" {{ old('status') == 'other' ? 'selected' : '' }}>other
@@ -356,7 +355,7 @@
                                 @error('intruction')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
-                            </div>
+                            </div> --}}
 
                             <!-- Remarks -->
                             <div class="col-md-6">
