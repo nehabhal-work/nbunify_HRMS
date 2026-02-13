@@ -3,163 +3,150 @@
 
 @section('content')
     <style>
-        .bigtext {
-            font-size: 16px;
+        table td {
+            font-weight: bold;
+        }
+
+        table.table th {
+            background-color: #f9f3fa !important;
+            width: 25%;
+            vertical-align: middle;
+        }
+
+        .onecolor {
+            color: #BC13BE;
         }
     </style>
-    <div>
-        @if (session('success'))
-            <x-alert-sweet type="success" :message="session('success')" />
-        @endif
 
-        @if (session('error'))
-            <x-alert-sweet type="danger" :message="session('error')" />
-        @endif
-
-
-    </div>
-
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
 
     <h4 class="fw-bold py-3 mb-4">
-        <span class=" fw-light">Master /</span>Scheme
+        <span class="text-muted fw-light">Master /</span> <a href="{{ route('investment.els.index') }}">Scheme details</a>
     </h4>
 
     <div class="div d-flex justify-content-end mb-3">
         <a href="{{ route('investment.scheme.index') }}" class="btn btn-secondary px-4">Go back</a>
+
     </div>
 
-    <div class="p-4 border rounded-3 bg-light">
 
-        <!-- Main Title -->
-        <h5 class="fw-bold mb-4 text-center">Scheme Details</h5>
+    <div class="container">
+        <div class="card">
+            <div class="card-header"><b class="card-title text-warning">Scheme Details</b></div>
+            <table class="table table-bordered investment-view">
 
-        <!-- Date Details -->
-        <h6 class="fw-bold mt-3 mb-2">Date Details</h6>
-        <div class="row gy-2 mb-3">
-            <div class="col-md-6">
-                <div class="bigtext ">Start Date</div>
-                <b>
-                    {{ \Carbon\Carbon::parse($scheme->start_date)->format('d-m-Y') }}
-                </b>
+                <tbody>
+
+                    {{-- ===================== --}}
+                    {{-- DATE DETAILS --}}
+                    {{-- ===================== --}}
+                    <tr>
+                        <th colspan="4" class="text-center onecolor">Date Details</th>
+                    </tr>
+                    <tr>
+                        <th>Start Date</th>
+                        <td>{{ \Carbon\Carbon::parse($scheme->start_date)->format('d-m-Y') }}</td>
+
+                        <th>End Date</th>
+                        <td>{{ \Carbon\Carbon::parse($scheme->end_date)->format('d-m-Y') }}</td>
+                    </tr>
+
+                    {{-- ===================== --}}
+                    {{-- BASIC INFORMATION --}}
+                    {{-- ===================== --}}
+                    <tr>
+                        <th colspan="4" class="text-center onecolor">Basic Information</th>
+                    </tr>
+                    <tr>
+                        <th>Scheme Code</th>
+                        <td>{{ $scheme->scheme_code }}</td>
+
+                        <th>Scheme Name</th>
+                        <td>{{ $scheme->scheme_name }}</td>
+                    </tr>
+
+                    {{-- ===================== --}}
+                    {{-- ROI DETAILS --}}
+                    {{-- ===================== --}}
+                    <tr>
+                        <th colspan="4" class="text-center onecolor">ROI Details</th>
+                    </tr>
+                    <tr>
+                        <th>Minimum ROI</th>
+                        <td>{{ $scheme->roi_min }}%</td>
+
+                        <th>Maximum ROI</th>
+                        <td>{{ $scheme->roi_max }}%</td>
+                    </tr>
+                    <tr>
+                        <th>Min Additional ROI</th>
+                        <td>{{ $scheme->roi_min_additional }}%</td>
+
+                        <th>Max Additional ROI</th>
+                        <td>{{ $scheme->roi_max_additional }}%</td>
+                    </tr>
+
+                    {{-- ===================== --}}
+                    {{-- TENURE DETAILS --}}
+                    {{-- ===================== --}}
+                    <tr>
+                        <th colspan="4" class="text-center onecolor">Tenure Details</th>
+                    </tr>
+                    <tr>
+                        <th>Tenure Type</th>
+                        <td>{{ ucfirst($scheme->tenure_type) }}</td>
+
+                        <th>Minimum Tenure</th>
+                        <td>{{ $scheme->tenure_min }}</td>
+                    </tr>
+                    <tr>
+                        <th>Maximum Tenure</th>
+                        <td>{{ $scheme->tenure_max }}</td>
+
+                        <th>Exit Load %</th>
+                        <td>{{ $scheme->exit_load_percent }}</td>
+                    </tr>
+                    <tr>
+                        <th>Lock-in Period Type</th>
+                        <td>{{ $scheme->lock_in_period_type }}</td>
+
+                        <th>Lock-in Period</th>
+                        <td>{{ $scheme->lock_in_period }}</td>
+                    </tr>
+
+                    {{-- ===================== --}}
+                    {{-- PAYOUT FREQUENCY --}}
+                    {{-- ===================== --}}
+                    <tr>
+                        <th>Payout Frequency</th>
+                        <td colspan="3">
+                            @forelse ($scheme->frequency as $freq)
+                                <span class="badge bg-primary me-1">{{ ucfirst($freq) }}</span>
+                            @empty
+                                -
+                            @endforelse
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+            {{-- ===================== --}}
+            {{-- APPROVAL BUTTON --}}
+            {{-- ===================== --}}
+            <div class="text-end mt-3">
+                @if (!$scheme->is_approved)
+                    <form action="{{ route('investment.scheme.approve', $scheme->id) }}" method="post">
+                        @csrf
+                        @method('PUT')
+                        <button type="submit" class="btn btn-success px-4">
+                            Approve
+                        </button>
+                    </form>
+                @endif
             </div>
-
-            <div class="col-md-6">
-                <div class="bigtext ">End Date</div>
-                <b>
-                    {{ \Carbon\Carbon::parse($scheme->end_date)->format('d-m-Y') }}
-                </b>
-            </div>
-        </div>
-
-        <!-- Basic Information -->
-        <h6 class="fw-bold mt-3 mb-2">Basic Information</h6>
-        <div class="row gy-2 mb-3">
-            <div class="col-md-6">
-                <div class="bigtext ">Scheme Code</div>
-                <b>{{ $scheme->scheme_code }}</b>
-            </div>
-
-            <div class="col-md-6">
-                <div class="bigtext ">Scheme Name</div>
-                <b>{{ $scheme->scheme_name }}</b>
-            </div>
-        </div>
-
-        <!-- ROI Details -->
-        <h6 class="fw-bold mt-3 mb-2">ROI Details</h6>
-        <div class="row gy-2 mb-3">
-            <div class="col-md-6">
-                <div class="bigtext ">Minimum ROI</div>
-                <b>{{ $scheme->roi_min }}%</b>
-            </div>
-
-            <div class="col-md-6">
-                <div class="bigtext ">Maximum ROI</div>
-                <b>{{ $scheme->roi_max }}%</b>
-            </div>
-
-            <div class="col-md-6">
-                <div class="bigtext ">Min Additional ROI</div>
-                <b>
-                    {{ $scheme->roi_min_additional }}%</b>
-            </div>
-
-            <div class="col-md-6">
-                <div class="bigtext ">Max Additional ROI</div>
-                <b>
-                    {{ $scheme->roi_max_additional }}%</b>
-            </div>
-        </div>
-
-        <!-- Tenure Details -->
-        <h6 class="fw-bold mt-3 mb-2">Tenure Details</h6>
-        <div class="row gy-2 mb-3">
-            <div class="col-md-4">
-                <div class="bigtext ">Tenure Type</div>
-                <b>
-                    {{ ucfirst($scheme->tenure_type) }}</b>
-            </div>
-
-            <div class="col-md-4">
-                <div class="bigtext ">Minimum Tenure</div>
-                <b>{{ $scheme->tenure_min }}</b>
-            </div>
-
-            <div class="col-md-4">
-                <div class="bigtext ">Maximum Tenure</div>
-                <b>{{ $scheme->tenure_max }}</b>
-            </div>
-            <div class="col-md-4">
-                <div class="bigtext ">Exit Load %</div>
-                <b>{{ $scheme->exit_load_percent }}</b>
-            </div>
-            <div class="col-md-4">
-                <div class="bigtext ">Lock in Period Type</div>
-                <b>{{ $scheme->lock_in_period_type }}</b>
-            </div>
-            <div class="col-md-4">
-                <div class="bigtext ">Lock in Period</div>
-                <b>{{ $scheme->lock_in_period }}</b>
-            </div>
-        </div>
-
-        <!-- Frequency -->
-        <h6 class="fw-bold mt-3 mb-2">Payout Frequency</h6>
-        <b>
-            @foreach ($scheme->frequency as $freq)
-                <span class="badge bg-primary me-1">{{ ucfirst($freq) }}</span>
-            @endforeach
-        </b>
-
-
-
-
-        <div class="p-3 text-end">
-            @if (!$scheme->is_approved)
-                {{-- show approve button --}}
-                <form action="{{ route('investment.scheme.approve', $scheme->id) }}" method="post">
-                    @csrf
-                    @method('PUT')
-                    <button type="submit" class="btn btn-success px-4">
-                        Approve
-                    </button>
-                </form>
-            @else
-                {{-- hide button --}}
-            @endif
-
-
         </div>
     </div>
+
 
 
 
