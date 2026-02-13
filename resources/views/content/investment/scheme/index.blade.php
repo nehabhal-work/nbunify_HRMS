@@ -387,7 +387,8 @@
 
                                         <td>
                                             <a href="{{ route('investment.scheme.show', $d->id) }}" class="text-reset">
-                                                <b class="text-black"> {{ $d->scheme_name }}</b>
+                                                <b class="text-black">
+                                                    {{ $d->name_type_value . '-' . $d->scheme_name }}</b>
                                             </a>
                                         </td>
                                         <td>{{ $d->roi_min }}% - {{ $d->roi_max }}%</td>
