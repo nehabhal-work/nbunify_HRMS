@@ -24,6 +24,7 @@ class InvestmentSiRequest extends FormRequest
         return [
             'investment_id' => 'required|exists:investments,id',
             'si_number' => 'required|string|max:255|unique:investment_si,si_number,' . $this->route('si'),
+            'bank_reference_no' => 'nullable|string|max:255',
             'instruction_type' => 'required|in:standing,schedule',
             'si_client_bank_id' => 'required|exists:client_banks,id',
             'si_company_bank_id' => 'required|exists:company_bank_details,id',

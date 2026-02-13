@@ -12,6 +12,7 @@ class InvestmentSi extends Model
     protected $fillable = [
         'investment_id',
         'si_number',
+        'bank_reference_no',
         'instruction_type',
         'si_client_bank_id',
         'si_company_bank_id',

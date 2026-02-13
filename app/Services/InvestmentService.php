@@ -277,22 +277,17 @@ class InvestmentService
             'InvestmentInputBank',
         ])->findOrFail($id);
 
-        $hasStanding = $investment->standingInstructions()
+        $investment->has_approved_si = $investment->standingInstructions()
             ->whereNotNull('approved_by')
             ->where('instruction_type', 'standing')
             ->where('status', 'active')
             ->exists();
 
-        // TODO: If last payout date starts with 01 then we can consider hasScheduled as true otherwise we need to check payout schedule table for any approved standing instruction and if exists then we can consider hasScheduled as true
-        $hasScheduled = $investment->last_payout_date && str_starts_with($investment->last_payout_date->format('d'), '01')
-            ? true
-            : $investment->standingInstructions()
-                ->whereNotNull('approved_by')
-                ->where('instruction_type', 'schedule')
-                ->where('status', 'active')
-                ->exists();
-
-        $investment->has_approved_si = $hasStanding && $hasScheduled;
+        $investment->has_approved_schedule_si = $investment->standingInstructions()
+            ->whereNotNull('approved_by')
+            ->where('instruction_type', 'schedule')
+            ->where('status', 'active')
+            ->exists();
 
         if ($investment->has_approved_si && $investment->approved4_by == null) {
             $investment->is_payout_approved = false;
@@ -452,7 +447,7 @@ class InvestmentService
             $data['actual_interest_amount'] = $data['payout_per_period'] * $data['schedule_count'];
             $data['paid_interest_amount'] = round($data['payout_per_period'], 0) * $data['schedule_count'];
             $data['rounding_off_amount'] = $data['actual_interest_amount'] - $data['paid_interest_amount'];
-            
+
             $lastPayoutDate = null;
             for ($i = 0; $i < $data['schedule_count']; $i++) {
                 switch ($data['frequency']) {
@@ -508,6 +503,18 @@ class InvestmentService
                 ];
             }
             $data['last_payout_date'] = $lastPayoutDate ?? $data['maturity_date'];
+
+            $data['payout_schedule'][] = [
+                'payout_date' => $data['maturity_date']->toDateString(),
+                'amount' => round($data['investment_amount'], 0),
+                'actual_payout_date' => null,
+                'status' => 'pending',
+                'remarks' => null,
+                'actual_payout_amount' => 0,
+                'utr_no' => null,
+                'company_bank_id' => null,
+                'client_bank_id' => null,
+            ];
         }
 
         return $data;
@@ -724,7 +731,7 @@ class InvestmentService
         if ($investment->schedule_count > 1) {
             InvestmentSi::create([
                 'investment_id' => $investment->id,
-                'si_number' => 'SI-' . $investment->id . '-' . time(),
+                'si_number' => 'SI-'.$investment->id.'-'.time(),
                 'instruction_type' => 'standing',
                 'si_client_bank_id' => $investment->to_client_bank_id,
                 'si_company_bank_id' => $investment->from_company_bank_id,
@@ -734,15 +741,28 @@ class InvestmentService
                 'status' => 'active',
                 'created_by' => auth()->id(),
             ]);
-            
+
             InvestmentSi::create([
                 'investment_id' => $investment->id,
-                'si_number' => 'SCH-' . $investment->id . '-' . time(),
+                'si_number' => 'SCH-'.$investment->id.'-'.time(),
                 'instruction_type' => 'schedule',
                 'si_client_bank_id' => $investment->to_client_bank_id,
                 'si_company_bank_id' => $investment->from_company_bank_id,
                 'si_start_date' => $investment->last_payout_date,
                 'si_amount' => $investment->payout_per_period + $investment->rounding_off_amount,
+                'si_no_of_payments' => 1,
+                'status' => 'active',
+                'created_by' => auth()->id(),
+            ]);
+
+            InvestmentSi::create([
+                'investment_id' => $investment->id,
+                'si_number' => 'SCH-'.$investment->id.'-'.time(),
+                'instruction_type' => 'schedule',
+                'si_client_bank_id' => $investment->to_client_bank_id,
+                'si_company_bank_id' => $investment->from_company_bank_id,
+                'si_start_date' => $investment->last_payout_date,
+                'si_amount' => $investment->investment_amount,
                 'si_no_of_payments' => 1,
                 'status' => 'active',
                 'created_by' => auth()->id(),
