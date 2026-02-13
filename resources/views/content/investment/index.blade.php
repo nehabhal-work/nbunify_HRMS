@@ -140,7 +140,6 @@
 
                             <tbody>
                                 @foreach ($investments as $index => $d)
-                                    {{ $d }}
                                     <tr>
                                         <!-- # -->
                                         <td hidden>{{ $index + 1 }}</td>

@@ -298,7 +298,7 @@ $(document).ready(function () {
     }
 
     /* ---------- EVENTS ---------- */
-    $('#tenure_count, #lock_in_period_type').on('change', updateLockInMax);
+    // $('#tenure_count, #lock_in_period_type').on('change', updateLockInMax);
 
 
     $('#lock_in_period').on('input', function () {
