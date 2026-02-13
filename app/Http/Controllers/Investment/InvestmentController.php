@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Investment;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\InvestmentRequest;
 use App\Models\InvestmentPayoutSchedule;
-use App\Models\SchemesMaster;
 use App\Services\ClientService;
 use App\Services\CompanyService;
 use App\Services\InvestmentService;
@@ -49,11 +48,9 @@ class InvestmentController extends Controller
      */
     public function create()
     {
-
-        $scheme = $this->schemeService->getAllApproved();
         $clients = $this->clientService->getAllApproved();
         $companyBanks = $this->companyService->getFirstCompanyBanks();
-        return view('content.investment.create', compact('scheme', 'clients', 'companyBanks'));
+        return view('content.investment.create', compact('clients', 'companyBanks'));
     }
 
     /**
@@ -279,11 +276,7 @@ class InvestmentController extends Controller
 
     public function getSchemesByDate(Request $request)
     {
-        // return response()->json(['message' => 'testing', 'date' => $request->investment_date], 200);
-        $date = $request->investment_date;
-
-        $schemes = SchemesMaster::where('start_date', '<=', $date)->where('end_date', '>=', $date)->get();
-
+        $schemes = $this->schemeService->getApprovedByDate($request->investment_date);
         return response()->json($schemes);
     }
 }
