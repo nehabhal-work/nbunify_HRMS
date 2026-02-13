@@ -501,6 +501,8 @@
                                                         ✕
                                                     </button>
                                                 </div>
+                                                <small class="text-danger file-error"></small>
+
 
                                                 @error('instrumentImage.0')
                                                     <div class="invalid-feedback d-block">{{ $message }}</div>

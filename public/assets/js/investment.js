@@ -1153,4 +1153,24 @@ $(document).on('input', '.client_instrument_amt, .company_instrument_amt', funct
 // ******************************************************
 
 
+$(document).on('change', '.fileInput', function () {
+
+    const maxSize = 2 * 1024 * 1024;
+    const file = this.files[0];
+    const $error = $(this).closest('.input-group').next('.file-error');
+
+    if (!file) return;
+
+    if (file.size > maxSize) {
+        $error.text('File size must be 2 MB or less.');
+        $(this).val('');
+        alert('File size must be 2 MB or less.');
+        $('#btnSubmit').prop('disabled', true);
+        $('#errSubmit').text('Please upload files of size 2 MB or less.');
+    } else {
+        $error.text('');
+        $('#btnSubmit').prop('disabled', false);
+        $('#errSubmit').text('');
+    }
+});
 
