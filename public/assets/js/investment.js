@@ -555,7 +555,6 @@ $('#investment_type').on('change', function () {
         $('#div_other_holders').addClass('d-none');
     }
 
-    populateClientBanks();
 });
 // End Load client multiple  banks to outward bank dropdown
 

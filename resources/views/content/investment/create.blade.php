@@ -78,27 +78,7 @@
                                 <label for="scheme_id" class="form-label">Scheme Name *</label>
                                 <select class="form-select select21 @error('scheme_id') is-invalid @enderror"
                                     name="scheme_id" id="scheme_id" required>
-
                                     <option value="">Select Scheme</option>
-
-                                    {{-- @forelse ($scheme as $s)
-                                        <option value="{{ $s->id }}"
-                                            {{ old('scheme_id') == $s->id ? 'selected' : '' }}
-                                            data-tenure-type="{{ $s->tenure_type }}"
-                                            data-min-tenure="{{ $s->tenure_min }}" data-max-tenure="{{ $s->tenure_max }}"
-                                            data-frequencies='@json($s->frequency)'
-                                            data-min-roi="{{ $s->roi_min }}" data-max-roi="{{ $s->roi_max }}"
-                                            data-addi-roi-min="{{ $s->roi_min_additional }}"
-                                            data-addi-roi-max="{{ $s->roi_max_additional }}"
-                                            data-scheme-name="{{ $s->scheme_name }}"
-                                            data-start-date="{{ $s->scheme_name }}"
-                                            data-end-date="{{ $s->scheme_name }}">
-
-                                            {{ $s->scheme_name }}
-                                        </option>
-                                    @empty
-                                        <option value="">No Schemes Available</option>
-                                    @endforelse --}}
                                 </select>
                                 @error('scheme_id')
                                     <small class="text-danger">{{ $message }}</small>
@@ -999,7 +979,7 @@ data-lock-in-period-type="${s.lock_in_period_type}"
         data-max-investment="${s.max_investment}"
         data-investment-denomination="${s.investment_denomination}"
         data-investment_type="${s.investment_type}"
-        >
+        >${s.name_type_value} -
         ${s.scheme_name}
     </option>
 `);
