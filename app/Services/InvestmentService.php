@@ -757,11 +757,11 @@ class InvestmentService
 
             InvestmentSi::create([
                 'investment_id' => $investment->id,
-                'si_number' => 'SCH-'.$investment->id.'-'.time(),
+                'si_number' => 'SCHMAT-'.$investment->id.'-'.time(),
                 'instruction_type' => 'schedule',
                 'si_client_bank_id' => $investment->to_client_bank_id,
                 'si_company_bank_id' => $investment->from_company_bank_id,
-                'si_start_date' => $investment->last_payout_date,
+                'si_start_date' => $investment->maturity_date,
                 'si_amount' => $investment->investment_amount,
                 'si_no_of_payments' => 1,
                 'status' => 'active',
