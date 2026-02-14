@@ -25,7 +25,7 @@
         </div>
     @endif
 
-    {{ $investmentSi }}
+    {{-- {{ $investmentSi }} --}}
     {{-- @php
         if ($investmentSi->investment->investment_amount === $investmentSi->si_amount) {
             $hideDate = 'hidden';
