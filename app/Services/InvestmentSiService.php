@@ -195,20 +195,7 @@ class InvestmentSiService
         if ($investmentSi->approved_by) {
             throw new \Exception('This instruction is already approved.');
         }
-
-        $investment = \App\Models\Investment::findOrFail($investmentSi->investment_id);
-
-        if ($investment->schedule_count > 1) {
-            $hasActiveStanding = InvestmentSi::where('investment_id', $investmentSi->investment_id)
-                ->where('instruction_type', 'standing')
-                ->where('status', 'active')
-                ->exists();
-
-            if (!$hasActiveStanding) {
-                throw new \Exception('Standing instruction must be active before approval.');
-            }
-        }
-
+        
         $investmentSi->update([
             'approved_by' => auth()->id(),
             'approved_at' => now()

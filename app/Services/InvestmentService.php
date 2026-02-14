@@ -728,7 +728,11 @@ class InvestmentService
 
     private function createPaymentInstructions(Investment $investment): void
     {
-        if ($investment->schedule_count > 1) {
+        if ($investment->schedule_count >= 3) {
+            $payoutSchedules = InvestmentPayoutSchedule::where('investment_id', $investment->id)
+                ->orderBy('sch_payout_date')
+                ->get();
+
             InvestmentSi::create([
                 'investment_id' => $investment->id,
                 'si_number' => 'SI-'.$investment->id.'-'.time(),
@@ -736,9 +740,10 @@ class InvestmentService
                 'si_client_bank_id' => $investment->to_client_bank_id,
                 'si_company_bank_id' => $investment->from_company_bank_id,
                 'si_start_date' => $investment->first_payout_date,
+                'si_end_date' => $payoutSchedules[$investment->schedule_count - 2]->sch_payout_date,
                 'si_amount' => $investment->payout_per_period,
                 'si_no_of_payments' => $investment->schedule_count - 1,
-                'status' => 'active',
+                'status' => 'inactive',
                 'created_by' => auth()->id(),
             ]);
 
@@ -749,9 +754,10 @@ class InvestmentService
                 'si_client_bank_id' => $investment->to_client_bank_id,
                 'si_company_bank_id' => $investment->from_company_bank_id,
                 'si_start_date' => $investment->last_payout_date,
+                'si_end_date' => $investment->last_payout_date,
                 'si_amount' => $investment->payout_per_period + $investment->rounding_off_amount,
                 'si_no_of_payments' => 1,
-                'status' => 'active',
+                'status' => 'inactive',
                 'created_by' => auth()->id(),
             ]);
 
@@ -762,9 +768,80 @@ class InvestmentService
                 'si_client_bank_id' => $investment->to_client_bank_id,
                 'si_company_bank_id' => $investment->from_company_bank_id,
                 'si_start_date' => $investment->maturity_date,
+                'si_end_date' => $investment->maturity_date,
                 'si_amount' => $investment->investment_amount,
                 'si_no_of_payments' => 1,
-                'status' => 'active',
+                'status' => 'inactive',
+                'created_by' => auth()->id(),
+            ]);
+        } elseif ($investment->schedule_count == 2) {
+            InvestmentSi::create([
+                'investment_id' => $investment->id,
+                'si_number' => 'SCH1-'.$investment->id.'-'.time(),
+                'instruction_type' => 'schedule',
+                'si_client_bank_id' => $investment->to_client_bank_id,
+                'si_company_bank_id' => $investment->from_company_bank_id,
+                'si_start_date' => $investment->first_payout_date,
+                'si_end_date' => $investment->first_payout_date,
+                'si_amount' => $investment->payout_per_period,
+                'si_no_of_payments' => 1,
+                'status' => 'inactive',
+                'created_by' => auth()->id(),
+            ]);
+
+            InvestmentSi::create([
+                'investment_id' => $investment->id,
+                'si_number' => 'SCH2-'.$investment->id.'-'.time(),
+                'instruction_type' => 'schedule',
+                'si_client_bank_id' => $investment->to_client_bank_id,
+                'si_company_bank_id' => $investment->from_company_bank_id,
+                'si_start_date' => $investment->last_payout_date,
+                'si_end_date' => $investment->last_payout_date,
+                'si_amount' => $investment->payout_per_period + $investment->rounding_off_amount,
+                'si_no_of_payments' => 1,
+                'status' => 'inactive',
+                'created_by' => auth()->id(),
+            ]);
+
+            InvestmentSi::create([
+                'investment_id' => $investment->id,
+                'si_number' => 'SCHMAT-'.$investment->id.'-'.time(),
+                'instruction_type' => 'schedule',
+                'si_client_bank_id' => $investment->to_client_bank_id,
+                'si_company_bank_id' => $investment->from_company_bank_id,
+                'si_start_date' => $investment->maturity_date,
+                'si_end_date' => $investment->maturity_date,
+                'si_amount' => $investment->investment_amount,
+                'si_no_of_payments' => 1,
+                'status' => 'inactive',
+                'created_by' => auth()->id(),
+            ]);
+        } elseif ($investment->schedule_count == 1) {
+            InvestmentSi::create([
+                'investment_id' => $investment->id,
+                'si_number' => 'SCH-'.$investment->id.'-'.time(),
+                'instruction_type' => 'schedule',
+                'si_client_bank_id' => $investment->to_client_bank_id,
+                'si_company_bank_id' => $investment->from_company_bank_id,
+                'si_start_date' => $investment->last_payout_date,
+                'si_end_date' => $investment->last_payout_date,
+                'si_amount' => $investment->payout_per_period + $investment->rounding_off_amount,
+                'si_no_of_payments' => 1,
+                'status' => 'inactive',
+                'created_by' => auth()->id(),
+            ]);
+
+            InvestmentSi::create([
+                'investment_id' => $investment->id,
+                'si_number' => 'SCHMAT-'.$investment->id.'-'.time(),
+                'instruction_type' => 'schedule',
+                'si_client_bank_id' => $investment->to_client_bank_id,
+                'si_company_bank_id' => $investment->from_company_bank_id,
+                'si_start_date' => $investment->maturity_date,
+                'si_end_date' => $investment->maturity_date,
+                'si_amount' => $investment->investment_amount,
+                'si_no_of_payments' => 1,
+                'status' => 'inactive',
                 'created_by' => auth()->id(),
             ]);
         }
