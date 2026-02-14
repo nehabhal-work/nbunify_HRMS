@@ -33,94 +33,97 @@
         <a href="{{ route('investment.els.index') }}" class="btn btn-secondary px-4">Go back</a>
 
     </div>
-    <form action="{{ route('investment.si.store') }}" method="POST" enctype="multipart/form-data">
+
+    <div class="card p-3 mb-3">
+        <h5>Standing Instruction Details</h5>
+        <table class="table table-bordered table-striped table-sm align-middle  investment-view styled-investment-table">
+            <tbody>
+                <tr>
+                    <th>Investment Date</th>
+                    <td>
+                        <b>{{ \Carbon\Carbon::parse($investment->investment_date)->format('d M Y') }}</b>
+                    </td>
+                    <th>Investment Type</th>
+                    <td><b>{{ ucfirst($investment->investment_type) }}</b></td>
+                </tr>
+                <tr>
+                    <th>Investment Holder Name</th>
+                    <td class="bg-warning-subtle"><b><small class="text-info">
+                                @if ($investment->firstClient)
+                                    {{ $investment->firstClient->name }}
+                                @endif
+                                @if ($investment->secondClient)
+                                    , {{ $investment->secondClient->name }}
+                                @endif
+                                @if ($investment->thirdClient)
+                                    , {{ $investment->thirdClient->name }}
+                                @endif
+                                @if ($investment->fourthClient)
+                                    , {{ $investment->fourthClient->name }}
+                                @endif
+                            </small></b>
+                    </td>
+                    <th>Scheme Name</th>
+                    <td><b>{{ $investment->scheme->scheme_name ?? '-' }}</b></td>
+                </tr>
+
+                {{-- @if ($investment->investment_type !== 'single')
+                        <tr>
+                            <th>Investment 3rd Holder</th>
+                            <td class="bg-warning-subtle"><b>{{ $clientNames[$investment->third_client_id] ?? '-' }}</b>
+                            </td>
+
+                            <th>Investment 4th Holder</th>
+                            <td class="bg-warning-subtle">
+                                <b>{{ $clientNames[$investment->fourth_client_id] ?? '-' }}</b>
+                            </td>
+                        </tr>
+                    @endif --}}
+
+
+                <tr>
+                    <th>Schedule Count</th>
+                    <td><b>{{ $investment->schedule_count }}</b></td>
+
+                    <th>Investment Amount</th>
+                    <td><b>₹ {{ number_format($investment->investment_amount, 2) }}</b></td>
+                </tr>
+                <tr>
+                    <th>Tenure</th>
+                    <td><b>{{ $investment->tenure_count }} {{ ucfirst($investment->tenure_type) }}</b></td>
+                    <th>Frequency</th>
+                    <td><b>{{ ucfirst($investment->frequency) }}</b></td>
+                </tr>
+
+                <tr>
+                    <th>ROI (%)</th>
+                    <td><b>{{ $investment->roi_percent }}%</b></td>
+                    <th>Maturity Date</th>
+                    <td><b>{{ \Carbon\Carbon::parse($investment->maturity_date)->format('d M Y') }}</b></td>
+                </tr>
+
+
+                <tr>
+                    <th>Payout Per {{ ucfirst($investment->frequency) }}</th>
+                    <td><b>₹ {{ number_format($investment->payout_per_period, 2) }}</b></td>
+                    <th>First Payout Date</th>
+                    <td><b>{{ \Carbon\Carbon::parse($investment->first_payout_date)->format('d M Y') }}</b></td>
+                </tr>
+
+
+            </tbody>
+        </table>
+    </div>
+
+
+    {{-- d-none need to be removed after 28 th feb --}}
+    <form action="{{ route('investment.si.store') }}" method="POST" enctype="multipart/form-data" class="d-none">
         @csrf
         @method('post')
 
         <input type="hidden" name="investment_id" value="{{ request()->get('id') }}">
 
         {{-- Set standing instruction --}}
-        <div class="card p-3 mb-3">
-            <h5>Standing Instruction Details</h5>
-            <table
-                class="table table-bordered table-striped table-sm align-middle  investment-view styled-investment-table">
-                <tbody>
-                    <tr>
-                        <th>Investment Date</th>
-                        <td>
-                            <b>{{ \Carbon\Carbon::parse($investment->investment_date)->format('d M Y') }}</b>
-                        </td>
-                        <th>Investment Type</th>
-                        <td><b>{{ ucfirst($investment->investment_type) }}</b></td>
-                    </tr>
-                    <tr>
-                        <th>Investment Holder Name</th>
-                        <td class="bg-warning-subtle"><b><small class="text-info">
-                                    @if ($investment->firstClient)
-                                        {{ $investment->firstClient->name }}
-                                    @endif
-                                    @if ($investment->secondClient)
-                                        , {{ $investment->secondClient->name }}
-                                    @endif
-                                    @if ($investment->thirdClient)
-                                        , {{ $investment->thirdClient->name }}
-                                    @endif
-                                    @if ($investment->fourthClient)
-                                        , {{ $investment->fourthClient->name }}
-                                    @endif
-                                </small></b>
-                        </td>
-                        <th>Scheme Name</th>
-                        <td><b>{{ $investment->scheme->scheme_name ?? '-' }}</b></td>
-                    </tr>
-
-                    {{-- @if ($investment->investment_type !== 'single')
-                            <tr>
-                                <th>Investment 3rd Holder</th>
-                                <td class="bg-warning-subtle"><b>{{ $clientNames[$investment->third_client_id] ?? '-' }}</b>
-                                </td>
-
-                                <th>Investment 4th Holder</th>
-                                <td class="bg-warning-subtle">
-                                    <b>{{ $clientNames[$investment->fourth_client_id] ?? '-' }}</b>
-                                </td>
-                            </tr>
-                        @endif --}}
-
-
-                    <tr>
-                        <th>Schedule Count</th>
-                        <td><b>{{ $investment->schedule_count }}</b></td>
-
-                        <th>Investment Amount</th>
-                        <td><b>₹ {{ number_format($investment->investment_amount, 2) }}</b></td>
-                    </tr>
-                    <tr>
-                        <th>Tenure</th>
-                        <td><b>{{ $investment->tenure_count }} {{ ucfirst($investment->tenure_type) }}</b></td>
-                        <th>Frequency</th>
-                        <td><b>{{ ucfirst($investment->frequency) }}</b></td>
-                    </tr>
-
-                    <tr>
-                        <th>ROI (%)</th>
-                        <td><b>{{ $investment->roi_percent }}%</b></td>
-                        <th>Maturity Date</th>
-                        <td><b>{{ \Carbon\Carbon::parse($investment->maturity_date)->format('d M Y') }}</b></td>
-                    </tr>
-
-
-                    <tr>
-                        <th>Payout Per {{ ucfirst($investment->frequency) }}</th>
-                        <td><b>₹ {{ number_format($investment->payout_per_period, 2) }}</b></td>
-                        <th>First Payout Date</th>
-                        <td><b>{{ \Carbon\Carbon::parse($investment->first_payout_date)->format('d M Y') }}</b></td>
-                    </tr>
-
-
-                </tbody>
-            </table>
-        </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="card shadow-sm">
