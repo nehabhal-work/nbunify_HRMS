@@ -21,13 +21,21 @@ function loadSchemeData() {
 
     let invType = selected.data('investment_type'); // "single" or "joint"
 
-    console.log('Scheme data loaded:', invType);
     if (invType === 'single') {
-        $('#investment_type').val('single').trigger('change');
+        $('#investment_type').val('single');
+        $('#second_client, #third_client, #fourth_client')
+            .val('')
+            .trigger('change');
+        // hide joined holder section
+        $('#div_other_holders').addClass('d-none');
     }
     else if (invType === 'joined') {
-        $('#investment_type').val('joined').trigger('change');
+        $('#investment_type').val('joined');
+        $('#div_other_holders').removeClass('d-none');
     }
+    updateHolderOptions();
+
+
 
     // SET TENURE TYPE
     $('#tenure_type').val(tenureType);
@@ -119,7 +127,7 @@ function loadSchemeData() {
         .addClass('bg-secondary-subtle');
 
     $('#investment_amount')
-        .val(minInvAmt)
+        // .val(minInvAmt)
         .attr({
             min: minInvAmt,
             max: maxInvAmt,
@@ -152,10 +160,10 @@ $('#investment_amount').on('input', function () {
     }
 
     if (errorMsg) {
-        $('.errorMsg').text(errorMsg);
+        $('.investment_amount_msg').text(errorMsg);
     } else {
 
-        $('.errorMsg').text('');
+        $('.investment_amount_msg').text('');
     }
 });
 
@@ -168,57 +176,40 @@ $('#scheme_id').on('change', function () {
 // -----------1st , 2nd , 3rd, 4th holder select  validation----------
 
 
-$(document).ready(function () {
+function updateHolderOptions() {
+    let selectedValues = [];
 
-    function updateHolderOptions() {
-        let selectedValues = [];
+    $('#first_client_id, #second_client, #third_client, #fourth_client').each(function () {
+        if ($(this).val()) {
+            selectedValues.push($(this).val());
+        }
+    });
 
-        $('#first_client_id, #second_client, #third_client, #fourth_client').each(function () {
-            if ($(this).val()) {
-                selectedValues.push($(this).val());
+    $('#first_client_id, #second_client, #third_client, #fourth_client').each(function () {
+        let currentSelect = $(this);
+
+        currentSelect.find('option').each(function () {
+            let optionVal = $(this).val();
+            if (optionVal === "") return;
+
+            if (
+                selectedValues.includes(optionVal) &&
+                optionVal !== currentSelect.val()
+            ) {
+                $(this).prop('disabled', true);
+            } else {
+                $(this).prop('disabled', false);
             }
         });
+    });
 
-        $('#first_client_id, #second_client, #third_client, #fourth_client').each(function () {
-            let currentSelect = $(this);
+    $('.select2').trigger('change.select2');
+}
+$(document).ready(function () {
 
-            currentSelect.find('option').each(function () {
-                let optionVal = $(this).val();
-                if (optionVal === "") return;
-
-                if (
-                    selectedValues.includes(optionVal) &&
-                    optionVal !== currentSelect.val()
-                ) {
-                    $(this).prop('disabled', true);
-                } else {
-                    $(this).prop('disabled', false);
-                }
-            });
-        });
-
-        $('.select2').trigger('change.select2');
-    }
 
     // 🔥 NEW: reset joined holders when switching to single
-    $('#investment_type').on('change', function () {
-        if ($(this).val() === 'single') {
 
-            // clear joined holder values
-            $('#second_client, #third_client, #fourth_client')
-                .val('')
-                .trigger('change');
-
-            // hide joined holder section
-            $('#div_other_holders').addClass('d-none');
-
-        } else {
-            // show joined holder section
-            $('#div_other_holders').removeClass('d-none');
-        }
-
-        updateHolderOptions();
-    });
 
     // holder change
     $(document).on(

@@ -25,7 +25,7 @@
         </div>
     @endif
 
-    {{-- {{ $investmentSi }} --}}
+    {{ $investmentSi }}
     {{-- @php
         if ($investmentSi->investment->investment_amount === $investmentSi->si_amount) {
             $hideDate = 'hidden';
@@ -166,10 +166,8 @@
                                     value="{{ $investment->maturity_date ? \Carbon\Carbon::parse($investment->maturity_date)->format('Y-m-d') : '' }}"
                                     readonly>
                             </div> --}}
-
-
-
                             {{-- CASE 1: SI amount equals investment amount --}}
+
                             {{-- SCHEDULE AMOUNT → Schedule Date --}}
                             @if ($showScheduleDate)
                                 <div class="col-md-3">
@@ -179,7 +177,7 @@
 
                                     <input type="date" name="si_start_date"
                                         class="form-control bg-secondary-subtle @error('si_start_date') is-invalid @enderror"
-                                        value="{{ \Carbon\Carbon::parse($investment->maturity_date)->format('Y-m-d') }}"
+                                        value="{{ \Carbon\Carbon::parse($investment->first_payout_date)->format('Y-m-d') }}"
                                         readonly>
                                 </div>
 
@@ -216,7 +214,7 @@
 
                                     <input type="date" name="si_end_date"
                                         class="form-control bg-secondary-subtle @error('si_end_date') is-invalid @enderror"
-                                        value="{{ \Carbon\Carbon::parse($investment->last_payout_date)->format('Y-m-d') }}"
+                                        value="{{ \Carbon\Carbon::parse($investment->maturity_date)->format('Y-m-d') }}"
                                         readonly>
                                 </div>
                             @endif
