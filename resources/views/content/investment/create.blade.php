@@ -86,11 +86,12 @@
                             </div>
 
 
+
                             <!-- Investment Type -->
                             <div class="col-md-2">
                                 <label for="investment_type" class="form-label">Investment Type</label>
-                                <select class="form-select @error('investment_type') is-invalid @enderror"
-                                    name="investment_type" id="investment_type">
+                                {{-- <select class="form-select @error('investment_type') is-invalid @enderror"
+                                    id="investment_type">
                                     <option value="single" {{ old('investment_type') == 'single' ? 'selected' : '' }}>
                                         Single
                                     </option>
@@ -98,7 +99,14 @@
                                         Joined
                                     </option>
 
-                                </select>
+                                </select> --}}
+
+
+
+                                <input type="text"
+                                    class="form-control bg-secondary-subtle  @error('investment_type') is-invalid @enderror"
+                                    name="investment_type" id="investment_type"
+                                    value="{{ old('investment_type', 'single') }}" readonly>
 
                                 @error('investment_type')
                                     <small class="text-danger">{{ $message }}</small>
@@ -208,7 +216,7 @@
                                 @error('investment_amount')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
-                                <small class="text-danger errorMsg"></small>
+                                <small class="text-danger investment_amount_msg"></small>
                             </div>
 
                             <!-- Tenure Type -->
