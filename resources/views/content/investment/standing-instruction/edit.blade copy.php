@@ -166,10 +166,8 @@
                                     value="{{ $investment->maturity_date ? \Carbon\Carbon::parse($investment->maturity_date)->format('Y-m-d') : '' }}"
                                     readonly>
                             </div> --}}
-
-
-
                             {{-- CASE 1: SI amount equals investment amount --}}
+
                             {{-- SCHEDULE AMOUNT → Schedule Date --}}
                             @if ($showScheduleDate)
                                 <div class="col-md-3">
