@@ -243,20 +243,14 @@ class InvestmentController extends Controller
 
     public function markPaid(Request $request)
     {
-        // return $request;
-        $schedule = InvestmentPayoutSchedule::findOrFail($request->schedule_id);
-
-        $schedule->update([
+        $this->investmentService->markPaid($request->schedule_id, [
             'actual_payout_amount' => $request->actual_payout_amount,
             'actual_payout_date' => $request->actual_payout_date,
             'utr_no' => $request->utr_no,
             'remarks' => $request->remarks,
-            'status' => 'done',
         ]);
 
-        // Send email notification after successful payout
-        $this->sendEmailPayout($schedule->id);
-
+        // $this->sendEmailPayout($request->schedule_id);
         return back()->with('success', 'Payout marked as paid successfully.');
     }
 

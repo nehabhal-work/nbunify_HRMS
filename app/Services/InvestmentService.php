@@ -324,24 +324,26 @@ class InvestmentService
 
     public function getPaymentSchedule(int $id): Investment
     {
-        $payschedule = Investment::with(['payoutSchedules.fromCompanyBank', 'payoutSchedules.toClientBank'])->findOrFail($id);
+        $investment = Investment::with(['payoutSchedules.fromCompanyBank', 'payoutSchedules.toClientBank'])->findOrFail($id);
 
         // Add serial numbers to payout schedules
-        $totalSchedules = $payschedule->payoutSchedules->count();
-        $payschedule->payoutSchedules->each(function ($schedule, $index) use ($totalSchedules, $payschedule) {
+        $totalSchedules = $investment->payoutSchedules->count();
+        $investment->payoutSchedules->each(function ($schedule, $index) use ($totalSchedules, $investment) {
             $schedule->sr_no = ($index + 1).'/'.$totalSchedules;
+            $schedule->index = $index + 1;
+            $schedule->total_schedules = $totalSchedules;
             // If the previous schedule is paid, enable marking this as paid else disable
             if ($index === 0) {
                 // First schedule can always be marked as paid
                 $schedule->enable_marked_as_paid = $schedule->status !== 'done';
             } else {
                 // Check if previous schedule is paid
-                $previousSchedule = $payschedule->payoutSchedules[$index - 1];
+                $previousSchedule = $investment->payoutSchedules[$index - 1];
                 $schedule->enable_marked_as_paid = $previousSchedule->status === 'done' && $schedule->status !== 'done';
             }
         });
 
-        return $payschedule;
+        return $investment;
     }
 
     //  public function getBankInstrument(int $id): Investment
@@ -859,5 +861,63 @@ class InvestmentService
         } while (Investment::where('investment_code', $code)->exists());
 
         return $code;
+    }
+
+    public function markPaid(int $scheduleId, array $data): String
+    {
+        $schedule = InvestmentPayoutSchedule::findOrFail($scheduleId);
+        $payoutSchedules = $this->getPaymentSchedule($schedule->investment_id)->payoutSchedules;
+        $currentIndex = $payoutSchedules->search(function ($s) use ($schedule) {
+            return $s->id === $schedule->id;
+        });
+        $totalSchedules = $payoutSchedules->count();
+        $remaining = $totalSchedules - $currentIndex;
+
+        if ($remaining == 1) {
+            $hasApprovedSI = InvestmentSi::where('investment_id', $schedule->investment_id)
+                ->where('instruction_type', 'schedule')
+                ->where('status', 'active')
+                ->whereNotNull('approved_by')
+                ->whereDate('si_start_date', $schedule->sch_payout_date)
+                ->exists();
+            if (!$hasApprovedSI) {
+                throw new \Exception('Cannot mark as paid for this schedule as we do not have approved schedule instructions for the last payout.');
+            }
+        }
+
+        if ($remaining == 0) {
+            $hasApprovedSI = InvestmentSi::where('investment_id', $schedule->investment_id)
+                ->where('instruction_type', 'schedule')
+                ->where('status', 'active')
+                ->whereNotNull('approved_by')
+                ->whereDate('si_start_date', $schedule->sch_payout_date)
+                ->exists();
+            if (!$hasApprovedSI) {
+                throw new \Exception('Cannot mark as paid for this schedule as we do not have approved schedule instructions for maturity payout.');
+            }
+        }
+
+        $schedule->update([
+            'actual_payout_amount' => $data['actual_payout_amount'],
+            'actual_payout_date' => $data['actual_payout_date'],
+            'utr_no' => $data['utr_no'],
+            'remarks' => $data['remarks'],
+            'status' => 'done',
+        ]);
+
+        if ($remaining == 0) {
+            Investment::where('id', $schedule->investment_id)->update([
+                'status' => 'closed',
+                'action_status' => 'matured',
+            ]);
+        }
+
+        if ($remaining == 2) {
+            return 'Payment marked successfully. Please add schedule instructions for the last payout.';
+        }
+        if ($remaining == 1) {
+            return 'Payment marked successfully. Please add schedule instructions for maturity.';
+        }
+        return 'Schedule marked as paid';
     }
 }
