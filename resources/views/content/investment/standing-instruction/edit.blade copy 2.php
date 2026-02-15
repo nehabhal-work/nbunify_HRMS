@@ -197,7 +197,7 @@
                                 </label>
 
                                 <input type="text" name="si_amount" class="form-control bg-secondary-subtle"
-                                    value="{{ $investmentSi->si_amount }}" readonly>
+                                    value="{{ number_format($investmentSi->si_amount, 2) }}" readonly>
                             </div>
 
 
@@ -221,41 +221,6 @@
 
 
 
-                            <!-- Reference No -->
-                            <div class="col-md-2">
-                                <label class="form-label">
-                                    Bank Reference No <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" name="bank_reference_no"
-                                    class="form-control @error('bank_reference_no') is-invalid @enderror"
-                                    value="{{ old('bank_reference_no', $investmentSi->bank_reference_no) }}">
-                                @error('bank_reference_no')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
-
-                            {{-- status active --}}
-                            <div class="col-md-2">
-                                <label class="form-label">
-                                    Status <span class="text-danger">*</span>
-                                </label>
-                                <select name="status" class="form-control @error('status') is-invalid @enderror">
-                                    <option value="active"
-                                        {{ old('status', $investmentSi->status) == 'active' ? 'selected' : '' }}>
-                                        Active
-                                    </option>
-
-                                    <option value="inactive"
-                                        {{ old('status', $investmentSi->status) == 'inactive' ? 'selected' : '' }}>
-                                        Inactive
-                                    </option>
-                                </select>
-
-
-                                @error('status')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
 
                             <!-- Instruction Image -->
                             <div class="col-md-3 mb-3">
@@ -362,7 +327,46 @@
                                 @endif
                             </div>
 
+                            <div class="w-100"></div>
+                            <!-- Reference No -->
+                            <div class="col-md-2">
+                                <label class="form-label">
+                                    Bank Reference No <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" name="bank_reference_no"
+                                    class="form-control @error('bank_reference_no') is-invalid @enderror"
+                                    value="{{ old('bank_reference_no', $investmentSi->bank_reference_no) }}">
+                                @error('bank_reference_no')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
 
+
+
+
+
+
+                            <div class="col-md-2">
+                                <label class="form-label">
+                                    Status <span class="text-danger">*</span>
+                                </label>
+                                <select name="status" class="form-control @error('status') is-invalid @enderror">
+                                    <option value="active"
+                                        {{ old('status', $investmentSi->status) == 'active' ? 'selected' : '' }}>
+                                        Active
+                                    </option>
+
+                                    <option value="inactive"
+                                        {{ old('status', $investmentSi->status) == 'inactive' ? 'selected' : '' }}>
+                                        Inactive
+                                    </option>
+                                </select>
+
+
+                                @error('status')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
 
                             <!-- Remarks -->
                             <div class="col-md-6">

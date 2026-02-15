@@ -153,7 +153,7 @@
                         <tr>
                             <th>Approval Status</th>
                             <td colspan="3">
-                                @if ($scheme->is_approved)
+                                @if ($scheme->approved3_by)
                                     <span class="badge bg-success">Approved</span>
                                 @else
                                     <span class="badge bg-warning text-dark">Pending Approval</span>
