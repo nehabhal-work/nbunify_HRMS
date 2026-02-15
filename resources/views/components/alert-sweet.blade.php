@@ -1,6 +1,6 @@
 {{-- @props(['type' => 'success', 'message' => '']) --}}
 @props([
-    'timer' => 3000,
+    'timer' => 5000,
 ])
 
 @php

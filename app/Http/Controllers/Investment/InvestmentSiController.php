@@ -31,7 +31,6 @@ class InvestmentSiController extends Controller
 
         // return $investment;
         // TODO: Create view - content.investment.si.index
-        // return redirect()->route('investment.si.index', ['id' => 21])->with('error', 'Standing Instruction faild bhalya.');
         // return back()->with('success', 'Saved successfully');
         // return back()->with('error', 'Something went wrong');
         // return back()->with('warning', 'Please check inputs');
