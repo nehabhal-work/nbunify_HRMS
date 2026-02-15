@@ -1,4 +1,26 @@
-@props(['type' => 'success', 'message' => ''])
+{{-- @props(['type' => 'success', 'message' => '']) --}}
+@props([
+    'timer' => 3000,
+])
+
+@php
+    $type = null;
+    $message = null;
+
+    if ($errors->any()) {
+        $type = 'error';
+        $message = $errors->first();
+    } elseif (session('success')) {
+        $type = 'success';
+        $message = session('success');
+    } elseif (session('error')) {
+        $type = 'error';
+        $message = session('error');
+    } elseif (session('warning')) {
+        $type = 'warning';
+        $message = session('warning');
+    }
+@endphp
 
 @if ($message)
     <script>
@@ -12,8 +34,14 @@
             //     showConfirmButton: false
             // });
             Swal.fire({
-                title: "{{ $message }}!",
-                icon: "success",
+                title: @json(ucfirst($type)),
+                text: @json($message),
+                icon: @json($type),
+                timer: {{ $timer }},
+                confirmButtonText: 'OK',
+                showConfirmButton: false,
+                timerProgressBar: true,
+                allowOutsideClick: true,
                 draggable: true
             });
         });

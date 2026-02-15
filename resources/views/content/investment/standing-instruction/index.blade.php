@@ -4,12 +4,16 @@
 
 @section('content')
     <div>
+
         @if (session('success'))
             <x-alert-sweet type="success" :message="session('success')" />
         @endif
 
         @if (session('error'))
             <x-alert-sweet type="danger" :message="session('error')" />
+        @endif
+        @if (session('warning'))
+            <x-alert-sweet type="warning" :message="session('warning')" />
         @endif
 
 
@@ -402,6 +406,7 @@
                             <th>Client Bank</th>
                             <th>Payment Start Date</th>
                             <th>Payment end Date</th>
+                            <th>Pay count</th>
                             <th>Amount</th>
                             <th>Instruction Image</th>
                             <th>Notes Image</th>
@@ -413,9 +418,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($investment->standingInstructions as $d)
+                        @foreach ($investment->standingInstructions as $key => $d)
                             <tr>
-                                <td>1</td>
+                                <td>{{ $key + 1 }}</td>
                                 <td>
                                     <a href="{{ route('investment.si.show', $d->id) }}"
                                         class="fw-semibold text-primary text-decoration-none">
@@ -443,6 +448,7 @@
                                 </td>
                                 <td>{{ \Carbon\Carbon::parse($d->si_end_date)->format('d M Y') }}
                                 </td>
+                                <td>{{ $d->si_no_of_payments }}</td>
                                 <td>{{ $d->si_amount }}</td>
                                 <td>instruction_001.jpg</td>
                                 <td>notes_001.jpg</td>
