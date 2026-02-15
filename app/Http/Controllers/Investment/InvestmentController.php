@@ -243,15 +243,17 @@ class InvestmentController extends Controller
 
     public function markPaid(Request $request)
     {
-        $this->investmentService->markPaid($request->schedule_id, [
-            'actual_payout_amount' => $request->actual_payout_amount,
-            'actual_payout_date' => $request->actual_payout_date,
-            'utr_no' => $request->utr_no,
-            'remarks' => $request->remarks,
-        ]);
-
-        // $this->sendEmailPayout($request->schedule_id);
-        return back()->with('success', 'Payout marked as paid successfully.');
+        try {
+            $message = $this->investmentService->markPaid($request->schedule_id, [
+                'actual_payout_amount' => $request->actual_payout_amount,
+                'actual_payout_date' => $request->actual_payout_date,
+                'utr_no' => $request->utr_no,
+                'remarks' => $request->remarks,
+            ]);
+            return back()->with('success', $message);
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
     }
 
     private function sendEmailPayout($id)
@@ -274,5 +276,15 @@ class InvestmentController extends Controller
     {
         $schemes = $this->schemeService->getApprovedByDate($request->investment_date);
         return response()->json($schemes);
+    }
+
+    public function addPayoutSchedule(Request $request)
+    {
+        try {
+            $this->investmentService->addPayoutSchedule($request->investment_id, $request->all());
+            return back()->with('success', 'Payout schedule added successfully.');
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
     }
 }

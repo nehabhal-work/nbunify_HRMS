@@ -125,6 +125,7 @@ Route::middleware(['auth', 'verified'])->prefix('investment')->name('investment.
     Route::get('/investment/{id}/email', [InvestmentController::class, 'sendEmailWithPdf'])->name('welcome.email')->middleware('permission:investments.view');
 
     Route::put('/investment-payout-mark-paid', [InvestmentController::class, 'markPaid'])->name('payout.mark-paid')->middleware('permission:investments.edit');
+    Route::post('/investment-payout-schedule-add', [InvestmentController::class, 'addPayoutSchedule'])->name('payout.schedule.add')->middleware('permission:investments.edit');
 
     Route::get('schemes-by-date', [InvestmentController::class, 'getSchemesByDate'])
         ->name('schemes.by.date')->middleware('permission:schemes.view');

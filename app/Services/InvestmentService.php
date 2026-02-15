@@ -920,4 +920,32 @@ class InvestmentService
         }
         return 'Schedule marked as paid';
     }
+
+    public function addPayoutSchedule(int $id, array $data): void{
+        $investment = Investment::findOrFail($id);
+        
+        $lastSchedule = InvestmentPayoutSchedule::where('investment_id', $id)
+            ->orderBy('sch_payout_date', 'desc')
+            ->first();
+        
+        if ($lastSchedule && $lastSchedule->status != 'done') {
+            throw new \Exception('Cannot add new payout schedule. Last payout schedule must be marked as paid first.');
+        }
+
+        if ($investment->status != 'active') {
+            throw new \Exception('Can only add payout schedule to active investments.');
+        }
+        InvestmentPayoutSchedule::create([
+            'investment_id' => $investment->id,
+            'sch_payout_date' => $data['sch_payout_date'],
+            'sch_payout_amount' => $data['sch_payout_amount'],
+            'actual_payout_date' => $data['actual_payout_date'] ?? null,
+            'status' => $data['status'] ?? 'pending',
+            'remarks' => $data['remarks'] ?? null,
+            'actual_payout_amount' => $data['actual_payout_amount'] ?? null,
+            'utr_no' => $data['utr_no'] ?? null,
+            'from_company_bank_id' => $data['from_company_bank_id'] ?? null,
+            'to_client_bank_id' => $data['to_client_bank_id'] ?? null,
+        ]);
+    }
 }
