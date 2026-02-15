@@ -107,25 +107,25 @@ class InvestmentSiService
      */
     public function update(InvestmentSi $investmentSi, array $data): InvestmentSi
     {
-        $existingActiveSi = InvestmentSi::where('investment_id', $investmentSi->investment_id)
-            ->where('instruction_type', $data['instruction_type'])
-            ->where('status', 'active')
-            ->where('id', '!=', $investmentSi->id)
-            ->exists();
+        // $existingActiveSi = InvestmentSi::where('investment_id', $investmentSi->investment_id)
+        //     ->where('instruction_type', $data['instruction_type'])
+        //     ->where('status', 'active')
+        //     ->where('id', '!=', $investmentSi->id)
+        //     ->exists();
 
-        if ($existingActiveSi) {
-            throw new \Exception('An active ' . $data['instruction_type'] . ' instruction already exists for this investment.');
-        }
+        // if ($existingActiveSi) {
+        //     throw new \Exception('An active ' . $data['instruction_type'] . ' instruction already exists for this investment.');
+        // }
 
-        $investment = \App\Models\Investment::findOrFail($investmentSi->investment_id);
+        // $investment = \App\Models\Investment::findOrFail($investmentSi->investment_id);
 
-        if ($data['instruction_type'] === 'schedule' && $data['si_no_of_payments'] != "1") {
-            throw new \Exception('Schedule instruction must have exactly 1 payout.');
-        }
+        // if ($data['instruction_type'] === 'schedule' && $data['si_no_of_payments'] != "1") {
+        //     throw new \Exception('Schedule instruction must have exactly 1 payout.');
+        // }
 
-        if ($data['instruction_type'] === 'standing' && $data['si_no_of_payments'] > $investment->schedule_count) {
-            throw new \Exception('Standing instruction cannot have more than ' . ($investment->schedule_count - 1) . ' payouts.');
-        }
+        // if ($data['instruction_type'] === 'standing' && $data['si_no_of_payments'] > $investment->schedule_count) {
+        //     throw new \Exception('Standing instruction cannot have more than ' . ($investment->schedule_count - 1) . ' payouts.');
+        // }
 
         // Handle file uploads
         if (isset($data['attachment_si_image'])) {
@@ -191,6 +191,10 @@ class InvestmentSiService
     public function approve(int $id): InvestmentSi
     {
         $investmentSi = $this->getById($id);
+
+        if($investmentSi->status == 'inactive') {
+            throw new \Exception('Cannot approve an inactive instruction.');
+        }
 
         if ($investmentSi->approved_by) {
             throw new \Exception('This instruction is already approved.');
