@@ -34,6 +34,8 @@ class InvestmentSiService
 
         if (auth()->id() == $investmentSi->created_by) {
             $investmentSi->is_approved = true;
+        } else if($investmentSi->status == 'inactive') {
+            $investmentSi->is_approved = true;
         } else {
             $investmentSi->is_approved = $investmentSi->approved_by != null;
         }

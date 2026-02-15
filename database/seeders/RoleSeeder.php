@@ -38,6 +38,7 @@ class RoleSeeder extends Seeder
                     'schemes.view', 'schemes.create', 'schemes.edit','schemes.approve',
                     'investments.view', 'investments.approve', 'investment-si.view', 'investment-si.approve',
                     'vendors.view', 'purchases.view', 'sales.view', 'expenses.view', 'ledger.view',
+                    'investments.mark-paid',
                 ]
             ],
             [
@@ -47,6 +48,7 @@ class RoleSeeder extends Seeder
                 'permissions' => [
                     'vendors.*', 'purchases.*', 'sales.*', 'expenses.*', 'ledger.view',
                     'clients.view', 'investments.view', 'investment-si.*','investment-si.approve',
+                    'investments.mark-paid',
                 ]
             ],
             [

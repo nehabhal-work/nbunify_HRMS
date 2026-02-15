@@ -75,6 +75,7 @@ class PermissionSeeder extends Seeder
             ['name' => 'Edit Investments', 'slug' => 'investments.edit', 'module' => 'investment'],
             ['name' => 'Delete Investments', 'slug' => 'investments.delete', 'module' => 'investment'],
             ['name' => 'Approve Investments', 'slug' => 'investments.approve', 'module' => 'investment'],
+            ['name' => 'Mark Investments as Paid', 'slug' => 'investments.mark-paid', 'module' => 'investment'],
             
             ['name' => 'View Investment SI', 'slug' => 'investment-si.view', 'module' => 'investment'],
             ['name' => 'Create Investment SI', 'slug' => 'investment-si.create', 'module' => 'investment'],
