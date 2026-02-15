@@ -330,8 +330,6 @@ class InvestmentService
         $totalSchedules = $investment->payoutSchedules->count();
         $investment->payoutSchedules->each(function ($schedule, $index) use ($totalSchedules, $investment) {
             $schedule->sr_no = ($index + 1).'/'.$totalSchedules;
-            $schedule->index = $index + 1;
-            $schedule->total_schedules = $totalSchedules;
             // If the previous schedule is paid, enable marking this as paid else disable
             if ($index === 0) {
                 // First schedule can always be marked as paid
@@ -870,6 +868,8 @@ class InvestmentService
         $currentIndex = $payoutSchedules->search(function ($s) use ($schedule) {
             return $s->id === $schedule->id;
         });
+        
+        $currentIndex = $currentIndex + 1;
         $totalSchedules = $payoutSchedules->count();
         $remaining = $totalSchedules - $currentIndex;
 
@@ -918,6 +918,18 @@ class InvestmentService
         if ($remaining == 1) {
             return 'Payment marked successfully. Please add schedule instructions for maturity.';
         }
+
+        \Log::info('Payout marked as paid', [
+            'schedule_id' => $scheduleId,
+            'investment_id' => $schedule->investment_id,
+            'actual_payout_amount' => $data['actual_payout_amount'],
+            'actual_payout_date' => $data['actual_payout_date'],
+            'utr_no' => $data['utr_no'],
+            'remarks' => $data['remarks'],
+            'remaining_schedules' => $remaining,
+            'total_schedules' => $totalSchedules,
+            'current_index' => $currentIndex,
+        ]);
         return 'Schedule marked as paid';
     }
 
