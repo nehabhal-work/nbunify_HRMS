@@ -401,6 +401,7 @@
                             <th>Company Bank</th>
                             <th>Client Bank</th>
                             <th>Payment Start Date</th>
+                            <th>Payment end Date</th>
                             <th>Amount</th>
                             <th>Instruction Image</th>
                             <th>Notes Image</th>
@@ -439,6 +440,8 @@
                                 <td>{{ $investment->ToClientBank->bank_name . ' - ' . $investment->ToClientBank->account_number }}
                                 </td>
                                 <td>{{ \Carbon\Carbon::parse($d->si_start_date)->format('d M Y') }}
+                                </td>
+                                <td>{{ \Carbon\Carbon::parse($d->si_end_date)->format('d M Y') }}
                                 </td>
                                 <td>{{ $d->si_amount }}</td>
                                 <td>instruction_001.jpg</td>
