@@ -211,12 +211,12 @@
 
                                 {{-- ORIGINAL value (reference only, NOT submitted) --}}
                                 <input type="number" id="originalPayoutCount"
-                                    value="{{ $investment->schedule_count ?? 1 }}" hidden>
+                                    value="{{ $investmentSi->si_no_of_payments ?? 1 }}" hidden>
 
                                 {{-- VISIBLE + SUBMITTED --}}
                                 <input type="number" name="si_no_of_payments" id="scheduleCount"
                                     class="form-control bg-secondary-subtle @error('si_no_of_payments') is-invalid @enderror"
-                                    value="{{ $investment->schedule_count ?? '-' }}" readonly>
+                                    value="{{ $investmentSi->si_no_of_payments ?? '-' }}" readonly>
                             </div>
 
 
@@ -258,7 +258,7 @@
                             </div>
 
                             <!-- Instruction Image -->
-                            <div class="col-md-3 mb-3">
+                            <div class="col-md-4 mb-3">
                                 <label class="form-label">
                                     Instruction Image <span class="text-danger">*</span>
                                 </label>
@@ -311,7 +311,7 @@
 
 
                             <!-- Notes Image -->
-                            <div class="col-md-3 mb-3">
+                            <div class="col-md-4 mb-3">
                                 <label class="form-label">
                                     Notes Image <span class="text-danger">*</span>
                                 </label>

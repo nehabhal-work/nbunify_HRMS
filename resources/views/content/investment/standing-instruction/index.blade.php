@@ -395,149 +395,117 @@
         </div>
         <div class="card-body">
             <div class="table-responsive text-nowrap">
-                <table class="table srkdataTable">
+                <table class="table table-bordered table-hover align-middle table-sm srkdataTable">
                     <thead class="table-light">
                         <tr>
-                            <th>#</th>
+                            <th hidden>#</th>
                             <th>Reference No</th>
                             <th>Status</th>
-                            <th>Instrument Type</th>
+                            <th>Instruction / Pay Count</th>
                             <th>Company Bank</th>
                             <th>Client Bank</th>
-                            <th>Payment Start Date</th>
-                            <th>Payment end Date</th>
-                            <th>Pay count</th>
+                            <th>start date - end date</th>
                             <th>Amount</th>
                             <th>Instruction Image</th>
                             <th>Notes Image</th>
                             <th>Created By</th>
-                            <th>Approved By 1</th>
-                            {{-- <th>Approved By 2</th>
-                            <th>Approved By 3</th> --}}
+                            <th>Approved By</th>
                             <th>Action</th>
                         </tr>
                     </thead>
+
+
                     <tbody>
                         @foreach ($investment->standingInstructions as $key => $d)
                             <tr>
-                                <td>{{ $key + 1 }}</td>
+                                <td hidden>{{ $key + 1 }}</td>
+
                                 <td>
                                     <a href="{{ route('investment.si.show', $d->id) }}"
                                         class="fw-semibold text-primary text-decoration-none">
                                         {{ $d->si_number }}
                                     </a>
                                 </td>
-                                <td>
-                                    @if ($d->status === 'active')
-                                        <span class="badge bg-success text-white">
-                                            {{ ucfirst($d->status) }}
-                                        </span>
-                                    @else
-                                        <span class="badge bg-danger text-white">
-                                            {{ ucfirst($d->status) }}
-                                        </span>
-                                    @endif
-                                </td>
-                                <td>{{ $d->instruction_type }}</td>
 
-                                <td>{{ $investment->fromCompanyBank->bank_name . ' - ' . $investment->fromCompanyBank->account_number }}
+                                <td>
+                                    <span class="badge {{ $d->status === 'active' ? 'bg-success' : 'bg-danger' }}">
+                                        {{ ucfirst($d->status) }}
+                                    </span>
                                 </td>
-                                <td>{{ $investment->ToClientBank->bank_name . ' - ' . $investment->ToClientBank->account_number }}
+
+                                {{-- ✅ Instruction Type + Pay Count --}}
+                                <td>
+                                    <div class="fw-semibold">{{ $d->instruction_type }}</div>
+                                    <small class="text-muted">
+                                        Pay Count: {{ $d->si_no_of_payments }}
+                                    </small>
                                 </td>
-                                <td>{{ \Carbon\Carbon::parse($d->si_start_date)->format('d M Y') }}
+
+                                <td>
+                                    {{ $investment->fromCompanyBank->bank_name }} -
+                                    {{ $investment->fromCompanyBank->account_number }}
                                 </td>
-                                <td>{{ \Carbon\Carbon::parse($d->si_end_date)->format('d M Y') }}
+
+                                <td>
+                                    {{ $investment->ToClientBank->bank_name }} -
+                                    {{ $investment->ToClientBank->account_number }}
                                 </td>
-                                <td>{{ $d->si_no_of_payments }}</td>
-                                <td>{{ $d->si_amount }}</td>
+
+                                {{-- ✅ Start Date – End Date --}}
+                                <td>
+                                    <div class="fw-semibold">
+                                        {{ \Carbon\Carbon::parse($d->si_start_date)->format('d M Y') }}
+                                    </div>
+                                    <small class="text-muted">
+                                        to {{ \Carbon\Carbon::parse($d->si_end_date)->format('d M Y') }}
+                                    </small>
+                                </td>
+
+                                <td>{{ number_format($d->si_amount, 2) }}</td>
+
                                 <td>instruction_001.jpg</td>
                                 <td>notes_001.jpg</td>
 
-                                <td
-                                    class="{{ !empty($d->createdBy) ? 'table-warning fw-semibold rounded px-2 py-1' : '' }}">
-                                    @if (!empty($d->createdBy))
-                                        {{-- <div class="d-flex justify-content-center text-center"> --}}
-                                        {{ $d->createdBy->name }}
-                                        {{-- </div> --}}
-                                        <br>
-                                        {{ $d->created_at ?? '-' }}
+                                <td class="{{ $d->createdBy ? 'table-warning fw-semibold' : '' }}">
+                                    @if ($d->createdBy)
+                                        {{ $d->createdBy->name }}<br>
+                                        <small>{{ $d->created_at }}</small>
                                     @else
                                         -
                                     @endif
                                 </td>
 
-                                <td
-                                    class="{{ !empty($d->approvedBy) ? 'table-success fw-semibold rounded px-2 py-1' : '' }}">
-                                    @if (!empty($d->approvedBy))
-                                        {{ $d->approvedBy->name }} <br>{{ $d->approved_at ?? '-' }}
+                                <td class="{{ $d->approvedBy ? 'table-success fw-semibold' : '' }}">
+                                    @if ($d->approvedBy)
+                                        {{ $d->approvedBy->name }}<br>
+                                        <small>{{ $d->approved_at }}</small>
                                     @else
                                         -
                                     @endif
                                 </td>
-
-                                {{-- <td
-                                    class="{{ !empty($d->approved2By) ? 'table-success fw-semibold rounded px-2 py-1' : '' }}">
-                                    @if (!empty($d->approved2By))
-                                        {{ $d->approved2By->name }} <br>{{ $d->approved2_on ?? '-' }}
-                                    @else
-                                        -
-                                    @endif
-                                </td>
-
-                                <td
-                                    class="{{ !empty($d->approved3By) ? 'table-success fw-semibold rounded px-2 py-1' : '' }}">
-                                    @if (!empty($d->approved3By))
-                                        {{ $d->approved3By->name }} <br>{{ $d->approved3_on ?? '-' }}
-                                    @else
-                                        -
-                                    @endif
-                                </td> --}}
-
 
                                 <td>
                                     <div class="dropdown">
-                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                            data-bs-toggle="dropdown">
+                                        <button class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
                                             <i class="bx bx-dots-vertical-rounded"></i>
                                         </button>
-
                                         <div class="dropdown-menu">
-
-                                            <a class="dropdown-item edit-btn"
-                                                href="{{ route('investment.si.edit', $d->id) }}">
+                                            <a class="dropdown-item" href="{{ route('investment.si.edit', $d->id) }}">
                                                 <i class="bx bx-edit-alt me-1"></i> Edit
                                             </a>
-                                            <a class="dropdown-item edit-btn"
-                                                href="{{ route('investment.si.show', $d->id) }}">
+                                            <a class="dropdown-item" href="{{ route('investment.si.show', $d->id) }}">
                                                 <i class="bx bx-show-alt me-1"></i> View
                                             </a>
-
-                                            {{-- <form action="{{ route('investment.si.destroy', $d->id) }}" method="POST"
-                                                onsubmit="return confirmDelete()">
-                                                @csrf
-                                                @method('DELETE')
-
-                                                <button type="submit" class="dropdown-item text-danger">
-                                                    Delete
-                                                </button>
-                                            </form> --}}
-
-
-
-
                                         </div>
                                     </div>
-
                                 </td>
                             </tr>
                         @endforeach
-
-
                     </tbody>
-
 
                 </table>
             </div>
+
         </div>
     </div>
 
