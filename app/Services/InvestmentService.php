@@ -944,8 +944,8 @@ class InvestmentService
             throw new \Exception('Cannot add new payout schedule. Last payout schedule must be marked as paid first.');
         }
 
-        if ($investment->status != 'active') {
-            throw new \Exception('Can only add payout schedule to active investments.');
+        if ($investment->status != 'closed') {
+            throw new \Exception('Can only add payout schedule to closed investments.');
         }
         InvestmentPayoutSchedule::create([
             'investment_id' => $investment->id,
