@@ -20,8 +20,7 @@ class InvestmentController extends Controller
         private SchemeService $schemeService,
         private ClientService $clientService,
         private CompanyService $companyService,
-    ) {
-    }
+    ) {}
 
     /**
      * Display a listing of the resource.
@@ -179,7 +178,6 @@ class InvestmentController extends Controller
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Error approving investment: ' . $e->getMessage());
         }
-
     }
 
     public function approvePayouts(string $id)
@@ -280,6 +278,7 @@ class InvestmentController extends Controller
 
     public function addPayoutSchedule(Request $request)
     {
+        // return $request;
         try {
             $this->investmentService->addPayoutSchedule($request->investment_id, $request->all());
             return back()->with('success', 'Payout schedule added successfully.');

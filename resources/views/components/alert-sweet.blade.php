@@ -37,11 +37,11 @@
                 title: @json(ucfirst($type)),
                 text: @json($message),
                 icon: @json($type),
-                timer: {{ $timer }},
+                // timer: {{ $timer }},
                 confirmButtonText: 'OK',
-                showConfirmButton: false,
-                timerProgressBar: true,
-                allowOutsideClick: true,
+                showConfirmButton: true,
+                timerProgressBar: false,
+                allowOutsideClick: false,
                 draggable: true
             });
         });

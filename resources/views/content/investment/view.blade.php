@@ -45,6 +45,7 @@
         </div>
     @endif
 
+    {{ $investment }}
     <h4 class="fw-bold py-3 mb-4">
         <span class="text-muted fw-light">Master /</span> <a href="{{ route('investment.els.index') }}">ELS-Investment</a>
     </h4>
@@ -660,8 +661,17 @@
                                     </th>
                                     <th colspan="8"></th>
                                 </tr>
-                            </tfoot>
+                                <tr>
+                                    <td>
+                                        <button class="btn btn-outline-success" data-bs-toggle="modal"
+                                            data-bs-target="#markPaidModal_payoutScheduleAdd"
+                                            data-id="{{ $investment->id }}" data-amount="" data-sr_no="">
+                                            Payout Schedule Add
+                                        </button>
 
+                                    </td>
+                                </tr>
+                            </tfoot>
 
                         </table>
                     </div>
@@ -838,6 +848,126 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="markPaidModal_payoutScheduleAdd" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <form method="POST" action="{{ route('investment.payout.schedule.add') }}">
+                    @csrf
+                    @method('post')
+
+                    <input type="hidden1" name="investment_id" id="investment_id">
+
+                    <div class="modal-content">
+                        <div class="modal-header bg-success-subtle  text-white">
+                            <h5 class="modal-title">Mark extra payout as Paid</h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                        </div>
+
+                        <div class="modal-body">
+                            <div class="row">
+
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label">Actual Paid Amount</label>
+                                    <input type="number" step="0.01" class="form-control "
+                                        name="actual_payout_amount" id="actual_amount" required>
+                                </div>
+
+
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label">Payout Date & Time</label>
+                                    <input type="datetime-local" class="form-control" name="actual_payout_date"
+                                        min="2000-01-01T00:00" max="2099-12-31T23:59"
+                                        value="{{ now()->format('Y-m-d\TH:i') }}" required>
+
+
+                                </div>
+
+
+
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label">UTR No</label>
+                                    <input type="text" class="form-control" name="utr_no" required
+                                        pattern="[A-Za-z0-9]+" title="Only letters and numbers are allowed"
+                                        oninput="this.value = this.value.replace(/[^A-Za-z0-9]/g, '')">
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label">Extra Charge</label>
+                                    <input type="text" class="form-control" name="extra_charge" id="extra_charge">
+                                </div>
+
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label">Reason of Extra Charge</label>
+
+                                    <select class="form-select" name="reason_extra_charge" id="reason_extra_charge"
+                                        required>
+                                        <option value="">Select Extra Charge</option>
+                                        <option value="bank_charges">Bank Charges</option>
+                                        <option value="gst">GST</option>
+                                        <option value="tds">TDS</option>
+                                        <option value="processing_fee">Processing Fee</option>
+                                        <option value="penalty">Penalty</option>
+                                        <option value="other">Other</option>
+                                    </select>
+                                </div>
+
+
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label">
+                                        reference Image <span class="text-danger">*</span>
+                                    </label>
+
+                                    <div class="input-group">
+                                        <input type="file"
+                                            class="form-control fileInput instrumentImage @error('refImage') is-invalid @enderror"
+                                            id="refImage" name="attachment_refImage" accept="image/*,application/pdf"
+                                            onchange="uploadTempFile(this, 'refImage')">
+
+                                        <button class="btn btn-outline-danger" type="button"
+                                            onclick="document.getElementById('refImage').value = ''">
+                                            ✕
+                                        </button>
+                                    </div>
+
+                                    @error('refImage.0')
+                                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                                    @enderror
+
+                                    <input type="hidden" id="attachment_refImage_url" name="attachment_refImage_url"
+                                        value="{{ old('attachment_refImage_url') }}">
+
+                                    @if (old('attachment_refImage_url'))
+                                        <div id="attachment_refImage_preview"
+                                            class="position-relative d-inline-block mt-2">
+                                            <img src="{{ old('attachment_refImage_url') }}" width="100"
+                                                class="rounded border">
+
+                                            <button type="button"
+                                                class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                                                onclick="removeImage('attachment_refImage')">
+                                                ✕
+                                            </button>
+                                        </div>
+                                    @endif
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Remarks</label>
+                                    <textarea class="form-control" name="remarks" id="mark_paid_remarks" rows="3"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr>
+                        <div class="modal-footer">
+                            <button class="btn btn-success">Confirm Payment</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 @push('scripts')
@@ -847,6 +977,15 @@
             var button = event.relatedTarget;
             document.getElementById('schedule_id').value = button.getAttribute('data-id');
             document.getElementById('actual_amount').value = button.getAttribute('data-amount');
+            document.getElementById('mark_paid_remarks').value = 'Payment for SR No. ' + button.getAttribute(
+                'data-sr_no');
+        });
+    </script>
+    <script>
+        var markPaidModalPSA = document.getElementById('markPaidModal_payoutScheduleAdd');
+        markPaidModalPSA.addEventListener('show.bs.modal', function(event) {
+            var button = event.relatedTarget;
+            document.getElementById('investment_id').value = button.getAttribute('data-id');
             document.getElementById('mark_paid_remarks').value = 'Payment for SR No. ' + button.getAttribute(
                 'data-sr_no');
         });
