@@ -785,8 +785,8 @@
                     @method('post')
 
                     <input type="hidden" name="investment_id" id="investment_id_PSA">
-                    <input type="hidden" name="investment_id" value="{{ $investment->fromCompanyBank->id }}">
-                    <input type="hidden" name="investment_id" value="{{ $investment->ToClientBank->id }}">
+                    <input type="hidden" name="from_company_bank_id" value="{{ $investment->fromCompanyBank->id }}">
+                    <input type="hidden" name="to_client_bank_id" value="{{ $investment->ToClientBank->id }}">
 
 
 
