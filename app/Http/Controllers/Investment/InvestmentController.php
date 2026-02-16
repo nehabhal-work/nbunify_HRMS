@@ -278,6 +278,7 @@ class InvestmentController extends Controller
 
     public function addPayoutSchedule(Request $request)
     {
+        // return $request;
         try {
             $this->investmentService->addPayoutSchedule($request->investment_id, $request->all());
             return back()->with('success', 'Payout schedule added successfully.');
