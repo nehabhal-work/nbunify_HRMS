@@ -932,8 +932,20 @@ class InvestmentService
         return 'Schedule marked as paid';
     }
 
-    public function addPayoutSchedule(int $id, array $data): void
-    {
+    public function addPayoutSchedule(int $id, array $data): void{
+        $validator = \Validator::make($data, [
+            'actual_payout_date' => 'required|date',
+            'actual_payout_amount' => 'required|numeric|min:0',
+            'utr_no' => 'required|string',
+            'from_company_bank_id' => 'required|exists:company_banks,id',
+            'to_client_bank_id' => 'required|exists:client_banks,id',
+            'remarks' => 'nullable|string',
+        ]);
+
+        if ($validator->fails()) {
+            throw new \Exception($validator->errors()->first());
+        }
+
         $investment = Investment::findOrFail($id);
 
         $lastSchedule = InvestmentPayoutSchedule::where('investment_id', $id)
@@ -947,17 +959,20 @@ class InvestmentService
         if ($investment->status != 'closed') {
             throw new \Exception('Can only add payout schedule to closed investments.');
         }
+
+
+        
         InvestmentPayoutSchedule::create([
             'investment_id' => $investment->id,
-            'sch_payout_date' => $data['sch_payout_date'],
-            'sch_payout_amount' => $data['sch_payout_amount'],
-            'actual_payout_date' => $data['actual_payout_date'] ?? null,
-            'status' => $data['status'] ?? 'pending',
+            'sch_payout_date' => $data['actual_payout_date'],
+            'sch_payout_amount' => $data['actual_payout_amount'],
+            'actual_payout_date' => $data['actual_payout_date'],
+            'status' => 'done',
             'remarks' => $data['remarks'] ?? null,
-            'actual_payout_amount' => $data['actual_payout_amount'] ?? null,
-            'utr_no' => $data['utr_no'] ?? null,
-            'from_company_bank_id' => $data['from_company_bank_id'] ?? null,
-            'to_client_bank_id' => $data['to_client_bank_id'] ?? null,
+            'actual_payout_amount' => $data['actual_payout_amount'],
+            'utr_no' => $data['utr_no'],
+            'from_company_bank_id' => $data['from_company_bank_id'],
+            'to_client_bank_id' => $data['to_client_bank_id'],
         ]);
     }
 }
