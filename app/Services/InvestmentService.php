@@ -937,7 +937,7 @@ class InvestmentService
             'actual_payout_date' => 'required|date',
             'actual_payout_amount' => 'required|numeric|min:0',
             'utr_no' => 'required|string',
-            'from_company_bank_id' => 'required|exists:company_banks,id',
+            'from_company_bank_id' => 'required|exists:company_bank_details,id',
             'to_client_bank_id' => 'required|exists:client_banks,id',
             'remarks' => 'nullable|string',
         ]);
