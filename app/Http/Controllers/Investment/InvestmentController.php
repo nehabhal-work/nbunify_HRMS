@@ -280,6 +280,11 @@ class InvestmentController extends Controller
     {
         // return $request;
         try {
+            validate($request->all(), [
+                'investment_id' => 'required|exists:investments,id',
+                'payout_date' => 'required|date',
+                'payout_amount' => 'required|numeric|min:0',
+            ]);
             $this->investmentService->addPayoutSchedule($request->investment_id, $request->all());
             return back()->with('success', 'Payout schedule added successfully.');
         } catch (\Exception $e) {
