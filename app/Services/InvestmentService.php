@@ -251,7 +251,7 @@ class InvestmentService
 
         if (! empty($filters['client_search'])) {
             $query->whereHas('firstClient', function ($q) use ($filters) {
-                $q->where('name', 'like', '%'.$filters['client_search'].'%');
+                $q->where('name', 'like', '%' . $filters['client_search'] . '%');
             });
         }
 
@@ -329,7 +329,7 @@ class InvestmentService
         // Add serial numbers to payout schedules
         $totalSchedules = $investment->payoutSchedules->count();
         $investment->payoutSchedules->each(function ($schedule, $index) use ($totalSchedules, $investment) {
-            $schedule->sr_no = ($index + 1).'/'.$totalSchedules;
+            $schedule->sr_no = ($index + 1) . '/' . $totalSchedules;
             // If the previous schedule is paid, enable marking this as paid else disable
             if ($index === 0) {
                 // First schedule can always be marked as paid
@@ -442,7 +442,6 @@ class InvestmentService
             $data['paid_interest_amount'] = $data['actual_interest_amount'];
 
             $data['rounding_off_amount'] = 0;
-
         } else {
             $data['actual_interest_amount'] = $data['payout_per_period'] * $data['schedule_count'];
             $data['paid_interest_amount'] = round($data['payout_per_period'], 0) * $data['schedule_count'];
@@ -656,7 +655,7 @@ class InvestmentService
                         if ($file instanceof \Illuminate\Http\UploadedFile) {
                             // Store file temporarily and get URL
                             $tempPath = $file->store('temp/instruments', 'public');
-                            $attachmentUrl = asset('storage/'.$tempPath);
+                            $attachmentUrl = asset('storage/' . $tempPath);
                         }
                     }
 
@@ -719,7 +718,7 @@ class InvestmentService
         // Handle TDS attachment file upload
         if (isset($data['attachment_tds']) && $data['attachment_tds'] instanceof \Illuminate\Http\UploadedFile) {
             $tempPath = $data['attachment_tds']->store('temp/tds', 'public');
-            $data['attachment_tds_url'] = asset('storage/'.$tempPath);
+            $data['attachment_tds_url'] = asset('storage/' . $tempPath);
             unset($data['attachment_tds']);
         }
 
@@ -735,7 +734,7 @@ class InvestmentService
 
             InvestmentSi::create([
                 'investment_id' => $investment->id,
-                'si_number' => 'SI-'.$investment->id.'-'.time(),
+                'si_number' => 'SI-' . $investment->id . '-' . time(),
                 'instruction_type' => 'standing',
                 'si_client_bank_id' => $investment->to_client_bank_id,
                 'si_company_bank_id' => $investment->from_company_bank_id,
@@ -749,7 +748,7 @@ class InvestmentService
 
             InvestmentSi::create([
                 'investment_id' => $investment->id,
-                'si_number' => 'SCH-'.$investment->id.'-'.time(),
+                'si_number' => 'SCH-' . $investment->id . '-' . time(),
                 'instruction_type' => 'schedule',
                 'si_client_bank_id' => $investment->to_client_bank_id,
                 'si_company_bank_id' => $investment->from_company_bank_id,
@@ -763,7 +762,7 @@ class InvestmentService
 
             InvestmentSi::create([
                 'investment_id' => $investment->id,
-                'si_number' => 'SCHMAT-'.$investment->id.'-'.time(),
+                'si_number' => 'SCHMAT-' . $investment->id . '-' . time(),
                 'instruction_type' => 'schedule',
                 'si_client_bank_id' => $investment->to_client_bank_id,
                 'si_company_bank_id' => $investment->from_company_bank_id,
@@ -777,7 +776,7 @@ class InvestmentService
         } elseif ($investment->schedule_count == 2) {
             InvestmentSi::create([
                 'investment_id' => $investment->id,
-                'si_number' => 'SCH1-'.$investment->id.'-'.time(),
+                'si_number' => 'SCH1-' . $investment->id . '-' . time(),
                 'instruction_type' => 'schedule',
                 'si_client_bank_id' => $investment->to_client_bank_id,
                 'si_company_bank_id' => $investment->from_company_bank_id,
@@ -791,7 +790,7 @@ class InvestmentService
 
             InvestmentSi::create([
                 'investment_id' => $investment->id,
-                'si_number' => 'SCH2-'.$investment->id.'-'.time(),
+                'si_number' => 'SCH2-' . $investment->id . '-' . time(),
                 'instruction_type' => 'schedule',
                 'si_client_bank_id' => $investment->to_client_bank_id,
                 'si_company_bank_id' => $investment->from_company_bank_id,
@@ -805,7 +804,7 @@ class InvestmentService
 
             InvestmentSi::create([
                 'investment_id' => $investment->id,
-                'si_number' => 'SCHMAT-'.$investment->id.'-'.time(),
+                'si_number' => 'SCHMAT-' . $investment->id . '-' . time(),
                 'instruction_type' => 'schedule',
                 'si_client_bank_id' => $investment->to_client_bank_id,
                 'si_company_bank_id' => $investment->from_company_bank_id,
@@ -819,7 +818,7 @@ class InvestmentService
         } elseif ($investment->schedule_count == 1) {
             InvestmentSi::create([
                 'investment_id' => $investment->id,
-                'si_number' => 'SCH-'.$investment->id.'-'.time(),
+                'si_number' => 'SCH-' . $investment->id . '-' . time(),
                 'instruction_type' => 'schedule',
                 'si_client_bank_id' => $investment->to_client_bank_id,
                 'si_company_bank_id' => $investment->from_company_bank_id,
@@ -833,7 +832,7 @@ class InvestmentService
 
             InvestmentSi::create([
                 'investment_id' => $investment->id,
-                'si_number' => 'SCHMAT-'.$investment->id.'-'.time(),
+                'si_number' => 'SCHMAT-' . $investment->id . '-' . time(),
                 'instruction_type' => 'schedule',
                 'si_client_bank_id' => $investment->to_client_bank_id,
                 'si_company_bank_id' => $investment->from_company_bank_id,
@@ -854,7 +853,7 @@ class InvestmentService
         $counter = 1;
 
         do {
-            $code = $baseCode.str_pad($counter, 3, '0', STR_PAD_LEFT);
+            $code = $baseCode . str_pad($counter, 3, '0', STR_PAD_LEFT);
             $counter++;
         } while (Investment::where('investment_code', $code)->exists());
 
@@ -868,7 +867,7 @@ class InvestmentService
         $currentIndex = $payoutSchedules->search(function ($s) use ($schedule) {
             return $s->id === $schedule->id;
         });
-        
+
         $currentIndex = $currentIndex + 1;
         $totalSchedules = $payoutSchedules->count();
         $remaining = $totalSchedules - $currentIndex;
@@ -948,11 +947,11 @@ class InvestmentService
         }
 
         $investment = Investment::findOrFail($id);
-        
+
         $lastSchedule = InvestmentPayoutSchedule::where('investment_id', $id)
             ->orderBy('sch_payout_date', 'desc')
             ->first();
-        
+
         if ($lastSchedule && $lastSchedule->status != 'done') {
             throw new \Exception('Cannot add new payout schedule. Last payout schedule must be marked as paid first.');
         }
