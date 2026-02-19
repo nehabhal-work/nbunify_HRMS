@@ -21,17 +21,17 @@ function loadSchemeData() {
 
     let invType = selected.data('investment_type'); // "single" or "joint"
 
+    console.log("Investment Type: " + invType);
     if (invType === 'single') {
         $('#investment_type').val('single');
-        $('#second_client, #third_client, #fourth_client')
-            .val('')
-            .trigger('change');
-        // hide joined holder section
+        $('#second_client, #third_client, #fourth_client').val('').trigger('change');
         $('#div_other_holders').addClass('d-none');
+        $('#investment_type option[value="joined"]').prop('disabled', true);
     }
     else if (invType === 'joined') {
         $('#investment_type').val('joined');
         $('#div_other_holders').removeClass('d-none');
+        $('#investment_type option[value="joined"]').prop('disabled', false);
     }
     updateHolderOptions();
 

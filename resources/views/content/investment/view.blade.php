@@ -802,6 +802,7 @@
                                     <label class="form-label">Payout Date & Time</label>
                                     <input type="datetime-local" class="form-control" name="actual_payout_date"
                                         min="{{ now()->format('Y-m-d\TH:i') }}" max="2099-12-31T23:59"
+                                        onkeydown="return false" onpaste="return false"
                                         value="{{ now()->format('Y-m-d\TH:i') }}" required>
                                 </div>
 
