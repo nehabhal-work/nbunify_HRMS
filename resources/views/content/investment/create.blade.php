@@ -91,7 +91,7 @@
                             <div class="col-md-2">
                                 <label for="investment_type" class="form-label">Investment Type</label>
                                 <select class="form-select @error('investment_type') is-invalid @enderror"
-                                    id="investment_type">
+                                    id="investment_type" name="investment_type" required>
                                     <option value="single" {{ old('investment_type') == 'single' ? 'selected' : '' }}>
                                         Single
                                     </option>

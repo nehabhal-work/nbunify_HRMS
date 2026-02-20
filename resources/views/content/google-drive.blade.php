@@ -8,9 +8,9 @@
     <div class="row">
         <div class="col-6">
 
-            <form action="{{ route('google-drive-upload') }}" method="post" enctype="multipart/form-data">
+            <form action="{{ route('google-drive-upload') }}" method="POST" enctype="multipart/form-data">
                 @csrf
-                @method('post')
+                @method('POST')
                 <div class="mb-3">
                     <label for="" class="form-label">Choose file</label>
                     <input type="file" class="form-control" name="myfile" id="" placeholder=""
