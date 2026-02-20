@@ -383,8 +383,8 @@
                             <th>Received Date</th>
                             <th class="text-end">received amount (₹)</th>
                             <th>UTR no.</th>
-                            <th>From Bank</th>
-                            <th>To Client Bank</th>
+                            <th>From Bank Account No.</th>
+                            <th>To Client Bank Account No.</th>
                             <th>Status</th>
                             <th>Remarks</th>
                         </tr>
