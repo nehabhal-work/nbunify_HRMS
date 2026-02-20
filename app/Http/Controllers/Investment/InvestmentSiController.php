@@ -31,6 +31,10 @@ class InvestmentSiController extends Controller
 
         // return $investment;
         // TODO: Create view - content.investment.si.index
+        // return back()->with('success', 'Saved successfully');
+        // return back()->with('error', 'Something went wrong');
+        // return back()->with('warning', 'Please check inputs');
+
         return view('content.investment.standing-instruction.index', compact('investment'));
     }
 
@@ -69,7 +73,7 @@ class InvestmentSiController extends Controller
     {
         // Standing Instruction
         $investmentSi = $this->investmentSiService->getById($id);
-// return $investmentSi;
+        // return $investmentSi;
         // Parent Investment (REQUIRED)
         $investment = $this->investmentService->getById(
             $investmentSi->investment_id
@@ -94,7 +98,7 @@ class InvestmentSiController extends Controller
     {
         // Standing Instruction
         $investmentSi = $this->investmentSiService->showById($id);
-// return $investmentSi;
+        // return $investmentSi;
         // Parent Investment (REQUIRED)
         $investment = $this->investmentService->getById(
             $investmentSi->investment_id

@@ -204,172 +204,229 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive text-nowrap">
-                        <table class="table table-sm srkdataTable">
-                            <thead class="table-light">
-                                <tr>
-                                    <th hidden>#</th>
-                                    <th>Investment Code</th>
-                                    <th>Investment Date</th>
-                                    <th>Client Name</th>
-                                    <th>Scheme Name</th>
-                                    <th>Investment Amt /ROI%</th>
-                                    <th>Tenure /Frequency</th>
-                                    {{-- <th>Frequency</th> --}}
-                                    {{-- <th>ROI (%)</th> --}}
-                                    <th>Standing Instruction</th>
-                                    <th>Status</th>
-
-                                    <!-- NEW COLUMNS -->
-                                    <th>Created By</th>
-                                    <th>Approved By 1</th>
-                                    <th>Approved By 2</th>
-                                    <th>Approved By 3</th>
-
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-
-
-                            <tbody>
-                                @foreach ($investments as $index => $d)
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-hover align-middle table-sm srkdataTable">
+                                <thead class="table-light text-center">
                                     <tr>
-                                        <!-- # -->
-                                        <td hidden>{{ $index + 1 }}</td>
-                                        <td>{{ $d->investment_code }}</td>
-                                        <td>{{ \Carbon\Carbon::parse($d->investment_date)->format('d M Y') }}</td>
-                                        <td>
-                                            <b>
-                                                <a href="{{ route('investment.els.show', $d->id) }}"
-                                                    class="text-decoration-none">
-                                                    <b class="text-black"> {{ ucfirst($d->firstClient->name ?? '-') }}</b>
-                                                </a>
-                                            </b>
-                                        </td>
-                                        <td>{{ $d->scheme->name_type_value ?? '-' }} -
-                                            {{ $d->scheme->scheme_name ?? '-' }}
-                                        </td>
-                                        <td>₹{{ number_format($d->investment_amount, 2) }} <br><b>
-                                                {{ ($d->roi_percent ?? 0) . ' + ' . ($d->additional_roi_percent ?? 0) }}%</b>
-                                        </td>
-                                        <td>{{ $d->tenure_count }} {{ ucfirst($d->tenure_type) }} <br> <b>
-                                                {{ ucfirst($d->frequency) }}</b> </td>
-
-
-                                        {{-- <td> {{ ucfirst($d->frequency) }}</td> <!-- Frequency --> --}}
-                                        {{-- <td>{{ $d->roi_percent . '+' . $d->additional_roi_percent }}%</td><!-- ROI --> --}}
-                                        <td>pending</td>
-                                        <td> {{ $d->staus . '' . $d->action_status }}</td> <!-- Status -->
-
-                                        <td
-                                            class="{{ !empty($d->createdBy) ? 'table-warning fw-semibold rounded px-2 py-1' : '' }}">
-                                            @if (!empty($d->createdBy))
-                                                <div class="d-flex justify-content-center text-center">
-                                                    {{ $d->createdBy->name }}
-                                                </div>
-                                                <br>
-                                                {{ $d->created_at ?? '-' }}
-                                            @else
-                                                -
-                                            @endif
-                                        </td>
-
-                                        <td
-                                            class="{{ !empty($d->approvedBy) ? 'table-success fw-semibold rounded px-2 py-1' : '' }}">
-                                            @if (!empty($d->approvedBy))
-                                                {{ $d->approvedBy->name }} <br>{{ $d->approved_at ?? '-' }}
-                                            @else
-                                                -
-                                            @endif
-                                        </td>
-
-                                        <td
-                                            class="{{ !empty($d->approved2By) ? 'table-success fw-semibold rounded px-2 py-1' : '' }}">
-                                            @if (!empty($d->approved2By))
-                                                {{ $d->approved2By->name }} <br>{{ $d->approved2_on ?? '-' }}
-                                            @else
-                                                -
-                                            @endif
-                                        </td>
-
-                                        <td
-                                            class="{{ !empty($d->approved3By) ? 'table-success fw-semibold rounded px-2 py-1' : '' }}">
-                                            @if (!empty($d->approved3By))
-                                                {{ $d->approved3By->name }} <br>{{ $d->approved3_on ?? '-' }}
-                                            @else
-                                                -
-                                            @endif
-                                        </td>
-
-                                        <!-- Actions -->
-                                        <td>
-                                            <div class="dropdown">
-                                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                                    data-bs-toggle="dropdown">
-                                                    <i class="bx bx-dots-vertical-rounded"></i>
-                                                </button>
-
-                                                <div class="dropdown-menu">
-
-                                                    <a class="dropdown-item"
-                                                        href="{{ route('investment.els.edit', $d->id) }}">
-                                                        <i class="bx bx-edit me-1"></i> Edit
-                                                    </a>
-                                                    <a class="dropdown-item"
-                                                        href="{{ route('investment.els.show', $d->id) }}">
-                                                        <i class="bx bx-show me-1"></i> View
-                                                    </a>
-
-                                                    @if (!empty($d->approved3By))
-                                                        <a class="dropdown-item"
-                                                            href="{{ route('investment.si.index', ['id' => $d->id]) }}">
-                                                            <i class="bx bx-check-circle me-1"></i>
-                                                            Standing Instruction <span hidden> {{ $d->id }}</span>
-                                                        </a>
-                                                    @endif
-
-
-
-
-
-                                                    <a class="dropdown-item"
-                                                        href="{{ route('investment.merge', $d->id) }}">
-                                                        <i class="bx bx-git-merge me-1"></i> Merge
-                                                    </a>
-
-                                                    <a class="dropdown-item"
-                                                        href="{{ route('investment.claim', $d->id) }}">
-                                                        <i class="bx bx-money me-1"></i> Claim
-                                                    </a>
-
-                                                    <a class="dropdown-item"
-                                                        href="{{ route('investment.maturity', $d->id) }}">
-                                                        <i class="bx bx-timer me-1"></i> Maturity
-                                                    </a>
-
-                                                    {{-- @if (!empty($d->standing_instruction)) --}}
-                                                    <a class="dropdown-item"
-                                                        href="{{ route('investment.welcomeLetter', $d->id) }}">
-                                                        <i class="bx bx-mail-send me-1"></i> Welcome Letter
-                                                    </a>
-                                                    {{-- @endif --}}
-
-
-                                                    <a class="dropdown-item"
-                                                        href="{{ route('investment.maturity-letter', $d->id) }}">
-                                                        <i class="bx bx-envelope me-1"></i> Maturity Letter
-                                                    </a>
-                                                    <a class="dropdown-item"
-                                                        href="{{ route('calculate-investment-parameters', $d->id) }}">
-                                                        <i class="bx bx-calendar-check me-1"></i> Show Payment Schedule
-                                                    </a>
-                                                </div>
-                                            </div>
-                                        </td>
+                                        <th hidden>#</th>
+                                        <th>Investment Date</th>
+                                        <th>Client / Code</th>
+                                        <th>Scheme</th>
+                                        <th>Amount / ROI</th>
+                                        <th>Tenure / Frequency</th>
+                                        <th>Status</th>
+                                        <th>Created By</th>
+                                        <th>Approved 1</th>
+                                        <th>Approved 2</th>
+                                        <th>Approved 3</th>
+                                        <th class="text-center">Actions</th>
                                     </tr>
-                                @endforeach
-                            </tbody>
+                                </thead>
 
-                        </table>
+                                <tbody>
+                                    @foreach ($investments as $index => $d)
+                                        <tr>
+                                            <td hidden>{{ $index + 1 }}</td>
+
+                                            {{-- Investment Date --}}
+                                            <td class="text-nowrap text-center">
+                                                {{ \Carbon\Carbon::parse($d->investment_date)->format('d M Y') }}
+                                            </td>
+
+                                            {{-- Client / Code --}}
+                                            <td>
+                                                <a href="{{ route('investment.els.show', $d->id) }}"
+                                                    class="fw-semibold text-decoration-none text-dark">
+                                                    {{ ucfirst($d->firstClient->name ?? '-') }}
+                                                </a>
+                                                <div class="text-muted small">
+                                                    {{ $d->investment_code ? 'Code: ' . $d->investment_code : '-' }}
+                                                </div>
+                                            </td>
+
+                                            {{-- Scheme --}}
+                                            <td>
+                                                <div class="fw-semibold">
+                                                    {{ $d->scheme->name_type_value ?? '-' }}
+                                                </div>
+                                                <div class="text-muted small">
+                                                    {{ $d->scheme->scheme_name ?? '-' }}
+                                                </div>
+                                            </td>
+
+                                            {{-- Amount / ROI --}}
+                                            <td class="text-end">
+                                                <div class="fw-semibold">
+                                                    ₹{{ number_format($d->investment_amount, 2) }}
+                                                </div>
+                                                <span class="badge bg-info-subtle text-dark">
+                                                    ROI {{ $d->roi_percent ?? 0 }}%
+                                                </span>
+                                            </td>
+
+                                            {{-- Tenure / Frequency --}}
+                                            <td>
+                                                <div>
+                                                    {{ $d->tenure_count }} {{ ucfirst($d->tenure_type) }}
+                                                </div>
+                                                <span class="badge bg-secondary-subtle text-dark">
+                                                    {{ ucfirst($d->frequency) }}
+                                                </span>
+                                            </td>
+
+                                            {{-- Status --}}
+                                            <td class="text-center">
+                                                <span
+                                                    class="badge
+                            {{ $d->status === 'active' ? 'bg-success' : 'bg-secondary' }}">
+                                                    {{ ucfirst($d->status) }}
+                                                </span>
+                                                <div class="small text-muted">
+                                                    {{ ucfirst($d->action_status) }}
+                                                </div>
+                                            </td>
+
+                                            {{-- Created By --}}
+                                            <td class="text-center">
+                                                @if ($d->createdBy)
+                                                    <span class="badge bg-warning text-dark">
+                                                        {{ $d->createdBy->name }}
+                                                    </span>
+                                                    <div class="small text-muted mt-1">
+                                                        {{ \Carbon\Carbon::parse($d->created_at)->format('d M Y') }}
+                                                    </div>
+                                                @else
+                                                    <span class="text-muted">-</span>
+                                                @endif
+                                            </td>
+
+                                            {{-- Approved 1 --}}
+                                            <td class="text-center">
+                                                @if ($d->approvedBy)
+                                                    <span class="badge bg-success">
+                                                        {{ $d->approvedBy->name }}
+                                                    </span>
+                                                    <div class="small text-muted mt-1">
+                                                        {{ \Carbon\Carbon::parse($d->approved_at)->format('d M Y') }}
+                                                    </div>
+                                                @else
+                                                    <span class="text-muted">-</span>
+                                                @endif
+                                            </td>
+
+                                            {{-- Approved 2 --}}
+                                            <td class="text-center">
+                                                @if ($d->approved2By)
+                                                    <span class="badge bg-success">
+                                                        {{ $d->approved2By->name }}
+                                                    </span>
+                                                    <div class="small text-muted mt-1">
+                                                        {{ \Carbon\Carbon::parse($d->approved2_on)->format('d M Y') }}
+                                                    </div>
+                                                @else
+                                                    <span class="text-muted">-</span>
+                                                @endif
+                                            </td>
+
+                                            {{-- Approved 3 --}}
+                                            <td class="text-center">
+                                                @if ($d->approved3By)
+                                                    <span class="badge bg-success">
+                                                        {{ $d->approved3By->name }}
+                                                    </span>
+                                                    <div class="small text-muted mt-1">
+                                                        {{ \Carbon\Carbon::parse($d->approved3_on)->format('d M Y') }}
+                                                    </div>
+                                                @else
+                                                    <span class="text-muted">-</span>
+                                                @endif
+                                            </td>
+
+                                            {{-- Actions --}}
+                                            <td class="text-center">
+                                                <div class="dropdown">
+                                                    <button class="btn btn-sm btn-light dropdown-toggle"
+                                                        data-bs-toggle="dropdown">
+                                                        Actions
+                                                    </button>
+
+                                                    <ul class="dropdown-menu dropdown-menu-end">
+                                                        <li>
+                                                            <a class="dropdown-item"
+                                                                href="{{ route('investment.els.edit', $d->id) }}">
+                                                                ✏️ Edit
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="dropdown-item"
+                                                                href="{{ route('investment.els.show', $d->id) }}">
+                                                                👁 View
+                                                            </a>
+                                                        </li>
+
+                                                        @if ($d->approved3By)
+                                                            <li>
+                                                                <a class="dropdown-item"
+                                                                    href="{{ route('investment.si.index', ['id' => $d->id]) }}">
+                                                                    ✅ Standing Instruction
+                                                                </a>
+                                                            </li>
+                                                        @endif
+
+                                                        <li>
+                                                            <hr class="dropdown-divider">
+                                                        </li>
+
+                                                        <li>
+                                                            <a class="dropdown-item"
+                                                                href="{{ route('investment.merge', $d->id) }}">
+                                                                🔀 Merge
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="dropdown-item"
+                                                                href="{{ route('investment.claim', $d->id) }}">
+                                                                💰 Claim
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="dropdown-item"
+                                                                href="{{ route('investment.maturity', $d->id) }}">
+                                                                ⏳ Maturity
+                                                            </a>
+                                                        </li>
+
+                                                        <li>
+                                                            <hr class="dropdown-divider">
+                                                        </li>
+
+                                                        <li>
+                                                            <a class="dropdown-item"
+                                                                href="{{ route('investment.welcomeLetter', $d->id) }}">
+                                                                📩 Welcome Letter
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="dropdown-item"
+                                                                href="{{ route('investment.maturity-letter', $d->id) }}">
+                                                                ✉️ Maturity Letter
+                                                            </a>
+                                                        </li>
+                                                        <li>
+                                                            <a class="dropdown-item"
+                                                                href="{{ route('calculate-investment-parameters', $d->id) }}">
+                                                                📅 Payment Schedule
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+
                     </div>
                 </div>
             </div>

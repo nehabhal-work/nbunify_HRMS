@@ -11,9 +11,6 @@
         @if (session('error'))
             <x-alert-sweet type="danger" :message="session('error')" />
         @endif
-        @if (session('warning'))
-            <x-alert-sweet type="warning" :message="session('warning')" />
-        @endif
 
 
     </div>
@@ -28,8 +25,14 @@
         </div>
     @endif
 
-    {{-- {{ $investmentSi }} --}}
-
+    {{ $investmentSi }}
+    {{-- @php
+        if ($investmentSi->investment->investment_amount === $investmentSi->si_amount) {
+            $hideDate = 'hidden';
+        } else {
+            $hideDate = '';
+        }
+    @endphp --}}
     @php
         $investmentAmount = (float) $investmentSi->investment->investment_amount;
         $siAmount = (float) $investmentSi->si_amount;
@@ -75,30 +78,37 @@
                         <div class="row g-3">
 
                             <!-- Reference No -->
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <label class="form-label">
                                     Reference No <span class="text-danger">*</span>
                                 </label>
                                 <input type="text" name="si_number"
-                                    class="form-control bg-secondary-subtle @error('si_number') is-invalid @enderror"
-                                    value="{{ old('si_number', $investmentSi->si_number) }}" readonly>
+                                    class="form-control @error('si_number') is-invalid @enderror"
+                                    value="{{ old('si_number', $investmentSi->si_number) }}">
                                 @error('si_number')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
 
-
+                            <!-- Reference No -->
+                            <div class="col-md-3">
+                                <label class="form-label">
+                                    Bank Reference No <span class="text-danger">*</span>
+                                </label>
+                                <input type="text" name="bank_reference_no"
+                                    class="form-control @error('bank_reference_no') is-invalid @enderror"
+                                    value="{{ old('bank_reference_no', $investmentSi->bank_reference_no) }}">
+                                @error('bank_reference_no')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
 
                             <!--  Instruction Type -->
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <label class="form-label">
-                                    Instruction Type
+                                    Instruction Type <span class="text-danger">*</span>
                                 </label>
-                                <input type="text" name="instruction_type"
-                                    class="form-control bg-secondary-subtle @error('instruction_type') is-invalid @enderror"
-                                    value="{{ old('instruction_type', $investmentSi->instruction_type) }}" readonly>
-
-                                {{-- <select class="form-select @error('instruction_type') is-invalid @enderror"
+                                <select class="form-select @error('instruction_type') is-invalid @enderror"
                                     name="instruction_type" id="instructionType" required>
                                     <option value="standing"
                                         {{ $investmentSi->instruction_type === 'standing' ? 'selected' : '' }}>
@@ -108,11 +118,11 @@
                                         {{ $investmentSi->instruction_type === 'schedule' ? 'selected' : '' }}>
                                         schedule
                                     </option>
-                                </select> --}}
+                                </select>
 
                             </div>
                             <!-- Company Bank -->
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <label class="form-label">
                                     Company Bank
                                 </label>
@@ -125,7 +135,7 @@
                             </div>
 
                             <!-- Client Bank -->
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <label class="form-label">
                                     Client Bank
                                 </label>
@@ -136,24 +146,44 @@
                                 <input type="hidden" name="si_client_bank_id" value="{{ $investment->toClientBank->id }}">
                             </div>
 
-
+                            <!-- Payment Start Date -->
+                            {{-- <div class="col-md-3">
+                                <label class="form-label">
+                                    Start Date <span class="text-danger">*</span>
+                                </label>
+                                <input type="date" name="si_start_date"
+                                    class="form-control bg-secondary-subtle @error('si_start_date') is-invalid @enderror"
+                                    value="{{ $investment->first_payout_date ? \Carbon\Carbon::parse($investment->first_payout_date)->format('Y-m-d') : '' }}"
+                                    readonly>
+                            </div> --}}
+                            <!-- Payment End Date -->
+                            {{-- <div {{ $hideDate }} class="col-md-3">
+                                <label class="form-label">
+                                    End Date <span class="text-danger">*</span>
+                                </label>
+                                <input type="date" name="si_end_date"
+                                    class="form-control bg-secondary-subtle @error('si_end_date') is-invalid @enderror"
+                                    value="{{ $investment->maturity_date ? \Carbon\Carbon::parse($investment->maturity_date)->format('Y-m-d') : '' }}"
+                                    readonly>
+                            </div> --}}
                             {{-- CASE 1: SI amount equals investment amount --}}
+
                             {{-- SCHEDULE AMOUNT → Schedule Date --}}
                             @if ($showScheduleDate)
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     <label class="form-label">
                                         Schedule Date <span class="text-danger">*</span>
                                     </label>
 
                                     <input type="date" name="si_start_date"
                                         class="form-control bg-secondary-subtle @error('si_start_date') is-invalid @enderror"
-                                        value="{{ \Carbon\Carbon::parse($investmentSi->si_start_date)->format('Y-m-d') }}"
+                                        value="{{ \Carbon\Carbon::parse($investment->first_payout_date)->format('Y-m-d') }}"
                                         readonly>
                                 </div>
 
                                 {{-- FULL AMOUNT → Maturity Date --}}
                             @elseif ($isFullAmountSI)
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     <label class="form-label">
                                         Maturity Date <span class="text-danger">*</span>
                                     </label>
@@ -166,99 +196,81 @@
 
                                 {{-- NORMAL AMOUNT → Start & End Date --}}
                             @else
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     <label class="form-label">
                                         Start Date <span class="text-danger">*</span>
                                     </label>
 
                                     <input type="date" name="si_start_date"
                                         class="form-control bg-secondary-subtle @error('si_start_date') is-invalid @enderror"
-                                        value="{{ \Carbon\Carbon::parse($investmentSi->si_start_date)->format('Y-m-d') }}"
+                                        value="{{ \Carbon\Carbon::parse($investment->first_payout_date)->format('Y-m-d') }}"
                                         readonly>
                                 </div>
 
-                                <div class="col-md-2">
+                                <div class="col-md-3">
                                     <label class="form-label">
                                         End Date <span class="text-danger">*</span>
                                     </label>
 
                                     <input type="date" name="si_end_date"
                                         class="form-control bg-secondary-subtle @error('si_end_date') is-invalid @enderror"
-                                        value="{{ \Carbon\Carbon::parse($investmentSi->si_end_date)->format('Y-m-d') }}"
+                                        value="{{ \Carbon\Carbon::parse($investment->maturity_date)->format('Y-m-d') }}"
                                         readonly>
                                 </div>
                             @endif
 
 
+
+
+
                             <!-- Amount -->
-                            <div class="col-md-2">
+                            <div class="col-md-3">
                                 <label class="form-label">
                                     {{ $showScheduleDate ? 'Schedule Amount' : ($isFullAmountSI ? 'Maturity Amount' : 'Amount') }}
                                 </label>
 
                                 <input type="text" name="si_amount" class="form-control bg-secondary-subtle"
-                                    value="{{ $investmentSi->si_amount }}" readonly>
+                                    value="{{ number_format($investmentSi->si_amount, 2) }}" readonly>
                             </div>
 
 
-
-
-                            {{-- Payout Count --}}
-                            <div class="col-md-2">
+                            {{-- <div class="col-md-3">
                                 <label class="form-label">
-                                    Payout Count
+                                    Payout Count <span class="text-danger">*</span>
+                                </label>
+                                <input type="number" id="originalPayoutCount" name="si_no_of_payments"
+                                    class="form-control bg-secondary-subtle @error('si_no_of_payments') is-invalid @enderror"
+                                    value="{{ $investment->schedule_count ?? 1 }}" hidden readonly>
+                                <input type="number" name="si_no_of_payments" id="scheduleCount"
+                                    class="form-control  @error('si_no_of_payments') is-invalid @enderror">
+
+                                </div> --}}
+                            <div class="col-md-3">
+                                <label class="form-label">
+                                    Payout Count <span class="text-danger">*</span>
                                 </label>
 
                                 {{-- ORIGINAL value (reference only, NOT submitted) --}}
                                 <input type="number" id="originalPayoutCount"
-                                    value="{{ $investmentSi->si_no_of_payments ?? 1 }}" hidden>
+                                    value="{{ $investment->schedule_count ?? 1 }}" hidden>
 
                                 {{-- VISIBLE + SUBMITTED --}}
                                 <input type="number" name="si_no_of_payments" id="scheduleCount"
-                                    class="form-control bg-secondary-subtle @error('si_no_of_payments') is-invalid @enderror"
-                                    value="{{ $investmentSi->si_no_of_payments ?? '-' }}" readonly>
+                                    class="form-control @error('si_no_of_payments') is-invalid @enderror"
+                                    value="{{ $investment->schedule_count ?? '-' }}">
                             </div>
 
+                            {{-- source value (DO NOT submit) --}}
+                            {{-- <input type="number" id="originalPayoutCount"
+                                    value="{{ $investment->schedule_count ?? 1 }}" hidden> --}}
 
+                            {{-- visible + submitted field --}}
+                            {{-- <input type="number" name="schedule_count" id="scheduleCount"
+                                    class="form-control @error('schedule_count') is-invalid @enderror"> --}}
 
-                            <!-- Reference No -->
-                            <div class="col-md-2">
-                                <label class="form-label">
-                                    Bank Reference No <span class="text-danger">*</span>
-                                </label>
-                                <input type="text" name="bank_reference_no"
-                                    class="form-control @error('bank_reference_no') is-invalid @enderror"
-                                    value="{{ old('bank_reference_no', $investmentSi->bank_reference_no) }}">
-                                @error('bank_reference_no')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
-
-                            {{-- status active --}}
-                            <div class="col-md-2">
-                                <label class="form-label">
-                                    Status <span class="text-danger">*</span>
-                                </label>
-                                <select name="status" class="form-control @error('status') is-invalid @enderror">
-                                    <option value="active"
-                                        {{ old('status', $investmentSi->status) == 'active' ? 'selected' : '' }}>
-                                        Active
-                                    </option>
-
-                                    <option value="inactive"
-                                        {{ old('status', $investmentSi->status) == 'inactive' ? 'selected' : '' }}>
-                                        Inactive
-                                    </option>
-                                </select>
-
-
-                                @error('status')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
 
                             <!-- Instruction Image -->
-                            <div class="col-md-4 mb-3">
+                            <div class="col-md-3 mb-3">
                                 <label class="form-label">
                                     Instruction Image <span class="text-danger">*</span>
                                 </label>
@@ -311,7 +323,7 @@
 
 
                             <!-- Notes Image -->
-                            <div class="col-md-4 mb-3">
+                            <div class="col-md-3 mb-3">
                                 <label class="form-label">
                                     Notes Image <span class="text-danger">*</span>
                                 </label>
@@ -362,14 +374,34 @@
                                 @endif
                             </div>
 
+                            <div class="col-md-3">
+                                <label class="form-label">
+                                    Status <span class="text-danger">*</span>
+                                </label>
+                                <select name="status" class="form-control @error('status') is-invalid @enderror">
+                                    <option value="active"
+                                        {{ old('status', $investmentSi->status) == 'active' ? 'selected' : '' }}>
+                                        Active
+                                    </option>
 
+                                    <option value="inactive"
+                                        {{ old('status', $investmentSi->status) == 'inactive' ? 'selected' : '' }}>
+                                        Inactive
+                                    </option>
+                                </select>
+
+
+                                @error('status')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
 
                             <!-- Remarks -->
                             <div class="col-md-6">
                                 <label class="form-label">
                                     Remarks
                                 </label>
-                                <textarea name="remarks" rows="1" class="form-control @error('remarks') is-invalid @enderror">{{ old('remarks', $investmentSi->remarks) }}</textarea>
+                                <textarea name="remarks" rows="3" class="form-control @error('remarks') is-invalid @enderror">{{ old('remarks', $investmentSi->remarks) }}</textarea>
 
                                 @error('remarks')
                                     <small class="text-danger">{{ $message }}</small>
@@ -393,7 +425,13 @@
 
 
 
-
+    @if ($errors->any() && old('scheme_id'))
+        <script>
+            $(document).ready(function() {
+                $('#scheme_id').trigger('change'); // this will call loadSchemeData()
+            });
+        </script>
+    @endif
 
 
 @endsection

@@ -17,6 +17,7 @@ class InvestmentSi extends Model
         'si_client_bank_id',
         'si_company_bank_id',
         'si_start_date',
+        'si_end_date',
         'si_amount',
         'si_no_of_payments',
         'attachment_si_image',
@@ -30,6 +31,7 @@ class InvestmentSi extends Model
 
     protected $casts = [
         'si_start_date' => 'date:Y-m-d',
+        'si_end_date' => 'date:Y-m-d',
         'si_amount' => 'decimal:2',
         'status' => 'string',
         'approved_at' => 'datetime:d-m-Y h:i',

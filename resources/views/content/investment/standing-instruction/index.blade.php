@@ -4,12 +4,16 @@
 
 @section('content')
     <div>
+
         @if (session('success'))
             <x-alert-sweet type="success" :message="session('success')" />
         @endif
 
         @if (session('error'))
             <x-alert-sweet type="danger" :message="session('error')" />
+        @endif
+        @if (session('warning'))
+            <x-alert-sweet type="warning" :message="session('warning')" />
         @endif
 
 
@@ -33,94 +37,97 @@
         <a href="{{ route('investment.els.index') }}" class="btn btn-secondary px-4">Go back</a>
 
     </div>
-    <form action="{{ route('investment.si.store') }}" method="POST" enctype="multipart/form-data">
+
+    <div class="card p-3 mb-3">
+        <h5>Standing Instruction Details</h5>
+        <table class="table table-bordered table-striped table-sm align-middle  investment-view styled-investment-table">
+            <tbody>
+                <tr>
+                    <th>Investment Date</th>
+                    <td>
+                        <b>{{ \Carbon\Carbon::parse($investment->investment_date)->format('d M Y') }}</b>
+                    </td>
+                    <th>Investment Type</th>
+                    <td><b>{{ ucfirst($investment->investment_type) }}</b></td>
+                </tr>
+                <tr>
+                    <th>Investment Holder Name</th>
+                    <td class="bg-warning-subtle"><b><small class="text-info">
+                                @if ($investment->firstClient)
+                                    {{ $investment->firstClient->name }}
+                                @endif
+                                @if ($investment->secondClient)
+                                    , {{ $investment->secondClient->name }}
+                                @endif
+                                @if ($investment->thirdClient)
+                                    , {{ $investment->thirdClient->name }}
+                                @endif
+                                @if ($investment->fourthClient)
+                                    , {{ $investment->fourthClient->name }}
+                                @endif
+                            </small></b>
+                    </td>
+                    <th>Scheme Name</th>
+                    <td><b>{{ $investment->scheme->scheme_name ?? '-' }}</b></td>
+                </tr>
+
+                {{-- @if ($investment->investment_type !== 'single')
+                        <tr>
+                            <th>Investment 3rd Holder</th>
+                            <td class="bg-warning-subtle"><b>{{ $clientNames[$investment->third_client_id] ?? '-' }}</b>
+                            </td>
+
+                            <th>Investment 4th Holder</th>
+                            <td class="bg-warning-subtle">
+                                <b>{{ $clientNames[$investment->fourth_client_id] ?? '-' }}</b>
+                            </td>
+                        </tr>
+                    @endif --}}
+
+
+                <tr>
+                    <th>Schedule Count</th>
+                    <td><b>{{ $investment->schedule_count }}</b></td>
+
+                    <th>Investment Amount</th>
+                    <td><b>₹ {{ number_format($investment->investment_amount, 2) }}</b></td>
+                </tr>
+                <tr>
+                    <th>Tenure</th>
+                    <td><b>{{ $investment->tenure_count }} {{ ucfirst($investment->tenure_type) }}</b></td>
+                    <th>Frequency</th>
+                    <td><b>{{ ucfirst($investment->frequency) }}</b></td>
+                </tr>
+
+                <tr>
+                    <th>ROI (%)</th>
+                    <td><b>{{ $investment->roi_percent }}%</b></td>
+                    <th>Maturity Date</th>
+                    <td><b>{{ \Carbon\Carbon::parse($investment->maturity_date)->format('d M Y') }}</b></td>
+                </tr>
+
+
+                <tr>
+                    <th>Payout Per {{ ucfirst($investment->frequency) }}</th>
+                    <td><b>₹ {{ number_format($investment->payout_per_period, 2) }}</b></td>
+                    <th>First Payout Date</th>
+                    <td><b>{{ \Carbon\Carbon::parse($investment->first_payout_date)->format('d M Y') }}</b></td>
+                </tr>
+
+
+            </tbody>
+        </table>
+    </div>
+
+
+    {{-- d-none need to be removed after 28 th feb --}}
+    <form action="{{ route('investment.si.store') }}" method="POST" enctype="multipart/form-data" class="d-none">
         @csrf
         @method('post')
 
         <input type="hidden" name="investment_id" value="{{ request()->get('id') }}">
 
         {{-- Set standing instruction --}}
-        <div class="card p-3 mb-3">
-            <h5>Standing Instruction Details</h5>
-            <table
-                class="table table-bordered table-striped table-sm align-middle  investment-view styled-investment-table">
-                <tbody>
-                    <tr>
-                        <th>Investment Date</th>
-                        <td>
-                            <b>{{ \Carbon\Carbon::parse($investment->investment_date)->format('d M Y') }}</b>
-                        </td>
-                        <th>Investment Type</th>
-                        <td><b>{{ ucfirst($investment->investment_type) }}</b></td>
-                    </tr>
-                    <tr>
-                        <th>Investment Holder Name</th>
-                        <td class="bg-warning-subtle"><b><small class="text-info">
-                                    @if ($investment->firstClient)
-                                        {{ $investment->firstClient->name }}
-                                    @endif
-                                    @if ($investment->secondClient)
-                                        , {{ $investment->secondClient->name }}
-                                    @endif
-                                    @if ($investment->thirdClient)
-                                        , {{ $investment->thirdClient->name }}
-                                    @endif
-                                    @if ($investment->fourthClient)
-                                        , {{ $investment->fourthClient->name }}
-                                    @endif
-                                </small></b>
-                        </td>
-                        <th>Scheme Name</th>
-                        <td><b>{{ $investment->scheme->scheme_name ?? '-' }}</b></td>
-                    </tr>
-
-                    {{-- @if ($investment->investment_type !== 'single')
-                            <tr>
-                                <th>Investment 3rd Holder</th>
-                                <td class="bg-warning-subtle"><b>{{ $clientNames[$investment->third_client_id] ?? '-' }}</b>
-                                </td>
-
-                                <th>Investment 4th Holder</th>
-                                <td class="bg-warning-subtle">
-                                    <b>{{ $clientNames[$investment->fourth_client_id] ?? '-' }}</b>
-                                </td>
-                            </tr>
-                        @endif --}}
-
-
-                    <tr>
-                        <th>Schedule Count</th>
-                        <td><b>{{ $investment->schedule_count }}</b></td>
-
-                        <th>Investment Amount</th>
-                        <td><b>₹ {{ number_format($investment->investment_amount, 2) }}</b></td>
-                    </tr>
-                    <tr>
-                        <th>Tenure</th>
-                        <td><b>{{ $investment->tenure_count }} {{ ucfirst($investment->tenure_type) }}</b></td>
-                        <th>Frequency</th>
-                        <td><b>{{ ucfirst($investment->frequency) }}</b></td>
-                    </tr>
-
-                    <tr>
-                        <th>ROI (%)</th>
-                        <td><b>{{ $investment->roi_percent }}%</b></td>
-                        <th>Maturity Date</th>
-                        <td><b>{{ \Carbon\Carbon::parse($investment->maturity_date)->format('d M Y') }}</b></td>
-                    </tr>
-
-
-                    <tr>
-                        <th>Payout Per {{ ucfirst($investment->frequency) }}</th>
-                        <td><b>₹ {{ number_format($investment->payout_per_period, 2) }}</b></td>
-                        <th>First Payout Date</th>
-                        <td><b>{{ \Carbon\Carbon::parse($investment->first_payout_date)->format('d M Y') }}</b></td>
-                    </tr>
-
-
-                </tbody>
-            </table>
-        </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="card shadow-sm">
@@ -388,144 +395,117 @@
         </div>
         <div class="card-body">
             <div class="table-responsive text-nowrap">
-                <table class="table srkdataTable">
+                <table class="table table-bordered table-hover align-middle table-sm srkdataTable">
                     <thead class="table-light">
                         <tr>
-                            <th>#</th>
+                            <th hidden>#</th>
                             <th>Reference No</th>
                             <th>Status</th>
-                            <th>Instrument Type</th>
+                            <th>Instruction / Pay Count</th>
                             <th>Company Bank</th>
                             <th>Client Bank</th>
-                            <th>Payment Start Date</th>
+                            <th>start date - end date</th>
                             <th>Amount</th>
                             <th>Instruction Image</th>
                             <th>Notes Image</th>
                             <th>Created By</th>
-                            <th>Approved By 1</th>
-                            {{-- <th>Approved By 2</th>
-                            <th>Approved By 3</th> --}}
+                            <th>Approved By</th>
                             <th>Action</th>
                         </tr>
                     </thead>
+
+
                     <tbody>
-                        @foreach ($investment->standingInstructions as $d)
+                        @foreach ($investment->standingInstructions as $key => $d)
                             <tr>
-                                <td>1</td>
+                                <td hidden>{{ $key + 1 }}</td>
+
                                 <td>
                                     <a href="{{ route('investment.si.show', $d->id) }}"
                                         class="fw-semibold text-primary text-decoration-none">
                                         {{ $d->si_number }}
                                     </a>
                                 </td>
-                                <td>
-                                    @if ($d->status === 'active')
-                                        <span class="badge bg-success text-white">
-                                            {{ ucfirst($d->status) }}
-                                        </span>
-                                    @else
-                                        <span class="badge bg-danger text-white">
-                                            {{ ucfirst($d->status) }}
-                                        </span>
-                                    @endif
-                                </td>
-                                <td>{{ $d->instruction_type }}</td>
 
-                                <td>{{ $investment->fromCompanyBank->bank_name . ' - ' . $investment->fromCompanyBank->account_number }}
+                                <td>
+                                    <span class="badge {{ $d->status === 'active' ? 'bg-success' : 'bg-danger' }}">
+                                        {{ ucfirst($d->status) }}
+                                    </span>
                                 </td>
-                                <td>{{ $investment->ToClientBank->bank_name . ' - ' . $investment->ToClientBank->account_number }}
+
+                                {{-- ✅ Instruction Type + Pay Count --}}
+                                <td>
+                                    <div class="fw-semibold">{{ $d->instruction_type }}</div>
+                                    <small class="text-muted">
+                                        Pay Count: {{ $d->si_no_of_payments }}
+                                    </small>
                                 </td>
-                                <td>{{ \Carbon\Carbon::parse($d->si_start_date)->format('d M Y') }}
+
+                                <td>
+                                    {{ $investment->fromCompanyBank->bank_name }} -
+                                    {{ $investment->fromCompanyBank->account_number }}
                                 </td>
-                                <td>{{ $d->si_amount }}</td>
+
+                                <td>
+                                    {{ $investment->ToClientBank->bank_name }} -
+                                    {{ $investment->ToClientBank->account_number }}
+                                </td>
+
+                                {{-- ✅ Start Date – End Date --}}
+                                <td>
+                                    <div class="fw-semibold">
+                                        {{ \Carbon\Carbon::parse($d->si_start_date)->format('d M Y') }}
+                                    </div>
+                                    <small class="text-muted">
+                                        to {{ \Carbon\Carbon::parse($d->si_end_date)->format('d M Y') }}
+                                    </small>
+                                </td>
+
+                                <td>{{ number_format($d->si_amount, 2) }}</td>
+
                                 <td>instruction_001.jpg</td>
                                 <td>notes_001.jpg</td>
 
-                                <td
-                                    class="{{ !empty($d->createdBy) ? 'table-warning fw-semibold rounded px-2 py-1' : '' }}">
-                                    @if (!empty($d->createdBy))
-                                        {{-- <div class="d-flex justify-content-center text-center"> --}}
-                                        {{ $d->createdBy->name }}
-                                        {{-- </div> --}}
-                                        <br>
-                                        {{ $d->created_at ?? '-' }}
+                                <td class="{{ $d->createdBy ? 'table-warning fw-semibold' : '' }}">
+                                    @if ($d->createdBy)
+                                        {{ $d->createdBy->name }}<br>
+                                        <small>{{ $d->created_at }}</small>
                                     @else
                                         -
                                     @endif
                                 </td>
 
-                                <td
-                                    class="{{ !empty($d->approvedBy) ? 'table-success fw-semibold rounded px-2 py-1' : '' }}">
-                                    @if (!empty($d->approvedBy))
-                                        {{ $d->approvedBy->name }} <br>{{ $d->approved_at ?? '-' }}
+                                <td class="{{ $d->approvedBy ? 'table-success fw-semibold' : '' }}">
+                                    @if ($d->approvedBy)
+                                        {{ $d->approvedBy->name }}<br>
+                                        <small>{{ $d->approved_at }}</small>
                                     @else
                                         -
                                     @endif
                                 </td>
-
-                                {{-- <td
-                                    class="{{ !empty($d->approved2By) ? 'table-success fw-semibold rounded px-2 py-1' : '' }}">
-                                    @if (!empty($d->approved2By))
-                                        {{ $d->approved2By->name }} <br>{{ $d->approved2_on ?? '-' }}
-                                    @else
-                                        -
-                                    @endif
-                                </td>
-
-                                <td
-                                    class="{{ !empty($d->approved3By) ? 'table-success fw-semibold rounded px-2 py-1' : '' }}">
-                                    @if (!empty($d->approved3By))
-                                        {{ $d->approved3By->name }} <br>{{ $d->approved3_on ?? '-' }}
-                                    @else
-                                        -
-                                    @endif
-                                </td> --}}
-
 
                                 <td>
                                     <div class="dropdown">
-                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                            data-bs-toggle="dropdown">
+                                        <button class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
                                             <i class="bx bx-dots-vertical-rounded"></i>
                                         </button>
-
                                         <div class="dropdown-menu">
-
-                                            <a class="dropdown-item edit-btn"
-                                                href="{{ route('investment.si.edit', $d->id) }}">
+                                            <a class="dropdown-item" href="{{ route('investment.si.edit', $d->id) }}">
                                                 <i class="bx bx-edit-alt me-1"></i> Edit
                                             </a>
-                                            <a class="dropdown-item edit-btn"
-                                                href="{{ route('investment.si.show', $d->id) }}">
+                                            <a class="dropdown-item" href="{{ route('investment.si.show', $d->id) }}">
                                                 <i class="bx bx-show-alt me-1"></i> View
                                             </a>
-
-                                            {{-- <form action="{{ route('investment.si.destroy', $d->id) }}" method="POST"
-                                                onsubmit="return confirmDelete()">
-                                                @csrf
-                                                @method('DELETE')
-
-                                                <button type="submit" class="dropdown-item text-danger">
-                                                    Delete
-                                                </button>
-                                            </form> --}}
-
-
-
-
                                         </div>
                                     </div>
-
                                 </td>
                             </tr>
                         @endforeach
-
-
                     </tbody>
-
 
                 </table>
             </div>
+
         </div>
     </div>
 

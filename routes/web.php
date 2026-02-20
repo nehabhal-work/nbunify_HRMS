@@ -21,6 +21,7 @@ use App\Http\Controllers\Clients\ClientFamilyController;
 use App\Http\Controllers\Investment\InvestmentController;
 use App\Http\Controllers\Masters\SubDepartmentController;
 use App\Http\Controllers\Accounts\PurchaseOrderController;
+use App\Http\Controllers\googleDrive\GoogleDriveController;
 use App\Http\Controllers\Masters\SubDesignationController;
 use App\Http\Controllers\Investment\InvestmentSiController;
 use App\Http\Controllers\Settings\UserManagementController;
@@ -83,7 +84,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('client-welcomeLetter/{id}', [ClientController::class, 'welcomeLetter'])
         ->name('client.welcomeLetter')->middleware('permission:clients.view');
     Route::get('client-onboarding', [PreClientController::class, 'index'])->name('preclients.index')->middleware('permission:preclients.view');
+    route::get('/gd', [GoogleDriveController::class, 'index'])->name('gogle-drive');
+    route::post('/gdrive-upload', [GoogleDriveController::class, 'googleUploadFile'])->name('google-drive-upload');
 });
+
 
 Route::middleware(['auth', 'verified'])->prefix('accounts')->name('accounts.')->group(function () {
     Route::resource('vendors', VendorsController::class)->except(['destroy'])->middleware('permission:vendors.view,vendors.create,vendors.edit');
@@ -124,7 +128,8 @@ Route::middleware(['auth', 'verified'])->prefix('investment')->name('investment.
     Route::get('/investment/{id}/pdf', [InvestmentController::class, 'welcomeLetterDownloadPdf'])->name('welcome.pdf')->middleware('permission:investments.view');
     Route::get('/investment/{id}/email', [InvestmentController::class, 'sendEmailWithPdf'])->name('welcome.email')->middleware('permission:investments.view');
 
-    Route::put('/investment-payout-mark-paid', [InvestmentController::class, 'markPaid'])->name('payout.mark-paid')->middleware('permission:investments.edit');
+    Route::put('/investment-payout-mark-paid', [InvestmentController::class, 'markPaid'])->name('payout.mark-paid')->middleware('permission:investments.mark-paid');
+    Route::post('/investment-payout-schedule-add', [InvestmentController::class, 'addPayoutSchedule'])->name('payout.schedule.add')->middleware('permission:investments.edit');
 
     Route::get('schemes-by-date', [InvestmentController::class, 'getSchemesByDate'])
         ->name('schemes.by.date')->middleware('permission:schemes.view');

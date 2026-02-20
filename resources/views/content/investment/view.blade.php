@@ -45,6 +45,7 @@
         </div>
     @endif
 
+    {{-- {{ $investment }} --}}
     <h4 class="fw-bold py-3 mb-4">
         <span class="text-muted fw-light">Master /</span> <a href="{{ route('investment.els.index') }}">ELS-Investment</a>
     </h4>
@@ -524,7 +525,7 @@
                                         </td>
 
                                         <td>
-                                            {{ $schedule->actual_payout_date ? \Carbon\Carbon::parse($schedule->actual_payout_date)->format('d M Y H:i') : '—' }}
+                                            {{ $schedule->actual_payout_date ? \Carbon\Carbon::parse($schedule->actual_payout_date)->format('d M Y') : '—' }}
                                         </td>
 
                                         <td>
@@ -562,6 +563,7 @@
                                                 <button class="btn btn-sm btn-outline-success" data-bs-toggle="modal"
                                                     data-bs-target="#markPaidModal" data-id="{{ $schedule->id }}"
                                                     data-amount="{{ $schedule->sch_payout_amount }}"
+                                                    data-payout_date="{{ \Carbon\Carbon::parse($schedule->sch_payout_date)->format('Y-m-d\TH:i') }}"
                                                     data-sr_no="{{ $schedule->sr_no }}">
                                                     Mark Paid
                                                 </button>
@@ -571,77 +573,6 @@
                                         </td>
                                     </tr>
                                 @endforeach
-
-
-                                {{-- ================================================= --}}
-                                {{-- PRINCIPAL AMOUNT ROW --}}
-                                {{-- ================================================= --}}
-                                <tr class="table-warning">
-                                    <td class="d-none">
-                                        {{ $index + 1 }}
-                                    </td>
-
-                                    <td>
-                                        {{ \Carbon\Carbon::parse($schedule->maturity_date)->format('d M Y') }}
-                                    </td>
-                                    <td class="text-end fw-semibold">
-                                        ₹ {{ number_format($paySchdeule->investment_amount, 2) }}
-                                    </td>
-                                    <td class="text-end">
-                                        {{ $schedule->actual_payout_amount ? '₹ ' . number_format($schedule->actual_payout_amount, 2) : '—' }}
-                                    </td>
-
-                                    <td>
-                                        {{ $schedule->actual_payout_date ? \Carbon\Carbon::parse($schedule->actual_payout_date)->format('d M Y H:i') : '—' }}
-                                    </td>
-
-                                    <td>
-                                        {{ $schedule->utr_no ?? '—' }}
-                                    </td>
-
-                                    <td>
-                                        {{ $schedule->fromCompanyBank->bank_name ?? '-' }}<br>
-                                        <small class="text-muted">
-                                            {{ $schedule->fromCompanyBank->account_number ?? '' }}
-                                        </small>
-                                    </td>
-
-                                    <td>
-                                        {{ $schedule->toClientBank->bank_name ?? '-' }}<br>
-                                        <small class="text-muted">
-                                            {{ $schedule->toClientBank->account_number ?? '' }}
-                                        </small>
-                                    </td>
-
-                                    <td>
-                                        @if ($schedule->status === 'done')
-                                            <span class="badge bg-success">Paid</span>
-                                        @else
-                                            <span class="badge bg-warning text-dark">Pending Principal amt</span>
-                                        @endif
-                                    </td>
-
-                                    <td>
-                                        {{ $schedule->remarks ?? '—' }}
-                                    </td>
-
-                                    <td class="text-center">
-                                        @if ($schedule->enable_marked_as_paid)
-                                            <button class="btn btn-sm btn-outline-success" data-bs-toggle="modal"
-                                                data-bs-target="#markPaidModal" data-id="{{ $schedule->id }}"
-                                                data-amount="{{ $schedule->sch_payout_amount }}"
-                                                data-sr_no="{{ $schedule->sr_no }}">
-                                                Mark Paid
-                                            </button>
-                                        @else
-                                            -
-                                        @endif
-                                    </td>
-
-
-
-                                </tr>
-
                             </tbody>
 
 
@@ -660,8 +591,17 @@
                                     </th>
                                     <th colspan="8"></th>
                                 </tr>
-                            </tfoot>
+                                <tr>
+                                    <td>
+                                        <button class="btn btn-outline-success" data-bs-toggle="modal"
+                                            data-bs-target="#markPaidModal_payoutScheduleAdd"
+                                            data-id="{{ $investment->id }}" data-amount="" data-sr_no="">
+                                            Payout Schedule Add
+                                        </button>
 
+                                    </td>
+                                </tr>
+                            </tfoot>
 
                         </table>
                     </div>
@@ -749,10 +689,8 @@
                                 <div class="col-md-4 mb-3">
                                     <label class="form-label">Actual Payout Date & Time</label>
                                     <input type="datetime-local" class="form-control" name="actual_payout_date"
-                                        min="2000-01-01T00:00" max="2099-12-31T23:59"
-                                        value="{{ now()->format('Y-m-d\TH:i') }}" required>
-
-
+                                        id="actual_payout_date" max="2099-12-31T23:59" onkeydown="return false"
+                                        onpaste="return false" required>
                                 </div>
 
 
@@ -838,17 +776,153 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="markPaidModal_payoutScheduleAdd" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <form method="POST" action="{{ route('investment.payout.schedule.add') }}">
+                    @csrf
+                    @method('post')
+
+                    <input type="hidden" name="investment_id" id="investment_id_PSA">
+                    <input type="hidden" name="from_company_bank_id" value="{{ $investment->fromCompanyBank->id }}">
+                    <input type="hidden" name="to_client_bank_id" value="{{ $investment->ToClientBank->id }}">
+
+
+
+                    <div class="modal-content">
+                        <div class="modal-header bg-success-subtle  text-white">
+                            <h5 class="modal-title">Mark extra payout as Paid</h5>
+                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                        </div>
+
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-md-3 mb-3">
+                                    <label class="form-label">Payout Date & Time</label>
+                                    <input type="datetime-local" class="form-control" name="actual_payout_date"
+                                        min="{{ now()->format('Y-m-d\TH:i') }}" max="2099-12-31T23:59"
+                                        onkeydown="return false" onpaste="return false"
+                                        value="{{ now()->format('Y-m-d\TH:i') }}" required>
+                                </div>
+
+                                <div class="col-md-3 mb-3">
+                                    <label class="form-label">Actual Paid Amount</label>
+                                    <input type="text" step="0.01" class="form-control onlydigit "
+                                        name="actual_payout_amount" id="actual_amount" required>
+                                </div>
+
+
+                                <div class="col-md-3 mb-3">
+                                    <label class="form-label">UTR No</label>
+                                    <input type="text" class="form-control" name="utr_no" required
+                                        pattern="[A-Za-z0-9]+" title="Only letters and numbers are allowed"
+                                        oninput="this.value = this.value.replace(/[^A-Za-z0-9]/g, '')">
+                                </div>
+
+
+
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label">
+                                        reference Image <span class="text-danger">*</span>
+                                    </label>
+
+                                    <div class="input-group">
+                                        <input type="file"
+                                            class="form-control fileInput instrumentImage @error('refImage') is-invalid @enderror"
+                                            id="refImage" name="attachment_refImage" accept="image/*,application/pdf"
+                                            onchange="uploadTempFile(this, 'refImage')">
+
+                                        <button class="btn btn-outline-danger" type="button"
+                                            onclick="document.getElementById('refImage').value = ''">
+                                            ✕
+                                        </button>
+                                    </div>
+
+                                    @error('refImage.0')
+                                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                                    @enderror
+
+                                    <input type="hidden" id="attachment_refImage_url" name="attachment_refImage_url"
+                                        value="{{ old('attachment_refImage_url') }}">
+
+                                    @if (old('attachment_refImage_url'))
+                                        <div id="attachment_refImage_preview"
+                                            class="position-relative d-inline-block mt-2">
+                                            <img src="{{ old('attachment_refImage_url') }}" width="100"
+                                                class="rounded border">
+
+                                            <button type="button"
+                                                class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                                                onclick="removeImage('attachment_refImage')">
+                                                ✕
+                                            </button>
+                                        </div>
+                                    @endif
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Remarks</label>
+                                    <textarea class="form-control" name="remarks" id="mark_paid_remarks" rows="1"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr>
+                        <div class="modal-footer">
+                            <button class="btn btn-success">Confirm Payment</button>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 @endsection
 
 @push('scripts')
     <script>
-        var markPaidModal = document.getElementById('markPaidModal');
-        markPaidModal.addEventListener('show.bs.modal', function(event) {
+        document.addEventListener('DOMContentLoaded', function() {
+
+            var markPaidModal = document.getElementById('markPaidModal');
+
+            markPaidModal.addEventListener('show.bs.modal', function(event) {
+
+                var button = event.relatedTarget;
+                if (!button) return;
+
+                let payoutDate = button.getAttribute('data-payout_date');
+
+                console.log('Payout Date:', payoutDate); // 🔍 DEBUG
+
+                document.getElementById('schedule_id').value =
+                    button.getAttribute('data-id');
+
+                document.getElementById('actual_amount').value =
+                    button.getAttribute('data-amount');
+
+                document.getElementById('mark_paid_remarks').value =
+                    'Payment for SR No. ' + button.getAttribute('data-sr_no');
+
+                let payoutInput = document.getElementById('actual_payout_date');
+
+                // 🔒 restrict earlier dates
+                payoutInput.min = payoutDate;
+
+                // 🧠 set default value
+                payoutInput.value = payoutDate;
+            });
+        });
+    </script>
+
+
+    <script>
+        var markPaidModalPSA = document.getElementById('markPaidModal_payoutScheduleAdd');
+        markPaidModalPSA.addEventListener('show.bs.modal', function(event) {
             var button = event.relatedTarget;
-            document.getElementById('schedule_id').value = button.getAttribute('data-id');
-            document.getElementById('actual_amount').value = button.getAttribute('data-amount');
-            document.getElementById('mark_paid_remarks').value = 'Payment for SR No. ' + button.getAttribute(
-                'data-sr_no');
+
+            document.getElementById('investment_id_PSA').value = button.getAttribute('data-id');
+            // document.getElementById('sch_payout_date').value = button.getAttribute('data-id');
         });
     </script>
     <script>
