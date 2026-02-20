@@ -374,7 +374,7 @@
                 </table>
 
 
-                <b class="card-title">Payment Received Schedule</b>
+                <b class="card-title">Payment Received Schedules</b>
 
                 <table id="payoutTable1" class="table table-bordered nowrap w-100 mb-5">
 
@@ -401,7 +401,6 @@
                                 <td> {{ \Carbon\Carbon::parse($b->client_instrument_date)->format('d M Y') }} </td>
                                 <td class="text-end fw-semibold text-success"> ₹ {{ number_format($b->amount, 2) }}
                                 </td>
-                                <td> {{ $b->client_reference_no ?? '—' }} </td>
                                 <td> {{ $b->client_reference_no ?? '—' }} </td>
                                 <td>{{ $inputBank->fromClientBank->bank_name ?? '-' }}
                                     {{ $inputBank->fromClientBank->account_number ?? '—' }}</td>
