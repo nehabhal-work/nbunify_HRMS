@@ -402,8 +402,11 @@
                                 <td class="text-end fw-semibold text-success"> ₹ {{ number_format($b->amount, 2) }}
                                 </td>
                                 <td> {{ $b->client_reference_no ?? '—' }} </td>
-                                <td>from bank accoun no.</td>
-                                <td>to bank accoun no.</td>
+                                <td> {{ $b->client_reference_no ?? '—' }} </td>
+                                <td>{{ $inputBank->fromClientBank->bank_name ?? '-' }}
+                                    {{ $inputBank->fromClientBank->account_number ?? '—' }}</td>
+                                <td>{{ $inputBank->toCompanyBank->bank_name ?? '-' }}
+                                    {{ $inputBank->toCompanyBank->account_number ?? '—' }}</td>
 
                                 <td>
                                     <span class="badge bg-info">Credit</span>
