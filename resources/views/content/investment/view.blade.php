@@ -384,8 +384,8 @@
                             <th>Received Date</th>
                             <th class="text-end">received amount (₹)</th>
                             <th>UTR no.</th>
-                            <th>From Bank Account No.</th>
-                            <th>To Client Bank Account No.</th>
+                            <th>From Client Bank A/c</th>
+                            <th>To Company Bank A/c</th>
                             <th>Status</th>
                             <th>Remarks</th>
                         </tr>
