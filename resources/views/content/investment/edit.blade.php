@@ -1,6 +1,6 @@
 @extends('layouts.master-layout')
 @section('title', 'Investment')
-@section('title', 'Investment-create')
+@section('title', 'Investment-edit')
 
 @section('content')
     <div>
@@ -14,7 +14,17 @@
 
 
     </div>
+    <style>
+        /* Dropdown list items */
+        .select2-results__option {
+            text-transform: uppercase;
+        }
 
+        /* Selected value */
+        .select2-selection__rendered {
+            text-transform: uppercase;
+        }
+    </style>
     @if ($errors->any())
         <div class="alert alert-danger">
             <ul>
@@ -26,17 +36,20 @@
     @endif
 
     <h4 class="fw-bold py-3 mb-4">
-        <span class="text-muted fw-light">Master /</span> <a href="{{ route('investment.els.index') }}">Edit -
-            ELS-Investment</a>
+        <span class="text-muted fw-light">Master /</span> <a
+            href="{{ route('investment.els.index') }}">EDIT-ELS-Investment</a>
     </h4>
 
+    <h1>this functionality is in process...</h1>
     <div class="div d-flex justify-content-end mb-3">
         <a href="{{ route('investment.els.index') }}" class="btn btn-secondary px-4">Go back</a>
 
     </div>
+
+
     <form action="{{ route('investment.els.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
-        @method('post')
+        @method('put')
         <input type="hidden" id="nomineePerentageSum" value="0">
         {{-- investment Basic Details --}}
         <div class="row align-items-stretch">
@@ -53,10 +66,8 @@
                             <!-- Investment Date -->
                             <div class="col-md-2">
                                 <label for="investment_date" class="form-label">Investment Date</label>
-                                <input type="date"
-                                    class="form-control invDate @error('investment_date') is-invalid @enderror"
-                                    name="investment_date" id="investment_date"
-                                    value="{{ old('investment_date', $investment->investment_date?->format('Y-m-d')) }}"
+                                <input type="date" class="form-control invDate" name="investment_date"
+                                    id="investment_date" value="{{ old('investment_date', date('Y-m-d')) }}"
                                     max="{{ date('Y-m-d') }}">
 
 
@@ -65,11 +76,26 @@
                                 @enderror
                             </div>
 
+
+                            <!-- Scheme -->
+                            <div class="col-md-4">
+                                <label for="scheme_id" class="form-label">Scheme Name *</label>
+                                <select class="form-select select21 @error('scheme_id') is-invalid @enderror"
+                                    name="scheme_id" id="scheme_id" required>
+                                    <option value="">Select Scheme</option>
+                                </select>
+                                @error('scheme_id')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+
+
+
                             <!-- Investment Type -->
                             <div class="col-md-2">
                                 <label for="investment_type" class="form-label">Investment Type</label>
                                 <select class="form-select @error('investment_type') is-invalid @enderror"
-                                    name="investment_type" id="investment_type">
+                                    id="investment_type" name="investment_type" required>
                                     <option value="single" {{ old('investment_type') == 'single' ? 'selected' : '' }}>
                                         Single
                                     </option>
@@ -79,25 +105,34 @@
 
                                 </select>
 
+
+
+                                {{-- <input type="text"
+                                    class="form-control bg-secondary-subtle  @error('investment_type') is-invalid @enderror"
+                                    name="investment_type" id="investment_type"
+                                    value="{{ old('investment_type', 'single') }}" readonly> --}}
+
                                 @error('investment_type')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
+
+
                             {{-- {{ $clients }} --}}
                             <!-- Investment Holder -->
                             <div class="col-md-3 " id="div_holder_single">
                                 <label for="client_id" class="form-label">Investment 1st Holder</label>
-                                <select class="form-select select2 @error('client_id') is-invalid @enderror" required
-                                    name="first_client_id" id="first_client_id">
+                                <select class="form-select select2 @error('client_id') is-invalid @enderror text-uppercase"
+                                    required name="first_client_id" id="first_client_id">
                                     <option value="">Select Holder</option>
-                                    {{-- @foreach ($clients as $d)
+                                    @foreach ($clients as $d)
                                         <option value="{{ $d->id }}"
                                             {{ old('client_id') == $d->id ? 'selected' : '' }}
                                             data-banks='@json($d->banks)'
                                             data-families='@json($d->families)'>
-                                            {{ ucfirst(strtolower($d->name)) }}
+                                            {{ $d->name }}
                                         </option>
-                                    @endforeach --}}
+                                    @endforeach
                                 </select>
 
                                 @error('client_id')
@@ -111,12 +146,14 @@
                                     <label class="form-label">Investment 2nd Holder</label>
                                     <select class="form-select select2" name="second_client_id" id="second_client">
                                         <option value="">Select Holder</option>
-                                        {{-- @foreach ($clients as $d)
+                                        @foreach ($clients as $d)
                                             <option value="{{ $d->id }}"
-                                                {{ old('second_client_id') == $d->id ? 'selected' : '' }}>
+                                                {{ old('second_client_id') == $d->id ? 'selected' : '' }}
+                                                data-banks='@json($d->banks)'
+                                                data-families='@json($d->families)'>
                                                 {{ ucfirst(strtolower($d->name)) }}
                                             </option>
-                                        @endforeach --}}
+                                        @endforeach
                                     </select>
                                 </div>
 
@@ -125,12 +162,14 @@
                                     <label class="form-label">Investment 3rd Holder</label>
                                     <select class="form-select select2" name="third_client_id" id="third_client">
                                         <option value="">Select Holder</option>
-                                        {{-- @foreach ($clients as $d)
+                                        @foreach ($clients as $d)
                                             <option value="{{ $d->id }}"
-                                                {{ old('third_client_id') == $d->id ? 'selected' : '' }}>
+                                                {{ old('third_client_id') == $d->id ? 'selected' : '' }}
+                                                data-banks='@json($d->banks)'
+                                                data-families='@json($d->families)'>
                                                 {{ ucfirst(strtolower($d->name)) }}
                                             </option>
-                                        @endforeach --}}
+                                        @endforeach
                                     </select>
                                 </div>
 
@@ -139,12 +178,14 @@
                                     <label class="form-label">Investment 4th Holder</label>
                                     <select class="form-select select2" name="fourth_client_id" id="fourth_client">
                                         <option value="">Select Holder</option>
-                                        {{-- @foreach ($clients as $d)
+                                        @foreach ($clients as $d)
                                             <option value="{{ $d->id }}"
-                                                {{ old('fourth_client_id') == $d->id ? 'selected' : '' }}>
+                                                {{ old('fourth_client_id') == $d->id ? 'selected' : '' }}
+                                                data-banks='@json($d->banks)'
+                                                data-families='@json($d->families)'>
                                                 {{ ucfirst(strtolower($d->name)) }}
                                             </option>
-                                        @endforeach --}}
+                                        @endforeach
                                     </select>
                                 </div>
 
@@ -163,20 +204,7 @@
 
                             </div>
 
-                            <!-- Scheme -->
-                            <div class="col-md-4">
-                                <label for="scheme_id" class="form-label">Scheme Name *</label>
-                                <select class="form-select select21 @error('scheme_id') is-invalid @enderror"
-                                    name="scheme_id" id="scheme_id" required>
 
-                                    <option value="">Select Scheme</option>
-
-                                    {{-- load from ajax --}}
-                                </select>
-                                @error('scheme_id')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
-                            </div>
 
 
                             <!-- Total Invested Amount -->
@@ -192,6 +220,7 @@
                                 @error('investment_amount')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
+                                <small class="text-danger investment_amount_msg"></small>
                             </div>
 
                             <!-- Tenure Type -->
@@ -212,32 +241,34 @@
                                     name="tenure_count" id="tenure_count" required>
                                     <!-- options loaded by JS -->
                                 </select>
-
                                 @error('tenure_count')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
 
                             <!-- Frequency -->
+
                             <div class="col-md-2">
                                 <label for="frequency" class="form-label">Frequency *</label>
-                                <select class="form-select @error('frequency') is-invalid @enderror" name="frequency"
-                                    id="frequency" required>
-                                    <!-- Loaded via jQuery -->
-                                </select>
+                                <input type="text"
+                                    class="form-control bg-secondary-subtle @error('frequency') is-invalid @enderror"
+                                    name="frequency" id="frequency" readonly>
 
                                 @error('frequency')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
 
+
                             <!-- ROI  -->
-                            <div class="col-md-2">
+                            <div class="col-md-2 " id="roi-wrapper">
                                 <label for="roi_percent" class="form-label">ROI *</label>
                                 <div class="input-group">
-                                    <input type="text" class="form-control @error('roi') is-invalid @enderror"
+                                    <input type="text"
+                                        class="form-control onlydigit @error('roi') is-invalid @enderror"
                                         name="roi_percent" id="roi_percent" maxlength="5"
                                         value="{{ old('roi_percent') }}" required>
+
                                     <span class="input-group-text">%</span>
                                 </div>
                                 <div id="roi-message"></div>
@@ -282,20 +313,14 @@
                             </div>
 
                             {{-- Lock-in Period Type --}}
+
                             <div class="col-md-2 mb-3">
                                 <label class="form-label fw-semibold">
                                     Lock-in Period Type <span class="text-danger">*</span>
                                 </label>
-                                <select class="form-select @error('lock_in_period_type') is-invalid @enderror"
-                                    name="lock_in_period_type" id="lock_in_period_type" required>
-                                    <option value="">Select</option>
-                                    <option value="months" {{ old('lock_in_period_type') == 'months' ? 'selected' : '' }}>
-                                        Months
-                                    </option>
-                                    <option value="years" {{ old('lock_in_period_type') == 'years' ? 'selected' : '' }}>
-                                        Years
-                                    </option>
-                                </select>
+                                <input type="text"
+                                    class="form-control bg-secondary-subtle @error('lock_in_period_type') is-invalid @enderror"
+                                    name="lock_in_period_type" id="lock_in_period_type" readonly>
 
                                 @error('lock_in_period_type')
                                     <small class="text-danger">{{ $message }}</small>
@@ -303,22 +328,22 @@
                             </div>
 
 
+
                             {{-- Lock-in Period --}}
+
                             <div class="col-md-2 mb-3">
                                 <label class="form-label fw-semibold">
                                     Lock-in Period <span class="text-danger">*</span>
                                 </label>
-
-
-                                <input type="number" min="1"
-                                    class="form-control onlydigit @error('lock_in_period') is-invalid @enderror"
-                                    name="lock_in_period" id="lock_in_period" placeholder="Enter period"
-                                    value="{{ old('lock_in_period') }}" required disabled>
+                                <input type="number"
+                                    class="form-control bg-secondary-subtle @error('lock_in_period') is-invalid @enderror"
+                                    name="lock_in_period" id="lock_in_period" readonly>
 
                                 @error('lock_in_period')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
+
 
 
 
@@ -335,7 +360,18 @@
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
+                            <!-- Remarks -->
+                            <div class="col-md-4">
+                                <label class="form-label">
+                                    Remarks
+                                </label>
+                                <textarea name="remarks" rows="2" class="form-control @error('remarks') is-invalid @enderror"
+                                    placeholder="Write remarks">{{ old('remarks') }}</textarea>
 
+                                @error('remarks')
+                                    <small class="text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
 
                         </div>
                     </div>
@@ -356,8 +392,6 @@
                         <h5 class="mb-0">Bank / Instrument Details</h5>
                         <small class="text-muted float-end">Bank - Instrument Details</small>
                     </div>
-
-
 
                     <div class="card-body">
                         <div id="instrumentContainer">
@@ -396,6 +430,10 @@
                                                         {{ old('instrument') == 'imps' ? 'selected' : '' }}>
                                                         IMPS
                                                     </option>
+                                                    <option value="transfer"
+                                                        {{ old('instrument') == 'transfer' ? 'selected' : '' }}>
+                                                        TRANSFER
+                                                    </option>
                                                 </select>
                                                 @error('instrument')
                                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -409,7 +447,7 @@
                                                 <input type="date"
                                                     class="form-control @error('instrument_date.0') is-invalid @enderror"
                                                     name="instrument_date[]" value="{{ old('instrument_date.0') }}"
-                                                    max="{{ date('Y-m-d') }}">
+                                                    max="{{ date('Y-m-d') }}" onkeydown="return false">
                                                 @error('instrument_date.0')
                                                     <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
@@ -458,18 +496,49 @@
                                             </div>
 
                                             <!-- Instrument Image -->
-                                            <div class="col-md-6">
-                                                <label class="form-label">Instrument Image <span
-                                                        class="text-danger">*</span></label>
-                                                <input type="file"
-                                                    class="form-control fileInput instrumentImage @error('instrumentImage.0') is-invalid @enderror"
-                                                    name="instrumentImage[]" accept="image/*,application/pdf">
-                                                <img src="" class="imgPreview mt-2 rounded border"
-                                                    style="width:100px; display:none;">
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label">
+                                                    Instrument Image <span class="text-danger">*</span>
+                                                </label>
+
+                                                <div class="input-group">
+                                                    <input type="file"
+                                                        class="form-control fileInput instrumentImage @error('instrumentImage.0') is-invalid @enderror"
+                                                        id="instrumentImage_0" name="instrumentImage[]"
+                                                        accept="image/*,application/pdf"
+                                                        onchange="uploadTempFile(this, 'instrumentImage_0')">
+
+                                                    <button class="btn btn-outline-danger" type="button"
+                                                        onclick="document.getElementById('instrumentImage_0').value = ''">
+                                                        ✕
+                                                    </button>
+                                                </div>
+                                                <small class="text-danger file-error"></small>
+
+
                                                 @error('instrumentImage.0')
                                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                                 @enderror
+
+                                                <input type="hidden" id="instrumentImage_0_url"
+                                                    name="instrumentImage_url[]"
+                                                    value="{{ old('instrumentImage_url.0') }}">
+
+                                                @if (old('instrumentImage_url.0'))
+                                                    <div id="instrumentImage_0_preview"
+                                                        class="position-relative d-inline-block mt-2">
+                                                        <img src="{{ old('instrumentImage_url.0') }}" width="100"
+                                                            class="rounded border">
+
+                                                        <button type="button"
+                                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                                                            onclick="removeImage('instrumentImage_0')">
+                                                            ✕
+                                                        </button>
+                                                    </div>
+                                                @endif
                                             </div>
+
 
                                         </div>
                                     </div>
@@ -488,10 +557,10 @@
                                                 <select class="form-select @error('company_bank_id') is-invalid @enderror"
                                                     name="company_bank_id[]" required>
                                                     <option value="">Select Company Bank</option>
-                                                    {{-- @foreach ($companyBanks as $d)
+                                                    @foreach ($companyBanks as $d)
                                                         <option value="{{ $d->id }}">
                                                             {{ $d->bank_name . '-' . $d->account_number }}</option>
-                                                    @endforeach --}}
+                                                    @endforeach
                                                 </select>
                                                 @error('company_bank_id')
                                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -520,7 +589,7 @@
                                                 <input type="text"
                                                     class="form-control companyBankRef @error('company_reference_no.0') is-invalid @enderror"
                                                     name="company_reference_no[]"
-                                                    value="{{ old('company_reference_no.0') }}" maxlength="20">
+                                                    value="{{ old('company_reference_no.0') }}" maxlength="20" required>
 
                                                 @error('company_reference_no.0')
                                                     <div class="invalid-feedback">{{ $message }}</div>
@@ -575,10 +644,10 @@
                             <label class="form-label ">From Company Bank *</label>
                             <select class="form-select" id="from_company_bank_id" name="from_company_bank_id" required>
                                 <option value="">Select Company Bank</option>
-                                {{-- @foreach ($companyBanks as $d)
+                                @foreach ($companyBanks as $d)
                                     <option value="{{ $d->id }}">
                                         {{ $d->bank_name . '-' . $d->account_number }}</option>
-                                @endforeach --}}
+                                @endforeach
                             </select>
 
                         </div>
@@ -588,7 +657,9 @@
                             <label class="form-label ">To Client Bank *</label>
                             <select class="form-select to_client_bank" name="to_client_bank_id" id="to_client_bank_id"
                                 required>
-                                <option value="">Select Client Bank</option>
+                                {{-- <option value="">Select Client Bank</option> --}}
+                                <option data-banks='@json($d->banks)'>...</option>
+
                             </select>
                         </div>
                     </div>
@@ -606,9 +677,6 @@
                         <h5 class="mb-0">Nominee Information</h5>
                         <small class="text-muted float-end">Nominee Details</small>
                     </div>
-
-
-
 
                     <div class="card-body">
                         <div class="alert alert-info py-2">
@@ -636,7 +704,7 @@
                                     <small class="text-muted">Required because nominee is minor</small>
                                 </div>
 
-                                <div class="col-md-2">
+                                <div class="col-md-2 d-none nominee-percentage-wrapper">
                                     <label>Percentage %</label>
                                     <div class="input-group">
                                         <input type="text" class="form-control nominee_percentage" name="percent[]"
@@ -644,6 +712,7 @@
                                         <span class="input-group-text">%</span>
                                     </div>
                                 </div>
+
 
                                 <div class="col-md-1 d-flex align-items-end">
                                     <button type="button" class="btn btn-danger removeNomineeRow">X</button>
@@ -662,10 +731,6 @@
                 </div>
             </div>
         </div>
-
-
-
-
 
 
         <div class="card shadow-sm mt-3" id="resultCard" style="display:none;">
@@ -764,7 +829,8 @@
 
         <!-- Submit -->
         <div class="text-end mt-4">
-            <button type="submit" id="calculateBtn1" class="btn btn-primary px-4">Submit</button>
+            <button type="submit" id="btnSubmit" class="btn btn-primary px-4">Submit</button>
+            <small class="text-danger" id="errSubmit"></small>
         </div>
 
     </form>
@@ -908,21 +974,30 @@
                         $.each(response, function(key, s) {
 
                             $schemeSelect.append(`
-                        <option value="${s.id}"
-                            data-tenure-type="${s.tenure_type}"
-                            data-min-tenure="${s.tenure_min}"
-                            data-max-tenure="${s.tenure_max}"
-                            data-frequencies='${JSON.stringify(s.frequency)}'
-                            data-min-roi="${s.roi_min}"
-                            data-max-roi="${s.roi_max}"
-                            data-addi-roi-min="${s.roi_min_additional}"
-                            data-addi-roi-max="${s.roi_max_additional}"
-                            data-scheme-name="${s.scheme_name}"
-                            data-start-date="${s.start_date}"
-                            data-end-date="${s.end_date}">
-                            ${s.scheme_name}
-                        </option>
-                    `);
+    <option value="${s.id}"
+        data-tenure-type="${s.tenure_type}"
+        data-min-tenure="${s.tenure_min}"
+        data-max-tenure="${s.tenure_max}"
+        data-frequencies='${JSON.stringify(s.frequency)}'
+        data-min-roi="${s.roi_min}"
+        data-max-roi="${s.roi_max}"
+        data-addi-roi-min="${s.roi_min_additional}"
+        data-addi-roi-max="${s.roi_max_additional}"
+        data-lock-in-period="${s.lock_in_period}"
+data-lock-in-period-type="${s.lock_in_period_type}"
+
+        data-scheme-name="${s.scheme_name}"
+        data-start-date="${s.start_date}"
+        data-end-date="${s.end_date}"
+        data-min-investment="${s.min_investment}"
+        data-max-investment="${s.max_investment}"
+        data-investment-denomination="${s.investment_denomination}"
+        data-investment_type="${s.investment_type}"
+        >${s.name_type_value} -
+        ${s.scheme_name}
+    </option>
+`);
+
                         });
                     }
 
@@ -969,6 +1044,58 @@
             }
 
             // ✅ Allow submit if everything is valid
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tenure = document.getElementById('tenure_count');
+            const roiWrapper = document.getElementById('roi-wrapper');
+            const roiInput = roiWrapper.querySelector('input, select');
+
+            function toggleROI() {
+                if (tenure.value) {
+                    roiInput.readOnly = false;
+                } else {
+                    roiInput.readOnly = true;
+                }
+            }
+
+            toggleROI();
+            tenure.addEventListener('change', toggleROI);
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+
+            $(document).on('change', '.nominee_name', function() {
+                let $row = $(this).closest('.row');
+                let $percentageWrapper = $row.find('.nominee-percentage-wrapper');
+
+                if ($(this).val()) {
+                    $percentageWrapper.removeClass('d-none');
+                } else {
+                    $percentageWrapper.addClass('d-none');
+                    $percentageWrapper.find('.nominee_percentage').val('');
+                }
+            });
+
+        });
+    </script>
+
+    <script>
+        $(document).on('input change', '#investment_date', function() {
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            if (!this.value) return;
+
+            const selected = new Date(this.value);
+            selected.setHours(0, 0, 0, 0);
+
+            // If future date → snap back to today
+            if (selected > today) {
+                this.value = today.toISOString().split('T')[0];
+            }
         });
     </script>
 @endpush

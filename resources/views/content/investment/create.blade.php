@@ -443,7 +443,7 @@
                                                 <input type="date"
                                                     class="form-control @error('instrument_date.0') is-invalid @enderror"
                                                     name="instrument_date[]" value="{{ old('instrument_date.0') }}"
-                                                    max="{{ date('Y-m-d') }}">
+                                                    max="{{ date('Y-m-d') }}" onkeydown="return false">
                                                 @error('instrument_date.0')
                                                     <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
@@ -585,7 +585,7 @@
                                                 <input type="text"
                                                     class="form-control companyBankRef @error('company_reference_no.0') is-invalid @enderror"
                                                     name="company_reference_no[]"
-                                                    value="{{ old('company_reference_no.0') }}" maxlength="20">
+                                                    value="{{ old('company_reference_no.0') }}" maxlength="20" required>
 
                                                 @error('company_reference_no.0')
                                                     <div class="invalid-feedback">{{ $message }}</div>

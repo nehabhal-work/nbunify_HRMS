@@ -122,9 +122,11 @@ class InvestmentController extends Controller
     {
         $investment = $this->investmentService->getById($id);
         $scheme = $this->schemeService->getAll();
+        $clients = $this->clientService->getAllApproved();
+        $companyBanks = $this->companyService->getFirstCompanyBanks();
         // $clients = $this->clientService->getAll();
         // $companyBanks = $this->companyService->getFirstCompanyBanks();
-        return view('content.investment.edit', compact('investment', 'scheme'));
+        return view('content.investment.edit', compact('investment', 'scheme', 'clients', 'companyBanks'));
     }
 
     /**
