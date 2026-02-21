@@ -21,6 +21,7 @@ class InvestmentService
     {
         // Transform form data to expected structure
         $data = $this->transformFormData($data);
+        // dd($data);
 
         // Validate all data before starting transaction
         $this->validateInvestmentData($data);
@@ -704,7 +705,7 @@ class InvestmentService
                         $nominee['guardian_client_family_id'] = $data['guardian_client_family_id'][$i];
                     } else {
                         // Default to self if no guardian provided
-                        $nominee['guardian_client_family_id'] = $data['client_family_id'][$i];
+                        // $nominee['guardian_client_family_id'] = $data['client_family_id'][$i];
                     }
 
                     $data['nominees'][] = $nominee;
@@ -932,7 +933,8 @@ class InvestmentService
         return 'Schedule marked as paid';
     }
 
-    public function addPayoutSchedule(int $id, array $data): void{
+    public function addPayoutSchedule(int $id, array $data): void
+    {
         $validator = \Validator::make($data, [
             'actual_payout_date' => 'required|date',
             'actual_payout_amount' => 'required|numeric|min:0',
@@ -961,7 +963,7 @@ class InvestmentService
         }
 
 
-        
+
         InvestmentPayoutSchedule::create([
             'investment_id' => $investment->id,
             'sch_payout_date' => $data['actual_payout_date'],
