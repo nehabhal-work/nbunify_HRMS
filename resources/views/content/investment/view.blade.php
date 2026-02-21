@@ -343,6 +343,7 @@
 
                 </table>
 
+                {{ $investment->nominees }}
                 <b class="card-title">Nominee Details </b>
                 <table class="table table-bordered mb-4 ">
                     <tbody>

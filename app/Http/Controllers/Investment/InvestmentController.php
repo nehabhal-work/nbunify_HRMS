@@ -53,8 +53,10 @@ class InvestmentController extends Controller
         return view('content.investment.create', compact('clients', 'companyBanks'));
     }
 
+    // public function store(Request $request)
     public function store(InvestmentRequest $request)
     {
+        // return $request;
         try {
             $this->investmentService->create($request->validated());
         } catch (\Exception $e) {
@@ -88,7 +90,7 @@ class InvestmentController extends Controller
         //     ->where('investment_id', $id)
         //     ->first();
         $inputBank = InvestmentInputBank::with('fromClientBank', 'toCompanyBank')->where('investment_id', $id)->first();
-        // return $inputBank;
+        // return $investment;
         return view(
             'content.investment.view',
             compact(
