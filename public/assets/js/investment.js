@@ -42,17 +42,15 @@ function loadSchemeData() {
 
     // LOAD TENURE OPTIONS
     let tenureSelect = $('#tenure_count');
+    let oldTenure = tenureSelect.data('old');
     tenureSelect.empty().append(`<option value="">Select</option>`);
     for (let i = minTenure; i <= maxTenure; i++) {
-        tenureSelect.append(`<option value="${i}">${i}</option>`);
+        tenureSelect.append(`<option value="${i}" ${oldTenure == i ? 'selected' : ''}>${i}</option>`);
+
     }
 
-    // LOAD FREQUENCY OPTIONS
-    // let freqSelect = $('#frequency');
-    // freqSelect.empty().append(`<option value="">Select Frequency</option>`);
-    // frequencies.forEach(f => {
-    //     freqSelect.append(`<option value="${f}">${f}</option>`);
-    // });
+    $('#tenure_type').val(tenureType).trigger('change');
+
     if (frequencies.length > 0) {
         $('#frequency').val(frequencies[0]);
     }
@@ -70,6 +68,7 @@ function loadSchemeData() {
     // ROI RANGE / FIXED LOGIC
     $('#roi-wrapper').removeClass('d-none');
 
+    let existingRoi = $('#roi_percent').val();
     if (minRoi === maxRoi) {
         // 🌿 fixed ROI
         $('#roi_percent')
@@ -88,7 +87,8 @@ function loadSchemeData() {
             .prop('readonly', false)
             .removeClass('bg-secondary-subtle')
             .data('min', minRoi)
-            .data('max', maxRoi);
+            .data('max', maxRoi)
+            .val(existingRoi ?? '');;
 
         $('#roi-message').html(
             `<small class="text-primary fw-bold">
@@ -105,7 +105,7 @@ function loadSchemeData() {
         $('#addi_roi_box').addClass('d-none');
     }
 
-    $('#addi_roi').val('');
+    // $('#addi_roi').val('');
     $('#addi-roi-message').html(
         `<small class="text-primary fw-bold">Allowed Additional ROI: ${addiMin}% to ${addiMax}%</small>`
     );
@@ -229,46 +229,6 @@ $(document).ready(function () {
 // -------------------lock in period on tenure------------
 $(document).ready(function () {
 
-    // when tenure changes
-    // $('#tenure_count').on('change', function () {
-
-    //     let tenure = parseInt($(this).val(), 10);
-
-    //     if (!tenure) {
-    //         $('#lock_in_period')
-    //             .prop('disabled', true)
-    //             .removeAttr('max')
-    //             .val('');
-    //         return;
-    //     }
-
-    //     // enable + set limits
-    //     $('#lock_in_period')
-    //         .prop('disabled', false)
-    //         .attr('max', tenure)
-    //         .val('');
-    // });
-
-    // block typing beyond max + limit to 2 digits
-    // $('#lock_in_period').on('input', function () {
-
-    //     let max = parseInt($(this).attr('max'), 10);
-    //     let val = this.value.replace(/\D/g, '');
-
-    //     // enforce 2 digits
-    //     if (val.length > 2) {
-    //         val = val.slice(0, 2);
-    //     }
-
-    //     let num = parseInt(val, 10);
-
-    //     // enforce max
-    //     if (num > max) {
-    //         val = max.toString();
-    //     }
-
-    //     this.value = val;
-    // });
     function updateLockInMax() {
 
         let tenureCount = parseInt($('#tenure_count').val(), 10);
@@ -299,8 +259,6 @@ $(document).ready(function () {
             .val('');
     }
 
-    /* ---------- EVENTS ---------- */
-    // $('#tenure_count, #lock_in_period_type').on('change', updateLockInMax);
 
 
     $('#lock_in_period').on('input', function () {
@@ -483,10 +441,14 @@ $('#first_client_id').on('change', function () {
     // Load nominees into ALL nominee dropdowns
     $('.nominee_name').each(function () {
         let dd = $(this);
+        let selectedVal = dd.data('selected'); // 👈 from blade
         dd.empty().append(`<option value="">Select Holder</option>`);
         families.forEach(f => {
             dd.append(`<option value="${f.id}" data-dob="${f.dob}">${f.name}</option>`);
         });
+        if (selectedVal) {
+            dd.val(selectedVal);
+        }
         dd.trigger('change');
     });
 
@@ -525,11 +487,14 @@ function populateAllClientBanks() {
     $('.clientOutputBank, .to_client_bank').each(function () {
 
         let dd = $(this);
+        let selectedVal = dd.data('selected'); //👈 EDIT VALUE
         dd.empty().append(`<option value="">Select Bank</option>`);
 
         allBanks.forEach(b => {
-            dd.append(`<option value="${b.id}">${b.label}</option>`);
+            let selected = selectedVal == b.id ? 'selected' : '';
+            dd.append(`<option value="${b.id}" ${selected}>${b.label}</option>`);
         });
+        dd.trigger('change');
     });
 }
 

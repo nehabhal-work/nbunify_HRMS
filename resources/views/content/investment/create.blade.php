@@ -286,12 +286,13 @@
                                 <label for="addi_roi" class="form-label">Additional ROI</label>
                                 <div class="input-group">
                                     <input type="text"
-                                        class="form-control onlydigit bg-info-subtle @error('addi_roi') is-invalid @enderror"
-                                        name="additional_roi_percent" id="addi_roi" maxlength="5">
+                                        class="form-control onlydigit bg-info-subtle @error('additional_roi_percent') is-invalid @enderror"
+                                        name="additional_roi_percent" id="addi_roi"
+                                        value="{{ old('additional_roi_percent') }}" maxlength="5">
                                     <span class="input-group-text">%</span>
                                 </div>
                                 <div id="addi-roi-message"></div>
-                                @error('addi_roi')
+                                @error('additional_roi_percent')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>

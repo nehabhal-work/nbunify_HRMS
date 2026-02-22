@@ -124,9 +124,9 @@ class InvestmentController extends Controller
         $scheme = $this->schemeService->getAll();
         $clients = $this->clientService->getAllApproved();
         $companyBanks = $this->companyService->getFirstCompanyBanks();
-        // $clients = $this->clientService->getAll();
-        // $companyBanks = $this->companyService->getFirstCompanyBanks();
-        return view('content.investment.edit', compact('investment', 'scheme', 'clients', 'companyBanks'));
+        $clientBanks = $this->clientService->getClientBanks($investment->first_client_id);
+        // return $clientBank;
+        return view('content.investment.edit', compact('investment', 'scheme', 'clients', 'companyBanks', 'clientBanks'));
     }
 
     /**
@@ -134,6 +134,7 @@ class InvestmentController extends Controller
      */
     public function update(InvestmentRequest $request, string $id)
     {
+        // return $request;
         $investment = $this->investmentService->getById($id);
         $this->investmentService->update($investment, $request->validated());
         return redirect()->route('investment.els.index')->with('success', 'Investment updated successfully.');
