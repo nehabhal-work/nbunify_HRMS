@@ -665,94 +665,121 @@ $(document).ready(function () {
 // ===== Generic clone function=====
 // ------------------------------------------
 $(document).ready(function () {
-    function handleClone(container, rowClass, addBtn, removeBtn) {
 
-        // ADD New Row
-        $(document).on("click", addBtn, function () {
+    // init select2 first row
+    $('#instrumentContainer select').select2();
 
-            let $lastRow = $(container).find(rowClass).last();
-            let $newRow = $lastRow.clone(false, false); // clone simple
+    handleClone(
+        "#instrumentContainer",
+        ".instrumentRow",
+        ".addInstrumentRow",
+        ".removeInstrumentRow"
+    );
+});
 
-            // REMOVE existing Select2 wrappers from clone
-            $newRow.find(".select2-container").remove();
 
-            // RESET select fields to blank
-            $newRow.find("select").each(function () {
-                $(this).val("");              // reset value
-                $(this).removeClass("select2-hidden-accessible"); // remove old select2 markers
-                $(this).removeAttr("data-select2-id");            // remove old select2 instance id
-            });
+function handleClone(container, rowClass, addBtn, removeBtn) {
 
-            // RESET input fields
-            $newRow.find("input").val("");
+    // ADD ROW
+    $(document).on("click", addBtn, function () {
 
-            // Append new row
-            $(container).append($newRow);
+        let $container = $(container);
+        let $lastRow = $container.find(rowClass).last();
 
-            // Re-initialize Select2 ONLY inside the new row
-            $newRow.find("select").select2();
-        });
+        // destroy select2 before clone
+        $lastRow.find('select').select2('destroy');
 
-        // REMOVE Row
-        $(document).on("click", removeBtn, function () {
-            let $rows = $(container).find(rowClass);
-            if ($rows.length > 1) {
-                $(this).closest(rowClass).remove();
-            } else {
-                alert("At least one nominee must remain.");
-            }
-        });
+        let $newRow = $lastRow.clone(false);
+
+        let index = $container.find(rowClass).length;
+        $newRow.attr('data-index', index);
+
+        // reset inputs
+        $newRow.find('input').val('');
+        $newRow.find('.preview').html('');
+        $newRow.find('select').val('');
+
+        $container.append($newRow);
+
+        // re-init select2
+        $container.find('select').select2();
+    });
+
+    // REMOVE ROW
+    $(document).on("click", removeBtn, function () {
+        let rows = $(container).find(rowClass);
+        if (rows.length > 1) {
+            $(this).closest(rowClass).remove();
+        }
+    });
+}
+
+
+// FILE UPLOAD PREVIEW (NO INLINE JS)
+$(document).on('change', '.instrumentImage', function () {
+
+    let file = this.files[0];
+    let $row = $(this).closest('.instrumentRow');
+    let $preview = $row.find('.preview');
+
+    $preview.html('');
+
+    if (!file) return;
+
+    if (file.type.startsWith('image')) {
+        let reader = new FileReader();
+        reader.onload = function (e) {
+            $preview.html(`<img src="${e.target.result}" class="img-thumbnail" width="100">`);
+        };
+        reader.readAsDataURL(file);
+    } else {
+        $preview.html(`<span class="text-success">PDF Selected</span>`);
     }
-
-    handleClone("#nomineeContainer", ".nomineeRow", "#addNomineeRow", ".removeNomineeRow");
-    handleClone("#instrumentContainer", ".instrumentRow", ".addInstrumentRow", ".removeInstrumentRow");
+});
 
 
-    // ------------------------------
-    //     nominee PERCENTAGE CALCULATION
-    // ------------------------------
 
-    // function recalcPercentages() {
-    //     let total = 0;
 
-    //     $(".nominee_percentage").each(function () {
-    //         let v = parseFloat($(this).val());
-    //         if (!isNaN(v)) total += v;
+$(document).ready(function () {
+    // function handleClone(container, rowClass, addBtn, removeBtn) {
+
+    //     // ADD New Row
+    //     $(document).on("click", addBtn, function () {
+
+    //         let $lastRow = $(container).find(rowClass).last();
+    //         let $newRow = $lastRow.clone(false, false); // clone simple
+
+    //         // REMOVE existing Select2 wrappers from clone
+    //         $newRow.find(".select2-container").remove();
+
+    //         // RESET select fields to blank
+    //         $newRow.find("select").each(function () {
+    //             $(this).val("");              // reset value
+    //             $(this).removeClass("select2-hidden-accessible"); // remove old select2 markers
+    //             $(this).removeAttr("data-select2-id");            // remove old select2 instance id
+    //         });
+
+    //         // RESET input fields
+    //         $newRow.find("input").val("");
+
+    //         // Append new row
+    //         $(container).append($newRow);
+
+    //         // Re-initialize Select2 ONLY inside the new row
+    //         $newRow.find("select").select2();
     //     });
 
-    //     // Prevent more than 100%
-    //     if (total > 100) {
-    //         alert("Total percentage cannot exceed 100%");
-    //         return false;
-    //     }
-
-    //     // Enable/Disable Add Button
-    //     if (total >= 100) {
-    //         $("#addNomineeRow").prop("disabled", true);
-    //     } else {
-    //         $("#addNomineeRow").prop("disabled", false);
-    //     }
-
-    //     return total;
+    //     // REMOVE Row
+    //     $(document).on("click", removeBtn, function () {
+    //         let $rows = $(container).find(rowClass);
+    //         if ($rows.length > 1) {
+    //             $(this).closest(rowClass).remove();
+    //         } else {
+    //             alert("At least one nominee must remain.");
+    //         }
+    //     });
     // }
 
-    // // Auto-update after user enters value
-    // $(document).on("keyup change", ".nominee_percentage", function () {
-    //     let total = recalcPercentages();
-
-    //     if (total > 100) {
-    //         $(this).val("");
-    //         recalcPercentages();
-    //         return;
-    //     }
-
-    //     // Auto-fill remaining for NEXT row only when user finishes typing
-    //     if (total < 100) {
-    //         let remaining = 100 - total;
-
-    //         let $rows = $(".nominee_percentages");
-    //     }
-    // });
     function recalcPercentages(currentInput = null) {
         let total = 0;
 
@@ -791,6 +818,8 @@ $(document).ready(function () {
         return total;
     }
 
+    handleClone("#nomineeContainer", ".nomineeRow", "#addNomineeRow", ".removeNomineeRow");
+
     // Input listener
     $(document).on("input", ".nominee_percentage", function () {
         recalcPercentages(this);
@@ -800,6 +829,8 @@ $(document).ready(function () {
     $(document).on("click", "#addNomineeRow, .removeNomineeRow", function () {
         setTimeout(() => recalcPercentages(), 50);
     });
+
+
 
 });
 
