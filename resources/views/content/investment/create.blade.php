@@ -63,8 +63,8 @@
                             <div class="col-md-2">
                                 <label for="investment_date" class="form-label">Investment Date</label>
                                 <input type="date" class="form-control invDate" name="investment_date"
-                                    id="investment_date" value="{{ old('investment_date', date('Y-m-d')) }}"
-                                    max="{{ date('Y-m-d') }}">
+                                    id="investment_date" value="{{ old('investment_date', date('d-m-Y')) }}"
+                                    max="{{ date('d-m-Y') }}">
 
 
                                 @error('investment_date')
