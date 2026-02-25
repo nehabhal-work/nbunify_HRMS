@@ -205,6 +205,18 @@ function updateHolderOptions() {
 
     $('.select2').trigger('change.select2');
 }
+
+
+// ---START -> keep only first 10 digits type = number maxlength 10
+$(document).on("input",
+    "#investment_amount, #roi_amount, #payout_count, #instrument_amt, #instrument_amt",
+    function () {
+        if (this.value.length > 10) {
+            this.value = this.value.slice(0, 10); // ✅ keep only first 10 digits
+        }
+    });
+// ---END -> keep only first 10 digits
+
 $(document).ready(function () {
 
 
@@ -431,35 +443,35 @@ $(document).ready(function () {
 $('#first_client_id').on('change', function () {
 
     let selected = $(this).find(':selected');
+    let families = selected.data('families') || [];
 
-    let families = selected.data('families');
-    let banks = selected.data('banks');
+    if (typeof families === "string") {
+        families = JSON.parse(families);
+    }
 
-    if (typeof families === "string") families = JSON.parse(families);
-    if (typeof banks === "string") banks = JSON.parse(banks);
-
-    // Load nominees into ALL nominee dropdowns
+    // Nominee works already – KEEP AS IS
     $('.nominee_name').each(function () {
         let dd = $(this);
-        let selectedVal = dd.data('selected'); // 👈 from blade
-        dd.empty().append(`<option value="">Select Holder</option>`);
+        let selectedVal = dd.data('selected');
+
+        dd.empty().append('<option value="">Select Holder</option>');
         families.forEach(f => {
-            dd.append(`<option value="${f.id}" data-dob="${f.dob}">${f.name}</option>`);
+            dd.append(`<option value="${f.id}">${f.name}</option>`);
         });
-        if (selectedVal) {
-            dd.val(selectedVal);
-        }
+
+        if (selectedVal) dd.val(selectedVal);
         dd.trigger('change');
     });
 
-    // Load client banks
-
-
+    // 🔥 ONLY THIS
+    populateAllClientBanks();
 });
+
+
 // Load client multiple  banks to outward bank amd Client Output Bank dropdown
 function populateAllClientBanks() {
 
-    let selectors = [
+    const selectors = [
         '#first_client_id',
         '#second_client',
         '#third_client',
@@ -469,37 +481,47 @@ function populateAllClientBanks() {
     let allBanks = [];
 
     selectors.forEach(sel => {
-        let opt = $(sel).find(':selected');
+        let $select = $(sel);
+        if (!$select.length) return;
+
+        let opt = $select.find(':selected');
         if (!opt.val()) return;
 
         let clientName = opt.text().trim();
         let banks = opt.data('banks') || [];
 
+        if (typeof banks === 'string') {
+            banks = JSON.parse(banks);
+        }
+
         banks.forEach(b => {
             allBanks.push({
-                id: b.id,
-                label: `${clientName} — ${b.bank_name} (${b.account_number})`
+                id: String(b.id), // 🔥 STRING ON PURPOSE
+                text: `${clientName} — ${b.bank_name} (${b.account_number})`
             });
         });
     });
 
-    // Apply to BOTH dropdown types
-    $('.clientOutputBank, .to_client_bank').each(function () {
+    $('.clientOutputBank').each(function () {
 
         let dd = $(this);
-        let selectedVal = dd.data('selected'); //👈 EDIT VALUE
-        dd.empty().append(`<option value="">Select Bank</option>`);
+        let selectedVal = dd.data('selected');
+
+        dd.empty().append('<option value="">Select Bank</option>');
 
         allBanks.forEach(b => {
-            let selected = selectedVal == b.id ? 'selected' : '';
-            dd.append(`<option value="${b.id}" ${selected}>${b.label}</option>`);
+            dd.append(`<option value="${b.id}">${b.text}</option>`);
         });
-        dd.trigger('change');
+
+        // 🔥🔥🔥 THIS IS THE MISSING PIECE 🔥🔥🔥
+        if (selectedVal) {
+            dd.val(String(selectedVal)).trigger('change');
+        }
     });
 }
 
-$('#first_client_id, #second_client, #third_client, #fourth_client')
-    .on('change', populateAllClientBanks);
+// $('#first_client_id, #second_client, #third_client, #fourth_client')
+//     .on('change', populateAllClientBanks);
 
 // $('#investment_type').on('change', populateAllClientBanks);
 

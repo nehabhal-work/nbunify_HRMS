@@ -134,7 +134,7 @@ class InvestmentController extends Controller
      */
     public function update(InvestmentRequest $request, string $id)
     {
-        // return $request;
+        return $request;
         $investment = $this->investmentService->getById($id);
         $this->investmentService->update($investment, $request->validated());
         return redirect()->route('investment.els.index')->with('success', 'Investment updated successfully.');

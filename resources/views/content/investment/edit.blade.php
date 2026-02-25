@@ -62,15 +62,16 @@
                     <div class="card-body">
                         <div class="row g-3">
 
-
+                            {{-- {{ $investment->investment_date  "2026-02-10",}} --}}
                             <!-- Investment Date -->
                             <div class="col-md-2">
                                 <label for="investment_date" class="form-label">Investment Date</label>
-                                <input type="date" class="form-control invDate" name="investment_date"
-                                    id="investment_date"
-                                    value="{{ old('investment_date', optional($investment->investment_date)->format('Y-m-d')) }}"
-                                    max="{{ date('Y-m-d') }}">
 
+                                <input type="date"
+                                    class="form-control invDate @error('investment_date') is-invalid @enderror"
+                                    name="investment_date" id="investment_date"
+                                    value="{{ old('investment_date', \Carbon\Carbon::parse($investment->investment_date)->format('Y-m-d')) }}"
+                                    max="{{ now()->format('Y-m-d') }}">
 
                                 @error('investment_date')
                                     <small class="text-danger">{{ $message }}</small>
@@ -414,21 +415,26 @@
 
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="mb-0">Bank / Instrument Details</h5>
-                        <small class="text-muted float-end">Bank - Instrument Details</small>
+                        <small class="text-muted">Bank - Instrument Details</small>
                     </div>
 
                     <div class="card-body">
                         <div id="instrumentContainer">
 
-                            @foreach (old('instrument', $investment->investmentInputBank ?? [null]) as $i => $oldRow)
+                            @foreach (old('client_output_bank', $investment->investmentInputBank ?? [null]) as $i => $oldRow)
                                 @php
                                     $row = $investment->investmentInputBank[$i] ?? null;
                                 @endphp
 
+
                                 <div class="instrumentRow border rounded p-3 mb-3">
+
+                                    {{-- ROW ID (EDIT SUPPORT) --}}
+                                    <input type="hidden" name="row_id[]" value="{{ $row->id ?? '' }}">
+
                                     <div class="row g-3">
 
-                                        {{-- LEFT SIDE --}}
+                                        {{-- LEFT --}}
                                         <div class="col-md-6">
                                             <h6 class="fw-bold mb-3 text-primary">Client Instrument Details</h6>
                                             <div class="row g-3">
@@ -474,18 +480,17 @@
 
                                                 {{-- Client Output Bank --}}
                                                 <div class="col-md-6">
-                                                    <label class="form-label">
-                                                        Client Output Bank <span class="text-danger">*</span>
-                                                    </label>
+                                                    <label class="form-label">Client Output Bank *</label>
+
                                                     <select
-                                                        class="form-select clientOutputBank @error('client_output_bank.0') is-invalid @enderror"
+                                                        class="form-select clientOutputBank @error("client_output_bank.$i") is-invalid @enderror"
                                                         name="client_output_bank[]"
-                                                        data-selected="{{ old('client_output_bank.0', $investment->to_client_bank_id) }}"
+                                                        data-selected="{{ old("client_output_bank.$i", $row->from_client_bank_id ?? 'bhal') }}"
                                                         required>
                                                         <option value="">Select Bank</option>
                                                     </select>
 
-                                                    @error('client_output_bank.0')
+                                                    @error("client_output_bank.$i")
                                                         <div class="invalid-feedback">{{ $message }}</div>
                                                     @enderror
                                                 </div>
@@ -501,7 +506,9 @@
                                                     @if (old("instrumentImage_url.$i", $row->attachment_instrument ?? false))
                                                         <div class="mt-2">
                                                             <a href="{{ old("instrumentImage_url.$i", $row->attachment_instrument) }}"
-                                                                target="_blank">View Existing</a>
+                                                                target="_blank">
+                                                                View Existing
+                                                            </a>
                                                         </div>
                                                     @endif
                                                 </div>
@@ -509,7 +516,7 @@
                                             </div>
                                         </div>
 
-                                        {{-- RIGHT SIDE --}}
+                                        {{-- RIGHT --}}
                                         <div class="col-md-6">
                                             <h6 class="fw-bold mb-3 text-success">Company Credit Details</h6>
                                             <div class="row g-3 bg-light rounded p-2">
@@ -558,17 +565,21 @@
 
                                     </div>
 
+                                    {{-- Buttons --}}
                                     <div class="mt-3 text-end">
-                                        <button type="button" class="btn btn-primary addInstrumentRow">+ Add
-                                            More</button>
-                                        <button type="button" class="btn btn-danger removeInstrumentRow">X</button>
+                                        <button type="button" class="btn btn-primary addInstrumentRow">
+                                            + Add More
+                                        </button>
+                                        <button type="button" class="btn btn-danger removeInstrumentRow">
+                                            X
+                                        </button>
                                     </div>
+
                                 </div>
                             @endforeach
 
                         </div>
                     </div>
-
 
                 </div>
             </div>
@@ -612,69 +623,6 @@
 
 
         {{-- Nominee Information --}}
-        {{-- <div class="row align-items-stretch">
-            <div class="col-md-12">
-                <div class="card mb-4">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Nominee Information</h5>
-                        <small class="text-muted float-end">Nominee Details</small>
-                    </div>
-
-                    <div class="card-body">
-                        <div class="alert alert-info py-2">
-                            <strong>Note:</strong> Total nominee percentage must be <strong>100%</strong> across all
-                            nominees
-                            added.
-                        </div>
-                        <div id="nomineePercentageMsg" class="my-3 fw-semibold"></div>
-                        <div id="nomineeContainer">
-
-                            <div class="row nomineeRow mb-3">
-
-                                <div class="col-md-3">
-                                    <label>Nominee Name</label>
-                                    <select class="form-select select21 nominee_name" name="client_family_id[]"
-                                        data-selected="{{ $nominee->client_family_id ?? '' }}"required>
-                                        <option value="">Select Holder</option>
-                                    </select>
-                                </div>
-
-                                <div class="col-md-3 guardian_box d-none">
-                                    <label>Guardian Name</label>
-                                    <select class="form-select guardian_select" name="guardian_client_family_id[]"
-                                        data-selected="{{ $nominee->guardian_client_family_id ?? '' }}">
-                                        <option value="">Select Guardian</option>
-                                    </select>
-                                    <small class="text-muted">Required because nominee is minor</small>
-                                </div>
-
-                                <div class="col-md-2 d-none nominee-percentage-wrapper">
-                                    <label>Percentage %</label>
-                                    <div class="input-group">
-                                        <input type="text" class="form-control nominee_percentage" name="percent[]"
-                                            required>
-                                        <span class="input-group-text">%</span>
-                                    </div>
-                                </div>
-
-
-                                <div class="col-md-1 d-flex align-items-end">
-                                    <button type="button" class="btn btn-danger removeNomineeRow">X</button>
-                                </div>
-
-                            </div>
-
-                        </div>
-
-                        <div class="mt-2">
-                            <button type="button" id="addNomineeRow" class="btn btn-primary">Add Nominee</button>
-                        </div>
-
-
-                    </div>
-                </div>
-            </div>
-        </div> --}}
         <div class="row align-items-stretch">
             <div class="col-md-12">
                 <div class="card mb-4">
@@ -881,21 +829,11 @@
 
 @push('scripts')
     <script src="{{ asset('assets/js/investment.js') }}?v={{ time() }}"></script>
-    {{-- // ---------------------------type = number maxlength 10 ------------- --}}
 
+
+
+    {{-- /* Investment Date (#inv_date) to auto-update on keyup / change based on: instrument_date[] effective_date[] */ --}}
     <script>
-        $(document).on("input",
-            "#investment_amount, #roi_amount, #payout_count, #instrument_amt, #instrument_amt",
-            function() {
-                if (this.value.length > 10) {
-                    this.value = this.value.slice(0, 10); // ✅ keep only first 10 digits
-                }
-            });
-    </script>
-
-    <script>
-        /* Investment Date (#inv_date) to auto-update on keyup / change based on: instrument_date[] effective_date[] */
-
         $(document).on('change', '.invDate', function() {
 
             let investmentDate = $(this).val();
@@ -908,6 +846,8 @@
             $('input[name="effective_date[]"]').val(investmentDate);
         });
     </script>
+
+    {{-- calculateBtn api call --}}
     <script>
         $('#calculateBtn').on('click', function() {
 
@@ -1038,13 +978,13 @@
 
             /* 🔥 Trigger on edit page load */
             $('#investment_date').trigger('change');
-
-            populateAllClientBanks();
             $('#first_client_id').trigger('change');
 
 
         });
     </script>
+
+    {{-- Allow submit if everything is valid --}}
     <script>
         $('form').on('submit', function(e) {
 
@@ -1081,6 +1021,8 @@
             // ✅ Allow submit if everything is valid
         });
     </script>
+
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const tenure = document.getElementById('tenure_count');
@@ -1099,6 +1041,7 @@
             tenure.addEventListener('change', toggleROI);
         });
     </script>
+
     <script>
         $(document).ready(function() {
 
