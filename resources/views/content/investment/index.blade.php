@@ -418,6 +418,18 @@
                                                                 📅 Payment Schedule
                                                             </a>
                                                         </li>
+                                                        <hr>
+                                                        <li>
+                                                            <form action="{{ route('investment.els.destroy', $d->id) }}"
+                                                                method="post" onsubmit="return confirmDelete()">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit"
+                                                                    class="dropdown-item text-danger delete-btn">
+                                                                    <i class="bx bx-trash me-1"></i> Delete
+                                                                </button>
+                                                            </form>
+                                                        </li>
                                                     </ul>
                                                 </div>
                                             </td>

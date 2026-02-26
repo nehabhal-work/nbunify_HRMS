@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Investment;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\InvestmentRequest;
+use App\Models\InvestmentInputBank;
 use App\Models\InvestmentPayoutSchedule;
 use App\Services\ClientService;
 use App\Services\CompanyService;
@@ -52,8 +53,10 @@ class InvestmentController extends Controller
         return view('content.investment.create', compact('clients', 'companyBanks'));
     }
 
+    // public function store(Request $request)
     public function store(InvestmentRequest $request)
     {
+        // return $request;
         try {
             $this->investmentService->create($request->validated());
         } catch (\Exception $e) {
@@ -83,9 +86,10 @@ class InvestmentController extends Controller
         $clients = $this->clientService->getAllApproved();
         $companyBanks = $this->companyService->getFirstCompanyBanks();
 
-        $inputBank = \DB::table('investment_input_banks')
-            ->where('investment_id', $id)
-            ->first();
+        // $inputBank = \DB::table('investment_input_banks')
+        //     ->where('investment_id', $id)
+        //     ->first();
+        $inputBank = InvestmentInputBank::with('fromClientBank', 'toCompanyBank')->where('investment_id', $id)->first();
         // return $investment;
         return view(
             'content.investment.view',
@@ -118,9 +122,11 @@ class InvestmentController extends Controller
     {
         $investment = $this->investmentService->getById($id);
         $scheme = $this->schemeService->getAll();
-        // $clients = $this->clientService->getAll();
-        // $companyBanks = $this->companyService->getFirstCompanyBanks();
-        return view('content.investment.edit', compact('investment', 'scheme'));
+        $clients = $this->clientService->getAllApproved();
+        $companyBanks = $this->companyService->getFirstCompanyBanks();
+        $clientBanks = $this->clientService->getClientBanks($investment->first_client_id);
+        // return $investment;
+        return view('content.investment.edit', compact('investment', 'scheme', 'clients', 'companyBanks', 'clientBanks'));
     }
 
     /**
@@ -148,6 +154,7 @@ class InvestmentController extends Controller
         // $client = $this->clientService->find($id);
         return view('content.investment.renew');
     }
+
     public function claim(Request $request)
     {
         $investment = $this->investmentService->getModelById($request->investment_id);

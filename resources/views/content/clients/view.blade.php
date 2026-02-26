@@ -332,6 +332,7 @@
                             <tr class="table-secondary">
                                 <th>Holder Name</th>
                                 <th>Operation Mode</th>
+                                <th>Account Type</th>
                                 <th>Bank Name / IFSC</th>
                                 <th>Account No</th>
                                 <th>Branch / Bank Code</th>
@@ -352,6 +353,7 @@
                                         @endif
                                     </td>
                                     <td class="value">{{ $b->operation_mode ?? '-' }}</td>
+                                    <td class="value">{{ $b->account_type ?? '-' }}</td>
                                     <td class="value">{{ $b->bank_name ?? '-' }} <br> {{ $b->ifsc_code ?? '-' }}
                                     <td class="value">{{ $b->account_number ?? '-' }}</td>
                                     <td class="value">{{ $b->branch_name ?? '-' }} <br> {{ $b->branch_code ?? '-' }}

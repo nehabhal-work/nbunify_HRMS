@@ -21,17 +21,17 @@ function loadSchemeData() {
 
     let invType = selected.data('investment_type'); // "single" or "joint"
 
+    console.log("Investment Type: " + invType);
     if (invType === 'single') {
         $('#investment_type').val('single');
-        $('#second_client, #third_client, #fourth_client')
-            .val('')
-            .trigger('change');
-        // hide joined holder section
+        $('#second_client, #third_client, #fourth_client').val('').trigger('change');
         $('#div_other_holders').addClass('d-none');
+        $('#investment_type option[value="joined"]').prop('disabled', true);
     }
     else if (invType === 'joined') {
         $('#investment_type').val('joined');
         $('#div_other_holders').removeClass('d-none');
+        $('#investment_type option[value="joined"]').prop('disabled', false);
     }
     updateHolderOptions();
 
@@ -42,17 +42,15 @@ function loadSchemeData() {
 
     // LOAD TENURE OPTIONS
     let tenureSelect = $('#tenure_count');
+    let oldTenure = tenureSelect.data('old');
     tenureSelect.empty().append(`<option value="">Select</option>`);
     for (let i = minTenure; i <= maxTenure; i++) {
-        tenureSelect.append(`<option value="${i}">${i}</option>`);
+        tenureSelect.append(`<option value="${i}" ${oldTenure == i ? 'selected' : ''}>${i}</option>`);
+
     }
 
-    // LOAD FREQUENCY OPTIONS
-    // let freqSelect = $('#frequency');
-    // freqSelect.empty().append(`<option value="">Select Frequency</option>`);
-    // frequencies.forEach(f => {
-    //     freqSelect.append(`<option value="${f}">${f}</option>`);
-    // });
+    $('#tenure_type').val(tenureType).trigger('change');
+
     if (frequencies.length > 0) {
         $('#frequency').val(frequencies[0]);
     }
@@ -70,6 +68,7 @@ function loadSchemeData() {
     // ROI RANGE / FIXED LOGIC
     $('#roi-wrapper').removeClass('d-none');
 
+    let existingRoi = $('#roi_percent').val();
     if (minRoi === maxRoi) {
         // 🌿 fixed ROI
         $('#roi_percent')
@@ -88,7 +87,8 @@ function loadSchemeData() {
             .prop('readonly', false)
             .removeClass('bg-secondary-subtle')
             .data('min', minRoi)
-            .data('max', maxRoi);
+            .data('max', maxRoi)
+            .val(existingRoi ?? '');;
 
         $('#roi-message').html(
             `<small class="text-primary fw-bold">
@@ -105,7 +105,7 @@ function loadSchemeData() {
         $('#addi_roi_box').addClass('d-none');
     }
 
-    $('#addi_roi').val('');
+    // $('#addi_roi').val('');
     $('#addi-roi-message').html(
         `<small class="text-primary fw-bold">Allowed Additional ROI: ${addiMin}% to ${addiMax}%</small>`
     );
@@ -205,6 +205,18 @@ function updateHolderOptions() {
 
     $('.select2').trigger('change.select2');
 }
+
+
+// ---START -> keep only first 10 digits type = number maxlength 10
+$(document).on("input",
+    "#investment_amount, #roi_amount, #payout_count, #instrument_amt, #instrument_amt",
+    function () {
+        if (this.value.length > 10) {
+            this.value = this.value.slice(0, 10); // ✅ keep only first 10 digits
+        }
+    });
+// ---END -> keep only first 10 digits
+
 $(document).ready(function () {
 
 
@@ -229,46 +241,6 @@ $(document).ready(function () {
 // -------------------lock in period on tenure------------
 $(document).ready(function () {
 
-    // when tenure changes
-    // $('#tenure_count').on('change', function () {
-
-    //     let tenure = parseInt($(this).val(), 10);
-
-    //     if (!tenure) {
-    //         $('#lock_in_period')
-    //             .prop('disabled', true)
-    //             .removeAttr('max')
-    //             .val('');
-    //         return;
-    //     }
-
-    //     // enable + set limits
-    //     $('#lock_in_period')
-    //         .prop('disabled', false)
-    //         .attr('max', tenure)
-    //         .val('');
-    // });
-
-    // block typing beyond max + limit to 2 digits
-    // $('#lock_in_period').on('input', function () {
-
-    //     let max = parseInt($(this).attr('max'), 10);
-    //     let val = this.value.replace(/\D/g, '');
-
-    //     // enforce 2 digits
-    //     if (val.length > 2) {
-    //         val = val.slice(0, 2);
-    //     }
-
-    //     let num = parseInt(val, 10);
-
-    //     // enforce max
-    //     if (num > max) {
-    //         val = max.toString();
-    //     }
-
-    //     this.value = val;
-    // });
     function updateLockInMax() {
 
         let tenureCount = parseInt($('#tenure_count').val(), 10);
@@ -299,8 +271,6 @@ $(document).ready(function () {
             .val('');
     }
 
-    /* ---------- EVENTS ---------- */
-    // $('#tenure_count, #lock_in_period_type').on('change', updateLockInMax);
 
 
     $('#lock_in_period').on('input', function () {
@@ -473,31 +443,35 @@ $(document).ready(function () {
 $('#first_client_id').on('change', function () {
 
     let selected = $(this).find(':selected');
+    let families = selected.data('families') || [];
 
-    let families = selected.data('families');
-    let banks = selected.data('banks');
+    if (typeof families === "string") {
+        families = JSON.parse(families);
+    }
 
-    if (typeof families === "string") families = JSON.parse(families);
-    if (typeof banks === "string") banks = JSON.parse(banks);
-
-    // Load nominees into ALL nominee dropdowns
+    // Nominee works already – KEEP AS IS
     $('.nominee_name').each(function () {
         let dd = $(this);
-        dd.empty().append(`<option value="">Select Holder</option>`);
+        let selectedVal = dd.data('selected');
+
+        dd.empty().append('<option value="">Select Holder</option>');
         families.forEach(f => {
-            dd.append(`<option value="${f.id}" data-dob="${f.dob}">${f.name}</option>`);
+            dd.append(`<option value="${f.id}">${f.name}</option>`);
         });
+
+        if (selectedVal) dd.val(selectedVal);
         dd.trigger('change');
     });
 
-    // Load client banks
-
-
+    // 🔥 ONLY THIS
+    populateAllClientBanks();
 });
+
+
 // Load client multiple  banks to outward bank amd Client Output Bank dropdown
 function populateAllClientBanks() {
 
-    let selectors = [
+    const selectors = [
         '#first_client_id',
         '#second_client',
         '#third_client',
@@ -507,34 +481,62 @@ function populateAllClientBanks() {
     let allBanks = [];
 
     selectors.forEach(sel => {
-        let opt = $(sel).find(':selected');
+        let $select = $(sel);
+        if (!$select.length) return;
+
+        let opt = $select.find(':selected');
         if (!opt.val()) return;
 
         let clientName = opt.text().trim();
         let banks = opt.data('banks') || [];
 
+        if (typeof banks === 'string') {
+            banks = JSON.parse(banks);
+        }
+
         banks.forEach(b => {
             allBanks.push({
-                id: b.id,
+                id: String(b.id),
                 label: `${clientName} — ${b.bank_name} (${b.account_number})`
             });
         });
     });
 
-    // Apply to BOTH dropdown types
-    $('.clientOutputBank, .to_client_bank').each(function () {
-
+    /* 🔹 Client Output Bank (multiple rows) */
+    $('.clientOutputBank').each(function () {
         let dd = $(this);
-        dd.empty().append(`<option value="">Select Bank</option>`);
+        let selectedVal = dd.data('selected');
+
+        dd.html('<option value="">Select Bank</option>');
 
         allBanks.forEach(b => {
             dd.append(`<option value="${b.id}">${b.label}</option>`);
         });
+
+        if (selectedVal) {
+            dd.val(String(selectedVal)).trigger('change');
+        }
+    });
+
+    /* 🔹 To Client Bank (single outward dropdown) */
+    $('.to_client_bank').each(function () {
+        let dd = $(this);
+        let selectedVal = dd.data('selected');
+
+        dd.html('<option value="">Select Client Bank</option>');
+
+        allBanks.forEach(b => {
+            dd.append(`<option value="${b.id}">${b.label}</option>`);
+        });
+
+        if (selectedVal) {
+            dd.val(String(selectedVal)).trigger('change');
+        }
     });
 }
 
-$('#first_client_id, #second_client, #third_client, #fourth_client')
-    .on('change', populateAllClientBanks);
+// $('#first_client_id, #second_client, #third_client, #fourth_client')
+//     .on('change', populateAllClientBanks);
 
 // $('#investment_type').on('change', populateAllClientBanks);
 
@@ -700,94 +702,121 @@ $(document).ready(function () {
 // ===== Generic clone function=====
 // ------------------------------------------
 $(document).ready(function () {
-    function handleClone(container, rowClass, addBtn, removeBtn) {
 
-        // ADD New Row
-        $(document).on("click", addBtn, function () {
+    // init select2 first row
+    $('#instrumentContainer select').select2();
 
-            let $lastRow = $(container).find(rowClass).last();
-            let $newRow = $lastRow.clone(false, false); // clone simple
+    handleClone(
+        "#instrumentContainer",
+        ".instrumentRow",
+        ".addInstrumentRow",
+        ".removeInstrumentRow"
+    );
+});
 
-            // REMOVE existing Select2 wrappers from clone
-            $newRow.find(".select2-container").remove();
 
-            // RESET select fields to blank
-            $newRow.find("select").each(function () {
-                $(this).val("");              // reset value
-                $(this).removeClass("select2-hidden-accessible"); // remove old select2 markers
-                $(this).removeAttr("data-select2-id");            // remove old select2 instance id
-            });
+function handleClone(container, rowClass, addBtn, removeBtn) {
 
-            // RESET input fields
-            $newRow.find("input").val("");
+    // ADD ROW
+    $(document).on("click", addBtn, function () {
 
-            // Append new row
-            $(container).append($newRow);
+        let $container = $(container);
+        let $lastRow = $container.find(rowClass).last();
 
-            // Re-initialize Select2 ONLY inside the new row
-            $newRow.find("select").select2();
-        });
+        // destroy select2 before clone
+        $lastRow.find('select').select2('destroy');
 
-        // REMOVE Row
-        $(document).on("click", removeBtn, function () {
-            let $rows = $(container).find(rowClass);
-            if ($rows.length > 1) {
-                $(this).closest(rowClass).remove();
-            } else {
-                alert("At least one nominee must remain.");
-            }
-        });
+        let $newRow = $lastRow.clone(false);
+
+        let index = $container.find(rowClass).length;
+        $newRow.attr('data-index', index);
+
+        // reset inputs
+        $newRow.find('input').val('');
+        $newRow.find('.preview').html('');
+        $newRow.find('select').val('');
+
+        $container.append($newRow);
+
+        // re-init select2
+        $container.find('select').select2();
+    });
+
+    // REMOVE ROW
+    $(document).on("click", removeBtn, function () {
+        let rows = $(container).find(rowClass);
+        if (rows.length > 1) {
+            $(this).closest(rowClass).remove();
+        }
+    });
+}
+
+
+// FILE UPLOAD PREVIEW (NO INLINE JS)
+$(document).on('change', '.instrumentImage', function () {
+
+    let file = this.files[0];
+    let $row = $(this).closest('.instrumentRow');
+    let $preview = $row.find('.preview');
+
+    $preview.html('');
+
+    if (!file) return;
+
+    if (file.type.startsWith('image')) {
+        let reader = new FileReader();
+        reader.onload = function (e) {
+            $preview.html(`<img src="${e.target.result}" class="img-thumbnail" width="100">`);
+        };
+        reader.readAsDataURL(file);
+    } else {
+        $preview.html(`<span class="text-success">PDF Selected</span>`);
     }
-
-    handleClone("#nomineeContainer", ".nomineeRow", "#addNomineeRow", ".removeNomineeRow");
-    handleClone("#instrumentContainer", ".instrumentRow", ".addInstrumentRow", ".removeInstrumentRow");
+});
 
 
-    // ------------------------------
-    //     nominee PERCENTAGE CALCULATION
-    // ------------------------------
 
-    // function recalcPercentages() {
-    //     let total = 0;
 
-    //     $(".nominee_percentage").each(function () {
-    //         let v = parseFloat($(this).val());
-    //         if (!isNaN(v)) total += v;
+$(document).ready(function () {
+    // function handleClone(container, rowClass, addBtn, removeBtn) {
+
+    //     // ADD New Row
+    //     $(document).on("click", addBtn, function () {
+
+    //         let $lastRow = $(container).find(rowClass).last();
+    //         let $newRow = $lastRow.clone(false, false); // clone simple
+
+    //         // REMOVE existing Select2 wrappers from clone
+    //         $newRow.find(".select2-container").remove();
+
+    //         // RESET select fields to blank
+    //         $newRow.find("select").each(function () {
+    //             $(this).val("");              // reset value
+    //             $(this).removeClass("select2-hidden-accessible"); // remove old select2 markers
+    //             $(this).removeAttr("data-select2-id");            // remove old select2 instance id
+    //         });
+
+    //         // RESET input fields
+    //         $newRow.find("input").val("");
+
+    //         // Append new row
+    //         $(container).append($newRow);
+
+    //         // Re-initialize Select2 ONLY inside the new row
+    //         $newRow.find("select").select2();
     //     });
 
-    //     // Prevent more than 100%
-    //     if (total > 100) {
-    //         alert("Total percentage cannot exceed 100%");
-    //         return false;
-    //     }
-
-    //     // Enable/Disable Add Button
-    //     if (total >= 100) {
-    //         $("#addNomineeRow").prop("disabled", true);
-    //     } else {
-    //         $("#addNomineeRow").prop("disabled", false);
-    //     }
-
-    //     return total;
+    //     // REMOVE Row
+    //     $(document).on("click", removeBtn, function () {
+    //         let $rows = $(container).find(rowClass);
+    //         if ($rows.length > 1) {
+    //             $(this).closest(rowClass).remove();
+    //         } else {
+    //             alert("At least one nominee must remain.");
+    //         }
+    //     });
     // }
 
-    // // Auto-update after user enters value
-    // $(document).on("keyup change", ".nominee_percentage", function () {
-    //     let total = recalcPercentages();
-
-    //     if (total > 100) {
-    //         $(this).val("");
-    //         recalcPercentages();
-    //         return;
-    //     }
-
-    //     // Auto-fill remaining for NEXT row only when user finishes typing
-    //     if (total < 100) {
-    //         let remaining = 100 - total;
-
-    //         let $rows = $(".nominee_percentages");
-    //     }
-    // });
     function recalcPercentages(currentInput = null) {
         let total = 0;
 
@@ -826,6 +855,8 @@ $(document).ready(function () {
         return total;
     }
 
+    handleClone("#nomineeContainer", ".nomineeRow", "#addNomineeRow", ".removeNomineeRow");
+
     // Input listener
     $(document).on("input", ".nominee_percentage", function () {
         recalcPercentages(this);
@@ -835,6 +866,8 @@ $(document).ready(function () {
     $(document).on("click", "#addNomineeRow, .removeNomineeRow", function () {
         setTimeout(() => recalcPercentages(), 50);
     });
+
+
 
 });
 

@@ -63,8 +63,8 @@
                             <div class="col-md-2">
                                 <label for="investment_date" class="form-label">Investment Date</label>
                                 <input type="date" class="form-control invDate" name="investment_date"
-                                    id="investment_date" value="{{ old('investment_date', date('Y-m-d')) }}"
-                                    max="{{ date('Y-m-d') }}">
+                                    id="investment_date" value="{{ old('investment_date', date('d-m-Y')) }}"
+                                    max="{{ date('d-m-Y') }}">
 
 
                                 @error('investment_date')
@@ -90,8 +90,8 @@
                             <!-- Investment Type -->
                             <div class="col-md-2">
                                 <label for="investment_type" class="form-label">Investment Type</label>
-                                {{-- <select class="form-select @error('investment_type') is-invalid @enderror"
-                                    id="investment_type">
+                                <select class="form-select @error('investment_type') is-invalid @enderror"
+                                    id="investment_type" name="investment_type" required>
                                     <option value="single" {{ old('investment_type') == 'single' ? 'selected' : '' }}>
                                         Single
                                     </option>
@@ -99,14 +99,14 @@
                                         Joined
                                     </option>
 
-                                </select> --}}
+                                </select>
 
 
 
-                                <input type="text"
+                                {{-- <input type="text"
                                     class="form-control bg-secondary-subtle  @error('investment_type') is-invalid @enderror"
                                     name="investment_type" id="investment_type"
-                                    value="{{ old('investment_type', 'single') }}" readonly>
+                                    value="{{ old('investment_type', 'single') }}" readonly> --}}
 
                                 @error('investment_type')
                                     <small class="text-danger">{{ $message }}</small>
@@ -286,12 +286,13 @@
                                 <label for="addi_roi" class="form-label">Additional ROI</label>
                                 <div class="input-group">
                                     <input type="text"
-                                        class="form-control onlydigit bg-info-subtle @error('addi_roi') is-invalid @enderror"
-                                        name="additional_roi_percent" id="addi_roi" maxlength="5">
+                                        class="form-control onlydigit bg-info-subtle @error('additional_roi_percent') is-invalid @enderror"
+                                        name="additional_roi_percent" id="addi_roi"
+                                        value="{{ old('additional_roi_percent') }}" maxlength="5">
                                     <span class="input-group-text">%</span>
                                 </div>
                                 <div id="addi-roi-message"></div>
-                                @error('addi_roi')
+                                @error('additional_roi_percent')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
@@ -386,242 +387,132 @@
 
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="mb-0">Bank / Instrument Details</h5>
-                        <small class="text-muted float-end">Bank - Instrument Details</small>
+                        <small class="text-muted">Bank - Instrument Details</small>
                     </div>
 
                     <div class="card-body">
                         <div id="instrumentContainer">
 
-                            <div class="instrumentRow border rounded p-3 mb-3">
+                            <!-- INSTRUMENT ROW -->
+                            <div class="instrumentRow border rounded p-3 mb-3" data-index="0">
                                 <div class="row g-3">
 
-                                    <!-- LEFT SIDE -->
+                                    <!-- LEFT -->
                                     <div class="col-md-6">
                                         <h6 class="fw-bold mb-3 text-primary">Client Instrument Details</h6>
+
                                         <div class="row g-3">
-                                            <!-- Instrument -->
-                                            <div class="col-md-6">
-                                                <label class="form-label">Instrument <span
-                                                        class="text-danger">*</span></label>
-                                                <select
-                                                    class="form-select instrumentSelect @error('instrument') is-invalid @enderror"
-                                                    name="instrument[]" required>
 
-                                                    <option value="">select..</option>
-                                                    <option value="rtgs"
-                                                        {{ old('instrument') == 'rtgs' ? 'selected' : '' }}>
-                                                        RTGS
-                                                    </option>
-                                                    <option value="cheque"
-                                                        {{ old('instrument') == 'cheque' ? 'selected' : '' }}>
-                                                        CHEQUE</option>
-                                                    <option value="upi"
-                                                        {{ old('instrument') == 'upi' ? 'selected' : '' }}>UPI
-                                                    </option>
-                                                    <option value="neft"
-                                                        {{ old('instrument') == 'neft' ? 'selected' : '' }}>
-                                                        NEFT
-                                                    </option>
-                                                    <option value="imps"
-                                                        {{ old('instrument') == 'imps' ? 'selected' : '' }}>
-                                                        IMPS
-                                                    </option>
-                                                    <option value="transfer"
-                                                        {{ old('instrument') == 'transfer' ? 'selected' : '' }}>
-                                                        TRANSFER
-                                                    </option>
+                                            <div class="col-md-6">
+                                                <label class="form-label">Instrument *</label>
+                                                <select class="form-select instrumentSelect" name="instrument[]">
+                                                    <option value="">Select</option>
+                                                    <option value="rtgs">RTGS</option>
+                                                    <option value="cheque">CHEQUE</option>
+                                                    <option value="upi">UPI</option>
+                                                    <option value="neft">NEFT</option>
+                                                    <option value="imps">IMPS</option>
+                                                    <option value="transfer">TRANSFER</option>
                                                 </select>
-                                                @error('instrument')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
                                             </div>
 
-                                            <!-- Instrument Date -->
                                             <div class="col-md-6">
-                                                <label class="form-label">Instrument Date <span
-                                                        class="text-danger">*</span></label>
-                                                <input type="date"
-                                                    class="form-control @error('instrument_date.0') is-invalid @enderror"
-                                                    name="instrument_date[]" value="{{ old('instrument_date.0') }}"
+                                                <label class="form-label">Instrument Date *</label>
+                                                <input type="date" class="form-control" name="instrument_date[]"
                                                     max="{{ date('Y-m-d') }}">
-                                                @error('instrument_date.0')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
                                             </div>
 
-                                            <!-- Reference No -->
                                             <div class="col-md-6">
-                                                <label class="form-label">Reference No <span
-                                                        class="text-danger">*</span></label>
-                                                <input type="text"
-                                                    class="form-control @error('reference_no.0') is-invalid @enderror"
-                                                    name="reference_no[]" value="{{ old('reference_no.0') }}"
+                                                <label class="form-label">Reference No *</label>
+                                                <input type="text" class="form-control" name="reference_no[]"
                                                     maxlength="20">
-                                                @error('reference_no.0')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
                                             </div>
 
-                                            <!-- Instrument Amount -->
                                             <div class="col-md-6">
-                                                <label class="form-label">Instrument Amount <span
-                                                        class="text-danger">*</span></label>
+                                                <label class="form-label">Instrument Amount *</label>
                                                 <div class="input-group">
-                                                    <span class="input-group-text">&#8377;</span>
+                                                    <span class="input-group-text">₹</span>
                                                     <input type="number"
-                                                        class="form-control bg-secondary-subtle onlydigit instrument_amt client_instrument_amt @error('instrument_amt.0') is-invalid @enderror"
-                                                        name="instrument_amt[]" value="{{ old('instrument_amt.0') }}">
+                                                        class="form-control onlydigit client_instrument_amt bg-light"
+                                                        name="instrument_amt[]" readonly>
                                                 </div>
-                                                @error('instrument_amt.0')
-                                                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                                                @enderror
                                             </div>
 
-                                            <!-- Client Output Bank -->
                                             <div class="col-md-6">
-                                                <label class="form-label">Client Output Bank <span
-                                                        class="text-danger">*</span></label>
-                                                <select
-                                                    class="form-select clientOutputBank @error('client_output_bank.0') is-invalid @enderror"
-                                                    name="client_output_bank[]" required>
+                                                <label class="form-label">Client Output Bank *</label>
+                                                <select class="form-select clientOutputBank" name="client_output_bank[]">
                                                     <option value="">Select Bank</option>
                                                 </select>
-                                                @error('client_output_bank.0')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
                                             </div>
 
-                                            <!-- Instrument Image -->
-                                            <div class="col-md-6 mb-3">
-                                                <label class="form-label">
-                                                    Instrument Image <span class="text-danger">*</span>
-                                                </label>
+                                            <!-- FILE -->
+                                            <div class="col-md-6">
+                                                <label class="form-label">Instrument Image *</label>
+                                                <input type="file" class="form-control instrumentImage"
+                                                    name="instrumentImage[]" accept="image/*,application/pdf">
 
-                                                <div class="input-group">
-                                                    <input type="file"
-                                                        class="form-control fileInput instrumentImage @error('instrumentImage.0') is-invalid @enderror"
-                                                        id="instrumentImage_0" name="instrumentImage[]"
-                                                        accept="image/*,application/pdf"
-                                                        onchange="uploadTempFile(this, 'instrumentImage_0')">
+                                                <input type="hidden" class="instrumentImageUrl"
+                                                    name="instrumentImage_url[]">
 
-                                                    <button class="btn btn-outline-danger" type="button"
-                                                        onclick="document.getElementById('instrumentImage_0').value = ''">
-                                                        ✕
-                                                    </button>
-                                                </div>
-                                                <small class="text-danger file-error"></small>
-
-
-                                                @error('instrumentImage.0')
-                                                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                                                @enderror
-
-                                                <input type="hidden" id="instrumentImage_0_url"
-                                                    name="instrumentImage_url[]"
-                                                    value="{{ old('instrumentImage_url.0') }}">
-
-                                                @if (old('instrumentImage_url.0'))
-                                                    <div id="instrumentImage_0_preview"
-                                                        class="position-relative d-inline-block mt-2">
-                                                        <img src="{{ old('instrumentImage_url.0') }}" width="100"
-                                                            class="rounded border">
-
-                                                        <button type="button"
-                                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
-                                                            onclick="removeImage('instrumentImage_0')">
-                                                            ✕
-                                                        </button>
-                                                    </div>
-                                                @endif
+                                                <div class="preview mt-2"></div>
                                             </div>
-
 
                                         </div>
                                     </div>
 
-                                    <!-- RIGHT SIDE -->
-                                    <div class="col-md-6  ">
-
+                                    <!-- RIGHT -->
+                                    <div class="col-md-6">
                                         <h6 class="fw-bold mb-3 text-success">Company Credit Details</h6>
-                                        <div class="row g-3 rounded" style="background:#f8f9fa;">
 
-                                            <!-- Company Bank -->
+                                        <div class="row g-3 bg-light rounded p-2">
+
                                             <div class="col-md-6">
-                                                <label class="form-label">
-                                                    Company Bank <span class="text-danger">*</span>
-                                                </label>
-                                                <select class="form-select @error('company_bank_id') is-invalid @enderror"
-                                                    name="company_bank_id[]" required>
+                                                <label class="form-label">Company Bank *</label>
+                                                <select class="form-select" name="company_bank_id[]">
                                                     <option value="">Select Company Bank</option>
                                                     @foreach ($companyBanks as $d)
                                                         <option value="{{ $d->id }}">
-                                                            {{ $d->bank_name . '-' . $d->account_number }}</option>
+                                                            {{ $d->bank_name }} - {{ $d->account_number }}
+                                                        </option>
                                                     @endforeach
                                                 </select>
-                                                @error('company_bank_id')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
                                             </div>
 
-                                            <!-- Effective / Credit Date -->
                                             <div class="col-md-6">
-                                                <label class="form-label">
-                                                    Effective / Credit Date <span class="text-danger">*</span>
-                                                </label>
-                                                <input type="date"
-                                                    class="form-control @error('effective_date.0') is-invalid @enderror"
-                                                    name="effective_date[]" value="{{ old('effective_date.0') }}"
+                                                <label class="form-label">Effective / Credit Date *</label>
+                                                <input type="date" class="form-control" name="effective_date[]"
                                                     max="{{ date('Y-m-d') }}">
-                                                @error('effective_date.0')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
                                             </div>
 
-                                            <!-- Company Bank Reference No -->
-                                            <div class="col-md-6 mb-5">
-                                                <label class="form-label">
-                                                    Company Bank Ref No <span class="text-danger">*</span>
-                                                </label>
-                                                <input type="text"
-                                                    class="form-control companyBankRef @error('company_reference_no.0') is-invalid @enderror"
-                                                    name="company_reference_no[]"
-                                                    value="{{ old('company_reference_no.0') }}" maxlength="20">
-
-                                                @error('company_reference_no.0')
-                                                    <div class="invalid-feedback">{{ $message }}</div>
-                                                @enderror
+                                            <div class="col-md-6">
+                                                <label class="form-label">Company Bank Ref No *</label>
+                                                <input type="text" class="form-control" name="company_reference_no[]"
+                                                    maxlength="20">
                                             </div>
 
-                                            <!-- Instrument Amount -->
-                                            <div class="col-md-6 mb-5">
-                                                <label class="form-label">Instrument Amount <span
-                                                        class="text-danger">*</span></label>
+                                            <div class="col-md-6">
+                                                <label class="form-label">Instrument Amount *</label>
                                                 <div class="input-group">
-                                                    <span class="input-group-text">&#8377;</span>
+                                                    <span class="input-group-text">₹</span>
                                                     <input type="number"
-                                                        class="form-control bg-secondary-subtle onlydigit instrument_amt company_instrument_amt @error('instrument_amt.0') is-invalid @enderror"
-                                                        name="company_instrument_amt[]"
-                                                        value="{{ old('instrument_amt.0') }}">
+                                                        class="form-control onlydigit company_instrument_amt"
+                                                        name="company_instrument_amt[]">
                                                 </div>
-                                                @error('instrument_amt.0')
-                                                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                                                @enderror
                                             </div>
 
                                         </div>
                                     </div>
                                 </div>
 
-                                <!-- Add / Remove Buttons -->
+                                <!-- BUTTONS -->
                                 <div class="mt-3 text-end">
-                                    <button type="button" class="btn btn-primary btn-s addInstrumentRow">+ Add
-                                        More</button>
-                                    <button type="button" class="btn btn-danger btn-sm1 removeInstrumentRow">X</button>
+                                    <button type="button" class="btn btn-primary addInstrumentRow">+ Add More</button>
+                                    <button type="button" class="btn btn-danger removeInstrumentRow">X</button>
                                 </div>
                             </div>
+
                         </div>
                     </div>
-
 
                 </div>
             </div>

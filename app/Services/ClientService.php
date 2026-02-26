@@ -28,6 +28,11 @@ class ClientService
         return Client::whereNotIn('id', [$clientIds])->get();
     }
 
+    public function getClientBanks($clientId)
+    {
+        return Client::findOrFail($clientId)->banks;
+    }
+
     public function find($id)
     {
         // return $id;

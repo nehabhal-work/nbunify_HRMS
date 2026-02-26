@@ -21,6 +21,7 @@ use App\Http\Controllers\Clients\ClientFamilyController;
 use App\Http\Controllers\Investment\InvestmentController;
 use App\Http\Controllers\Masters\SubDepartmentController;
 use App\Http\Controllers\Accounts\PurchaseOrderController;
+use App\Http\Controllers\googleDrive\GoogleDriveController;
 use App\Http\Controllers\Masters\SubDesignationController;
 use App\Http\Controllers\Investment\InvestmentSiController;
 use App\Http\Controllers\Settings\UserManagementController;
@@ -83,7 +84,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('client-welcomeLetter/{id}', [ClientController::class, 'welcomeLetter'])
         ->name('client.welcomeLetter')->middleware('permission:clients.view');
     Route::get('client-onboarding', [PreClientController::class, 'index'])->name('preclients.index')->middleware('permission:preclients.view');
+    route::get('/gd', [GoogleDriveController::class, 'index'])->name('gogle-drive');
+    route::post('/gdrive-upload', [GoogleDriveController::class, 'googleUploadFile'])->name('google-drive-upload');
 });
+
 
 Route::middleware(['auth', 'verified'])->prefix('accounts')->name('accounts.')->group(function () {
     Route::resource('vendors', VendorsController::class)->except(['destroy'])->middleware('permission:vendors.view,vendors.create,vendors.edit');

@@ -343,6 +343,7 @@
 
                 </table>
 
+                {{-- {{ $investment->nominees }} --}}
                 <b class="card-title">Nominee Details </b>
                 <table class="table table-bordered mb-4 ">
                     <tbody>
@@ -374,7 +375,7 @@
                 </table>
 
 
-                <b class="card-title">Payment Received Schedule</b>
+                <b class="card-title">Payment Received Schedules</b>
 
                 <table id="payoutTable1" class="table table-bordered nowrap w-100 mb-5">
 
@@ -384,8 +385,8 @@
                             <th>Received Date</th>
                             <th class="text-end">received amount (₹)</th>
                             <th>UTR no.</th>
-                            <th>From Bank</th>
-                            <th>To Client Bank</th>
+                            <th>From Client Bank A/c</th>
+                            <th>To Company Bank A/c</th>
                             <th>Status</th>
                             <th>Remarks</th>
                         </tr>
@@ -402,8 +403,10 @@
                                 <td class="text-end fw-semibold text-success"> ₹ {{ number_format($b->amount, 2) }}
                                 </td>
                                 <td> {{ $b->client_reference_no ?? '—' }} </td>
-                                <td>from bank accoun no.</td>
-                                <td>to bank accoun no.</td>
+                                <td>{{ $inputBank->fromClientBank->bank_name ?? '-' }}
+                                    {{ $inputBank->fromClientBank->account_number ?? '—' }}</td>
+                                <td>{{ $inputBank->toCompanyBank->bank_name ?? '-' }}
+                                    {{ $inputBank->toCompanyBank->account_number ?? '—' }}</td>
 
                                 <td>
                                     <span class="badge bg-info">Credit</span>
@@ -802,6 +805,7 @@
                                     <label class="form-label">Payout Date & Time</label>
                                     <input type="datetime-local" class="form-control" name="actual_payout_date"
                                         min="{{ now()->format('Y-m-d\TH:i') }}" max="2099-12-31T23:59"
+                                        onkeydown="return false" onpaste="return false"
                                         value="{{ now()->format('Y-m-d\TH:i') }}" required>
                                 </div>
 
