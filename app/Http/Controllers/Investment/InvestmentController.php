@@ -128,7 +128,7 @@ class InvestmentController extends Controller
      */
     public function update(InvestmentRequest $request, string $id)
     {
-        $investment = $this->investmentService->getById($id);
+        $investment = $this->investmentService->getModelById($id);
         $this->investmentService->update($investment, $request->validated());
         return redirect()->route('investment.els.index')->with('success', 'Investment updated successfully.');
     }
@@ -138,7 +138,7 @@ class InvestmentController extends Controller
      */
     public function destroy(string $id)
     {
-        $investment = $this->investmentService->getById($id);
+        $investment = $this->investmentService->getModelById($id);
         $this->investmentService->delete($investment);
         return redirect()->route('investment.els.index')->with('success', 'Investment deleted successfully.');
     }
@@ -150,7 +150,7 @@ class InvestmentController extends Controller
     }
     public function claim(Request $request)
     {
-        $investment = $this->investmentService->getById($request->investment_id);
+        $investment = $this->investmentService->getModelById($request->investment_id);
         return view('content.investment.claim', compact('investment'));
     }
     public function merge()
