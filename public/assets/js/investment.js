@@ -496,24 +496,39 @@ function populateAllClientBanks() {
 
         banks.forEach(b => {
             allBanks.push({
-                id: String(b.id), // 🔥 STRING ON PURPOSE
-                text: `${clientName} — ${b.bank_name} (${b.account_number})`
+                id: String(b.id),
+                label: `${clientName} — ${b.bank_name} (${b.account_number})`
             });
         });
     });
 
+    /* 🔹 Client Output Bank (multiple rows) */
     $('.clientOutputBank').each(function () {
-
         let dd = $(this);
         let selectedVal = dd.data('selected');
 
-        dd.empty().append('<option value="">Select Bank</option>');
+        dd.html('<option value="">Select Bank</option>');
 
         allBanks.forEach(b => {
-            dd.append(`<option value="${b.id}">${b.text}</option>`);
+            dd.append(`<option value="${b.id}">${b.label}</option>`);
         });
 
-        // 🔥🔥🔥 THIS IS THE MISSING PIECE 🔥🔥🔥
+        if (selectedVal) {
+            dd.val(String(selectedVal)).trigger('change');
+        }
+    });
+
+    /* 🔹 To Client Bank (single outward dropdown) */
+    $('.to_client_bank').each(function () {
+        let dd = $(this);
+        let selectedVal = dd.data('selected');
+
+        dd.html('<option value="">Select Client Bank</option>');
+
+        allBanks.forEach(b => {
+            dd.append(`<option value="${b.id}">${b.label}</option>`);
+        });
+
         if (selectedVal) {
             dd.val(String(selectedVal)).trigger('change');
         }

@@ -614,6 +614,7 @@
                                 data-selected="{{ old('to_client_bank_id', $investment->to_client_bank_id) }}" required>
                                 <option value="">Select Client Bank</option>
                             </select>
+
                         </div>
                     </div>
                 </div>

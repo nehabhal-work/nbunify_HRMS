@@ -125,7 +125,7 @@ class InvestmentController extends Controller
         $clients = $this->clientService->getAllApproved();
         $companyBanks = $this->companyService->getFirstCompanyBanks();
         $clientBanks = $this->clientService->getClientBanks($investment->first_client_id);
-        // return $clientBank;
+        // return $investment;
         return view('content.investment.edit', compact('investment', 'scheme', 'clients', 'companyBanks', 'clientBanks'));
     }
 
@@ -155,6 +155,7 @@ class InvestmentController extends Controller
         // $client = $this->clientService->find($id);
         return view('content.investment.renew');
     }
+
     public function claim(Request $request)
     {
         $investment = $this->investmentService->getById($request->investment_id);
