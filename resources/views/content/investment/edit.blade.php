@@ -473,7 +473,7 @@
                                                 <div class="col-md-6">
                                                     <label class="form-label">Instrument Amount *</label>
                                                     <input type="number"
-                                                        class="form-control bg-secondary-subtle onlydigit client_instrument_amt"
+                                                        class="form-control  onlydigit client_instrument_amt"
                                                         name="instrument_amt[]"
                                                         value="{{ old("instrument_amt.$i", $row->amount ?? '') }}">
                                                 </div>
@@ -555,9 +555,10 @@
                                                 <div class="col-md-6">
                                                     <label class="form-label">Instrument Amount *</label>
                                                     <input type="number"
-                                                        class="form-control bg-secondary-subtle company_instrument_amt"
+                                                        class="form-control bg-secondary-subtle company_instrument_amt bg-light"
                                                         name="company_instrument_amt[]"
-                                                        value="{{ old("company_instrument_amt.$i", $row->amount ?? '') }}">
+                                                        value="{{ old("company_instrument_amt.$i", $row->amount ?? '') }}"
+                                                        readonly>
                                                 </div>
 
                                             </div>

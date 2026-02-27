@@ -433,8 +433,8 @@
                                                 <div class="input-group">
                                                     <span class="input-group-text">₹</span>
                                                     <input type="number"
-                                                        class="form-control onlydigit client_instrument_amt bg-light"
-                                                        name="instrument_amt[]" readonly>
+                                                        class="form-control onlydigit client_instrument_amt "
+                                                        name="instrument_amt[]">
                                                 </div>
                                             </div>
 
@@ -495,8 +495,8 @@
                                                 <div class="input-group">
                                                     <span class="input-group-text">₹</span>
                                                     <input type="number"
-                                                        class="form-control onlydigit company_instrument_amt"
-                                                        name="company_instrument_amt[]">
+                                                        class="form-control onlydigit company_instrument_amt bg-secondary-subtle"
+                                                        name="company_instrument_amt[]" readonly>
                                                 </div>
                                             </div>
 
