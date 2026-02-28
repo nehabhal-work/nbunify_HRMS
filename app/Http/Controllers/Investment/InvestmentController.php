@@ -160,18 +160,22 @@ class InvestmentController extends Controller
         $investment = $this->investmentService->getModelById($request->investment_id);
         return view('content.investment.claim', compact('investment'));
     }
+
     public function merge()
     {
         return view('content.investment.merge');
     }
+
     public function maturity()
     {
         return view('content.investment.maturity');
     }
+
     public function maturityLetter()
     {
         return view('content.investment.letters.maturity-letter');
     }
+
     public function maturityKYC()
     {
         return view('content.investment.maturity-kyc');

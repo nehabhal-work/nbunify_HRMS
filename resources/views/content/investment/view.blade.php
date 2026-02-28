@@ -159,8 +159,11 @@
                                 @endif
                                 @if (!empty($schemeNames[$investment->scheme_id]))
                                     <tr>
+                                        {{-- {{ $scheme }} --}}
                                         <th>Scheme Name</th>
-                                        <td><b>{{ $schemeNames[$investment->scheme_id] }}</b></td>
+                                        <td><b>{{ $investment['scheme']['name_type_value'] }} -
+                                                {{ $schemeNames[$investment->scheme_id] }}</b>
+                                        </td>
                                     </tr>
                                 @endif
 
