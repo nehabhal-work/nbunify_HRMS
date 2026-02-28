@@ -79,7 +79,7 @@ class InvestmentController extends Controller
         // $inputBank = \DB::table('investment_input_banks')
         //     ->where('investment_id', $id)
         //     ->first();
-        $inputBank = InvestmentInputBank::with('fromClientBank', 'toCompanyBank')->where('investment_id', $id)->first();
+        $inputBank = InvestmentInputBank::with('fromClientBank', 'toCompanyBank')->where('investment_id', $id)->get();
         return $inputBank;
         return view(
             'content.investment.view',
