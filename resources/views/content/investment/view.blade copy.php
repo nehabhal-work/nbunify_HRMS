@@ -399,17 +399,17 @@
                         {{-- ===================== --}}
                         {{-- CREDIT / RECEIVED INVESTMENT ENTRY --}}
                         {{-- ===================== --}}
-                        @foreach ($inputBank ?? [] as $key => $b)
+                        @foreach ($investment->investmentInputBank ?? [] as $loopIndex => $b)
                             <tr class="table-light">
-                                <td class="d-none">{{ $key + 1 }}</td>
+                                <td class="d-none">{{ $loopIndex + 1 }}</td>
                                 <td> {{ \Carbon\Carbon::parse($b->client_instrument_date)->format('d M Y') }} </td>
                                 <td class="text-end fw-semibold text-success"> ₹ {{ number_format($b->amount, 2) }}
                                 </td>
                                 <td> {{ $b->client_reference_no ?? '—' }} </td>
-                                <td>{{ $b->fromClientBank->bank_name ?? '-' }}
-                                    {{ $b->fromClientBank->account_number ?? '—' }}</td>
-                                <td>{{ $b->toCompanyBank->bank_name ?? '-' }}
-                                    {{ $b->toCompanyBank->account_number ?? '—' }}</td>
+                                <td>{{ $inputBank->fromClientBank->bank_name ?? '-' }}
+                                    {{ $inputBank->fromClientBank->account_number ?? '—' }}</td>
+                                <td>{{ $inputBank->toCompanyBank->bank_name ?? '-' }}
+                                    {{ $inputBank->toCompanyBank->account_number ?? '—' }}</td>
 
                                 <td>
                                     <span class="badge bg-info">Credit</span>
