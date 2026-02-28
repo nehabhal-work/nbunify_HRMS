@@ -261,14 +261,13 @@
                     </tr>
 
                     {{-- Data Row --}}
-                    @forelse($investment->investmentInputBank ?? [] as $b)
+                    @forelse($inputBank ?? [] as $b)
                         <tr>
                             <td>{{ $b->instrument_type }}</td>
                             <td>{{ \Carbon\Carbon::parse($b->client_instrument_date)->format('d M Y') }}</td>
                             <td>{{ $b->client_reference_no }}</td>
                             <td>₹ {{ number_format($b->amount, 2) }}</td>
-                            <td>{{ $investment->toClientBank?->bank_name ?? '-' }}</td>
-                            {{-- <td>{{ $b->attachment_instrument ?? 'No Attachment' }}</td> --}}
+                            <td>{{ $b->fromClientBank?->bank_name ?? '-' }}</td>
                             <td class="value">
                                 @if (!empty($b->attachment_instrument))
                                     <a href="{{ $b->attachment_instrument }}" target="_blank"
