@@ -80,8 +80,8 @@ class InvestmentController extends Controller
         //     ->where('investment_id', $id)
         //     ->first();
         $inputBank = InvestmentInputBank::with('fromClientBank', 'toCompanyBank')->where('investment_id', $id)->get();
-        return $inputBank;
-        return 'wait..';
+        // return $inputBank;
+        // return 'wait..';
         return view(
             'content.investment.view',
             compact(
