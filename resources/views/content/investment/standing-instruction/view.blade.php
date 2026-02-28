@@ -55,7 +55,7 @@
                                 </td>
                                 <th class="bg-light px-3 py-2">Reference No</th>
                                 <td class="px-3 py-2 fw-semibold">
-                                    {{ $investmentSi->si_number }}
+                                    {{ $investmentSi->bank_reference_no }}
                                 </td>
 
 
@@ -118,7 +118,7 @@
                                 <th class="bg-light px-3 py-2">Instruction Type</th>
                                 <td class="text-warning"> <b> {{ $investmentSi->instruction_type }}</b></td>
                                 <th class="bg-light px-3 py-2">Remarks</th>
-                                <td  class="px-3 py-3 bg-warning-subtle fst-italic">
+                                <td class="px-3 py-3 bg-warning-subtle fst-italic">
                                     {{ $investmentSi->remarks ?? '-' }}
                                 </td>
                             </tr>
