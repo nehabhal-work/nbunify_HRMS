@@ -66,17 +66,7 @@ class InvestmentController extends Controller
         return redirect()->route('investment.els.index')->with('success', 'Investment created successfully.');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    // public function show(string $id)
-    // {
-    //     $investment = $this->investmentService->getById($id);
-    //     $paySchdeule = $this->investmentService->getPaymentSchedule($id);
-    //     // return $paySchdeule;
-    //     return view('content.investment.view', compact('investment', 'paySchdeule'));
-    //     // return view('investments.payment-schedule', compact('investment'));
-    // }
+
 
     public function show(string $id)
     {
@@ -90,7 +80,7 @@ class InvestmentController extends Controller
         //     ->where('investment_id', $id)
         //     ->first();
         $inputBank = InvestmentInputBank::with('fromClientBank', 'toCompanyBank')->where('investment_id', $id)->first();
-        // return $investment;
+        return $investment;
         return view(
             'content.investment.view',
             compact(

@@ -40,7 +40,6 @@
             href="{{ route('investment.els.index') }}">EDIT-ELS-Investment</a>
     </h4>
 
-    <h1>this functionality is in process...</h1>
     <div class="div d-flex justify-content-end mb-3">
         <a href="{{ route('investment.els.index') }}" class="btn btn-secondary px-4">Go back</a>
 

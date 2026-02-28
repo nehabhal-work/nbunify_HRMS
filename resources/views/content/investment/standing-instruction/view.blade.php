@@ -51,7 +51,7 @@
                             <tr>
                                 <th class="bg-light px-3 py-2">Investment ID</th>
                                 <td class="px-3 py-2 text-muted">
-                                    {{ $investment->id }}
+                                    {{ $investment->investment_code }}
                                 </td>
                                 <th class="bg-light px-3 py-2">Reference No</th>
                                 <td class="px-3 py-2 fw-semibold">
