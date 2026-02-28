@@ -440,7 +440,8 @@
 
                                             <div class="col-md-6">
                                                 <label class="form-label">Client Output Bank *</label>
-                                                <select class="form-select clientOutputBank" name="client_output_bank[]">
+                                                <select class="form-select clientOutputBank" name="client_output_bank[]"
+                                                    required>
                                                     <option value="">Select Bank</option>
                                                 </select>
                                             </div>
@@ -468,7 +469,7 @@
 
                                             <div class="col-md-6">
                                                 <label class="form-label">Company Bank *</label>
-                                                <select class="form-select" name="company_bank_id[]">
+                                                <select class="form-select" name="company_bank_id[]" required>
                                                     <option value="">Select Company Bank</option>
                                                     @foreach ($companyBanks as $d)
                                                         <option value="{{ $d->id }}">
