@@ -294,6 +294,7 @@
                     @endforelse
                 </table>
 
+                {{-- Company Credit Details --}}
                 <table class="table table-bordered mb-4">
                     <h6 class="text-warning">Company Credit Details</h6>
                     {{-- Header Row --}}
@@ -306,10 +307,10 @@
                     </tr>
 
                     {{-- Data Row --}}
-                    @forelse($investment->investmentInputBank ?? [] as $b)
+                    @forelse($inputBank ?? [] as $b)
                         <tr>
 
-                            <td>{{ $investment->fromCompanyBank?->bank_name ?? '-' }}</td>
+                            <td>{{ $b->toCompanyBank?->bank_name ?? '-' }}</td>
                             <td>{{ \Carbon\Carbon::parse($b->company_instrument_date)->format('d M Y') }}</td>
                             <td>{{ $b->company_reference_no }}</td>
                             <td>₹ {{ number_format($b->amount, 2) }}</td>
