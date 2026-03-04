@@ -74,17 +74,19 @@
 
 
                             <!-- Scheme -->
+
                             <div class="col-md-4">
                                 <label for="scheme_id" class="form-label">Scheme Name *</label>
+
                                 <select class="form-select select21 @error('scheme_id') is-invalid @enderror"
-                                    name="scheme_id" id="scheme_id" required>
+                                    name="scheme_id" id="scheme_id" value="{{ old('scheme_id') }}" required>
                                     <option value="">Select Scheme</option>
                                 </select>
+
                                 @error('scheme_id')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
                             </div>
-
 
 
                             <!-- Investment Type -->
