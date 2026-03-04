@@ -126,9 +126,9 @@
                                         Individual
                                     </option>
 
-                                    <option value="joint"
-                                        {{ old('investment_type', $scheme->investment_type ?? '') == 'joint' ? 'selected' : '' }}>
-                                        Joint
+                                    <option value="joined"
+                                        {{ old('investment_type', $scheme->investment_type ?? '') == 'joined' ? 'selected' : '' }}>
+                                        joined
                                     </option>
                                 </select>
 

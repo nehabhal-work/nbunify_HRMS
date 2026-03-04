@@ -425,7 +425,7 @@
                                             <div class="col-md-6">
                                                 <label class="form-label">Reference No *</label>
                                                 <input type="text" class="form-control" name="reference_no[]"
-                                                    maxlength="20">
+                                                    maxlength="50">
                                             </div>
 
                                             <div class="col-md-6">
@@ -488,7 +488,7 @@
                                             <div class="col-md-6">
                                                 <label class="form-label">Company Bank Ref No *</label>
                                                 <input type="text" class="form-control" name="company_reference_no[]"
-                                                    maxlength="20">
+                                                    maxlength="50">
                                             </div>
 
                                             <div class="col-md-6">
