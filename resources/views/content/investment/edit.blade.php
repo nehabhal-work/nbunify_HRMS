@@ -465,7 +465,8 @@
                                                 <div class="col-md-6">
                                                     <label class="form-label">Reference No *</label>
                                                     <input type="text" class="form-control" name="reference_no[]"
-                                                        value="{{ old("reference_no.$i", $row->client_reference_no ?? '') }}">
+                                                        value="{{ old("reference_no.$i", $row->client_reference_no ?? '') }}"
+                                                        maxlength="50">
                                                 </div>
 
                                                 {{-- Amount --}}
@@ -546,7 +547,7 @@
                                                 <div class="col-md-6">
                                                     <label class="form-label">Company Ref No *</label>
                                                     <input type="text" class="form-control"
-                                                        name="company_reference_no[]"
+                                                        name="company_reference_no[]" maxlength="50"
                                                         value="{{ old("company_reference_no.$i", $row->company_reference_no ?? '') }}">
                                                 </div>
 
