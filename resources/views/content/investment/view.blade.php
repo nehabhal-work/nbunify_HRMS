@@ -607,6 +607,27 @@
 
                                     </td>
                                 </tr>
+                                @if ($investment->status == 'closed')
+                                    <tr>
+                                        <td>
+                                            <button class="btn btn-outline-info" data-id="{{ $investment->id }}">
+                                                Send Closing Letter
+                                            </button>
+                                        </td>
+
+                                        <td>
+                                            @if ($investment->closing_letter_sent_at)
+                                                Closing letter was sent on
+                                                <strong>{{ \Carbon\Carbon::parse($investment->closing_letter_sent_at)->format('d-M-Y') }}</strong>
+                                                by <strong>{{ $investment->closing_letter_sent_by }}</strong>
+                                                to email ID <strong>{{ $investment->closing_letter_sent_to }}</strong>.
+                                            @else
+                                                <span class="text-muted">Closing letter has not been sent yet.</span>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endif
+
                             </tfoot>
 
                         </table>
