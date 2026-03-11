@@ -130,6 +130,8 @@ Route::middleware(['auth', 'verified'])->prefix('investment')->name('investment.
 
     Route::put('/investment-payout-mark-paid', [InvestmentController::class, 'markPaid'])->name('payout.mark-paid')->middleware('permission:investments.mark-paid');
     Route::post('/investment-payout-schedule-add', [InvestmentController::class, 'addPayoutSchedule'])->name('payout.schedule.add')->middleware('permission:investments.edit');
+    Route::post('/investment-payment-schedule-import', [InvestmentController::class, 'importPaymentSchedule'])->name('payment.schedule.import')->middleware('permission:investments.edit');
+    Route::get('/investment-payment-schedule-sample', [InvestmentController::class, 'downloadPaymentScheduleSample'])->name('payment.schedule.sample');
 
     Route::get('schemes-by-date', [InvestmentController::class, 'getSchemesByDate'])
         ->name('schemes.by.date')->middleware('permission:schemes.view');

@@ -9,9 +9,14 @@ use App\Models\InvestmentPayoutSchedule;
 use App\Models\InvestmentSi;
 use App\Models\SchemesMaster;
 use App\Models\User;
+use App\Models\CompanyBankDetail;
+use App\Models\ClientBank;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class InvestmentService
 {
@@ -1035,5 +1040,110 @@ class InvestmentService
             'from_company_bank_id' => $data['from_company_bank_id'],
             'to_client_bank_id' => $data['to_client_bank_id'],
         ]);
+    }
+
+    public function importPaymentSchedule(int $investmentId, $file): array
+    {
+        $investment = Investment::findOrFail($investmentId);
+        $spreadsheet = IOFactory::load($file->getRealPath());
+        $sheet = $spreadsheet->getActiveSheet();
+        $rows = $sheet->toArray();
+        
+        $imported = 0;
+        
+        DB::beginTransaction();
+        try {
+            foreach (array_slice($rows, 1) as $index => $row) {
+                if (empty($row[0])) continue;
+                
+                $rowNumber = $index + 2;
+                
+                $companyBankId = null;
+                $clientBankId = null;
+                
+                if (!empty($row[7])) {
+                    $companyBank = CompanyBankDetail::where('account_number', $row[7])->first();
+                    if (!$companyBank) {
+                        throw new \Exception("Row {$rowNumber}: Company account number '{$row[7]}' not found");
+                    }
+                    $companyBankId = $companyBank->id;
+                }
+                
+                if (!empty($row[8])) {
+                    $clientBank = ClientBank::where('account_number', $row[8])
+                        ->where('client_id', $investment->first_client_id)
+                        ->first();
+                    if (!$clientBank) {
+                        throw new \Exception("Row {$rowNumber}: Client account number '{$row[8]}' not found for this investment's client");
+                    }
+                    $clientBankId = $clientBank->id;
+                }
+                
+                InvestmentPayoutSchedule::create([
+                    'investment_id' => $investmentId,
+                    'sch_payout_date' => $this->parseDate($row[0]),
+                    'sch_payout_amount' => $row[1] ?? 0,
+                    'actual_payout_date' => !empty($row[2]) ? $this->parseDate($row[2]) : null,
+                    'actual_payout_amount' => $row[3] ?? null,
+                    'utr_no' => $row[4] ?? null,
+                    'status' => $row[5] ?? 'pending',
+                    'remarks' => $row[6] ?? null,
+                    'from_company_bank_id' => $companyBankId,
+                    'to_client_bank_id' => $clientBankId,
+                ]);
+                $imported++;
+            }
+            
+            DB::commit();
+            return ['success' => true, 'imported' => $imported, 'errors' => []];
+        } catch (\Exception $e) {
+            DB::rollBack();
+            throw new \Exception('Import failed: ' . $e->getMessage());
+        }
+    }
+
+    private function parseDate($value)
+    {
+        if (is_numeric($value)) {
+            return Carbon::instance(\PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($value))->format('Y-m-d');
+        }
+        return Carbon::parse($value)->format('Y-m-d');
+    }
+
+    public function generateSampleExcel()
+    {
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        
+        $headers = [
+            'Scheduled Payout Date',
+            'Scheduled Payout Amount',
+            'Actual Payout Date',
+            'Actual Payout Amount',
+            'UTR Number',
+            'Status',
+            'Remarks',
+            'Company Account Number',
+            'Client Account Number'
+        ];
+        
+        $sheet->fromArray($headers, null, 'A1');
+        
+        $sampleData = [
+            [Carbon::now()->addMonth()->format('Y-m-d'), 10000, '', '', '', 'pending', '', '1234567890', '9876543210'],
+            [Carbon::now()->addMonths(2)->format('Y-m-d'), 10000, '', '', '', 'pending', '', '1234567890', '9876543210'],
+        ];
+        
+        $sheet->fromArray($sampleData, null, 'A2');
+        
+        foreach (range('A', 'I') as $col) {
+            $sheet->getColumnDimension($col)->setAutoSize(true);
+        }
+        
+        $writer = new Xlsx($spreadsheet);
+        $tempFile = tempnam(sys_get_temp_dir(), 'payment_schedule_sample_');
+        $writer->save($tempFile);
+        
+        return $tempFile;
     }
 }

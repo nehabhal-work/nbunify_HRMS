@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Investment;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ImportPaymentScheduleRequest;
 use App\Http\Requests\InvestmentRequest;
 use App\Models\InvestmentInputBank;
 use App\Models\InvestmentPayoutSchedule;
@@ -286,6 +287,30 @@ class InvestmentController extends Controller
             return back()->with('success', 'Payout schedule added successfully.');
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
+        }
+    }
+
+    public function importPaymentSchedule(ImportPaymentScheduleRequest $request)
+    {
+        try {
+            $result = $this->investmentService->importPaymentSchedule(
+                $request->investment_id,
+                $request->file('excel_file')
+            );
+            
+            return back()->with('success', "Successfully imported {$result['imported']} payment schedules.");
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
+    }
+
+    public function downloadPaymentScheduleSample()
+    {
+        try {
+            $filePath = $this->investmentService->generateSampleExcel();
+            return response()->download($filePath, 'payment_schedule_sample.xlsx')->deleteFileAfterSend(true);
+        } catch (\Exception $e) {
+            return back()->with('error', 'Error generating sample file: ' . $e->getMessage());
         }
     }
 }
