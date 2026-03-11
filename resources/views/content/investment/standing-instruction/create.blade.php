@@ -372,7 +372,7 @@
                         <!-- Submit -->
                         <div class="text-end mt-4">
                             <button type="submit" class="btn btn-primary px-4">
-                                Update
+                                Save
                             </button>
                         </div>
 

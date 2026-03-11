@@ -610,9 +610,11 @@
                                 @if ($investment->status == 'closed')
                                     <tr>
                                         <td>
-                                            <button class="btn btn-outline-info" data-id="{{ $investment->id }}">
+                                            <a class="btn btn-outline-info"
+                                                href="{{ route('investment.closing.letter.show', $investment->id) }}"
+                                                target="_blank">
                                                 Send Closing Letter
-                                            </button>
+                                            </a>
                                         </td>
 
                                         <td>
