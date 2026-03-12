@@ -120,7 +120,7 @@
         </table>
     </div>
 
-    <div class="d-flex justify-content-end mb-3">
+    <div class=" justify-content-end mb-3">
         <a href="{{ route('investment.payment.schedule.sample') }}" class="btn btn-secondary px-4" data-bs-toggle="tooltip"
             data-bs-placement="left"
             title="A standing instruction and payout schedule already exist for this investment. To create a new one, please edit the existing schedule and mark it as inactive.">
