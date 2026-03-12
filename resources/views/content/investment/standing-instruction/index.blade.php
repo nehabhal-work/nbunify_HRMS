@@ -120,21 +120,7 @@
         </table>
     </div>
 
-    <div class=" justify-content-end mb-3">
-        <a href="{{ route('investment.payment.schedule.sample') }}" class="btn btn-secondary px-4" data-bs-toggle="tooltip"
-            data-bs-placement="left"
-            title="A standing instruction and payout schedule already exist for this investment. To create a new one, please edit the existing schedule and mark it as inactive.">
-            Downloads Excel file
-        </a>
-    </div>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-            tooltipTriggerList.map(function(tooltipTriggerEl) {
-                return new bootstrap.Tooltip(tooltipTriggerEl)
-            });
-        });
-    </script>
+
 
 
 
