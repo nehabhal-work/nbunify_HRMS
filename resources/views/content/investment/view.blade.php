@@ -382,14 +382,19 @@
                     <a href="{{ route('investment.payment.schedule.sample') }}" class="btn btn-secondary px-4"
                         data-bs-toggle="tooltip" data-bs-placement="left"
                         title="Download sample Excel format for payment schedule import.">
-                        Download Excel File
+                        Download sample Excel File
                     </a>
 
-                    {{-- Import Payment Schedule --}}
-                    <form action="{{ route('investment.payment.schedule.import') }}" method="POST">
+                </div>
+                {{-- Import Payment Schedule --}}
+                <div class="d-flex justify-content-end mb-3 gap-2">
+
+
+
+                    <form action="{{ route('investment.payment.schedule.import') }}" method="POST" class="mt-3">
                         @csrf
                         <input type="hidden" name="investment_id" value="{{ $investment->id }}">
-
+                        <input type="file" name="excel_file" accept=".xlsx,.xls" required>
                         <button type="submit" class="btn btn-primary px-4" data-bs-toggle="tooltip"
                             data-bs-placement="left" title="Import payment schedule from uploaded Excel file.">
                             Import Payment Schedule
