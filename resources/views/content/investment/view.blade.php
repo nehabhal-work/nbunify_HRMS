@@ -376,12 +376,26 @@
 
                     </tbody>
                 </table>
-                <div class=" justify-content-end mb-3">
+                <div class="d-flex justify-content-end mb-3 gap-2">
+
+                    {{-- Download Excel Sample --}}
                     <a href="{{ route('investment.payment.schedule.sample') }}" class="btn btn-secondary px-4"
                         data-bs-toggle="tooltip" data-bs-placement="left"
-                        title="A standing instruction and payout schedule already exist for this investment. To create a new one, please edit the existing schedule and mark it as inactive.">
-                        Downloads Excel file
+                        title="Download sample Excel format for payment schedule import.">
+                        Download Excel File
                     </a>
+
+                    {{-- Import Payment Schedule --}}
+                    <form action="{{ route('investment.payment.schedule.import') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="investment_id" value="{{ $investment->id }}">
+
+                        <button type="submit" class="btn btn-primary px-4" data-bs-toggle="tooltip"
+                            data-bs-placement="left" title="Import payment schedule from uploaded Excel file.">
+                            Import Payment Schedule
+                        </button>
+                    </form>
+
                 </div>
                 <script>
                     document.addEventListener("DOMContentLoaded", function() {

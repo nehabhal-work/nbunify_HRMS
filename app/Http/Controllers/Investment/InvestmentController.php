@@ -297,7 +297,7 @@ class InvestmentController extends Controller
                 $request->investment_id,
                 $request->file('excel_file')
             );
-            
+
             return back()->with('success', "Successfully imported {$result['imported']} payment schedules.");
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
@@ -312,5 +312,14 @@ class InvestmentController extends Controller
         } catch (\Exception $e) {
             return back()->with('error', 'Error generating sample file: ' . $e->getMessage());
         }
+    }
+
+    public function closingLetterShow(Request $request)
+    {
+        return 'in process..';
+        return $request;
+        $company = $this->companyService->findFirstOrFail();
+        $investment = $this->investmentService->getById($request->investment_id);
+        return view('content.investment.letters.closing-letter', compact('investment', 'company'));
     }
 }
