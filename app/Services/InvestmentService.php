@@ -1110,8 +1110,13 @@ class InvestmentService
         return Carbon::parse($value)->format('Y-m-d');
     }
 
-    public function generateSampleExcel()
+    public function generateSampleExcel(int $investmentId)
     {
+        $schedules = InvestmentPayoutSchedule::with(['fromCompanyBank', 'toClientBank'])
+            ->where('investment_id', $investmentId)
+            ->orderBy('sch_payout_date')
+            ->get();
+
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
         
@@ -1129,12 +1134,21 @@ class InvestmentService
         
         $sheet->fromArray($headers, null, 'A1');
         
-        $sampleData = [
-            [Carbon::now()->addMonth()->format('Y-m-d'), 10000, '', '', '', 'pending', '', '1234567890', '9876543210'],
-            [Carbon::now()->addMonths(2)->format('Y-m-d'), 10000, '', '', '', 'pending', '', '1234567890', '9876543210'],
-        ];
+        $rows = $schedules->map(fn($s) => [
+            $s->sch_payout_date?->format('Y-m-d') ?? '',
+            $s->sch_payout_amount ?? '',
+            $s->actual_payout_date?->format('Y-m-d') ?? '',
+            $s->actual_payout_amount ?? '',
+            $s->utr_no ?? '',
+            $s->status ?? 'pending',
+            $s->remarks ?? '',
+            $s->fromCompanyBank?->account_number ?? '',
+            $s->toClientBank?->account_number ?? '',
+        ])->toArray();
         
-        $sheet->fromArray($sampleData, null, 'A2');
+        if (!empty($rows)) {
+            $sheet->fromArray($rows, null, 'A2');
+        }
         
         foreach (range('A', 'I') as $col) {
             $sheet->getColumnDimension($col)->setAutoSize(true);

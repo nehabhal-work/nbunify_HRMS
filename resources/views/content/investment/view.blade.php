@@ -379,7 +379,7 @@
                 <div class="d-flex justify-content-end mb-3 gap-2">
 
                     {{-- Download Excel Sample --}}
-                    <a href="{{ route('investment.payment.schedule.sample') }}" class="btn btn-secondary px-4"
+                    <a href="{{ route('investment.payment.schedule.sample', $investment->id) }}" class="btn btn-secondary px-4"
                         data-bs-toggle="tooltip" data-bs-placement="left"
                         title="Download sample Excel format for payment schedule import.">
                         Download sample Excel File

@@ -304,10 +304,10 @@ class InvestmentController extends Controller
         }
     }
 
-    public function downloadPaymentScheduleSample()
+    public function downloadPaymentScheduleSample(int $investmentId)
     {
         try {
-            $filePath = $this->investmentService->generateSampleExcel();
+            $filePath = $this->investmentService->generateSampleExcel($investmentId);
             return response()->download($filePath, 'payment_schedule_sample.xlsx')->deleteFileAfterSend(true);
         } catch (\Exception $e) {
             return back()->with('error', 'Error generating sample file: ' . $e->getMessage());
