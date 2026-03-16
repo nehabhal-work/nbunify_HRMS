@@ -376,29 +376,29 @@
 
                     </tbody>
                 </table>
-                <div class="d-flex justify-content-end mb-3 gap-2">
+                <div class="d-flex justify-content-end align-items-center mb-3 gap-2 flex-wrap">
 
-                    {{-- Download Excel Sample --}}
-                    <a href="{{ route('investment.payment.schedule.sample') }}" class="btn btn-secondary px-4"
-                        data-bs-toggle="tooltip" data-bs-placement="left"
-                        title="Download sample Excel format for payment schedule import.">
-                        Download sample Excel File
+                    {{-- Download Sample --}}
+                    <a href="{{ route('investment.payment.schedule.sample') }}" class="btn btn-outline-secondary"
+                        data-bs-toggle="tooltip" title="Download sample Excel format">
+                        Download Sample Excel
                     </a>
 
-                </div>
-                {{-- Import Payment Schedule --}}
-                <div class="d-flex justify-content-end mb-3 gap-2">
+                    {{-- Import Form --}}
+                    <form action="{{ route('investment.payment.schedule.import') }}" method="POST"
+                        enctype="multipart/form-data" class="d-flex align-items-center gap-2">
 
-
-
-                    <form action="{{ route('investment.payment.schedule.import') }}" method="POST" class="mt-3">
                         @csrf
                         <input type="hidden" name="investment_id" value="{{ $investment->id }}">
-                        <input type="file" name="excel_file" accept=".xlsx,.xls" required>
-                        <button type="submit" class="btn btn-primary px-4" data-bs-toggle="tooltip"
-                            data-bs-placement="left" title="Import payment schedule from uploaded Excel file.">
-                            Import Payment Schedule
+
+                        <input type="file" name="excel_file" class="form-control form-control-sm" accept=".xlsx,.xls"
+                            required style="width:220px">
+
+                        <button type="submit" class="btn btn-primary btn-sm" data-bs-toggle="tooltip"
+                            title="Import payment schedule from Excel">
+                            Import Schedule
                         </button>
+
                     </form>
 
                 </div>
@@ -642,8 +642,9 @@
                                 </tr>
                                 @if ($investment->status == 'closed')
                                     <tr>
+                                        {{ $investment->id }}
                                         <td>
-                                            <a class="btn btn-outline-info"
+                                            <a class="btn btn-outline-info text-capitalize"
                                                 href="{{ route('investment.closing.letter.show', $investment->id) }}"
                                                 target="_blank">
                                                 Send Closing Letter

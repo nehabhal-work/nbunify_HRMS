@@ -4,21 +4,21 @@
 
 @section('content')
     <div class="container">
-        {{ $investment->approved_by->name }}
-        {{-- <p><strong>Date:</strong> {{ \Carbon\Carbon::parse($investment->approved4_on)->format('d F Y') }}</p>
+        {{-- {{ $investment }} --}}
+        <p><strong>Date:</strong> {{ \Carbon\Carbon::parse($investment->approved3_on)->format('d F Y') }}</p>
 
         <p>
             To,<br>
-            <strong>{{ $investment->first_client->name }}</strong><br>
-            {{ $investment->first_client->res_address }}<br>
-            {{ $investment->first_client->res_city }},
-            {{ $investment->first_client->res_state }},
-            {{ $investment->first_client->res_country }}
+            <strong>{{ $investment->firstClient->name }}</strong><br>
+            {{ $investment->firstClient->res_address }}<br>
+            {{ $investment->firstClient->res_city }},
+            {{ $investment->firstClient->res_state }},
+            {{ $investment->firstClient->res_country }}
         </p>
 
         <p><strong>Subject: Confirmation of Business Loan Closure</strong></p>
 
-        <p>Dear {{ $investment->first_client->name }},</p>
+        <p>Dear {{ $investment->firstClient->name }},</p>
 
         <p>
             This letter is to formally confirm that the business loan of
@@ -57,8 +57,8 @@
             <tr>
                 <td><strong>Final Payment Mode</strong></td>
                 <td>
-                    {{ strtoupper($investment->investment_input_bank[0]->instrument_type) }}
-                    ({{ $investment->investment_input_bank[0]->client_reference_no }})
+                    {{ strtoupper($investment->investmentInputBank[0]->instrument_type) }}
+                    ({{ $investment->investmentInputBank[0]->client_reference_no }})
                 </td>
             </tr>
 
@@ -95,7 +95,7 @@
             <strong>{{ $company->authorized_signatory ?? 'Authorized Signatory' }}</strong><br>
             {{ $company->name }}<br>
             {{ $company->phone ?? '' }}
-        </p> --}}
+        </p>
 
     </div>
 @endsection

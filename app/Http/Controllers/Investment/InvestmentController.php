@@ -314,12 +314,12 @@ class InvestmentController extends Controller
         }
     }
 
-    public function closingLetterShow(Request $request)
+    public function closingLetterShow($investment_id)
     {
-        return 'in process..';
-        return $request;
+        // return $investment_id;
         $company = $this->companyService->findFirstOrFail();
-        $investment = $this->investmentService->getById($request->investment_id);
+        $investment = $this->investmentService->getById($investment_id);
+        // return $investment;
         return view('content.investment.letters.closing-letter', compact('investment', 'company'));
     }
 }
