@@ -378,10 +378,11 @@
                 </table>
                 <div class="d-flex justify-content-end align-items-center mb-3 gap-2 flex-wrap">
 
-                    {{-- Download Sample --}}
-                    <a href="{{ route('investment.payment.schedule.sample') }}" class="btn btn-outline-secondary"
-                        data-bs-toggle="tooltip" title="Download sample Excel format">
-                        Download Sample Excel
+                    {{-- Download Excel Sample --}}
+                    <a href="{{ route('investment.payment.schedule.sample', $investment->id) }}"
+                        class="btn btn-secondary px-4" data-bs-toggle="tooltip" data-bs-placement="left"
+                        title="Download sample Excel format for payment schedule import.">
+                        Download sample Excel File
                     </a>
 
                     {{-- Import Form --}}
