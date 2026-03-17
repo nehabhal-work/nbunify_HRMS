@@ -298,7 +298,8 @@ class InvestmentController extends Controller
                 $request->file('excel_file')
             );
 
-            return back()->with('success', "Successfully imported {$result['imported']} payment schedules.");
+            $msg = "Successfully created {$result['created']} and updated {$result['updated']} payment schedules.";
+            return back()->with('success', $msg);
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }

@@ -1049,7 +1049,8 @@ class InvestmentService
         $sheet = $spreadsheet->getActiveSheet();
         $rows = $sheet->toArray();
         
-        $imported = 0;
+        $created = 0;
+        $updated = 0;
         
         DB::beginTransaction();
         try {
@@ -1078,10 +1079,9 @@ class InvestmentService
                     }
                     $clientBankId = $clientBank->id;
                 }
-                
-                InvestmentPayoutSchedule::create([
-                    'investment_id' => $investmentId,
-                    'sch_payout_date' => $this->parseDate($row[0]),
+
+                $schPayoutDate = $this->parseDate($row[0]);
+                $data = [
                     'sch_payout_amount' => $row[1] ?? 0,
                     'actual_payout_date' => !empty($row[2]) ? $this->parseDate($row[2]) : null,
                     'actual_payout_amount' => $row[3] ?? null,
@@ -1090,12 +1090,26 @@ class InvestmentService
                     'remarks' => $row[6] ?? null,
                     'from_company_bank_id' => $companyBankId,
                     'to_client_bank_id' => $clientBankId,
-                ]);
-                $imported++;
+                ];
+
+                $existing = InvestmentPayoutSchedule::where('investment_id', $investmentId)
+                    ->whereDate('sch_payout_date', $schPayoutDate)
+                    ->first();
+
+                if ($existing) {
+                    $existing->update($data);
+                    $updated++;
+                } else {
+                    InvestmentPayoutSchedule::create(array_merge($data, [
+                        'investment_id' => $investmentId,
+                        'sch_payout_date' => $schPayoutDate,
+                    ]));
+                    $created++;
+                }
             }
             
             DB::commit();
-            return ['success' => true, 'imported' => $imported, 'errors' => []];
+            return ['success' => true, 'created' => $created, 'updated' => $updated];
         } catch (\Exception $e) {
             DB::rollBack();
             throw new \Exception('Import failed: ' . $e->getMessage());
