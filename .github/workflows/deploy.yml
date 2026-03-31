@@ -1,0 +1,81 @@
+name: 🚀 Deploy SIESERP to Hostinger - NbWork
+
+
+on:
+ push:
+   branches:
+     - main
+
+
+jobs:
+ deploy:
+   runs-on: ubuntu-latest
+
+
+   steps:
+     - name: 📥 Checkout Repository
+       uses: actions/checkout@v4
+
+
+     - name: 🔐 Setup SSH
+       run: |
+         mkdir -p ~/.ssh
+         echo "${{ secrets.HOSTINGER_SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+         chmod 600 ~/.ssh/id_ed25519
+         ssh-keyscan -p 65002 147.93.17.26 >> ~/.ssh/known_hosts
+
+
+     - name: 🚀 Deploy Application
+       run: |
+         ssh -p 65002 u537155273@147.93.17.26 << 'EOF'
+           echo "📂 Moving to project directory..."
+           cd domains/hrms.nbwork.in/public_html
+
+
+           echo "📥 Pulling latest code..."
+           git reset --hard
+           git pull origin main
+
+
+           echo "📦 Checking composer changes..."
+           if git diff --name-only HEAD@{1} HEAD | grep composer.lock; then
+             echo "Installing composer dependencies..."
+             composer install --no-dev --optimize-autoloader --no-interaction
+           else
+             echo "⚡ Skipping composer install"
+           fi
+
+
+           echo "🔗 Fixing storage link..."
+           php artisan storage:link || true
+
+
+           echo "🗄 Running migrations..."
+           php artisan migrate --force
+          
+
+
+           echo "🌱 Running seeders..."
+           php artisan db:seed --force || true
+
+
+           echo "🧹 Clearing caches..."
+           php artisan optimize:clear
+
+
+           echo "⚡ Rebuilding caches..."
+           php artisan config:cache
+           php artisan route:cache
+           php artisan view:cache
+           php artisan event:cache
+
+
+           echo "🔑 Fixing Laravel permissions..."
+           chmod -R 775 storage
+           chmod -R 775 bootstrap/cache
+
+
+           echo "✅ Deployment completed successfully!"
+
+
+         EOF
