@@ -3,196 +3,230 @@
 
 <head>
     <meta charset="UTF-8">
+    <title>NB Unify Auth</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ELS Login</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <style>
         body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #260045, #4B0049);
-            margin: 0;
-            overflow: hidden;
-        }
-
-        .main-container {
-            display: flex;
             height: 100vh;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .left-side {
-            flex: 1;
-            background: linear-gradient(160deg, #4B0049, #260045);
-            border-top-right-radius: 250px;
-            border-bottom-right-radius: 250px;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            color: #fff;
-            padding: 40px;
-            text-align: center;
+            background: #f2f5f9;
         }
 
-        /* .left-side img {
-            width: 90px;
-            margin-bottom: 25px;
-        }
-
-        .left-side h2 {
-            font-size: 1.3rem;
-            font-weight: 600;
-            letter-spacing: 1px;
-        }
-
-        .left-side h1 {
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-
-        .left-side p {
-            font-size: 0.9rem;
-            max-width: 280px;
-            line-height: 1.5;
-            opacity: 0.9;
-        } */
-
-        .right-side {
-            flex: 1;
+        /* CONTAINER */
+        .container {
+            width: 950px;
+            height: 520px;
+            display: flex;
+            border-radius: 20px;
+            overflow: hidden;
             background: #fff;
-            border-top-left-radius: 250px;
-            border-bottom-left-radius: 250px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        /* LEFT PANEL */
+        .left {
+            width: 80%;
+            background: linear-gradient(135deg, #4facfe, #00c6ff);
+            color: #fff;
+            padding: 50px;
+            position: relative;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            padding: 60px 80px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+            align-items: center;
+            text-align: center;
+            z-index: 1;
         }
 
-        .right-side h3 {
-            font-weight: 600;
-            color: #222;
-            margin-bottom: 30px;
+        /* CURVE (CONTROLLED) */
+        .left::after {
+            content: "";
+            position: absolute;
+            right: -80px;
+            /* reduced so it doesn't hide form */
+            top: 0;
+            width: 200px;
+            height: 100%;
+            background: #fff;
+            border-radius: 100px 0 0 100px;
+            z-index: -1;
         }
 
-        .form-control {
-            border: none;
-            border-bottom: 2px solid #e0e0e0;
-            border-radius: 0;
+        /* LOGO */
+        .logo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+
+        /* TEXT */
+        .left h4 {
+            letter-spacing: 1px;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .left h2 {
+            font-size: 22px;
+            margin-bottom: 15px;
+        }
+
+        .left p {
+            font-size: 12px;
+            opacity: 0.9;
+            max-width: 260px;
+        }
+
+        /* RIGHT PANEL */
+        .right {
+            width: 55%;
+            padding: 60px 50px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
+            /* ensures it's always on top */
+            background: #fff;
+        }
+
+        .right h2 {
             margin-bottom: 25px;
-            font-size: 0.95rem;
-            padding-left: 0;
+            color: #333;
         }
 
-        .form-control:focus {
-            border-color: #4B0049;
-            box-shadow: none;
+        /* INPUTS */
+        .form-group {
+            margin-bottom: 18px;
         }
 
-        .form-check-label {
-            font-size: 0.9rem;
+        .form-group label {
+            font-size: 12px;
+            color: #666;
         }
 
-        .form-check-label a {
-            color: #4B0049;
-            text-decoration: none;
+        .form-group input {
+            width: 100%;
+            border: none;
+            border-bottom: 1px solid #ccc;
+            padding: 8px 0;
+            outline: none;
+        }
+
+        .form-group input:focus {
+            border-bottom: 1px solid #4facfe;
+        }
+
+        /* CHECKBOX */
+        .checkbox {
+            font-size: 12px;
+            margin-top: 10px;
+        }
+
+        /* BUTTONS */
+        .buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
         }
 
         .btn {
-            border-radius: 50px;
-            padding: 10px 30px;
-            font-weight: 500;
+            padding: 10px 25px;
+            border-radius: 25px;
+            font-size: 13px;
+            cursor: pointer;
         }
 
-        .btn-els {
-            background-color: #4B0049;
+        .btn-primary {
+            background: #4facfe;
             border: none;
-        }
-
-        .btn-outline-els {
-            border-color: #4B0049;
-            color: #4B0049;
-        }
-
-        .btn-outline-els:hover {
-            background-color: #4B0049;
             color: #fff;
         }
 
-        @media (max-width: 992px) {
-            .main-container {
-                flex-direction: column;
-            }
-
-            .left-side,
-            .right-side {
-                border-radius: 0;
-                padding: 50px 30px;
-            }
-
-            .left-side img {
-                width: 70px;
-            }
+        .btn-outline {
+            border: 1px solid #4facfe;
+            background: transparent;
+            color: #4facfe;
         }
     </style>
 </head>
 
 <body>
 
-    <div class="main-container">
-        <!-- Left Panel -->
-        <div class="left-side">
-            <img src="{{ asset('assets/img/branding/image.png') }}" alt="SRK Logo" width="500" height="200" />
+    <div class="container">
+
+        <!-- LEFT -->
+        <div class="left">
+            <div class="logo">🚀</div>
+            <h4>WELCOME TO</h4>
+            <h2>NB UNIFY</h2>
+            <p>
+                Where people and payroll move in harmony—
+                simple, steady, and built to last.
+            </p>
         </div>
 
-        <!-- Right Panel -->
-        <div class="right-side">
-            {{-- <h3>Login to Your Account!</h3> --}}
-            <h3>Welcome To EasyLife Solutions!</h3>
-            <form id="loginForm" class="mb-3" action="{{ route('login') }}" method="post">
+        <!-- RIGHT -->
+        <div class="right">
+            <h2>Login to your account</h2>
+            <form action="{{ route('login') }}" method="post">
                 @csrf
                 @method('post')
-                <input type="email" class="form-control" name="email" placeholder="Enter your email" required>
-                <div class="mb-3 position-relative">
-                    <input type="password" class="form-control" id="password" name="password"
-                        placeholder="Enter your password" required>
-                    <button type="button"
-                        class="btn position-absolute top-50 end-0 translate-middle-y me-2 p-0 border-0 bg-transparent"
-                        id="togglePassword">
-                        <i class="bi bi-eye-slash" id="toggleIcon"></i>
-                    </button>
+                <div class="form-group">
+                    <label>E-MAIL ADDRESS</label>
+                    <input type="email" name="email" placeholder="Enter your email">
                 </div>
-                @if ($errors->any())
+
+                <div class="form-group" style="position:relative;">
+                    <label>PASSWORD</label>
+                    <input type="password" name="password" id="password" placeholder="Enter your password" style="padding-right:35px;">
+
+                    <i class="fa-solid fa-eye" id="toggleIcon" onclick="togglePassword()"
+                        style="position:absolute; right:0; top:32px; cursor:pointer; color:#666;">
+                    </i>
+                </div>
+
+               @if ($errors->any())
                     <div class="alert alert-danger text-center mx-auto w-75 mt-3">
                         @foreach ($errors->all() as $error)
                             <div>{{ $error }}</div>
                         @endforeach
                     </div>
                 @endif
-                <div class="d-flex gap-3">
-                    <button type="submit" class="btn btn-outline-els">Log-in</button>
+
+                <div class="buttons">
+                    <button class="btn btn-primary">Login</button>
                 </div>
-                {{-- <small class="text-warning"><i>username : admin@els.com / password : password</i></small> --}}
             </form>
+
         </div>
+
     </div>
     <script>
-        const togglePassword = document.querySelector("#togglePassword");
-        const password = document.querySelector("#password");
-        const toggleIcon = document.querySelector("#toggleIcon");
+        function togglePassword() {
+            const password = document.getElementById("password");
+            const icon = document.getElementById("toggleIcon");
 
-        togglePassword.addEventListener("click", () => {
-            const type = password.getAttribute("type") === "password" ? "text" : "password";
-            password.setAttribute("type", type);
-            toggleIcon.classList.toggle("bi-eye");
-            toggleIcon.classList.toggle("bi-eye-slash");
-        });
+            if (password.type === "password") {
+                password.type = "text";
+                icon.classList.remove("fa-eye");
+                icon.classList.add("fa-eye-slash");
+            } else {
+                password.type = "password";
+                icon.classList.remove("fa-eye-slash");
+                icon.classList.add("fa-eye");
+            }
+        }
     </script>
-
 </body>
 
 </html>
