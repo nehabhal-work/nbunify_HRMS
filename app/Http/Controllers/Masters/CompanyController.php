@@ -4,121 +4,148 @@ namespace App\Http\Controllers\Masters;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CompanyRequest;
+use App\Models\Company;
 use App\Services\CompanyService;
-use App\Services\CompanyBankDetailService;
-use App\Services\FileStorageService;
-use Illuminate\Support\Facades\Http;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class CompanyController extends Controller
 {
-    protected $companyService;
-    protected $companyBankDetailService;
-    protected $fileStorageService;
+    public function __construct(protected CompanyService $companyService) {}
 
-    public function __construct(CompanyService $companyService, CompanyBankDetailService $companyBankDetailService, FileStorageService $fileStorageService)
+    /**
+     * GET /companies
+     * List with optional search & filter
+     */
+    public function index(Request $request): JsonResponse
     {
-        $this->companyService = $companyService;
-        $this->companyBankDetailService = $companyBankDetailService;
-        $this->fileStorageService = $fileStorageService;
+        $filters = $request->only(['search', 'company_type']);
+        $perPage = $request->integer('per_page', 15);
+
+        $companies = $this->companyService->paginate($filters, $perPage);
+
+        return response()->json([
+            'success' => true,
+            'data'    => $companies,
+        ]);
     }
 
-    public function index()
+    /**
+     * POST /companies
+     * Create a new company
+     */
+    public function store(CompanyRequest $request): JsonResponse
     {
-        $companies = $this->companyService->getAll();
-        return view('content.master.companies.index', compact('companies'));
+        $company = $this->companyService->create($request->validated());
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Company created successfully.',
+            'data'    => $company->load(['createdBy', 'updatedBy']),
+        ], 201);
     }
 
-    public function create()
+    /**
+     * GET /companies/{company}
+     * Show a single company
+     */
+    public function show(Company $company): JsonResponse
     {
-        $data = getCountries();
-        $country = $data['country'] ?? null;
-        $states = $data['states'] ?? [];
-        $cities = $data['cities'] ?? [];
-        $companyTypes = config('enum_company_types');
-        $bankAccountTypes = config('enum_bank_account_types');
-        return view('content.master.companies.create', compact('companyTypes', 'bankAccountTypes', 'country', 'states', 'cities'));
+        return response()->json([
+            'success' => true,
+            'data'    => $company->load(['createdBy', 'updatedBy']),
+        ]);
     }
 
-    public function store(CompanyRequest $request)
+    /**
+     * PUT/PATCH /companies/{company}
+     * Update a company
+     */
+    public function update(CompanyRequest $request, Company $company): JsonResponse
     {
-        try {
-            $company = $this->companyService->create($request->validated());
+        $updated = $this->companyService->update($company, $request->validated());
 
-            if ($request->has('banks')) {
-                foreach ($request->banks as $bank) {
-                    $this->companyBankDetailService->create($company->id, $bank);
-                }
-            }
-            return redirect()->route('master.companies.index')->with('success', 'Company created successfully.');
-        } catch (\Exception $e) {
-            return back()->withErrors(['error' => $e->getMessage()])->withInput();
+        return response()->json([
+            'success' => true,
+            'message' => 'Company updated successfully.',
+            'data'    => $updated->load(['createdBy', 'updatedBy']),
+        ]);
+    }
+
+    /**
+     * DELETE /companies/{company}
+     * Soft delete a company
+     */
+    public function destroy(Company $company): JsonResponse
+    {
+        $this->companyService->delete($company);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Company deleted successfully.',
+        ]);
+    }
+
+    /**
+     * DELETE /companies/{id}/force
+     * Permanently delete a company and its files
+     */
+    public function forceDestroy(int $id): JsonResponse
+    {
+        $company = Company::withTrashed()->findOrFail($id);
+        $this->companyService->forceDelete($company);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Company permanently deleted.',
+        ]);
+    }
+
+    /**
+     * POST /companies/{id}/restore
+     * Restore a soft-deleted company
+     */
+    public function restore(int $id): JsonResponse
+    {
+        $company = $this->companyService->restore($id);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Company restored successfully.',
+            'data'    => $company,
+        ]);
+    }
+
+    /**
+     * DELETE /companies/{company}/files/{field}
+     * Remove a specific attachment
+     */
+    public function deleteFile(Company $company, string $field): JsonResponse
+    {
+        $deleted = $this->companyService->deleteFile($company, $field);
+
+        if (!$deleted) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid file field specified.',
+            ], 422);
         }
+
+        return response()->json([
+            'success' => true,
+            'message' => 'File removed successfully.',
+        ]);
     }
 
-    public function edit($id)
+    /**
+     * GET /companies/types
+     * Return available company types
+     */
+    public function types(): JsonResponse
     {
-        $company = $this->companyService->find($id);
-        $company = $this->addFileUrls($company);
-        $bankDetails = $company->bankDetails ?? collect();
-        $companyTypes = config('enum_company_types');
-        $bankAccountTypes = config('enum_bank_account_types');
-
-        $data = getCountries();
-        $country = $data['country'] ?? null;
-        $states = $data['states'] ?? [];
-        $cities = $data['cities'] ?? [];
-        // return $company;
-        return view('content.master.companies.edit', compact('company', 'bankDetails', 'companyTypes', 'bankAccountTypes', 'country', 'states', 'cities'));
-    }
-
-    public function show($id)
-    {
-        $company = $this->companyService->find($id);
-        $company = $this->addFileUrls($company);
-        $bankDetails = $company->bankDetails ?? collect();
-        $companyTypes = config('enum_company_types');
-        $bankAccountTypes = config('enum_bank_account_types');
-        return view('content.master.companies.view', compact('company', 'bankDetails', 'companyTypes', 'bankAccountTypes'));
-    }
-
-    public function update(CompanyRequest $request, $id)
-    {
-        try {
-            $company = $this->companyService->find($id);
-            $this->companyService->update($company, $request->validated());
-            $this->companyBankDetailService->deleteByCompanyId($id);
-            if ($request->has('banks')) {
-                foreach ($request->banks as $bank) {
-                    $this->companyBankDetailService->create($id, $bank);
-                }
-            }
-            return redirect()->route('master.companies.index')->with('success', 'Company updated successfully. for id ' . $id . ' - ' . $company->name);
-        } catch (\Exception $e) {
-            return back()->withErrors(['error' => $e->getMessage()])->withInput();
-        }
-    }
-
-    public function destroy($id)
-    {
-        try {
-            $company = $this->companyService->find($id);
-            $this->companyService->delete($company);
-            return redirect()->route('master.companies.index')->with('success', 'Company deleted successfully.');
-        } catch (\Exception $e) {
-            return back()->withErrors(['error' => $e->getMessage()]);
-        }
-    }
-
-    private function addFileUrls($company)
-    {
-        $fileFields = ['logo', 'attachment_pan', 'attachment_tan', 'attachment_gstin', 'attachment_ckyc', 'attachment_partnership_deed', 'attachment_udyam_aadhar', 'attachment_gumasta', 'attachment_msme', 'attachment_aadhar'];
-
-        foreach ($fileFields as $field) {
-            if ($company->$field) {
-                $company->{$field . '_url'} = $this->fileStorageService->getTemporaryUrl($company->$field);
-            }
-        }
-
-        return $company;
+        return response()->json([
+            'success' => true,
+            'data'    => Company::COMPANY_TYPES,
+        ]);
     }
 }

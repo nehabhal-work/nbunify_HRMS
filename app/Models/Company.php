@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -9,13 +10,16 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Company extends Model
 {
     protected $table = 'companies';
-    use SoftDeletes;
+    use HasFactory, SoftDeletes;
     protected $fillable = [
-        'logo',
+        // Basic Info
         'name',
+        'legal_name',
         'company_type',
-        'code',
-        'domain',
+        'website',
+        'logo',
+
+        // Registration Numbers
         'watermark_no',
         'copyrights_no',
         'cin_no',
@@ -28,25 +32,11 @@ class Company extends Model
         'msme_certification_no',
         'ckyc',
         'gumasta_no',
+
+        // Establishment Date
         'est_date',
-        'registered_address',
-        'registered_country',
-        'registered_state',
-        'registered_city',
-        'registered_pincode',
-        'corporate_address',
-        'corporate_country',
-        'corporate_state',
-        'corporate_city',
-        'corporate_pincode',
-        'additional_address',
-        'additional_country',
-        'additional_state',
-        'additional_city',
-        'additional_pincode',
-        'contact_person_name',
-        'phone',
-        'email',
+
+        // Attachments
         'attachment_pan',
         'attachment_tan',
         'attachment_gstin',
@@ -55,14 +45,10 @@ class Company extends Model
         'attachment_udyam_aadhar',
         'attachment_gumasta',
         'attachment_msme',
-        'attachment_aadhar',
-        'brand_name',
-        'proprietor_name',
-        'proprietor_phone',
-        'proprietor_email',
-        'proprietor_whatsapp',
-        'whatsapp_no',
-        'aadhar_no',
+
+        // Audit
+        'created_by',
+        'updated_by',
     ];
 
     protected $casts = [
@@ -72,8 +58,80 @@ class Company extends Model
         'deleted_at' => 'datetime',
     ];
 
-    public function bankDetails(): HasMany
+    // ─── Company Type Options ────────────────────────────────────────────────────
+
+    const COMPANY_TYPES = [
+        'sole_proprietorship' => 'Sole Proprietorship',
+        'partnership'         => 'Partnership',
+        'pvt_ltd'             => 'Private Limited',
+        'public_ltd'          => 'Public Limited',
+        'llp'                 => 'LLP',
+        'huf'                 => 'HUF',
+        'ngo'                 => 'NGO',
+    ];
+
+    // ─── Relationships ───────────────────────────────────────────────────────────
+
+    public function createdBy()
     {
-        return $this->hasMany(CompanyBankDetail::class);
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function updatedBy()
+    {
+        return $this->belongsTo(User::class, 'updated_by');
+    }
+
+    // ─── Accessors ───────────────────────────────────────────────────────────────
+
+    public function getCompanyTypeLabelAttribute(): string
+    {
+        return self::COMPANY_TYPES[$this->company_type] ?? ucfirst($this->company_type);
+    }
+
+    public function getLogoUrlAttribute(): ?string
+    {
+        return $this->logo ? asset('storage/' . $this->logo) : null;
+    }
+
+    // Attachment URL accessors
+    public function getAttachmentPanUrlAttribute(): ?string
+    {
+        return $this->attachment_pan ? asset('storage/' . $this->attachment_pan) : null;
+    }
+
+    public function getAttachmentTanUrlAttribute(): ?string
+    {
+        return $this->attachment_tan ? asset('storage/' . $this->attachment_tan) : null;
+    }
+
+    public function getAttachmentGstinUrlAttribute(): ?string
+    {
+        return $this->attachment_gstin ? asset('storage/' . $this->attachment_gstin) : null;
+    }
+
+    public function getAttachmentCkycUrlAttribute(): ?string
+    {
+        return $this->attachment_ckyc ? asset('storage/' . $this->attachment_ckyc) : null;
+    }
+
+    public function getAttachmentPartnershipDeedUrlAttribute(): ?string
+    {
+        return $this->attachment_partnership_deed ? asset('storage/' . $this->attachment_partnership_deed) : null;
+    }
+
+    public function getAttachmentUdyamAadharUrlAttribute(): ?string
+    {
+        return $this->attachment_udyam_aadhar ? asset('storage/' . $this->attachment_udyam_aadhar) : null;
+    }
+
+    public function getAttachmentGumastaUrlAttribute(): ?string
+    {
+        return $this->attachment_gumasta ? asset('storage/' . $this->attachment_gumasta) : null;
+    }
+
+    public function getAttachmentMsmeUrlAttribute(): ?string
+    {
+        return $this->attachment_msme ? asset('storage/' . $this->attachment_msme) : null;
     }
 }

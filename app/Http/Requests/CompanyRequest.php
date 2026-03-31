@@ -2,90 +2,96 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Company;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
 class CompanyRequest extends FormRequest
 {
+    public function authorize(): bool
+    {
+        return true;
+    }
+
     public function rules(): array
     {
+        $companyId = $this->route('company')?->id;
+
         return [
-            'logo_url' => ['nullable', 'url'],
-            'name' => ['required', 'string', 'max:255'],
-            'company_type' => ['required', 'in:sole_proprietorship,partnership,pvt_ltd,public_ltd,llp,huf,ngo'],
-            'code' => ['nullable', 'string', 'max:255', Rule::unique('companies')->ignore($this->company)],
-            'domain' => ['nullable', 'string', 'max:255'],
-            'watermark_no' => ['nullable', 'string', 'max:255'],
-            'copyrights_no' => ['nullable', 'string', 'max:255'],
-            'cin_no' => ['nullable', 'string', 'regex:/^[LUF]\d{5}[A-Z]{2}\d{4}[A-Z]{3}\d{6}$/'],
-            'pan_no' => ['nullable', 'string', 'regex:/^[A-Z]{5}\d{4}[A-Z]{1}$/'],
-            'tan_no' => ['nullable', 'string', 'regex:/^[A-Z]{4}\d{5}[A-Z]{1}$/'],
-            'gstin' => ['nullable', 'string', 'regex:/^\d{2}[A-Z]{5}\d{4}[A-Z]{1}[A-Z\d]{1}[Z]{1}[A-Z\d]{1}$/'],
-            'udyam_aadhar_no' => ['nullable', 'string', 'regex:/^UDYAM-[A-Z]{2}-\d{2}-\d{7}$/'],
-            'partnership_registration_no' => ['nullable', 'string', 'max:255'],
-            'roc_no' => ['nullable', 'string', 'max:255'],
-            'msme_certification_no' => ['nullable', 'string', 'max:255'],
-            'ckyc' => ['nullable', 'string', 'max:255'],
-            'gumasta_no' => ['nullable', 'string', 'max:255'],
-            'est_date' => ['required', 'nullable', 'date'],
-            'registered_address' => ['nullable', 'string'],
-            'registered_country' => ['nullable', 'string', 'max:255'],
-            'registered_state' => ['nullable', 'string', 'max:255'],
-            'registered_city' => ['nullable', 'string', 'max:255'],
-            'registered_pincode' => ['nullable', 'string', 'regex:/^\d{6}$/'],
-            'corporate_address' => ['nullable', 'string'],
-            'corporate_country' => ['nullable', 'string', 'max:255'],
-            'corporate_state' => ['nullable', 'string', 'max:255'],
-            'corporate_city' => ['nullable', 'string', 'max:255'],
-            'corporate_pincode' => ['nullable', 'string', 'regex:/^\d{6}$/'],
-            'additional_address' => ['nullable', 'string'],
-            'additional_country' => ['nullable', 'string', 'max:255'],
-            'additional_state' => ['nullable', 'string', 'max:255'],
-            'additional_city' => ['nullable', 'string', 'max:255'],
-            'additional_pincode' => ['nullable', 'string', 'regex:/^\d{6}$/'],
-            'contact_person_name' => ['required', 'nullable', 'string', 'max:255'],
-            'phone' => ['required', 'nullable', 'string', 'max:20'],
-            'email' => ['required', 'nullable', 'email', 'max:255'],
-            'attachment_pan_url' => ['nullable', 'url'],
-            'attachment_tan_url' => ['nullable', 'url'],
-            'attachment_gstin_url' => ['nullable', 'url'],
-            'attachment_ckyc_url' => ['nullable', 'url'],
-            'attachment_partnership_deed_url' => ['nullable', 'url'],
-            'attachment_udyam_aadhar_url' => ['nullable', 'url'],
-            'attachment_gumasta_url' => ['nullable', 'url'],
-            'attachment_msme_url' => ['nullable', 'url'],
-            'attachment_aadhar_url' => ['nullable', 'url'],
-            'brand_name' => ['required', 'nullable', 'string', 'max:50'],
-            'proprietor_name' => ['nullable', 'string', 'max:50'],
-            'proprietor_phone' => ['nullable', 'string', 'max:20'],
-            'proprietor_email' => ['nullable', 'string', 'max:20'],
-            'proprietor_whatsapp' => ['nullable', 'string', 'max:20'],
-            'whatsapp_no' => ['nullable', 'string', 'max:15'],
-            'aadhar_no' => ['nullable', 'string', 'max:12', 'regex:/^[0-9]{12}$/'],
+            // Basic Info
+            'name'          => ['required', 'string', 'max:255'],
+            'legal_name'    => ['nullable', 'string', 'max:255'],
+            'company_type'  => ['required', Rule::in(array_keys(Company::COMPANY_TYPES))],
+            'website'       => ['nullable', 'url', 'max:255'],
+            'logo'          => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp', 'max:2048'],
+
+            // Registration Numbers
+            'watermark_no'               => ['nullable', 'string', 'max:100'],
+            'copyrights_no'              => ['nullable', 'string', 'max:100'],
+            'cin_no'                     => ['nullable', 'string', 'max:21', Rule::unique('companies', 'cin_no')->ignore($companyId)],
+            'pan_no'                     => ['nullable', 'string', 'max:10', 'regex:/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/', Rule::unique('companies', 'pan_no')->ignore($companyId)],
+            'tan_no'                     => ['nullable', 'string', 'max:10', Rule::unique('companies', 'tan_no')->ignore($companyId)],
+            'gstin'                      => ['nullable', 'string', 'max:15', 'regex:/^[0-9]{2}[A-Z]{5}[0-9]{4}[A-Z]{1}[1-9A-Z]{1}Z[0-9A-Z]{1}$/', Rule::unique('companies', 'gstin')->ignore($companyId)],
+            'udyam_aadhar_no'            => ['nullable', 'string', 'max:19', Rule::unique('companies', 'udyam_aadhar_no')->ignore($companyId)],
+            'partnership_registration_no' => ['nullable', 'string', 'max:100'],
+            'roc_no'                     => ['nullable', 'string', 'max:100'],
+            'msme_certification_no'      => ['nullable', 'string', 'max:100', Rule::unique('companies', 'msme_certification_no')->ignore($companyId)],
+            'ckyc'                       => ['nullable', 'string', 'max:14', Rule::unique('companies', 'ckyc')->ignore($companyId)],
+            'gumasta_no'                 => ['nullable', 'string', 'max:100'],
+
+            // Establishment Date
+            'est_date' => ['nullable', 'date', 'before_or_equal:today'],
+
+            // Attachments
+            'attachment_pan'              => ['nullable', 'file', 'mimes:pdf,jpeg,png,jpg', 'max:5120'],
+            'attachment_tan'              => ['nullable', 'file', 'mimes:pdf,jpeg,png,jpg', 'max:5120'],
+            'attachment_gstin'            => ['nullable', 'file', 'mimes:pdf,jpeg,png,jpg', 'max:5120'],
+            'attachment_ckyc'             => ['nullable', 'file', 'mimes:pdf,jpeg,png,jpg', 'max:5120'],
+            'attachment_partnership_deed' => ['nullable', 'file', 'mimes:pdf,jpeg,png,jpg', 'max:5120'],
+            'attachment_udyam_aadhar'     => ['nullable', 'file', 'mimes:pdf,jpeg,png,jpg', 'max:5120'],
+            'attachment_gumasta'          => ['nullable', 'file', 'mimes:pdf,jpeg,png,jpg', 'max:5120'],
+            'attachment_msme'             => ['nullable', 'file', 'mimes:pdf,jpeg,png,jpg', 'max:5120'],
         ];
     }
 
     public function messages(): array
     {
         return [
-            'name.required' => 'Company name is required.',
-            'company_type.required' => 'Company type is required.',
-            'company_type.in' => 'Please select a valid company type.',
+            'pan_no.regex'   => 'PAN number format is invalid. Expected format: ABCDE1234F',
+            'gstin.regex'    => 'GSTIN format is invalid. Expected 15-character GST number.',
+            'est_date.before_or_equal' => 'Establishment date cannot be in the future.',
+        ];
+    }
 
-            'code.unique' => 'This company code is already taken.',
-            'email.email' => 'Please provide a valid email address.',
-            'est_date.date' => 'Please provide a valid establishment date.',
-            'pan_no.regex' => 'PAN number must be in format: ABCDE1234F',
-            'gstin.regex' => 'GSTIN must be in format: 22AAAAA0000A1Z5',
-            'cin_no.regex' => 'CIN number must be in format: L12345AB1234ABC123456',
-            'tan_no.regex' => 'TAN number must be in format: ABCD12345E',
-            'udyam_aadhar_no.regex' => 'Udyam Aadhar must be in format: UDYAM-XX-00-0000000',
-            'registered_pincode.regex' => 'Pincode must be 6 digits.',
-            'corporate_pincode.regex' => 'Pincode must be 6 digits.',
-            'additional_pincode.regex' => 'Pincode must be 6 digits.',
-
-            '*.url' => 'The :attribute must be a valid URL.'
-
+    public function attributes(): array
+    {
+        return [
+            'name'                        => 'Company Name',
+            'legal_name'                  => 'Legal Name',
+            'company_type'                => 'Company Type',
+            'website'                     => 'Website',
+            'logo'                        => 'Logo',
+            'watermark_no'                => 'Watermark Number',
+            'copyrights_no'               => 'Copyrights Number',
+            'cin_no'                      => 'CIN Number',
+            'pan_no'                      => 'PAN Number',
+            'tan_no'                      => 'TAN Number',
+            'gstin'                       => 'GSTIN',
+            'udyam_aadhar_no'             => 'Udyam Aadhar Number',
+            'partnership_registration_no' => 'Partnership Registration Number',
+            'roc_no'                      => 'ROC Number',
+            'msme_certification_no'       => 'MSME Certification Number',
+            'ckyc'                        => 'CKYC Number',
+            'gumasta_no'                  => 'Gumasta Number',
+            'est_date'                    => 'Establishment Date',
+            'attachment_pan'              => 'PAN Attachment',
+            'attachment_tan'              => 'TAN Attachment',
+            'attachment_gstin'            => 'GSTIN Attachment',
+            'attachment_ckyc'             => 'CKYC Attachment',
+            'attachment_partnership_deed' => 'Partnership Deed',
+            'attachment_udyam_aadhar'     => 'Udyam Aadhar Attachment',
+            'attachment_gumasta'          => 'Gumasta Attachment',
+            'attachment_msme'             => 'MSME Attachment',
         ];
     }
 }

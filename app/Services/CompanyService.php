@@ -3,148 +3,136 @@
 namespace App\Services;
 
 use App\Models\Company;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class CompanyService
 {
-    public function __construct(private FileStorageService $fileStorageService) {}
+    // ─── File Upload Fields ──────────────────────────────────────────────────────
 
-    public function getAll()
+    const FILE_FIELDS = [
+        'logo'                        => 'companies/logos',
+        'attachment_pan'              => 'companies/attachments/pan',
+        'attachment_tan'              => 'companies/attachments/tan',
+        'attachment_gstin'            => 'companies/attachments/gstin',
+        'attachment_ckyc'             => 'companies/attachments/ckyc',
+        'attachment_partnership_deed' => 'companies/attachments/partnership_deed',
+        'attachment_udyam_aadhar'     => 'companies/attachments/udyam_aadhar',
+        'attachment_gumasta'          => 'companies/attachments/gumasta',
+        'attachment_msme'             => 'companies/attachments/msme',
+    ];
+
+    // ─── List / Search ───────────────────────────────────────────────────────────
+
+    public function paginate(array $filters = [], int $perPage = 15): LengthAwarePaginator
     {
-        return Company::all();
+        $query = Company::query()->with(['createdBy', 'updatedBy']);
+
+        if (!empty($filters['search'])) {
+            $search = $filters['search'];
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                    ->orWhere('legal_name', 'like', "%{$search}%")
+                    ->orWhere('pan_no', 'like', "%{$search}%")
+                    ->orWhere('gstin', 'like', "%{$search}%")
+                    ->orWhere('cin_no', 'like', "%{$search}%");
+            });
+        }
+
+        if (!empty($filters['company_type'])) {
+            $query->where('company_type', $filters['company_type']);
+        }
+
+        return $query->latest()->paginate($perPage);
     }
 
-    public function getFirstCompanyBanks()
-    {
-        $company = Company::with('bankDetails')->first();
-        return $company ? $company->bankDetails : [];
-    }
-
-    public function find($id)
-    {
-        return Company::findOrFail($id);
-    }
-
-    public function findFirstOrFail()
-    {
-        return Company::with('bankDetails')->firstOrFail();
-    }
+    // ─── Create ──────────────────────────────────────────────────────────────────
 
     public function create(array $data): Company
     {
-        $data = $this->prepareCompanyData($data);
-        $company = Company::create($data);
-        $data = $this->handleFileUploads($data, $company, 'A');
-        $company->update($data);
-        return $company;
+        $data = $this->handleFileUploads($data);
+        $data['created_by'] = Auth::id();
+        $data['updated_by'] = Auth::id();
+
+        return Company::create($data);
     }
+
+    // ─── Update ──────────────────────────────────────────────────────────────────
 
     public function update(Company $company, array $data): Company
     {
-        $data = $this->prepareCompanyData($data);
-        $data = $this->handleFileUploads($data, $company, 'E');
+        $data = $this->handleFileUploads($data, $company);
+        $data['updated_by'] = Auth::id();
+
         $company->update($data);
+
         return $company->fresh();
     }
 
+    // ─── Delete ──────────────────────────────────────────────────────────────────
+
     public function delete(Company $company): bool
     {
-        $this->deleteFiles($company);
         return $company->delete();
     }
 
-    private function handleFileUploads(array $data, Company $company, string $mode): array
+    public function forceDelete(Company $company): bool
     {
-        $fileFields = [
-            'logo',
-            'attachment_pan',
-            'attachment_tan',
-            'attachment_gstin',
-            'attachment_ckyc',
-            'attachment_partnership_deed',
-            'attachment_udyam_aadhar',
-            'attachment_gumasta',
-            'attachment_msme',
-            'attachment_aadhar'
-        ];
-
-        if ($mode == 'A') {
-            foreach ($fileFields as $field) {
-                if (isset($data[$field . '_url'])) {
-                    $data[$field] = $this->fileStorageService->storeCompanyDocument(
-                        $company->id,
-                        $data[$field . '_url'],
-                        str_replace('attachment_', '', $field)
-                    );
-                }
-            }
-        } else if ($mode == 'E') {
-            foreach ($fileFields as $field) {
-                if (isset($data[$field . '_url'])) {
-                    if (Str::contains($data[$field . '_url'], 'temp')) {
-                        if ($company && $company->$field) {
-                            $this->fileStorageService->deleteFile($company->$field);
-                        }
-                        $data[$field] = $this->fileStorageService->storeCompanyDocument(
-                            $company->id,
-                            $data[$field . '_url'],
-                            str_replace('attachment_', '', $field)
-                        );
-                    } else {
-                        $data[$field] = $company->$field ?? null;
-                    }
-                } else {
-                    if ($company && $company->$field) {
-                        $this->fileStorageService->deleteFile($company->$field);
-                    }
-                    $data[$field] = null;
-                }
-            }
-        }
-        return $data;
+        $this->deleteAllFiles($company);
+        return $company->forceDelete();
     }
 
-    private function deleteFiles(Company $company): void
+    public function restore(int $id): ?Company
     {
-        $fileFields = [
-            'logo',
-            'attachment_pan',
-            'attachment_tan',
-            'attachment_gstin',
-            'attachment_ckyc',
-            'attachment_partnership_deed',
-            'attachment_udyam_aadhar',
-            'attachment_gumasta',
-            'attachment_msme',
-            'attachment_aadhar'
-        ];
+        $company = Company::withTrashed()->findOrFail($id);
+        $company->restore();
+        return $company;
+    }
 
-        foreach ($fileFields as $field) {
-            if ($company->$field) {
-                $this->fileStorageService->deleteFile($company->$field);
+    // ─── File Handling ───────────────────────────────────────────────────────────
+
+    private function handleFileUploads(array $data, ?Company $existing = null): array
+    {
+        foreach (self::FILE_FIELDS as $field => $folder) {
+            if (!isset($data[$field]) || !($data[$field] instanceof UploadedFile)) {
+                unset($data[$field]); // Don't overwrite existing path if no new file
+                continue;
             }
-        }
-    }
 
-    public function generateCompanyCode(string $companyName): string
-    {
-        $baseCode = strtoupper(substr(preg_replace('/[^A-Za-z0-9]/', '', $companyName), 0, 3));
-        $counter = 1;
+            // Delete old file if replacing
+            if ($existing && $existing->{$field}) {
+                Storage::disk('public')->delete($existing->{$field});
+            }
 
-        do {
-            $code = $baseCode . str_pad($counter, 3, '0', STR_PAD_LEFT);
-            $counter++;
-        } while (Company::where('code', $code)->exists());
-
-        return $code;
-    }
-
-    public function prepareCompanyData(array $data): array
-    {
-        if (empty($data['code'])) {
-            $data['code'] = $this->generateCompanyCode($data['name']);
+            $data[$field] = $data[$field]->store($folder, 'public');
         }
 
         return $data;
+    }
+
+    private function deleteAllFiles(Company $company): void
+    {
+        foreach (array_keys(self::FILE_FIELDS) as $field) {
+            if ($company->{$field}) {
+                Storage::disk('public')->delete($company->{$field});
+            }
+        }
+    }
+
+    public function deleteFile(Company $company, string $field): bool
+    {
+        if (!array_key_exists($field, self::FILE_FIELDS)) {
+            return false;
+        }
+
+        if ($company->{$field}) {
+            Storage::disk('public')->delete($company->{$field});
+            $company->update([$field => null, 'updated_by' => Auth::id()]);
+        }
+
+        return true;
     }
 }
