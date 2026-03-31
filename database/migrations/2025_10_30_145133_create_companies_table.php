@@ -15,10 +15,11 @@ return new class extends Migration
             $table->id();
 
             // Basic Company Information
-            $table->string('logo')->nullable();
             $table->string('name');
+            $table->string('legal_name')->nullable();
             $table->enum('company_type', ['sole_proprietorship', 'partnership', 'pvt_ltd', 'public_ltd', 'llp', 'huf', 'ngo']);
-            $table->string('domain')->nullable();
+            $table->string('website')->nullable();
+            $table->string('logo')->nullable();
 
             // Registration Numbers
             $table->string('watermark_no')->nullable();
@@ -37,32 +38,6 @@ return new class extends Migration
             // Establishment Date
             $table->date('est_date')->nullable();
 
-            // Registered Address
-            $table->text('registered_address')->nullable();
-            $table->string('registered_country')->nullable();
-            $table->string('registered_state')->nullable();
-            $table->string('registered_city')->nullable();
-            $table->string('registered_pincode')->nullable();
-
-            // Corporate Address
-            $table->text('corporate_address')->nullable();
-            $table->string('corporate_country')->nullable();
-            $table->string('corporate_state')->nullable();
-            $table->string('corporate_city')->nullable();
-            $table->string('corporate_pincode')->nullable();
-
-            // Additional Address
-            $table->text('additional_address')->nullable();
-            $table->string('additional_country')->nullable();
-            $table->string('additional_state')->nullable();
-            $table->string('additional_city')->nullable();
-            $table->string('additional_pincode')->nullable();
-
-            // Contact Information
-            $table->string('contact_name')->nullable();
-            $table->string('phone')->nullable();
-            $table->string('email')->nullable();
-
             // Attachments
             $table->string('attachment_pan')->nullable();
             $table->string('attachment_tan')->nullable();
@@ -74,6 +49,8 @@ return new class extends Migration
             $table->string('attachment_msme')->nullable();
 
             $table->softDeletes();
+            $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
+            $table->foreignId('updated_by')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
     }
