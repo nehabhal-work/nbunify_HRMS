@@ -36,7 +36,6 @@ return new class extends Migration
 
             $table->unique(['company_id', 'code']);
             $table->index(['company_id', 'branch_id', 'is_active']);
-            $table->timestamps();
         });
     }
 

@@ -17,25 +17,81 @@ class CompanyController extends Controller
      * GET /companies
      * List with optional search & filter
      */
-    public function index(Request $request): JsonResponse
+    public function index(Request $request)
     {
+        // return 'index';
         $filters = $request->only(['search', 'company_type']);
         $perPage = $request->integer('per_page', 15);
 
         $companies = $this->companyService->paginate($filters, $perPage);
 
-        return response()->json([
-            'success' => true,
-            'data'    => $companies,
-        ]);
+        return view('content.master.companies.index', compact('companies'));
+        // return response()->json([
+        //     'success' => true,
+        //     'data'    => $companies,
+        // ]);
     }
 
     /**
      * POST /companies
      * Create a new company
      */
-    public function store(CompanyRequest $request): JsonResponse
+    public function create()
     {
+        $data = getCountries();
+        $country = $data['country'] ?? null;
+        $states = $data['states'] ?? [];
+        $cities = $data['cities'] ?? [];
+        return view('content.master.companies.create', compact('country', 'states', 'cities'));
+    }
+
+    public function store(Request $request)
+    // public function store(CompanyRequest $request)
+    {
+        return 'company store';
+
+        $dummy = [
+            // Basic Info
+            'name'          => 'Acme Technologies',
+            'legal_name'    => 'Acme Technologies Private Limited',
+            'company_type'  => 'pvt_ltd',
+            'website'       => 'https://acme.example.com',
+            'logo'          => null,
+
+            // Registration Numbers
+            'watermark_no'                => 'WM-2024-001',
+            'copyrights_no'               => 'CR-2024-001',
+            'cin_no'                      => 'U74999MH2020PTC123456',
+            'pan_no'                      => 'AABCA1234C',
+            'tan_no'                      => 'MUMA12345B',
+            'gstin'                       => '27AABCA1234C1Z5',
+            'udyam_aadhar_no'             => 'UDYAM-MH-01-0001234',
+            'partnership_registration_no' => null,
+            'roc_no'                      => 'ROC-MUMBAI-123456',
+            'msme_certification_no'       => 'MSME-MH-2024-001',
+            'ckyc'                        => '12345678901234',
+            'gumasta_no'                  => 'GM-MUM-2024-001',
+
+            // Establishment Date
+            'est_date' => '2020-06-15',
+
+            // No file attachments in dummy test
+            'attachment_pan'              => null,
+            'attachment_tan'              => null,
+            'attachment_gstin'            => null,
+            'attachment_ckyc'             => null,
+            'attachment_partnership_deed' => null,
+            'attachment_udyam_aadhar'     => null,
+            'attachment_gumasta'          => null,
+            'attachment_msme'             => null,
+
+            // Audit (use user ID 1 for testing)
+            'created_by' => 1,
+            'updated_by' => 1,
+        ];
+
+
+
         $company = $this->companyService->create($request->validated());
 
         return response()->json([
