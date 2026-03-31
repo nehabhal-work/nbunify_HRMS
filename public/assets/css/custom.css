@@ -12,10 +12,7 @@ input[type="email"] {
     text-transform: none !important;
 }
 
-.logo-color,
-h6 {
-    color: #BC13BE;
-}
+
 
 #divImageSection img {
     width: 100px;
@@ -39,4 +36,495 @@ td {
 
 .table-responsive {
     scroll-behavior: auto;
+}
+/* ================================================
+   NBUnify HRMS — Custom Theme
+   Colors: #F8F5F0 (warm off-white) + #4A7C8E (teal-slate)
+   Paste this entire file into: assets/css/custom.css
+   ================================================ */
+
+/* ── Page Background ── */
+body {
+    background-color: #F0EDE8 !important;
+}
+
+/* ── Sidebar ── */
+.layout-menu {
+    background-color: #F8F5F0 !important;
+    border-right: 1px solid #DDD8D0 !important;
+    box-shadow: none !important;
+}
+
+.app-brand.demo {
+    border-bottom: 1px solid #DDD8D0 !important;
+    background-color: #F8F5F0 !important;
+}
+
+.app-brand-link,
+.app-brand-link:hover {
+    color: #4A7C8E !important;
+    font-weight: 700 !important;
+    font-size: 1rem !important;
+    letter-spacing: 0.3px;
+    text-decoration: none !important;
+}
+
+/* Sidebar menu items — default */
+.menu-inner .menu-item .menu-link {
+    color: #4E6268 !important;
+    border-radius: 6px !important;
+}
+
+.menu-inner .menu-item .menu-link .menu-icon,
+.menu-inner .menu-item .menu-link i {
+    color: #7A9AA5 !important;
+}
+
+/* Sidebar menu items — hover */
+.menu-inner .menu-item .menu-link:hover {
+    background-color: #EDE9E3 !important;
+    color: #2C4A54 !important;
+}
+
+.menu-inner .menu-item .menu-link:hover .menu-icon,
+.menu-inner .menu-item .menu-link:hover i {
+    color: #4A7C8E !important;
+}
+
+/* Sidebar — active / open parent item */
+.menu-inner > .menu-item.active > .menu-link,
+.menu-inner > .menu-item.open > .menu-link {
+    background-color: #4A7C8E !important;
+    color: #ffffff !important;
+    border-radius: 6px !important;
+}
+
+.menu-inner > .menu-item.active > .menu-link .menu-icon,
+.menu-inner > .menu-item.active > .menu-link i,
+.menu-inner > .menu-item.open > .menu-link .menu-icon,
+.menu-inner > .menu-item.open > .menu-link i {
+    color: #ffffff !important;
+}
+
+/* Sidebar — submenu background */
+.menu-sub {
+    background-color: #F1EDE7 !important;
+    border-radius: 0 0 6px 6px !important;
+}
+
+/* Sidebar — submenu items */
+.menu-sub .menu-item .menu-link {
+    color: #5A7078 !important;
+}
+
+.menu-sub .menu-item .menu-link .menu-icon,
+.menu-sub .menu-item .menu-link i {
+    color: #88A8B2 !important;
+}
+
+/* Sidebar — active submenu item */
+.menu-sub .menu-item.active > .menu-link {
+    color: #4A7C8E !important;
+    font-weight: 600 !important;
+    background-color: transparent !important;
+}
+
+.menu-sub .menu-item.active > .menu-link::before {
+    background-color: #4A7C8E !important;
+}
+
+/* Sidebar toggle chevron */
+.layout-menu-toggle i {
+    color: #4A7C8E !important;
+}
+
+/* ── Navbar ── */
+.layout-navbar,
+.navbar {
+    background-color: #FDFBF8 !important;
+    border-bottom: 1px solid #DDD8D0 !important;
+    box-shadow: none !important;
+}
+
+.navbar .nav-link,
+.navbar .nav-link i {
+    color: #4E6268 !important;
+}
+
+.navbar .nav-link:hover,
+.navbar .nav-link:hover i {
+    color: #4A7C8E !important;
+}
+
+/* Avatar / initials circle in navbar */
+.avatar.bg-primary,
+.bg-primary.rounded-circle {
+    background-color: #4A7C8E !important;
+    color: #ffffff !important;
+    border: none !important;
+}
+
+/* Navbar dropdown */
+.navbar .dropdown-menu {
+    border: 1px solid #DDD8D0 !important;
+    box-shadow: 0 4px 16px rgba(74, 124, 142, 0.10) !important;
+    background-color: #FDFBF8 !important;
+    border-radius: 8px !important;
+}
+
+.navbar .dropdown-item {
+    color: #4E6268 !important;
+}
+
+.navbar .dropdown-item:hover,
+.navbar .dropdown-item:focus {
+    background-color: #EDE9E3 !important;
+    color: #2C4A54 !important;
+}
+
+.navbar .dropdown-divider {
+    border-color: #DDD8D0 !important;
+}
+
+/* ── Cards ── */
+.card {
+    background-color: #FDFBF8 !important;
+    border: 1px solid #DDD8D0 !important;
+    box-shadow: 0 1px 6px rgba(74, 124, 142, 0.06) !important;
+    border-radius: 10px !important;
+}
+
+.card-header {
+    background-color: #F8F5F0 !important;
+    border-bottom: 1px solid #DDD8D0 !important;
+    color: #2C4A54 !important;
+}
+
+.card-title {
+    color: #2C4A54 !important;
+}
+
+.card-text,
+.card-body p {
+    color: #5A7078 !important;
+}
+
+/* ── Buttons ── */
+.btn-primary {
+    background-color: #4A7C8E !important;
+    border-color: #4A7C8E !important;
+    color: #ffffff !important;
+}
+
+.btn-primary:hover,
+.btn-primary:focus {
+    background-color: #3D6A7A !important;
+    border-color: #3D6A7A !important;
+    color: #ffffff !important;
+}
+
+.btn-outline-primary {
+    color: #4A7C8E !important;
+    border-color: #4A7C8E !important;
+}
+
+.btn-outline-primary:hover {
+    background-color: #4A7C8E !important;
+    color: #ffffff !important;
+}
+
+/* ── Footer ── */
+.content-footer,
+.footer {
+    background-color: #F8F5F0 !important;
+    border-top: 1px solid #DDD8D0 !important;
+    color: #7A8A8E !important;
+}
+
+/* ── Tables ── */
+.table {
+    color: #4E6268 !important;
+}
+
+.table thead th {
+    background-color: #EDE9E3 !important;
+    color: #2C4A54 !important;
+    border-bottom: 2px solid #C8C2BA !important;
+    font-weight: 600 !important;
+}
+
+.table tbody tr:hover {
+    background-color: #F1EDE7 !important;
+}
+
+.table td,
+.table th {
+    border-color: #E5E0D8 !important;
+}
+
+/* DataTables pagination */
+.page-link {
+    color: #4A7C8E !important;
+    border-color: #DDD8D0 !important;
+    background-color: #FDFBF8 !important;
+}
+
+.page-link:hover {
+    background-color: #EDE9E3 !important;
+    color: #2C4A54 !important;
+}
+
+.page-item.active .page-link {
+    background-color: #4A7C8E !important;
+    border-color: #4A7C8E !important;
+    color: #ffffff !important;
+}
+
+/* ── Form Controls ── */
+.form-control,
+.form-select {
+    border-color: #C8C2BA !important;
+    background-color: #FDFBF8 !important;
+    color: #2C4A54 !important;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: #4A7C8E !important;
+    box-shadow: 0 0 0 3px rgba(74, 124, 142, 0.15) !important;
+    background-color: #ffffff !important;
+}
+
+.form-label {
+    color: #4E6268 !important;
+    font-weight: 500;
+}
+
+/* Select2 */
+.select2-container--default .select2-selection--single {
+    border-color: #C8C2BA !important;
+    background-color: #FDFBF8 !important;
+}
+
+.select2-container--default.select2-container--focus .select2-selection--single,
+.select2-container--default.select2-container--open .select2-selection--single {
+    border-color: #4A7C8E !important;
+    box-shadow: 0 0 0 3px rgba(74, 124, 142, 0.15) !important;
+}
+
+.select2-dropdown {
+    border-color: #DDD8D0 !important;
+    background-color: #FDFBF8 !important;
+}
+
+.select2-results__option--highlighted {
+    background-color: #4A7C8E !important;
+}
+
+/* ── Badges ── */
+.badge.bg-primary {
+    background-color: #4A7C8E !important;
+}
+
+.badge.bg-danger {
+    background-color: #C0413A !important;
+}
+
+/* ── Misc: scrollbar, content area ── */
+.content-wrapper {
+    background-color: #F0EDE8 !important;
+}
+
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: #F0EDE8;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #B8B0A6;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #4A7C8E;
+}
+
+/* -------------------sidebar----------- */
+/* 🌿 USER TRIGGER */
+.sidebar-user-profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    cursor: pointer;
+    border-top: 1px solid #aaa;
+    transition: background 0.2s ease;
+}
+
+.sidebar-user-profile:hover {
+    background: #f5f5f5;
+}
+
+.sidebar-user-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #4A7C8E;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar-user-info {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+
+.sidebar-user-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #333;
+}
+
+.sidebar-user-level {
+    font-size: 11px;
+    color: #888;
+}
+
+.sidebar-user-dots {
+    margin-left: auto;
+    font-size: 16px;
+    color: #aaa;
+}
+
+/* 🌿 POPUP */
+.sidebar-user-popup {
+    display: none;
+    position: absolute;
+    bottom: 65px;
+    left: 10px;
+    right: 10px;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+    z-index: 9999;
+    overflow: hidden;
+    border: 1px solid #eee;
+}
+
+.sidebar-user-popup.show {
+    display: block;
+}
+
+/* HEADER */
+.sup-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    background: #fafafa;
+}
+
+.sup-avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background: #4A7C8E;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sup-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: #333;
+}
+
+.sup-level {
+    font-size: 11px;
+    color: #888;
+}
+
+/* DIVIDER */
+.sup-divider {
+    height: 1px;
+    background: #eee;
+    margin: 4px 0;
+}
+
+/* MENU ITEMS */
+.sup-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    font-size: 13px;
+    color: #444;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    background: none;
+    width: 100%;
+    transition: background 0.15s ease;
+}
+
+.sup-item:hover {
+    background: #f5f5f5;
+}
+
+.sup-item i {
+    font-size: 15px;
+    color: #888;
+}
+
+/* SUBMENU */
+.sup-submenu {
+    display: none;
+    background: #fafafa;
+}
+
+.sup-submenu.open {
+    display: block;
+}
+
+.sup-subitem {
+    padding: 8px 14px 8px 36px;
+    font-size: 12px;
+    color: #555;
+    display: block;
+    text-decoration: none;
+}
+
+.sup-subitem:hover {
+    background: #f1f1f1;
+}
+
+/* BADGE */
+.sup-badge {
+    background: #dc3545;
+    color: #fff;
+    font-size: 10px;
+    padding: 2px 6px;
+    border-radius: 10px;
+}
+
+/* LOGOUT */
+.sup-logout {
+    color: #dc3545 !important;
+}
+
+.sup-logout:hover {
+    background: #fff1f1 !important;
 }

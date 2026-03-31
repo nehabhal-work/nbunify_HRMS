@@ -1,199 +1,326 @@
-<!doctype html>
-
-<html lang="en" class="light-style layout-wide customizer-hide" dir="ltr" data-theme="theme-default"
-    data-assets-path="../../assets/" data-template="horizontal-menu-template">
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+    <meta charset="UTF-8">
+    <title>NB Unify — Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-    <title>Login Basic - Pages | Sneat - Bootstrap 5 HTML Admin Template - Pro</title>
+        body {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #F0EDE8;
+            font-family: 'Public Sans', sans-serif;
+        }
 
-    <meta name="description" content="" />
+        /* ── CARD ── */
+        .container {
+            width: 960px;
+            height: 540px;
+            display: flex;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 24px 60px rgba(74, 124, 142, 0.14);
+        }
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="../../assets/img/favicon/favicon.ico" />
+        /* ── LEFT PANEL ── */
+        .left {
+            width: 42%;
+            background-color: #4A7C8E;
+            color: #fff;
+            padding: 52px 44px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
-        rel="stylesheet" />
+        /* decorative circles */
+        .left::before {
+            content: "";
+            position: absolute;
+            width: 320px;
+            height: 320px;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.10);
+            top: -80px;
+            left: -80px;
+        }
 
-    <!-- Icons -->
-    <link rel="stylesheet" href="../../assets/vendor/fonts/boxicons.css" />
-    <link rel="stylesheet" href="../../assets/vendor/fonts/fontawesome.css" />
-    <link rel="stylesheet" href="../../assets/vendor/fonts/flag-icons.css" />
+        .left::after {
+            content: "";
+            position: absolute;
+            width: 220px;
+            height: 220px;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.10);
+            bottom: -50px;
+            right: -60px;
+        }
 
-    <!-- Core CSS -->
-    <link rel="stylesheet" href="../../assets/vendor/css/rtl/core.css" class="template-customizer-core-css" />
-    <link rel="stylesheet" href="../../assets/vendor/css/rtl/theme-default.css" class="template-customizer-theme-css" />
-    <link rel="stylesheet" href="../../assets/css/demo.css" />
+        .left-top .brand {
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            opacity: 0.75;
+            margin-bottom: 6px;
+        }
 
-    <!-- Vendors CSS -->
-    <link rel="stylesheet" href="../../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
-    <link rel="stylesheet" href="../../assets/vendor/libs/typeahead-js/typeahead.css" />
-    <!-- Vendor -->
-    <link rel="stylesheet" href="../../assets/vendor/libs/@form-validation/form-validation.css" />
+        .left-top .product-name {
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
 
-    <!-- Page CSS -->
-    <!-- Page -->
-    <link rel="stylesheet" href="../../assets/vendor/css/pages/page-auth.css" />
+        .left-top .product-name span {
+            display: block;
+            font-size: 13px;
+            font-weight: 400;
+            opacity: 0.7;
+            letter-spacing: 2px;
+            margin-bottom: 4px;
+        }
 
-    <!-- Helpers -->
-    <script src="../../assets/vendor/js/helpers.js"></script>
-    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
-    <!--? Template customizer: To hide customizer set displayCustomizer value false in config.js.  -->
-    <script src="../../assets/vendor/js/template-customizer.js"></script>
-    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
-    <script src="../../assets/js/config.js"></script>
+        .left-middle {
+            text-align: center;
+            z-index: 1;
+        }
+
+        .logo-circle {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.15);
+            border: 1.5px solid rgba(255,255,255,0.35);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin: 0 auto 20px;
+        }
+
+        .left-middle p {
+            font-size: 13px;
+            line-height: 1.8;
+            opacity: 0.80;
+            max-width: 240px;
+            margin: 0 auto;
+        }
+
+        .left-bottom {
+            font-size: 11px;
+            opacity: 0.5;
+            z-index: 1;
+        }
+
+        /* ── RIGHT PANEL ── */
+        .right {
+            width: 58%;
+            background-color: #FDFBF8;
+            padding: 52px 56px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .right-header {
+            margin-bottom: 32px;
+        }
+
+        .right-header h2 {
+            font-size: 22px;
+            font-weight: 600;
+            color: #2C4A54;
+            margin-bottom: 6px;
+        }
+
+        .right-header p {
+            font-size: 13px;
+            color: #7A9AA5;
+        }
+
+        /* ── FORM ── */
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #7A9AA5;
+            margin-bottom: 8px;
+        }
+
+        .input-wrap {
+            position: relative;
+        }
+
+        .form-group input {
+            width: 100%;
+            border: none;
+            border-bottom: 1.5px solid #C8C2BA;
+            background: transparent;
+            padding: 10px 36px 10px 0;
+            font-size: 14px;
+            color: #2C4A54;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-group input::placeholder {
+            color: #B0B8BC;
+            font-size: 13px;
+        }
+
+        .form-group input:focus {
+            border-bottom-color: #4A7C8E;
+        }
+
+        .toggle-icon {
+            position: absolute;
+            right: 4px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #A0B4BA;
+            font-size: 14px;
+        }
+
+        .toggle-icon:hover {
+            color: #4A7C8E;
+        }
+
+        /* ── ERROR ── */
+        .alert-danger {
+            background-color: #fdf0f0;
+            border: 1px solid #f5c6c6;
+            color: #8B2E2E;
+            border-radius: 8px;
+            padding: 10px 14px;
+            font-size: 12px;
+            margin-bottom: 16px;
+        }
+
+        /* ── BUTTON ── */
+        .btn-login {
+            margin-top: 8px;
+            padding: 12px 36px;
+            background-color: #4A7C8E;
+            color: #ffffff;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            letter-spacing: 0.3px;
+        }
+
+        .btn-login:hover {
+            background-color: #3D6A7A;
+        }
+
+        .btn-login:active {
+            transform: scale(0.98);
+        }
+    </style>
 </head>
-<style>
-    body {
-        height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: linear-gradient(135deg, #214B28, #43964F);
-        font-family: Arial, sans-serif;
-    }
-
-    .login-card {
-        /* background: white; */
-        /* width: 350px; */
-        /* border-radius: 12px; */
-        /* box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3); */
-        overflow: hidden;
-    }
-
-    .login-card-header {
-        background-color: #493e23;
-        /* background-color: #142E18; */
-        color: white;
-        text-align: center;
-        padding: 20px;
-        font-size: 18px;
-        font-weight: bold;
-        border-bottom-left-radius: 50% 20px;
-        border-bottom-right-radius: 50% 20px;
-    }
-
-    .login-card-body {
-        padding: 25px;
-    }
-
-    .login-card-body .form-label {
-        font-weight: 500;
-        color: #3f2e7d;
-    }
-
-    .btn-login {
-        background-color: #D03730;
-        color: white;
-        width: 100%;
-    }
-
-    .btn-login:hover {
-        background-color: #ae2c25;
-        color: #D1B677
-    }
-</style>
 
 <body>
-    <!-- Content -->
 
-    <div class="container-xxl">
-        <div class="authentication-wrapper authentication-basic container-p-y">
-            <div class="authentication-inner">
-                <!-- Register -->
-                <div class="card">
-                    <div class="card-body1">
+    <div class="container">
 
-                        <!-- /Logo -->
-
-                        <div class="login-card">
-                            <div class="login-card-header">
-                                <img src="{{ asset('assets/img/branding/srk-logo.jpeg') }}" alt=""
-                                    width="100" height="100">
-                            </div>
-                            <div class="login-card-body">
-                                <h5 class="mb-4 text-center align-content-center text-uppercase">Login</h5>
-                                <form id="formAuthentication" class="mb-3" action="#" method="post">
-                                    @csrf
-                                    @method('post')
-                                    <div class="mb-3">
-                                        <label for="email" class="form-label">Email</label>
-                                        <input type="email" class="form-control" id="email" name="email"
-                                            placeholder="Enter your email" required>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="password" class="form-label">Password</label>
-                                        <div class="input-group">
-                                            <input type="password" class="form-control" id="password" name="password"
-                                                placeholder="Enter your password" required>
-                                            <span class="input-group-text cursor-pointer" id="togglePassword"><i
-                                                    class="bx bx-hide"></i></span>
-                                        </div>
-                                        <div style="color: #43964F; text-align:center;">
-                                            <small>username:- admin@srk.com /
-                                                Password:-
-                                                password</small>
-
-                                        </div>
-                                    </div>
-                                    <button type="submit" class="btn btn-login">Login</button>
-                                </form>
-                            </div>
-                        </div>
-
-                    </div>
+        <!-- LEFT -->
+        <div class="left">
+            <div class="left-top">
+                <div class="product-name">
+                    <span>Welcome to</span>
+                    NBUnify HRMS
                 </div>
-                <!-- /Register -->
+            </div>
+
+            <div class="left-middle">
+                <div class="logo-circle">🚀</div>
+                <p>
+                    Where people and payroll move in harmony —
+                    simple, steady, and built to last.
+                </p>
+            </div>
+
+            <div class="left-bottom">
+                © {{ date('Y') }} In-House IT Department
             </div>
         </div>
+
+        <!-- RIGHT -->
+        <div class="right">
+            <div class="right-header">
+                <h2>Sign in to your account</h2>
+                <p>Enter your credentials to continue</p>
+            </div>
+
+            <form action="{{ route('login') }}" method="post">
+                @csrf
+                @method('post')
+
+                <div class="form-group">
+                    <label>E-Mail Address</label>
+                    <div class="input-wrap">
+                        <input type="email" name="email" placeholder="Enter your email"
+                            value="{{ old('email') }}" autocomplete="email">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Password</label>
+                    <div class="input-wrap">
+                        <input type="password" name="password" id="password"
+                            placeholder="Enter your password" autocomplete="current-password">
+                        <i class="fa-solid fa-eye toggle-icon" id="toggleIcon"
+                            onclick="togglePassword()"></i>
+                    </div>
+                </div>
+
+                @if ($errors->any())
+                    <div class="alert-danger">
+                        @foreach ($errors->all() as $error)
+                            <div>{{ $error }}</div>
+                        @endforeach
+                    </div>
+                @endif
+
+                <button type="submit" class="btn-login">Login</button>
+            </form>
+        </div>
+
     </div>
 
-    <!-- / Content -->
     <script>
-        const passwordInput = document.getElementById('password');
-        const togglePassword = document.getElementById('togglePassword');
-        const icon = togglePassword.querySelector('i');
-
-        togglePassword.addEventListener('click', () => {
-            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-            passwordInput.setAttribute('type', type);
-
-            // Toggle icon
-            icon.classList.toggle('bx-hide');
-            icon.classList.toggle('bx-show');
-        });
+        function togglePassword() {
+            const password = document.getElementById("password");
+            const icon = document.getElementById("toggleIcon");
+            if (password.type === "password") {
+                password.type = "text";
+                icon.classList.replace("fa-eye", "fa-eye-slash");
+            } else {
+                password.type = "password";
+                icon.classList.replace("fa-eye-slash", "fa-eye");
+            }
+        }
     </script>
-    <!-- Core JS -->
-    <!-- build:js assets/vendor/js/core.js -->
 
-    <script src="../../assets/vendor/libs/jquery/jquery.js"></script>
-    <script src="../../assets/vendor/libs/popper/popper.js"></script>
-    <script src="../../assets/vendor/js/bootstrap.js"></script>
-    <script src="../../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
-    <script src="../../assets/vendor/libs/hammer/hammer.js"></script>
-    <script src="../../assets/vendor/libs/i18n/i18n.js"></script>
-    <script src="../../assets/vendor/libs/typeahead-js/typeahead.js"></script>
-    <script src="../../assets/vendor/js/menu.js"></script>
-
-    <!-- endbuild -->
-
-    <!-- Vendors JS -->
-    <script src="../../assets/vendor/libs/@form-validation/popular.js"></script>
-    <script src="../../assets/vendor/libs/@form-validation/bootstrap5.js"></script>
-    <script src="../../assets/vendor/libs/@form-validation/auto-focus.js"></script>
-
-    <!-- Main JS -->
-    <script src="../../assets/js/main.js"></script>
-
-    <!-- Page JS -->
-    <script src="../../assets/js/pages-auth.js"></script>
 </body>
-
 </html>

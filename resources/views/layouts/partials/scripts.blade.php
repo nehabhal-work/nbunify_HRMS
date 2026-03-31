@@ -49,3 +49,8 @@
 
     });
 </script>
+<script>
+function toggleTheme() {
+    document.body.classList.toggle('offwhite');
+}
+</script>

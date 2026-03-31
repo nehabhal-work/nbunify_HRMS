@@ -14,7 +14,7 @@ class UserSeeder extends Seeder
         $users = [
             [
                 'email' => 'admin@hrms.com',
-                'level' => 1,
+                'level' => 3,
                 'name' => 'IT Dept 1',
                 'password' => 'password',
                 'role' => 'data-entry'
