@@ -17,8 +17,7 @@ return new class extends Migration
             // Basic Company Information
             $table->string('logo')->nullable();
             $table->string('name');
-            $table->enum('company_type', ['sole_proprietorship', 'partnership', 'pvt_ltd', 'public_ltd','llp','huf','ngo']);
-            $table->string('code')->unique();
+            $table->enum('company_type', ['sole_proprietorship', 'partnership', 'pvt_ltd', 'public_ltd', 'llp', 'huf', 'ngo']);
             $table->string('domain')->nullable();
 
             // Registration Numbers
@@ -74,6 +73,7 @@ return new class extends Migration
             $table->string('attachment_gumasta')->nullable();
             $table->string('attachment_msme')->nullable();
 
+            $table->softDeletes();
             $table->timestamps();
         });
     }

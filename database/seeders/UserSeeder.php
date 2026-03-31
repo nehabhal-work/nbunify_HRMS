@@ -13,96 +13,13 @@ class UserSeeder extends Seeder
     {
         $users = [
             [
-                'email' => 'dataentry@els.com',
+                'email' => 'admin@hrms.com',
                 'level' => 1,
                 'name' => 'IT Dept 1',
                 'password' => 'password',
                 'role' => 'data-entry'
             ],
-            [
-                'email' => 'dataentry2@els.com',
-                'level' => 1,
-                'name' => 'IT Dept 1',
-                'password' => 'password',
-                'role' => 'data-entry'
-            ],
-            [
-                'email' => 'accounts@els.com',
-                'level' => 1,
-                'name' => 'IT Dept - Accounts',
-                'password' => 'password',
-                'role' => 'accountant'
-            ],
-            [
-                'email' => 'manager@els.com',
-                'level' => 2,
-                'name' => 'IT Dept 2',
-                'password' => 'password',
-                'role' => 'manager'
-            ],
-            [
-                'email' => 'admin@els.com',
-                'level' => 3,
-                'name' => 'IT Dept 3',
-                'password' => 'password',
-                'role' => 'admin'
-            ],
-            [
-                'email' => 'superadmin@els.com',
-                'level' => 3,
-                'name' => 'IT Dept 3',
-                'password' => 'password',
-                'role' => 'super-admin'
-            ],
-            [
-                'email' => 'sanjanajrcl@els.com',
-                'level' => 1,
-                'name' => 'Sanjana - JR CL',
-                'password' => 'sanjana123',
-                'role' => 'data-entry'
-            ],
-            [
-                'email' => 'sulochana@els.com',
-                'level' => 1,
-                'name' => 'Sulochana - JR CR',
-                'password' => 'sulochana123',
-                'role' => 'data-entry'
-            ],
-            [
-                'email' => 'sanjanam@els.com',
-                'level' => 1,
-                'name' => 'Sanjana M - SR CR',
-                'password' => 'sanjana123',
-                'role' => 'data-entry'
-            ],
-            [
-                'email' => 'sulochanab@els.com',
-                'level' => 1,
-                'name' => 'Sulochana B - SR CR',
-                'password' => 'sulochana123',
-                'role' => 'data-entry'
-            ],
-            [
-                'email' => 'mandar@els.com',
-                'level' => 2,
-                'name' => 'Mandar - Supervisor',
-                'password' => 'mandar123',
-                'role' => 'manager'
-            ],
-            [
-                'email' => 'mandard@els.com',
-                'level' => 2,
-                'name' => 'Mandard - JR Officer',
-                'password' => 'mandar123',
-                'role' => 'manager'
-            ],
-            [
-                'email' => 'mandark@els.com',
-                'level' => 3,
-                'name' => 'Mandark - SR Officer',
-                'password' => 'mandar123',
-                'role' => 'admin'
-            ],
+
         ];
 
         foreach ($users as $userData) {
