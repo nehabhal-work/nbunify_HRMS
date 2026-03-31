@@ -41,9 +41,11 @@ Route::post('client-onboarding', [PreClientController::class, 'store'])->name('p
 Route::get('client-onboarding/{id}/view', [PreClientController::class, 'show'])->name('preclients.show');
 
 Route::middleware(['auth', 'verified'])->prefix('master')->name('master.')->group(function () {
-    Route::resource('companies', CompanyController::class)->except(['destroy'])->middleware('permission:companies.view,companies.create,companies.edit');
+    Route::resource('companies', CompanyController::class);
+    // ->except(['destroy'])->middleware('permission:companies.view,companies.create,companies.edit');
     Route::delete('companies/{company}', [CompanyController::class, 'destroy'])->name('companies.destroy')->middleware('permission:companies.delete');
-    Route::resource('head-offices', HeadOfficeController::class)->except(['destroy'])->middleware('permission:head-offices.view,head-offices.create,head-offices.edit');
+    Route::resource('head-offices', HeadOfficeController::class);
+    // ->except(['destroy'])->middleware('permission:head-offices.view,head-offices.index, head-offices.create,head-offices.edit');
     Route::delete('head-offices/{head_office}', [HeadOfficeController::class, 'destroy'])->name('head-offices.destroy')->middleware('permission:head-offices.delete');
     Route::resource('branches', BranchController::class)->except(['destroy'])->middleware('permission:branches.view,branches.create,branches.edit');
     Route::delete('branches/{branch}', [BranchController::class, 'destroy'])->name('branches.destroy')->middleware('permission:branches.delete');

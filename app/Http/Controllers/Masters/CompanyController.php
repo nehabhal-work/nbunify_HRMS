@@ -45,101 +45,102 @@ class CompanyController extends Controller
         return view('content.master.companies.create', compact('country', 'states', 'cities'));
     }
 
-    public function store(Request $request)
-    // public function store(CompanyRequest $request)
+    // public function store(Request $request)
+    public function store(CompanyRequest $request)
     {
-        return 'company store';
+        // return 'company store';
 
-        $dummy = [
-            // Basic Info
-            'name'          => 'Acme Technologies',
-            'legal_name'    => 'Acme Technologies Private Limited',
-            'company_type'  => 'pvt_ltd',
-            'website'       => 'https://acme.example.com',
-            'logo'          => null,
+        // $request = [
+        //     // Basic Info
+        //     'name'          => 'Acme Technologies',
+        //     'legal_name'    => 'Acme Technologies Private Limited',
+        //     'company_type'  => 'pvt_ltd',
+        //     'website'       => 'https://acme.example.com',
+        //     'logo'          => null,
 
-            // Registration Numbers
-            'watermark_no'                => 'WM-2024-001',
-            'copyrights_no'               => 'CR-2024-001',
-            'cin_no'                      => 'U74999MH2020PTC123456',
-            'pan_no'                      => 'AABCA1234C',
-            'tan_no'                      => 'MUMA12345B',
-            'gstin'                       => '27AABCA1234C1Z5',
-            'udyam_aadhar_no'             => 'UDYAM-MH-01-0001234',
-            'partnership_registration_no' => null,
-            'roc_no'                      => 'ROC-MUMBAI-123456',
-            'msme_certification_no'       => 'MSME-MH-2024-001',
-            'ckyc'                        => '12345678901234',
-            'gumasta_no'                  => 'GM-MUM-2024-001',
+        //     // Registration Numbers
+        //     'watermark_no'                => 'WM-2024-001',
+        //     'copyrights_no'               => 'CR-2024-001',
+        //     'cin_no'                      => 'U74999MH2020PTC123456',
+        //     'pan_no'                      => 'AABCA1234C',
+        //     'tan_no'                      => 'MUMA12345B',
+        //     'gstin'                       => '27AABCA1234C1Z5',
+        //     'udyam_aadhar_no'             => 'UDYAM-MH-01-0001234',
+        //     'partnership_registration_no' => '1231',
+        //     'roc_no'                      => 'ROC-MUMBAI-123456',
+        //     'msme_certification_no'       => 'MSME-MH-2024-001',
+        //     'ckyc'                        => '12345678901234',
+        //     'gumasta_no'                  => 'GM-MUM-2024-001',
 
-            // Establishment Date
-            'est_date' => '2020-06-15',
+        //     // Establishment Date
+        //     'est_date' => '2020-06-15',
 
-            // No file attachments in dummy test
-            'attachment_pan'              => null,
-            'attachment_tan'              => null,
-            'attachment_gstin'            => null,
-            'attachment_ckyc'             => null,
-            'attachment_partnership_deed' => null,
-            'attachment_udyam_aadhar'     => null,
-            'attachment_gumasta'          => null,
-            'attachment_msme'             => null,
+        //     // No file attachments in dummy test
+        //     'attachment_pan'              => null,
+        //     'attachment_tan'              => null,
+        //     'attachment_gstin'            => null,
+        //     'attachment_ckyc'             => null,
+        //     'attachment_partnership_deed' => null,
+        //     'attachment_udyam_aadhar'     => null,
+        //     'attachment_gumasta'          => null,
+        //     'attachment_msme'             => null,
 
-            // Audit (use user ID 1 for testing)
-            'created_by' => 1,
-            'updated_by' => 1,
-        ];
+        //     // Audit (use user ID 1 for testing)
+        //     'created_by' => 1,
+        //     'updated_by' => 1,
+        // ];
 
 
 
+        // $company = $this->companyService->create($request);
         $company = $this->companyService->create($request->validated());
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Company created successfully.',
-            'data'    => $company->load(['createdBy', 'updatedBy']),
-        ], 201);
+        return 'done' . $company->id;
+        // return response()->json([
+        //     'success' => true,
+        //     'message' => 'Company created successfully.',
+        //     'data'    => $company->load(['createdBy', 'updatedBy']),
+        // ], 201);
     }
 
     /**
      * GET /companies/{company}
      * Show a single company
      */
-    public function show(Company $company): JsonResponse
+    public function show(Company $company)
     {
-        return response()->json([
-            'success' => true,
-            'data'    => $company->load(['createdBy', 'updatedBy']),
-        ]);
+        $company = $company->load(['createdBy', 'updatedBy']);
+        return view('content.master.companies.view', compact('company'));
     }
 
+    public function edit(Company $company)
+    {
+        $data = getCountries();
+        $country = $data['country'] ?? null;
+        $states = $data['states'] ?? [];
+        $cities = $data['cities'] ?? [];
+        $bankDetails = $company->bankDetails ?? [];
+        return view('content.master.companies.edit', compact('company', 'country', 'states', 'cities', 'bankDetails'));
+    }
     /**
      * PUT/PATCH /companies/{company}
      * Update a company
      */
-    public function update(CompanyRequest $request, Company $company): JsonResponse
+    public function update(CompanyRequest $request, Company $company)
     {
         $updated = $this->companyService->update($company, $request->validated());
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Company updated successfully.',
-            'data'    => $updated->load(['createdBy', 'updatedBy']),
-        ]);
+        return view('content.master.companies.view', compact('company'));
     }
 
     /**
      * DELETE /companies/{company}
      * Soft delete a company
      */
-    public function destroy(Company $company): JsonResponse
+    public function destroy(Company $company)
     {
         $this->companyService->delete($company);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Company deleted successfully.',
-        ]);
+        return view('content.master.companies.index')->with('success', 'Company deleted successfully.');
     }
 
     /**
