@@ -21,7 +21,7 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-
+Route::post('/upload-temp', [App\Http\Controllers\TempUploadController::class, 'store'])->name('upload.temp');
 
 Route::middleware(['auth', 'verified'])->prefix('master')->name('master.')->group(function () {
     Route::resource('companies', CompanyController::class);

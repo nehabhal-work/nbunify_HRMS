@@ -12,6 +12,70 @@
 
 
     </div>
+    <style>
+        .doc-card {
+            border: 1.5px dashed #d0d7e3;
+            border-radius: 14px;
+            background: #fafbfd;
+            transition: all 0.25s ease;
+            cursor: pointer;
+        }
+
+        .doc-card:hover {
+            border-color: #3b82f6;
+            background: #f0f5ff;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.1);
+        }
+
+        .doc-card--uploaded {
+            border: 1.5px solid #22c55e;
+            background: #f0fdf4;
+        }
+
+        .doc-card--uploaded:hover {
+            border-color: #16a34a;
+            background: #dcfce7;
+        }
+
+        /* Badges */
+        .doc-badge {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 0.4px;
+            padding: 3px 9px;
+            border-radius: 6px;
+            text-transform: uppercase;
+        }
+
+        .doc-badge--required {
+            background: #fff1f1;
+            color: #dc2626;
+            border: 1px solid #fca5a5;
+        }
+
+        .doc-badge--uploaded {
+            background: #dcfce7;
+            color: #15803d;
+            border: 1px solid #86efac;
+        }
+
+        /* Status dots */
+        .status-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .status-dot--red {
+            background: #ef4444;
+        }
+
+        .status-dot--green {
+            background: #22c55e;
+        }
+    </style>
 
     @if ($errors->any())
         <div class="alert alert-danger">
@@ -31,7 +95,7 @@
     <form action="{{ route('master.companies.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         @method('post')
-
+        {{-- 
         <input type="hidden" name="res_country" id="res_country" value="India">
         <input type="hidden" name="res_state" id="res_state" value="Maharashtra">
         <input type="hidden" name="res_city" id="res_city" value="Thane">
@@ -42,61 +106,44 @@
 
         <input type="hidden" name="additional_country" id="additional_country">
         <input type="hidden" name="additional_state" id="additional_state">
-        <input type="hidden" name="additional_city" id="additional_city">
+        <input type="hidden" name="additional_city" id="additional_city"> --}}
 
         <div class="row align-items-stretch">
             <div class="col-md-12">
                 <div class="card mb-4">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Primary Information</h5>
-                        <small class="text-muted float-end">Company Basic Details</small>
+                        <h5 class="mb-0">Basic Information</h5>
+                        <small class="text-muted float-end">Company Primary Details</small>
                     </div>
                     <div class="card-body">
-                        {{-- Primary Information --}}
-                        <div class="row">
+                        <div class="row g-3 mt-2">
 
-                            <!-- Company Name -->
-                            <div class="col-md-3 mb-3">
-                                <label class="form-label">Company Name <span class="text-danger">*</span></label>
-                                <input type="text" name="name" id="name"
-                                    class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}">
+
+                            <div class="col-md-4 mb-3">
+                                <label>Company Name <span class="text-danger">*</span></label>
+                                <input type="text" name="name"
+                                    class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}"
+                                    placeholder="Enter company name">
                                 @error('name')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
 
-
-                            <!-- Company band -->
-                            <div class="col-md-2 mb-3">
-                                <label class="form-label">Company brand Name <span class="text-danger">*</span></label>
-                                <input type="text" name="brand_name" id="brand_name"
-                                    class="form-control @error('brand_name') is-invalid @enderror"
-                                    value="{{ old('brand_name') }}">
-                                @error('brand_name')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
+                            <div class="col-md-4 mb-3">
+                                <label>Legal Name</label>
+                                <input type="text" name="legal_name"
+                                    class="form-control @error('legal_name') is-invalid @enderror"
+                                    value="{{ old('legal_name') }}" placeholder="Legal registered name">
                             </div>
 
-                            <!-- Company Type -->
-                            <div class="col-md-3 mb-3" hidden>
-                                <label class="form-label">Company Type <span class="text-danger">*</span></label>
-                                <select name="company_type" id="company_type"
-                                    class="form-select select2 @error('company_type') is-invalid @enderror">
-                                    <option value="">Select Type</option>
-                                    <option value="sole_proprietorship" selected
-                                        {{ old('company_type') == 'sole_proprietorship' ? 'selected' : '' }}>Sole
-                                        Proprietorship</option>
-                                    <option value="partnership"
-                                        {{ old('company_type') == 'partnership' ? 'selected' : '' }}>Partnership</option>
-                                    <option value="pvt_ltd" {{ old('company_type') == 'pvt_ltd' ? 'selected' : '' }}>Private
-                                        Limited</option>
-                                    <option value="public_ltd" {{ old('company_type') == 'public_ltd' ? 'selected' : '' }}>
-                                        Public Limited</option>
+                            <div class="col-md-4 mb-3">
+                                <label>Company Type <span class="text-danger">*</span></label>
+                                <select name="company_type"
+                                    class="form-control @error('company_type') is-invalid @enderror">
+                                    <option value="">Select type</option>
+                                    <option value="pvt_ltd" {{ old('company_type') == 'pvt_ltd' ? 'selected' : '' }}>
+                                        Private Ltd</option>
                                     <option value="llp" {{ old('company_type') == 'llp' ? 'selected' : '' }}>LLP
-                                    </option>
-                                    <option value="huf" {{ old('company_type') == 'huf' ? 'selected' : '' }}>HUF
-                                    </option>
-                                    <option value="ngo" {{ old('company_type') == 'ngo' ? 'selected' : '' }}>NGO
                                     </option>
                                 </select>
                                 @error('company_type')
@@ -104,1120 +151,602 @@
                                 @enderror
                             </div>
 
-                            <!-- Establishment Date -->
-                            <div class="col-md-2 mb-3">
-                                <label class="form-label">Establishment Date <span class="text-danger">*</span></label>
-                                <input type="text" name="est_date" id="est_date"
-                                    class="form-control datepicker @error('est_date') is-invalid @enderror"
-                                    value="{{ old('est_date') }}" placeholder="Select Date" readonly>
-                                @error('est_date')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <div class="w-100"></div>
-                            <!-- Contact Person -->
-                            <div class="col-md-3 mb-3">
-                                <label class="form-label">Contact Person Name <span class="text-danger">*</span></label>
-                                <input type="text" name="contact_person_name" id="contact_person_name"
-                                    class="form-control @error('contact_person_name') is-invalid @enderror"
-                                    value="{{ old('contact_person_name') }}">
-                                @error('contact_person_name')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-
-                            <!-- Contact Number -->
-
-                            <div class="col-md-3 mb-3">
-                                <label class="form-label">Contact Person Number <span class="text-danger">*</span></label>
-                                <input type="text" name="phone" id="phone"
-                                    class="form-control onlyphone @error('phone') is-invalid @enderror"
-                                    value="{{ old('phone') }}" maxlength="15">
-                                @error('phone')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <!-- Email -->
-                            <div class="col-md-3 mb-3">
-                                <label class="form-label">Contact Person Email <span class="text-danger">*</span></label>
-                                <input type="email" name="email" id="email"
-                                    class="form-control  no-uppercase @error('email') is-invalid @enderror"
-                                    value="{{ old('email') }}">
-                                @error('email')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            {{-- WhatsApp Number --}}
-                            <div class="col-md-3 mb-3">
-                                <label class="form-label" for="whatsapp_no">Contact Person WhatsApp Number</label>
-                                <input type="text"
-                                    class="form-control onlyphone @error('whatsapp_no') is-invalid @enderror"
-                                    id="whatsapp_no" name="whatsapp_no" maxlength="15"
-                                    value="{{ old('whatsapp_no') }}">
-                                <label class="uk-margin-right"><input class="uk-checkbox chkbox_fwapp_same_as_mobile"
-                                        type="checkbox" id="" value="ON">
-                                    Same as mobile no.</label>
-                                @error('whatsapp_no')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-
-                            <div class="w-100"></div>
-
-                            <!-- Proprietor Contact Person -->
-                            <div class="col-md-3 mb-3">
-                                <label class="form-label">Proprietor Name <span class="text-danger">*</span></label>
-                                <input type="text" name="proprietor_name" id="proprietor_name"
-                                    class="form-control @error('proprietor_name') is-invalid @enderror"
-                                    value="{{ old('proprietor_name') }}">
-                                @error('proprietor_name')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <!-- Proprietor Contact Number -->
-                            <div class="col-md-3 mb-3">
-                                <label class="form-label">Proprietor Contact Number <span
-                                        class="text-danger">*</span></label>
-                                <input type="text" name="proprietor_phone" id="proprietor_phone"
-                                    class="form-control onlyphone @error('proprietor_phone') is-invalid @enderror"
-                                    value="{{ old('proprietor_phone') }}" maxlength="15">
-                                @error('proprietor_phone')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-
-
-                            <!-- Proprietor Email -->
-                            <div class="col-md-3 mb-3">
-                                <label class="form-label">Proprietor Email <span class="text-danger">*</span></label>
-                                <input type="email" name="proprietor_email" id="proprietor_email"
-                                    class="form-control no-uppercase @error('proprietor_email') is-invalid @enderror"
-                                    value="{{ old('proprietor_email') }}">
-                                @error('proprietor_email')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <!-- Proprietor WhatsApp Number -->
-                            <div class="col-md-3 mb-3">
-                                <label class="form-label" for="proprietor_whatsapp">Proprietor WhatsApp Number</label>
-                                <input type="text"
-                                    class="form-control onlyphone @error('proprietor_whatsapp') is-invalid @enderror"
-                                    id="proprietor_whatsapp" name="proprietor_whatsapp" maxlength="15"
-                                    value="{{ old('proprietor_whatsapp') }}">
-                                <div class="form-check mt-1">
-                                    <input class="form-check-input chkbox_prop_wa_same_as_mobile" type="checkbox"
-                                        id="chkbox_prop_wa_same_as_mobile">
-                                    <label class="form-check-label" for="chkbox_prop_wa_same_as_mobile">
-                                        Same as mobile no.
-                                    </label>
-                                </div>
-                                @error('proprietor_whatsapp')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-
-
-
-
-
-
-
-                        </div>
-
-
-                        {{-- address section --}}
-                        <div class="row">
-                            <!-- Residential Address -->
-                            <h6 class="my-3">Registered Address</h6>
                             <div class="col-md-4 mb-3">
-                                <label class="form-label">Address <span class="text-danger">*</span></label>
-                                <input type="text" name="registered_address" id="res_address"
-                                    class="form-control @error('registered_address') is-invalid @enderror"
-                                    value="{{ old('registered_address') }}">
-                                @error('registered_address')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
+                                <label>Website</label>
+                                <input type="url" name="website"
+                                    class="form-control @error('website') is-invalid @enderror" value="{{ old('website') }}"
+                                    placeholder="https://example.com">
                             </div>
 
-                            {{-- COUNTRY --}}
-                            <div class="col-md-2 mb-3">
-                                <label class="form-label">Country</label>
-                                <select name="registered_country_code" id="registered_country_code"
-                                    class="form-select select2 @error('registered_country_code') is-invalid @enderror">
-
-                                    @foreach ($country as $c)
-                                        <option value="{{ $c['iso2'] }}"
-                                            {{ old('registered_country_code', 'IN') == $c['iso2'] ? 'selected' : '' }}
-                                            data-country-name="{{ $c['name'] }}">
-                                            {{ $c['name'] }}
-                                        </option>
-                                    @endforeach
-                                </select>
-
-                                @error('registered_country_code')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-
-                            {{-- STATE --}}
-                            <div class="col-md-2 mb-3">
-                                <label class="form-label">State</label>
-                                <select name="registered_state_code" id="registered_state_code"
-                                    class="form-select select2 @error('registered_state_code') is-invalid @enderror">
-
-                                    @foreach ($states as $s)
-                                        <option value="{{ $s['iso2'] }}"
-                                            {{ old('registered_state_code', 'MH') == $s['iso2'] ? 'selected' : '' }}
-                                            data-state-name="{{ $s['name'] }}">
-                                            {{ $s['name'] }}
-                                        </option>
-                                    @endforeach
-                                </select>
-
-                                @error('registered_state_code')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-
-                            {{-- CITY --}}
-                            <div class="col-md-2 mb-3">
-                                <label class="form-label">City</label>
-                                <select name="registered_city_code" id="registered_city_code"
-                                    class="form-select select2 @error('registered_city_code') is-invalid @enderror">
-
-                                    @foreach ($cities as $c)
-                                        <option value="{{ $c['id'] }}"
-                                            {{ old('registered_city_code', '134138') == $c['id'] ? 'selected' : '' }}
-                                            data-city-name="{{ $c['name'] }}">
-                                            {{ $c['name'] }}
-                                        </option>
-                                    @endforeach
-                                </select>
-
-                                @error('registered_city_code')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-
-                            {{-- Pincode --}}
-                            <div class="col-md-2 mb-3">
-                                <label class="form-label">Pincode</label>
-                                <input type="text" name="registered_pincode" id="registered_pincode"
-                                    class="form-control onlydigit @error('registered_pincode') is-invalid @enderror"
-                                    value="{{ old('registered_pincode') }}" maxlength="6">
-                                @error('registered_pincode')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-
-
-
-
-                            <!-- Office Address -->
-                            <h6 class="my-3">Corporate Address</h6>
                             <div class="col-md-4 mb-3">
-                                <label class="form-label">Address</label>
-                                <input type="text" name="corporate_address" id="corporate_address"
-                                    class="form-control @error('corporate_address') is-invalid @enderror"
-                                    value="{{ old('corporate_address') }}">
-                                @error('corporate_address')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            {{-- COUNTRY --}}
-                            <div class="col-md-2 mb-3">
-                                <label class="form-label">Country</label>
-                                <select name="corporate_country_code" id="corporate_country_code"
-                                    class="form-select select2 @error('corporate_country_code') is-invalid @enderror">
-
-                                    @foreach ($country as $c)
-                                        <option value="{{ $c['iso2'] }}"
-                                            {{ old('corporate_country_code', 'IN') == $c['iso2'] ? 'selected' : '' }}
-                                            data-country-name="{{ $c['name'] }}">
-                                            {{ $c['name'] }}
-                                        </option>
-                                    @endforeach
-                                </select>
-
-                                @error('corporate_country_code')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-
-                            {{-- STATE --}}
-                            <div class="col-md-2 mb-3">
-                                <label class="form-label">State</label>
-                                <select name="corporate_state_code" id="corporate_state_code"
-                                    class="form-select select2 @error('corporate_state_code') is-invalid @enderror">
-
-                                    @foreach ($states as $s)
-                                        <option value="{{ $s['iso2'] }}"
-                                            {{ old('corporate_state_code', 'MH') == $s['iso2'] ? 'selected' : '' }}
-                                            data-state-name="{{ $s['name'] }}">
-                                            {{ $s['name'] }}
-                                        </option>
-                                    @endforeach
-                                </select>
-
-                                @error('corporate_state_code')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-
-                            {{-- CITY --}}
-                            <div class="col-md-2 mb-3">
-                                <label class="form-label">City</label>
-                                <select name="corporate_city_code" id="corporate_city_code"
-                                    class="form-select select2 @error('corporate_city_code') is-invalid @enderror">
-
-                                    @foreach ($cities as $c)
-                                        <option value="{{ $c['id'] }}"
-                                            {{ old('corporate_city_code', '134138') == $c['id'] ? 'selected' : '' }}
-                                            data-city-name="{{ $c['name'] }}">
-                                            {{ $c['name'] }}
-                                        </option>
-                                    @endforeach
-                                </select>
-
-                                @error('corporate_city_code')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-
-                            <div class="col-md-2 mb-3">
-                                <label class="form-label">Pincode</label>
-                                <input type="text" name="corporate_pincode" id="corporate_pincode"
-                                    class="form-control onlydigit @error('corporate_pincode') is-invalid @enderror"
-                                    value="{{ old('corporate_pincode') }}" maxlength="6">
-                                @error('corporate_pincode')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-
-                            <!-- Additional Address -->
-                            <h6 class="my-3">Additional Address For GST</h6>
-                            <div class="col-md-4 mb-3">
-                                <label class="form-label">Address</label>
-                                <input type="text" name="additional_address" id="additional_address"
-                                    class="form-control @error('additional_address') is-invalid @enderror"
-                                    value="{{ old('additional_address') }}">
-                                @error('additional_address')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            {{-- Country --}}
-                            <div class="col-md-2 mb-3">
-                                <label class="form-label">Country</label>
-                                <select name="additional_country_code" id="additional_country_code"
-                                    class="form-select select2 @error('additional_country_code') is-invalid @enderror">
-
-                                    @foreach ($country as $c)
-                                        <option value="{{ $c['iso2'] }}"
-                                            {{ old('additional_country_code', 'IN') == $c['iso2'] ? 'selected' : '' }}
-                                            data-country-name="{{ $c['name'] }}">
-                                            {{ $c['name'] }}
-                                        </option>
-                                    @endforeach
-                                </select>
-
-                                @error('additional_country_code')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-
-                            {{-- STATE --}}
-                            <div class="col-md-2 mb-3">
-                                <label class="form-label">State</label>
-                                <select name="additional_state_code" id="additional_state_code"
-                                    class="form-select select2 @error('additional_state_code') is-invalid @enderror">
-
-                                    @foreach ($states as $s)
-                                        <option value="{{ $s['iso2'] }}"
-                                            {{ old('additional_state_code', 'MH') == $s['iso2'] ? 'selected' : '' }}
-                                            data-state-name="{{ $s['name'] }}">
-                                            {{ $s['name'] }}
-                                        </option>
-                                    @endforeach
-                                </select>
-
-                                @error('additional_state_code')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-
-                            {{-- CITY --}}
-                            <div class="col-md-2 mb-3">
-                                <label class="form-label">City</label>
-                                <select name="additional_city_code" id="additional_city_code"
-                                    class="form-select select2 @error('additional_city_code') is-invalid @enderror">
-
-                                    @foreach ($cities as $c)
-                                        <option value="{{ $c['id'] }}"
-                                            {{ old('additional_city_code', '134138') == $c['id'] ? 'selected' : '' }}
-                                            data-city-name="{{ $c['name'] }}">
-                                            {{ $c['name'] }}
-                                        </option>
-                                    @endforeach
-                                </select>
-
-                                @error('additional_city_code')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-
-
-                            <div class="col-md-2 mb-3">
-                                <label class="form-label">Pincode</label>
-                                <input type="text" name="additional_pincode" id="additional_pincode"
-                                    class="form-control onlydigit @error('additional_pincode') is-invalid @enderror"
-                                    value="{{ old('additional_pincode') }}" maxlength="6">
-                                @error('additional_pincode')
+                                <label>Company Logo</label>
+                                <input type="file" name="logo"
+                                    class="form-control @error('logo') is-invalid @enderror">
+                                @error('logo')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
                         </div>
                     </div>
                 </div>
+
             </div>
 
 
 
-            <div class="col-md-6 d-flex">
+
+
+
+            {{-- Address Details  --}}
+            <div class="col-md-12">
                 <div class="card mb-4">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Company Registration & Compliance</h5>
-                        <small class="text-muted float-end">Official Identification Numbers</small>
+                        <h5 class="mb-0">📍 Address Details </h5>
+                        <span class="text-muted float-end">
+                            <div class="form-check">
+                                <input type="checkbox" id="sameAddress" class="form-check-input">
+                                <label class="form-check-label">Same as Registered address</label>
+                            </div>
+                        </span>
                     </div>
-
                     <div class="card-body">
-                        <div class="row">
+                        <div class="row g-3 mt-2">
 
-                            <!-- CIN Number -->
-                            <div class="col-md-6 mb-3 d-none">
-                                <label class="form-label">CIN Number</label>
-                                <input type="text" name="cin_no" id="cin_no"
-                                    class="form-control  @error('cin_no') is-invalid @enderror"
-                                    value="{{ old('cin_no') }}">
+                            <!-- ================= REGISTERED ================= -->
+                            <div class="col-md-6 border-end pe-4">
+                                <h6 class="mb-3 text-muted">Registered Address</h6>
+
+                                <div class="mb-3">
+                                    <label>Address Line 1 <span class="text-danger">*</span></label>
+                                    <input type="text" name="reg_address_line1" placeholder="Building No., Street, Area"
+                                        class="form-control @error('reg_address_line1') is-invalid @enderror"
+                                        value="{{ old('reg_address_line1') }}">
+                                    @error('reg_address_line1')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="mb-3">
+                                    <label>Address Line 2</label>
+                                    <input type="text" name="reg_address_line2" placeholder="Floor, Suite, Landmark"
+                                        class="form-control" value="{{ old('reg_address_line2') }}">
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label>City</label>
+                                        <input type="text" name="reg_city"
+                                            class="form-control @error('reg_city') is-invalid @enderror"
+                                            value="{{ old('reg_city') }}" placeholder="City">
+                                        @error('reg_city')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+                                        <label>State</label>
+                                        <select name="reg_state"
+                                            class="form-select @error('reg_state') is-invalid @enderror">
+                                            <option value="">Select state...</option>
+                                            <option value="Maharashtra"
+                                                {{ old('reg_state') == 'Maharashtra' ? 'selected' : '' }}>
+                                                Maharashtra</option>
+                                        </select>
+                                        @error('reg_state')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+                                        <label>Postal Code</label>
+                                        <input type="text" name="reg_pincode"
+                                            class="form-control @error('reg_pincode') is-invalid @enderror"
+                                            value="{{ old('reg_pincode') }}" placeholder="Postal Code">
+                                        @error('reg_pincode')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+                                        <label>Country</label>
+                                        <select name="reg_country" class="form-control">
+                                            <option value="India">India</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ================= OPERATIONAL ================= -->
+                            <div class="col-md-6 ps-4" id="operationalAddress">
+                                <h6 class="mb-3 text-muted">Operational / Correspondence Address</h6>
+
+                                <div class="mb-3">
+                                    <label>Address Line 1</label>
+                                    <input type="text" name="op_address_line1"
+                                        class="form-control @error('op_address_line1') is-invalid @enderror"
+                                        value="{{ old('op_address_line1') }}" placeholder="Building No., Street, Area">
+                                    @error('op_address_line1')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="mb-3">
+                                    <label>Address Line 2</label>
+                                    <input type="text" name="op_address_line2" class="form-control"
+                                        value="{{ old('op_address_line2') }}" placeholder="Floor, Suite, Landmark">
+                                </div>
+
+                                <div class="row">
+
+                                    <div class="col-md-6 mb-3">
+                                        <label>City</label>
+                                        <input type="text" name="op_city"
+                                            class="form-control @error('op_city') is-invalid @enderror"
+                                            value="{{ old('op_city') }}" placeholder="City">
+                                        @error('op_city')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+                                        <label>State</label>
+                                        <select name="op_state"
+                                            class="form-select @error('op_state') is-invalid @enderror">
+                                            <option value="">Select state...</option>
+                                            <option value="Maharashtra"
+                                                {{ old('op_state') == 'Maharashtra' ? 'selected' : '' }}>
+                                                Maharashtra</option>
+                                        </select>
+                                        @error('op_state')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+                                        <label>Postal Code</label>
+                                        <input type="text" name="op_pincode"
+                                            class="form-control @error('op_pincode') is-invalid @enderror"
+                                            value="{{ old('op_pincode') }}" placeholder="Postal Code">
+                                        @error('op_pincode')
+                                            <div class="invalid-feedback">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+
+                                    <div class="col-md-6 mb-3">
+                                        <label>Country</label>
+                                        <select name="op_country" class="form-control">
+                                            <option value="India">India</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
+            {{-- Registration Details --}}
+            <div class="col-md-12">
+                <div class="card mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">Registration details</h5>
+                        <small class="text-muted float-end">Bank Information</small>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3 mt-2">
+
+                            <div class="col-md-3 mb-3">
+                                <label>CIN No</label>
+                                <input type="text" name="cin_no" maxlength="21"
+                                    class="form-control @error('cin_no') is-invalid @enderror"
+                                    value="{{ old('cin_no') }}" placeholder="Enter CIN Number">
                                 @error('cin_no')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
 
-                            <!-- PAN Number -->
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">PAN Number of proprietor <span
-                                        class="text-danger">*</span></label>
-                                <input type="text" name="pan_no" id="pan_no"
-                                    class="form-control  @error('pan_no') is-invalid @enderror"
-                                    value="{{ old('pan_no') }}" maxlength="10">
+                            <div class="col-md-3 mb-3">
+                                <label>PAN No</label>
+                                <input type="text" name="pan_no" maxlength="10"
+                                    class="form-control @error('pan_no') is-invalid @enderror"
+                                    value="{{ old('pan_no') }}" placeholder="ABCDE1234F">
                                 @error('pan_no')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
 
-                            <!-- TAN Number -->
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">TAN Number</label>
-                                <input type="text" name="tan_no" id="tan_no"
-                                    class="form-control  @error('tan_no') is-invalid @enderror"
-                                    value="{{ old('tan_no') }}" maxlength="10">
+                            <div class="col-md-3 mb-3">
+                                <label>TAN No</label>
+                                <input type="text" name="tan_no" maxlength="10"
+                                    class="form-control @error('tan_no') is-invalid @enderror"
+                                    value="{{ old('tan_no') }}" placeholder="TAN Number">
                                 @error('tan_no')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
 
-                            <!-- GSTIN -->
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">GSTIN <span class="text-danger">*</span></label>
-                                <input type="text" name="gstin" id="gstin"
-                                    class="form-control  @error('gstin') is-invalid @enderror"
-                                    value="{{ old('gstin') }}" maxlength="15">
+                            <div class="col-md-3 mb-3">
+                                <label>GSTIN</label>
+                                <input type="text" name="gstin" maxlength="15"
+                                    class="form-control @error('gstin') is-invalid @enderror"
+                                    value="{{ old('gstin') }}" placeholder="27ABCDE1234F1Z5">
                                 @error('gstin')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <!-- aadhar Number -->
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">aadhar Number <span class="text-danger">*</span></label>
-                                <input type="text" name="aadhar_no" id="aadhar_no"
-                                    class="form-control @error('aadhar_no') is-invalid @enderror"
-                                    value="{{ old('aadhar_no') }}" maxlength="12">
-                                @error('aadhar_no')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
 
-                            <!-- Udyam Aadhar Number -->
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Udyam Aadhar Number</label>
-                                <input type="text" name="udyam_aadhar_no" id="udyam_aadhar_no"
-                                    class="form-control  @error('udyam_aadhar_no') is-invalid @enderror"
-                                    value="{{ old('udyam_aadhar_no') }}" maxlength="19">
+                            <div class="col-md-3 mb-3">
+                                <label>Udyam Aadhar</label>
+                                <input type="text" name="udyam_aadhar_no" maxlength="19"
+                                    class="form-control @error('udyam_aadhar_no') is-invalid @enderror"
+                                    value="{{ old('udyam_aadhar_no') }}" placeholder="Udyam Registration No">
                                 @error('udyam_aadhar_no')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
 
-                            <!-- Partnership Registration Number -->
-                            <div class="col-md-6 mb-3 d-none">
-                                <label class="form-label">Partnership Registration Number</label>
-                                <input type="text" name="partnership_registration_no" id="partnership_registration_no"
-                                    class="form-control @error('partnership_registration_no') is-invalid @enderror"
-                                    value="{{ old('partnership_registration_no') }}" maxlength="15">
-                                @error('partnership_registration_no')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <!-- ROC Number -->
-                            <div class="col-md-6 mb-3 d-none">
-                                <label class="form-label">ROC Number</label>
-                                <input type="text" name="roc_no" id="roc_no"
-                                    class="form-control @error('roc_no') is-invalid @enderror"
-                                    value="{{ old('roc_no') }}">
-                                @error('roc_no')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-                            </div>
-
-                            <!-- MSME Certification Number -->
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">MSME Certification Number</label>
-                                <input type="text" name="msme_certification_no" id="msme_certification_no"
+                            <div class="col-md-3 mb-3">
+                                <label>MSME No</label>
+                                <input type="text" name="msme_certification_no" maxlength="100"
                                     class="form-control @error('msme_certification_no') is-invalid @enderror"
-                                    value="{{ old('msme_certification_no') }}" maxlength="15">
+                                    value="{{ old('msme_certification_no') }}" placeholder="MSME Certificate No">
                                 @error('msme_certification_no')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
 
-                            <!-- CKYC -->
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">CKYC Number</label>
-                                <input type="text" name="ckyc" id="ckyc"
-                                    class="form-control @error('ckyc') is-invalid @enderror"
-                                    value="{{ old('ckyc') }}" maxlength="14">
+                            <div class="col-md-3 mb-3">
+                                <label>ROC No</label>
+                                <input type="text" name="roc_no" maxlength="100"
+                                    class="form-control @error('roc_no') is-invalid @enderror"
+                                    value="{{ old('roc_no') }}" placeholder="ROC Number">
+                                @error('roc_no')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-3 mb-3">
+                                <label>Partnership Reg. No</label>
+                                <input type="text" name="partnership_registration_no" maxlength="100"
+                                    class="form-control @error('partnership_registration_no') is-invalid @enderror"
+                                    value="{{ old('partnership_registration_no') }}" placeholder="Registration No">
+                                @error('partnership_registration_no')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+
+                            <div class="col-md-3 mb-3">
+                                <label>CKYC</label>
+                                <input type="text" name="ckyc" maxlength="14"
+                                    class="form-control @error('ckyc') is-invalid @enderror" value="{{ old('ckyc') }}"
+                                    placeholder="CKYC Number">
                                 @error('ckyc')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
 
-                            <!-- Gumasta Number -->
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Gumasta Number</label>
-                                <input type="text" name="gumasta_no" id="gumasta_no"
+                            <div class="col-md-3 mb-3">
+                                <label>Gumasta No</label>
+                                <input type="text" name="gumasta_no" maxlength="100"
                                     class="form-control @error('gumasta_no') is-invalid @enderror"
-                                    value="{{ old('gumasta_no') }}" maxlength="15">
+                                    value="{{ old('gumasta_no') }}" placeholder="Gumasta License No">
                                 @error('gumasta_no')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
 
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            {{-- image  --}}
-            <div id="divImageSection" class="col-md-6 d-flex">
-                <div class="card mb-4">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Image Section</h5>
-                        <small class="text-muted float-end">Image Information</small>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-
-
-                            <!-- File Upload: Company images -->
-
-
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Logo Attachment</label>
-                                <div class="input-group">
-                                    <input type="file" class="form-control @error('logo') is-invalid @enderror"
-                                        id="logo" name="logo" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
-                                        onchange="uploadTempFile(this, 'logo')">
-                                    <button class="btn btn-outline-danger" type="button"
-                                        onclick="document.getElementById('logo').value = ''">✕</button>
-                                </div>
-                                @error('logo')
+                            <div class="col-md-3 mb-3">
+                                <label>Watermark No</label>
+                                <input type="text" name="watermark_no" maxlength="100"
+                                    class="form-control @error('watermark_no') is-invalid @enderror"
+                                    value="{{ old('watermark_no') }}" placeholder="Watermark Number">
+                                @error('watermark_no')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
-
-                                <input type="hidden" id="logo_url" value="{{ old('logo_url') }}" name="logo_url">
-
-                                @if (old('logo_url'))
-                                    <div id="logo_preview" class="position-relative d-inline-block">
-                                        <img src="{{ old('logo_url') }}" width="100" class="rounded">
-
-                                        <!-- Remove (X) button -->
-                                        <button type="button"
-                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
-                                            onclick="removeImage('logo_url')">
-                                            ✕
-                                        </button>
-                                    </div>
-                                @endif
                             </div>
 
-
-                            {{-- Aadhar Attachment --}}
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Aadhar Attachment</label>
-                                <div class="input-group">
-                                    <input type="file"
-                                        class="form-control @error('attachment_aadhar') is-invalid @enderror"
-                                        id="attachment_aadhar" name="attachment_aadhar"
-                                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
-                                        onchange="uploadTempFile(this, 'attachment_aadhar')">
-                                    <button class="btn btn-outline-danger" type="button"
-                                        onclick="document.getElementById('attachment_aadhar').value = ''">✕</button>
-                                </div>
-                                @error('attachment_aadhar')
+                            <div class="col-md-3 mb-3">
+                                <label>Copyright No</label>
+                                <input type="text" name="copyrights_no" maxlength="100"
+                                    class="form-control @error('copyrights_no') is-invalid @enderror"
+                                    value="{{ old('copyrights_no') }}" placeholder="Copyright Number">
+                                @error('copyrights_no')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
-
-                                <input type="hidden" id="attachment_aadhar_url"
-                                    value="{{ old('attachment_aadhar_url') }}" name="attachment_aadhar_url">
-
-                                @if (old('attachment_aadhar_url'))
-                                    <div id="attachment_aadhar_preview" class="position-relative d-inline-block">
-                                        <img src="{{ old('attachment_aadhar_url') }}" width="100" class="rounded">
-
-                                        <!-- Remove (X) button -->
-                                        <button type="button"
-                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
-                                            onclick="removeImage('attachment_aadhar')">
-                                            ✕
-                                        </button>
-                                    </div>
-                                @endif
                             </div>
 
-
-                            {{-- PAN Attachment --}}
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">PAN Attachment</label>
-                                <div class="input-group">
-                                    <input type="file"
-                                        class="form-control @error('attachment_pan') is-invalid @enderror"
-                                        id="attachment_pan" name="attachment_pan"
-                                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
-                                        onchange="uploadTempFile(this, 'attachment_pan')">
-                                    <button class="btn btn-outline-danger" type="button"
-                                        onclick="document.getElementById('attachment_pan').value = ''">✕</button>
-                                </div>
-                                @error('attachment_pan')
+                            <div class="col-md-3 mb-3">
+                                <label>Establishment Date</label>
+                                <input type="date" name="est_date"
+                                    class="form-control @error('est_date') is-invalid @enderror"
+                                    value="{{ old('est_date') }}">
+                                @error('est_date')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
-
-                                <input type="hidden" id="attachment_pan_url" value="{{ old('attachment_pan_url') }}"
-                                    name="attachment_pan_url">
-
-                                @if (old('attachment_pan_url'))
-                                    <div id="attachment_pan_preview" class="position-relative d-inline-block">
-                                        <img src="{{ old('attachment_pan_url') }}" width="100" class="rounded">
-
-                                        <!-- Remove (X) button -->
-                                        <button type="button"
-                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
-                                            onclick="removeImage('attachment_pan')">
-                                            ✕
-                                        </button>
-                                    </div>
-                                @endif
-                            </div>
-
-
-                            {{-- TAN Attachment --}}
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">TAN Attachment</label>
-                                <div class="input-group">
-                                    <input type="file"
-                                        class="form-control @error('attachment_tan') is-invalid @enderror"
-                                        id="attachment_tan" name="attachment_tan"
-                                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
-                                        onchange="uploadTempFile(this, 'attachment_tan')">
-                                    <button class="btn btn-outline-danger" type="button"
-                                        onclick="document.getElementById('attachment_tan').value = ''">✕</button>
-                                </div>
-                                @error('attachment_tan')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-
-                                <input type="hidden" id="attachment_tan_url" value="{{ old('attachment_tan_url') }}"
-                                    name="attachment_tan_url">
-
-                                @if (old('attachment_tan_url'))
-                                    <div id="attachment_tan_preview" class="position-relative d-inline-block">
-                                        <img src="{{ old('attachment_tan_url') }}" width="100" class="rounded">
-
-                                        <!-- Remove (X) button -->
-                                        <button type="button"
-                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
-                                            onclick="removeImage('attachment_tan')">
-                                            ✕
-                                        </button>
-                                    </div>
-                                @endif
-                            </div>
-
-
-
-                            {{-- GSTIN Attachment --}}
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">GSTIN Attachment</label>
-                                <div class="input-group">
-                                    <input type="file"
-                                        class="form-control @error('attachment_gstin') is-invalid @enderror"
-                                        id="attachment_gstin" name="attachment_gstin"
-                                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
-                                        onchange="uploadTempFile(this, 'attachment_gstin')">
-                                    <button class="btn btn-outline-danger" type="button"
-                                        onclick="document.getElementById('attachment_gstin').value = ''">✕</button>
-                                </div>
-                                @error('attachment_gstin')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-
-                                <input type="hidden" id="attachment_gstin_url"
-                                    value="{{ old('attachment_gstin_url') }}" name="attachment_gstin_url">
-
-                                @if (old('attachment_gstin_url'))
-                                    <div id="attachment_gstin_preview" class="position-relative d-inline-block">
-                                        <img src="{{ old('attachment_gstin_url') }}" width="100" class="rounded">
-
-                                        <!-- Remove (X) button -->
-                                        <button type="button"
-                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
-                                            onclick="removeImage('attachment_gstin')">
-                                            ✕
-                                        </button>
-                                    </div>
-                                @endif
-                            </div>
-
-
-                            {{-- CKYC Attachment --}}
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">CKYC Attachment</label>
-                                <div class="input-group">
-                                    <input type="file"
-                                        class="form-control @error('attachment_ckyc') is-invalid @enderror"
-                                        id="attachment_ckyc" name="attachment_ckyc"
-                                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
-                                        onchange="uploadTempFile(this, 'attachment_ckyc')">
-                                    <button class="btn btn-outline-danger" type="button"
-                                        onclick="document.getElementById('attachment_ckyc').value = ''">✕</button>
-                                </div>
-                                @error('attachment_ckyc')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-
-                                <input type="hidden" id="attachment_ckyc" value="{{ old('attachment_ckyc') }}"
-                                    name="attachment_ckyc">
-
-                                @if (old('attachment_ckyc'))
-                                    <div id="attachment_ckyc_preview" class="position-relative d-inline-block">
-                                        <img src="{{ old('attachment_ckyc') }}" width="100" class="rounded">
-
-                                        <!-- Remove (X) button -->
-                                        <button type="button"
-                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
-                                            onclick="removeImage('attachment_ckyc')">
-                                            ✕
-                                        </button>
-                                    </div>
-                                @endif
-                            </div>
-
-                            {{-- Partnership Deed --}}
-                            <div class="col-md-6 mb-3 d-none">
-                                <label class="form-label">Partnership Deed</label>
-                                <div class="input-group">
-                                    <input type="file"
-                                        class="form-control @error('attachment_partnership_deed') is-invalid @enderror"
-                                        id="attachment_partnership_deed" name="attachment_partnership_deed"
-                                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
-                                        onchange="uploadTempFile(this, 'attachment_partnership_deed')">
-                                    <button class="btn btn-outline-danger" type="button"
-                                        onclick="document.getElementById('attachment_partnership_deed').value = ''">✕</button>
-                                </div>
-                                @error('attachment_partnership_deed')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-
-                                <input type="hidden" id="attachment_partnership_deed_url"
-                                    value="{{ old('attachment_partnership_deed_url') }}"
-                                    name="attachment_partnership_deed_url">
-
-                                @if (old('attachment_partnership_deed_url'))
-                                    <div id="attachment_partnership_deed_preview"
-                                        class="position-relative d-inline-block">
-                                        <img src="{{ old('attachment_partnership_deed_url') }}" width="100"
-                                            class="rounded">
-
-                                        <!-- Remove (X) button -->
-                                        <button type="button"
-                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
-                                            onclick="removeImage('attachment_partnership_deed')">
-                                            ✕
-                                        </button>
-                                    </div>
-                                @endif
-                            </div>
-
-
-                            {{-- Udyam Aadhar --}}
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Udyam Aadhar</label>
-                                <div class="input-group">
-                                    <input type="file"
-                                        class="form-control @error('attachment_udyam_aadhar') is-invalid @enderror"
-                                        id="attachment_udyam_aadhar" name="attachment_udyam_aadhar"
-                                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
-                                        onchange="uploadTempFile(this, 'attachment_udyam_aadhar')">
-                                    <button class="btn btn-outline-danger" type="button"
-                                        onclick="document.getElementById('attachment_udyam_aadhar').value = ''">✕</button>
-                                </div>
-                                @error('attachment_udyam_aadhar')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-
-                                <input type="hidden" id="attachment_udyam_aadhar_url"
-                                    value="{{ old('attachment_udyam_aadhar_url') }}" name="attachment_udyam_aadhar_url">
-
-                                @if (old('attachment_udyam_aadhar_url'))
-                                    <div id="attachment_udyam_aadhar_preview" class="position-relative d-inline-block">
-                                        <img src="{{ old('attachment_udyam_aadhar_url') }}" width="100"
-                                            class="rounded">
-
-                                        <!-- Remove (X) button -->
-                                        <button type="button"
-                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
-                                            onclick="removeImage('attachment_udyam_aadhar')">
-                                            ✕
-                                        </button>
-                                    </div>
-                                @endif
-                            </div>
-
-
-                            {{-- Gumasta License --}}
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Gumasta License</label>
-                                <div class="input-group">
-                                    <input type="file"
-                                        class="form-control @error('attachment_gumasta') is-invalid @enderror"
-                                        id="attachment_gumasta" name="attachment_gumasta"
-                                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
-                                        onchange="uploadTempFile(this, 'attachment_gumasta')">
-                                    <button class="btn btn-outline-danger" type="button"
-                                        onclick="document.getElementById('attachment_gumasta').value = ''">✕</button>
-                                </div>
-                                @error('attachment_gumasta')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-
-                                <input type="hidden" id="attachment_gumasta_url"
-                                    value="{{ old('attachment_gumasta_url') }}" name="attachment_gumasta_url">
-
-                                @if (old('attachment_gumasta_url'))
-                                    <div id="attachment_gumasta_preview" class="position-relative d-inline-block">
-                                        <img src="{{ old('attachment_gumasta_url') }}" width="100" class="rounded">
-
-                                        <!-- Remove (X) button -->
-                                        <button type="button"
-                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
-                                            onclick="removeImage('attachment_gumasta')">
-                                            ✕
-                                        </button>
-                                    </div>
-                                @endif
-                            </div>
-
-
-                            {{-- MSME Certificate --}}
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">MSME Certificate</label>
-                                <div class="input-group">
-                                    <input type="file"
-                                        class="form-control @error('attachment_msme') is-invalid @enderror"
-                                        id="attachment_msme" name="attachment_msme"
-                                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
-                                        onchange="uploadTempFile(this, 'attachment_msme')">
-
-                                    <button class="btn btn-outline-danger" type="button"
-                                        onclick="document.getElementById('attachment_msme').value = ''">✕</button>
-                                </div>
-
-
-                                @error('attachment_msme')
-                                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                                @enderror
-
-                                <input type="hidden" id="attachment_msme_url" value="{{ old('attachment_msme_url') }}"
-                                    name="attachment_msme_url">
-
-                                @if (old('attachment_msme_url'))
-                                    <div id="attachment_msme_preview" class="position-relative d-inline-block">
-                                        <img src="{{ old('attachment_msme_url') }}" width="100" class="rounded">
-
-                                        <!-- Remove (X) button -->
-                                        <button type="button"
-                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
-                                            onclick="removeImage('attachment_msme')">
-                                            ✕
-                                        </button>
-                                    </div>
-                                @endif
-                            </div>
-
-
-                            <!-- Cheque Photo -->
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Cheque Photo <span class="text-danger">*</span></label>
-
-                                <div class="input-group">
-                                    <input type="file"
-                                        class="form-control @error('attachment_cancelled_cheque') is-invalid @enderror"
-                                        id="attachment_cancelled_cheque" name="attachment_cancelled_cheque"
-                                        onchange="uploadTempFile(this, 'attachment_cancelled_cheque')"
-                                        accept=".jpg,.jpeg,.png,.pdf">
-
-                                    <button class="btn btn-outline-danger" type="button"
-                                        onclick="document.getElementById('attachment_cancelled_cheque').value = ''">
-                                        ✕
-                                    </button>
-                                </div>
-
-                                @error('attachment_cancelled_cheque')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-
-                                <input type="hidden" id="attachment_cancelled_cheque_url"
-                                    name="attachment_cancelled_cheque_url"
-                                    value="{{ old('attachment_cancelled_cheque_url') }}">
-
-                                @if (old('attachment_cancelled_cheque_url'))
-                                    <div id="attachment_cancelled_cheque_preview"
-                                        class="position-relative d-inline-block mt-2">
-                                        <img src="{{ old('attachment_cancelled_cheque_url') }}" width="100"
-                                            class="rounded">
-
-                                        <button type="button"
-                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
-                                            onclick="removeImage('attachment_cancelled_cheque')">
-                                            ✕
-                                        </button>
-                                    </div>
-                                @endif
-                            </div>
-
-                            <!-- Propritor Photo -->
-                            <div class="col-md-6 mb-3">
-                                <label class="form-label">Proprietor Photo <span class="text-danger">*</span></label>
-
-                                <div class="input-group">
-                                    <input type="file"
-                                        class="form-control @error('attachment_proprietor') is-invalid @enderror"
-                                        id="attachment_proprietor" name="attachment_proprietor"
-                                        onchange="uploadTempFile(this, 'attachment_proprietor')"
-                                        accept=".jpg,.jpeg,.png,.pdf">
-
-                                    <button class="btn btn-outline-danger" type="button"
-                                        onclick="document.getElementById('attachment_proprietor').value = ''">
-                                        ✕
-                                    </button>
-                                </div>
-
-                                @error('attachment_proprietor')
-                                    <div class="invalid-feedback">{{ $message }}</div>
-                                @enderror
-
-                                <input type="hidden" id="attachment_proprietor_url" name="attachment_proprietor_url"
-                                    value="{{ old('attachment_proprietor_url') }}">
-
-                                @if (old('attachment_proprietor_url'))
-                                    <div id="attachment_proprietor_preview" class="position-relative d-inline-block mt-2">
-                                        <img src="{{ old('attachment_proprietor_url') }}" width="100"
-                                            class="rounded">
-
-                                        <button type="button"
-                                            class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
-                                            onclick="removeImage('attachment_proprietor')">
-                                            ✕
-                                        </button>
-                                    </div>
-                                @endif
                             </div>
 
                         </div>
 
-
                     </div>
                 </div>
             </div>
-
 
 
             {{-- Bank details --}}
-            <div class="col-12">
+            <div class="col-md-12">
                 <div class="card mb-4">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="mb-0">Bank details</h5>
                         <small class="text-muted float-end">BankInformation</small>
                     </div>
                     <div class="card-body">
-                        <div class="col-12 ">
 
-                            <div id="bankDetailsWrapper">
+                        <div id="bankDetailsWrapper">
 
-                                <div class="bank-details-row row g-3 mb-3 bg-light position-relative">
+                            <div class="bank-details-row row g-3 mt-2 position-relative">
 
-                                    <div class="col-md-3">
-                                        <label class="form-label">IFSC Code</label>
-                                        <input type="text" name="banks[0][ifsc_code]"
-                                            class="form-control ifsc_code @error('banks.0.ifsc_code') is-invalid @enderror"
-                                            placeholder="Enter IFSC Code" value="{{ old('banks.0.ifsc_code') }}">
-                                        @error('banks.0.ifsc_code')
-                                            <span class="invalid-feedback">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-
-                                    <div class="col-md-3">
-                                        <label class="form-label">Account No</label>
-                                        <input type="text" name="banks[0][account_number]"
-                                            class="form-control account_number @error('banks.0.account_number') is-invalid @enderror"
-                                            placeholder="Enter Account Number" maxlength="15"
-                                            value="{{ old('banks.0.account_number') }}">
-                                        @error('banks.0.account_number')
-                                            <span class="invalid-feedback">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-
-                                    <div class="col-md-3">
-                                        <label class="form-label">Account Type</label>
-                                        <select name="banks[0][account_type]"
-                                            class="form-select @error('banks.0.account_type') is-invalid @enderror">
-                                            <option value="">Select Type</option>
-                                            <option value="savings"
-                                                {{ old('banks.0.account_type') == 'savings' ? 'selected' : '' }}>Saving
-                                                Account</option>
-                                            <option value="current"
-                                                {{ old('banks.0.account_type') == 'current' ? 'selected' : '' }}>Current
-                                                Account</option>
-                                            <option value="od_cc"
-                                                {{ old('banks.0.account_type') == 'od_cc' ? 'selected' : '' }}>
-                                                Overdraft/CC</option>
-                                            <option value="nre"
-                                                {{ old('banks.0.account_type') == 'nre' ? 'selected' : '' }}>NRE</option>
-                                            <option value="nri"
-                                                {{ old('banks.0.account_type') == 'nri' ? 'selected' : '' }}>NRI</option>
-                                            <option value="nro"
-                                                {{ old('banks.0.account_type') == 'nro' ? 'selected' : '' }}>NRO</option>
-                                            <option value="tem_deposit"
-                                                {{ old('banks.0.account_type') == 'tem_deposit' ? 'selected' : '' }}>Term
-                                                Deposit</option>
-                                            <option value="ra"
-                                                {{ old('banks.0.account_type') == 'ra' ? 'selected' : '' }}>Recurring
-                                            </option>
-                                        </select>
-                                        @error('banks.0.account_type')
-                                            <span class="invalid-feedback">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-
-                                    <div class="col-md-3">
-                                        <label class="form-label">Bank Name</label>
-                                        <input type="text" name="banks[0][bank_name]"
-                                            class="form-control bank_name bg-secondary-subtle bg-gradient @error('banks.0.bank_name') is-invalid @enderror"
-                                            readonly value="{{ old('banks.0.bank_name') }}">
-                                        @error('banks.0.bank_name')
-                                            <span class="invalid-feedback">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-
-                                    <div class="col-md-3">
-                                        <label class="form-label">Branch Name</label>
-                                        <input type="text" name="banks[0][branch_name]"
-                                            class="form-control branch_name bg-secondary-subtle bg-gradient @error('banks.0.branch_name') is-invalid @enderror"
-                                            readonly value="{{ old('banks.0.branch_name') }}">
-                                        @error('banks.0.branch_name')
-                                            <span class="invalid-feedback">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-
-                                    <div class="col-md-3">
-                                        <label class="form-label">Bank Code</label>
-                                        <input type="text" name="banks[0][bank_code]"
-                                            class="form-control bank_code bg-secondary-subtle bg-gradient @error('banks.0.bank_code') is-invalid @enderror"
-                                            readonly value="{{ old('banks.0.bank_code') }}">
-                                        @error('banks.0.bank_code')
-                                            <span class="invalid-feedback">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-
-                                    <div class="col-md-3">
-                                        <label class="form-label d-block">Primary</label>
-
-                                        <input type="hidden" name="banks[0][is_primary]" value="0">
-
-                                        <input type="checkbox" name="banks[0][is_primary]" value="1"
-                                            class="form-check-input setPrimary @error('banks.0.is_primary') is-invalid @enderror"
-                                            {{ old('banks.0.is_primary') == 1 ? 'checked' : '' }}>
-                                        @error('banks.0.is_primary')
-                                            <span class="invalid-feedback">{{ $message }}</span>
-                                        @enderror
-                                    </div>
-
-                                    <div class="col-md-1 d-flex align-items-end">
-                                        <button type="button" class="btn btn-danger btn-sm removeBankRow d-none">
-                                            <i class="bx bx-minus"></i> Remove
-                                        </button>
-                                    </div>
-
+                                <div class="col-md-3">
+                                    <label class="form-label">IFSC Code</label>
+                                    <input type="text" name="banks[0][ifsc_code]"
+                                        class="form-control ifsc_code @error('banks.0.ifsc_code') is-invalid @enderror"
+                                        placeholder="Enter IFSC Code" value="{{ old('banks.0.ifsc_code') }}">
+                                    @error('banks.0.ifsc_code')
+                                        <span class="invalid-feedback">{{ $message }}</span>
+                                    @enderror
                                 </div>
 
+                                <div class="col-md-3">
+                                    <label class="form-label">Account No</label>
+                                    <input type="text" name="banks[0][account_number]"
+                                        class="form-control account_number @error('banks.0.account_number') is-invalid @enderror"
+                                        placeholder="Enter Account Number" maxlength="15"
+                                        value="{{ old('banks.0.account_number') }}">
+                                    @error('banks.0.account_number')
+                                        <span class="invalid-feedback">{{ $message }}</span>
+                                    @enderror
+                                </div>
 
+                                <div class="col-md-3">
+                                    <label class="form-label">Account Type</label>
+                                    <select name="banks[0][account_type]"
+                                        class="form-select @error('banks.0.account_type') is-invalid @enderror">
+                                        <option value="">Select Type</option>
+                                        <option value="savings"
+                                            {{ old('banks.0.account_type') == 'savings' ? 'selected' : '' }}>Saving
+                                            Account</option>
+                                        <option value="current"
+                                            {{ old('banks.0.account_type') == 'current' ? 'selected' : '' }}>
+                                            Current
+                                            Account</option>
+                                        <option value="od_cc"
+                                            {{ old('banks.0.account_type') == 'od_cc' ? 'selected' : '' }}>
+                                            Overdraft/CC</option>
+                                        <option value="nre"
+                                            {{ old('banks.0.account_type') == 'nre' ? 'selected' : '' }}>NRE
+                                        </option>
+                                        <option value="nri"
+                                            {{ old('banks.0.account_type') == 'nri' ? 'selected' : '' }}>NRI
+                                        </option>
+                                        <option value="nro"
+                                            {{ old('banks.0.account_type') == 'nro' ? 'selected' : '' }}>NRO
+                                        </option>
+                                        <option value="tem_deposit"
+                                            {{ old('banks.0.account_type') == 'tem_deposit' ? 'selected' : '' }}>
+                                            Term
+                                            Deposit</option>
+                                        <option value="ra"
+                                            {{ old('banks.0.account_type') == 'ra' ? 'selected' : '' }}>Recurring
+                                        </option>
+                                    </select>
+                                    @error('banks.0.account_type')
+                                        <span class="invalid-feedback">{{ $message }}</span>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-3">
+                                    <label class="form-label">Bank Name</label>
+                                    <input type="text" name="banks[0][bank_name]"
+                                        class="form-control bank_name bg-secondary-subtle bg-gradient @error('banks.0.bank_name') is-invalid @enderror"
+                                        readonly value="{{ old('banks.0.bank_name') }}">
+                                    @error('banks.0.bank_name')
+                                        <span class="invalid-feedback">{{ $message }}</span>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-3">
+                                    <label class="form-label">Branch Name</label>
+                                    <input type="text" name="banks[0][branch_name]"
+                                        class="form-control branch_name bg-secondary-subtle bg-gradient @error('banks.0.branch_name') is-invalid @enderror"
+                                        readonly value="{{ old('banks.0.branch_name') }}">
+                                    @error('banks.0.branch_name')
+                                        <span class="invalid-feedback">{{ $message }}</span>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-3">
+                                    <label class="form-label">Bank Code</label>
+                                    <input type="text" name="banks[0][bank_code]"
+                                        class="form-control bank_code bg-secondary-subtle bg-gradient @error('banks.0.bank_code') is-invalid @enderror"
+                                        readonly value="{{ old('banks.0.bank_code') }}">
+                                    @error('banks.0.bank_code')
+                                        <span class="invalid-feedback">{{ $message }}</span>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-3">
+                                    <label class="form-label d-block">Primary</label>
+
+                                    <input type="hidden" name="banks[0][is_primary]" value="0">
+
+                                    <input type="checkbox" name="banks[0][is_primary]" value="1"
+                                        class="form-check-input setPrimary @error('banks.0.is_primary') is-invalid @enderror"
+                                        {{ old('banks.0.is_primary') == 1 ? 'checked' : '' }}>
+                                    @error('banks.0.is_primary')
+                                        <span class="invalid-feedback">{{ $message }}</span>
+                                    @enderror
+                                </div>
+
+                                <div class="col-md-1 d-flex align-items-end">
+                                    <button type="button" class="btn btn-danger btn-sm removeBankRow d-none">
+                                        <i class="bx bx-minus"></i> Remove
+                                    </button>
+                                </div>
 
                             </div>
 
-                            <!-- Add More Button -->
-                            <div class="mt-2">
-                                <button type="button" id="addMoreBank" class="btn btn-primary">
-                                    <i class="bx bx-plus"></i> Add More Bank
-                                </button>
-                            </div>
+
+
+                        </div>
+
+                        <!-- Add More Button -->
+                        <div class="mt-2">
+                            <button type="button" id="addMoreBank" class="btn btn-primary">
+                                <i class="bx bx-plus"></i> Add More Bank
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
+
+
+            {{-- Required Documents --}}
+            <div class="col-md-12">
+                <div class="card mb-4">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">🔴 Required Documents</h5>
+                        <small class="text-muted float-end">Upload all documents</small>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3 mt-2">
+
+                            @php
+                                $docs = [
+                                    ['name' => 'attachment_pan', 'label' => 'PAN Card', 'icon' => '🪪'],
+                                    ['name' => 'attachment_tan', 'label' => 'TAN Certificate', 'icon' => '📋'],
+                                    ['name' => 'attachment_gstin', 'label' => 'GST Certificate', 'icon' => '📄'],
+                                    ['name' => 'attachment_msme', 'label' => 'MSME Certificate', 'icon' => '🏢'],
+                                    ['name' => 'attachment_udyam_aadhar', 'label' => 'Udyam Aadhar', 'icon' => '🪪'],
+                                    ['name' => 'attachment_gumasta', 'label' => 'Gumasta License', 'icon' => '📄'],
+                                    ['name' => 'attachment_ckyc', 'label' => 'CKYC Document', 'icon' => '📄'],
+                                    [
+                                        'name' => 'attachment_cancelled_cheque',
+                                        'label' => 'Cancelled Cheque',
+                                        'icon' => '🏦',
+                                    ],
+                                    ['name' => 'attachment_proprietor', 'label' => 'Proprietor Photo', 'icon' => '👤'],
+                                    ['name' => 'logo', 'label' => 'Company Logo', 'icon' => '🏷️'],
+                                ];
+                            @endphp
+
+                            <div class="row g-3 mt-2">
+                                @foreach ($docs as $doc)
+                                    @php $uploadedUrl = old($doc['name'] . '_url'); @endphp
+
+                                    <div class="col-md-4">
+                                        <div class="doc-card position-relative p-4 text-center {{ $uploadedUrl ? 'doc-card--uploaded' : '' }}"
+                                            onclick="triggerFile('{{ $doc['name'] }}')">
+
+                                            {{-- STATUS BADGE --}}
+                                            @if ($uploadedUrl)
+                                                <span
+                                                    class="doc-badge doc-badge--uploaded position-absolute top-0 end-0 m-2">
+                                                    ✓ Uploaded
+                                                </span>
+                                            @else
+                                                <span
+                                                    class="doc-badge doc-badge--required position-absolute top-0 end-0 m-2">
+                                                    Required
+                                                </span>
+                                            @endif
+
+                                            {{-- ICON --}}
+                                            <div class="mb-2" style="font-size: 28px;">{{ $doc['icon'] }}</div>
+
+                                            {{-- TITLE --}}
+                                            <h6 class="fw-semibold mb-1">{{ $doc['label'] }}</h6>
+
+                                            {{-- UPLOAD STATUS ROW --}}
+                                            {{-- STATUS ROW — add class="status-text" --}}
+                                            <div class="d-flex align-items-center justify-content-center gap-1 mb-1">
+                                                @if ($uploadedUrl)
+                                                    <span class="status-dot status-dot--green"></span>
+                                                    <span class="status-text small fw-medium text-success">Uploaded</span>
+                                                @else
+                                                    <span class="status-dot status-dot--red"></span>
+                                                    <span class="status-text small fw-medium text-danger">Not
+                                                        Uploaded</span>
+                                                @endif
+                                            </div>
+
+
+                                            {{-- FORMAT HINT --}}
+                                            <p class="text-muted mb-2" style="font-size: 11px;">
+                                                PDF, JPG, PNG, JPEG, WEBP &middot; max 5MB
+                                            </p>
+
+                                            {{-- HIDDEN FILE INPUT --}}
+                                            <input type="file" id="{{ $doc['name'] }}" name="{{ $doc['name'] }}"
+                                                accept=".pdf,.jpg,.jpeg,.png,.webp"
+                                                class="d-none @error($doc['name']) is-invalid @enderror"
+                                                onchange="uploadTempFile(this, '{{ $doc['name'] }}')">
+
+                                            {{-- CLICK HINT or FILENAME --}}
+                                            {{-- @if ($uploadedUrl)
+                                                <p class="mb-0" style="font-size: 12px; color: #3b82f6;">
+                                                    📎 {{ basename($uploadedUrl) }}
+                                                </p>
+                                            @else
+                                                <p class="text-muted mb-0 small">Click to upload</p>
+                                            @endif --}}
+
+                                            {{-- CLICK HINT — add class="upload-hint" on the wrapper --}}
+                                            <div class="upload-hint">
+                                                @if ($uploadedUrl)
+                                                    <p class="mb-0" style="font-size:12px;color:#3b82f6;">📎
+                                                        {{ basename($uploadedUrl) }}</p>
+                                                @else
+                                                    <p class="text-muted mb-0 small">Click to upload</p>
+                                                @endif
+                                            </div>
+                                            {{-- ERROR --}}
+                                            @error($doc['name'])
+                                                {{-- UPLOAD ERROR --}}
+                                                <div class="upload-error text-danger small mt-2" style="display:none;"></div>
+                                            @enderror
+
+                                            {{-- HIDDEN URL --}}
+                                            <input type="hidden" name="{{ $doc['name'] }}_url"
+                                                value="{{ $uploadedUrl }}">
+
+                                            {{-- IMAGE PREVIEW --}}
+                                            @if ($uploadedUrl)
+                                                <div class="mt-3 position-relative d-inline-block">
+                                                    <img src="{{ $uploadedUrl }}" width="70"
+                                                        class="rounded shadow-sm">
+                                                    <button type="button"
+                                                        class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                                                        style="width:20px;height:20px;padding:0;font-size:10px;line-height:1;"
+                                                        onclick="event.stopPropagation(); removeImage('{{ $doc['name'] }}')">
+                                                        ✕
+                                                    </button>
+                                                </div>
+                                            @endif
+
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+
         </div>
         <!-- Submit -->
         <div class="text-end mt-3">
@@ -1253,5 +782,267 @@
             });
 
         });
+    </script>
+    <script>
+        const checkbox = document.getElementById('sameAddress');
+
+        const pairs = [
+            ['reg_address_line1', 'op_address_line1'],
+            ['reg_address_line2', 'op_address_line2'],
+            ['reg_city', 'op_city'],
+            ['reg_pincode', 'op_pincode'],
+            ['reg_state', 'op_state'],
+            ['reg_country', 'op_country']
+        ];
+
+        // 🔁 COPY FUNCTION
+        function copyAddress() {
+            pairs.forEach(([regName, opName]) => {
+                let reg = document.querySelector(`[name="${regName}"]`);
+                let op = document.querySelector(`[name="${opName}"]`);
+
+                if (!reg || !op) return;
+
+                op.value = reg.value;
+
+                // 🔥 important for dropdowns
+                if (op.tagName === 'SELECT') {
+                    op.value = reg.value;
+                    op.dispatchEvent(new Event('change')); // force update
+                }
+
+                op.setAttribute('readonly', true);
+                op.setAttribute('disabled', true);
+            });
+        }
+
+        // 🧹 RESET FUNCTION
+        function resetAddress() {
+            pairs.forEach(([_, opName]) => {
+                let op = document.querySelector(`[name="${opName}"]`);
+                if (!op) return;
+
+                op.value = '';
+
+                if (op.tagName === 'SELECT') {
+                    op.selectedIndex = 0;
+                }
+
+                op.removeAttribute('readonly');
+                op.removeAttribute('disabled');
+            });
+        }
+
+        // 🎯 CHECKBOX CHANGE
+        checkbox.addEventListener('change', function() {
+            if (this.checked) {
+                copyAddress();
+            } else {
+                resetAddress(); // ✅ clear everything
+            }
+        });
+
+        // 🔁 LIVE SYNC (while checked)
+        document.querySelectorAll('[name^="reg_"]').forEach(reg => {
+            reg.addEventListener('input', () => {
+                if (checkbox.checked) {
+                    copyAddress();
+                }
+            });
+
+            reg.addEventListener('change', () => {
+                if (checkbox.checked) {
+                    copyAddress(); // important for select dropdown
+                }
+            });
+        });
+    </script>
+    <script>
+        function triggerFile(id) {
+            document.getElementById(id).click();
+        }
+    </script>
+    <script>
+        function uploadTempFile(input, fieldName) {
+            const file = input.files[0];
+            if (!file) return;
+
+            const card = input.closest('.doc-card');
+            const formData = new FormData();
+            formData.append('file', file);
+
+            // Show loading state
+            setCardLoading(card, true);
+
+            fetch('/upload-temp', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: formData
+                })
+                .then(res => {
+                    if (!res.ok) {
+                        return res.json().then(err => {
+                            throw new Error(err.message || 'Server error')
+                        });
+                    }
+                    return res.json();
+                })
+                .then(data => {
+                    if (data.url) {
+                        card.querySelector(`input[name="${fieldName}_url"]`).value = data.url;
+                        setCardUploaded(card, file.name, data.url, file);
+                    }
+                })
+                .catch((err) => {
+                    console.error('Upload error:', err);
+
+                    // Reset loading state on failure
+                    setCardLoading(card, false);
+
+                    // Reset hint text
+                    const hint = card.querySelector('.upload-hint');
+                    if (hint) hint.innerHTML = `<p class="text-muted mb-0 small">Click to upload</p>`;
+
+                    // Show inline error instead of alert
+                    const errorDiv = card.querySelector('.upload-error');
+                    if (errorDiv) {
+                        errorDiv.textContent = '⚠ Upload failed. Try again.';
+                        errorDiv.style.display = 'block';
+                        setTimeout(() => errorDiv.style.display = 'none', 4000);
+                    }
+                })
+                .finally(() => {
+                    setCardLoading(card, false);
+                });
+        }
+
+        function setCardUploaded(card, fileName, fileUrl, fileObj = null) {
+            // Switch card style
+            card.classList.add('doc-card--uploaded');
+
+            // Update badge
+            const badge = card.querySelector('.doc-badge');
+            badge.className = 'doc-badge doc-badge--uploaded position-absolute top-0 end-0 m-2';
+            badge.textContent = '✓ Uploaded';
+
+            // Update status dot + text
+            card.querySelector('.status-dot').className = 'status-dot status-dot--green';
+            const statusText = card.querySelector('.status-text');
+            statusText.className = 'status-text small fw-medium text-success';
+            statusText.textContent = 'Uploaded';
+
+            // Update file name display
+            const hint = card.querySelector('.upload-hint');
+            hint.innerHTML = `<span style="font-size:12px;color:#3b82f6;">📎 ${fileName}</span>`;
+
+            // Show preview
+            showPreview(card, fileUrl, fileName, fileObj);
+        }
+
+        function showPreview(card, fileUrl, fileName, fileObj = null) {
+            // Remove old preview if any
+            const oldPreview = card.querySelector('.doc-preview');
+            if (oldPreview) oldPreview.remove();
+
+            const fileInputId = card.querySelector('input[type=file]').id;
+            const isImage = /\.(jpg|jpeg|png|webp)$/i.test(fileName);
+
+            const preview = document.createElement('div');
+            preview.className = 'mt-3 position-relative d-inline-block doc-preview';
+
+            if (isImage) {
+                // ✅ Use local object URL for instant preview, fallback to server URL
+                const previewSrc = fileObj ? URL.createObjectURL(fileObj) : fileUrl;
+
+                preview.innerHTML = `
+            <img src="${previewSrc}" width="70" height="70"
+                class="rounded shadow-sm"
+                style="object-fit:cover;border:2px solid #86efac;">
+            <button type="button"
+                class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                style="width:20px;height:20px;padding:0;font-size:10px;line-height:1;border-radius:50%;"
+                onclick="event.stopPropagation(); removeImage('${fileInputId}')">
+                ✕
+            </button>`;
+            } else {
+                // PDF preview box
+                preview.innerHTML = `
+            <div class="d-flex align-items-center gap-2 rounded px-3 py-2"
+                style="background:#f1f5f9;border:1px solid #e2e8f0;font-size:12px;max-width:180px;">
+                <span style="font-size:24px;flex-shrink:0;">📄</span>
+                <span class="text-muted"
+                    style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"
+                    title="${fileName}">${fileName}</span>
+            </div>
+            <button type="button"
+                class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
+                style="width:20px;height:20px;padding:0;font-size:10px;line-height:1;border-radius:50%;"
+                onclick="event.stopPropagation(); removeImage('${fileInputId}')">
+                ✕
+            </button>`;
+            }
+
+            card.appendChild(preview);
+        }
+
+        function setCardLoading(card, isLoading) {
+            if (isLoading) {
+                card.style.opacity = '0.6';
+                card.style.pointerEvents = 'none';
+                const hint = card.querySelector('.upload-hint');
+                if (hint) hint.innerHTML = `
+            <span class="small text-muted d-flex align-items-center justify-content-center gap-1">
+                <span class="spinner-border spinner-border-sm" style="width:10px;height:10px;"></span>
+                Uploading...
+            </span>`;
+            } else {
+                card.style.opacity = '1';
+                card.style.pointerEvents = 'auto';
+            }
+        }
+
+        function removeImage(fieldName) {
+            const input = document.getElementById(fieldName);
+            const card = input.closest('.doc-card');
+
+            // Revoke any object URL to free memory
+            const img = card.querySelector('.doc-preview img');
+            if (img && img.src.startsWith('blob:')) {
+                URL.revokeObjectURL(img.src);
+            }
+
+            // Reset input
+            input.value = '';
+
+            // Clear hidden URL
+            card.querySelector(`input[name="${fieldName}_url"]`).value = '';
+
+            // Remove preview
+            const preview = card.querySelector('.doc-preview');
+            if (preview) preview.remove();
+
+            // Reset card style
+            card.classList.remove('doc-card--uploaded');
+
+            // Reset badge
+            const badge = card.querySelector('.doc-badge');
+            badge.className = 'doc-badge doc-badge--required position-absolute top-0 end-0 m-2';
+            badge.textContent = 'Required';
+
+            // Reset status dot + text
+            card.querySelector('.status-dot').className = 'status-dot status-dot--red';
+            const statusText = card.querySelector('.status-text');
+            statusText.className = 'status-text small fw-medium text-danger';
+            statusText.textContent = 'Not Uploaded';
+
+            // Reset hint
+            card.querySelector('.upload-hint').innerHTML = `<p class="text-muted mb-0 small">Click to upload</p>`;
+        }
+
+        function triggerFile(fieldName) {
+            document.getElementById(fieldName).click();
+        }
     </script>
 @endpush
