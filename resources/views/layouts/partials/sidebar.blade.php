@@ -11,8 +11,14 @@
     </div>
 
     <div class="menu-inner-shadow"></div>
-
+    
     <ul class="menu-inner py-1">
+        <li class="menu-item {{ request()->routeIs('dashboard.*') ? 'active' : '' }}">
+            <a href="{{ route('dashboard') }}" class="menu-link">
+                <i class="menu-icon bx bx-home"></i>
+                <div class="text-truncate">Dashboard</div>
+            </a>
+        </li>
         <li class="menu-item {{ request()->is('master/*') ? 'active open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
@@ -27,7 +33,7 @@
                     </a>
                 </li>
 
-                <li class="menu-item {{ request()->routeIs('master.branches.*') ? 'active' : '' }}">
+                {{-- <li class="menu-item {{ request()->routeIs('master.branches.*') ? 'active' : '' }}">
                     <a href="{{ route('master.branches.index') }}" class="menu-link">
                         <i class="menu-icon bx bx-git-branch"></i>
                         <div class="text-truncate">Branches</div>
@@ -60,39 +66,14 @@
                         <i class="menu-icon bx bx-group"></i>
                         <div class="text-truncate">Employees</div>
                     </a>
-                </li>
+                </li> --}}
 
             </ul>
         </li>
     </ul>
 
     {{-- ── User Profile Block at Bottom ── --}}
-    {{-- @php
-        $name = Auth::user()->name ?? '';
-        $words = explode(' ', $name);
-        if (count($words) >= 2) {
-            $initials = strtoupper(substr($words[0], 0, 2) . substr($words[1], 0, 1));
-        } else {
-            $initials = strtoupper(substr($words[0], 0, 2));
-        }
-    @endphp
 
-    <div class="sidebar-user-profile">
-        <div class="sidebar-user-avatar">
-            {{ $initials }}
-        </div>
-        <div class="sidebar-user-info">
-            <span class="sidebar-user-name">{{ Auth::user()->name }}</span>
-            <span class="sidebar-user-level">Level {{ Auth::user()->level }}</span>
-        </div>
-        <form action="{{ route('logout') }}" method="post" class="ms-auto">
-            @csrf
-            @method('POST')
-            <button type="submit" class="sidebar-logout-btn" title="Log Out">
-                <i class="bx bx-power-off"></i>
-            </button>
-        </form>
-    </div> --}}
     @php
         $name = Auth::user()->name ?? '';
         $words = explode(' ', $name);

@@ -1,29 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PreClientController;
-use App\Http\Controllers\Accounts\SaleController;
-use App\Http\Controllers\Clients\ClientController;
 use App\Http\Controllers\Masters\BranchController;
-use App\Http\Controllers\Accounts\LedgerController;
 use App\Http\Controllers\Masters\CompanyController;
-use App\Http\Controllers\Accounts\VendorsController;
-use App\Http\Controllers\Masters\EmployeeController;
-use App\Http\Controllers\Accounts\ExpensesController;
-use App\Http\Controllers\Accounts\PurchaseController;
-use App\Http\Controllers\Investment\SchemeController;
-use App\Http\Controllers\Clients\ClientBankController;
-use App\Http\Controllers\Clients\ClientBDayController;
 use App\Http\Controllers\Masters\DepartmentController;
 use App\Http\Controllers\Masters\HeadOfficeController;
 use App\Http\Controllers\Masters\DesignationController;
-use App\Http\Controllers\Clients\ClientFamilyController;
-use App\Http\Controllers\Investment\InvestmentController;
 use App\Http\Controllers\Masters\SubDepartmentController;
-use App\Http\Controllers\Accounts\PurchaseOrderController;
 use App\Http\Controllers\googleDrive\GoogleDriveController;
 use App\Http\Controllers\Masters\SubDesignationController;
-use App\Http\Controllers\Investment\InvestmentSiController;
 use App\Http\Controllers\Settings\UserManagementController;
 use App\Http\Controllers\Settings\RolePermissionViewController;
 
@@ -36,12 +21,11 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('client-onboarding/create', [PreClientController::class, 'create'])->name('preclients.create');
-Route::post('client-onboarding', [PreClientController::class, 'store'])->name('preclients.store');
-Route::get('client-onboarding/{id}/view', [PreClientController::class, 'show'])->name('preclients.show');
+
 
 Route::middleware(['auth', 'verified'])->prefix('master')->name('master.')->group(function () {
-    Route::resource('companies', CompanyController::class)->except(['destroy'])->middleware('permission:companies.view,companies.create,companies.edit');
+    Route::resource('companies', CompanyController::class);
+    // ->except(['destroy'])->middleware('permission:companies.view,companies.create,companies.edit');
     Route::delete('companies/{company}', [CompanyController::class, 'destroy'])->name('companies.destroy')->middleware('permission:companies.delete');
     Route::resource('head-offices', HeadOfficeController::class)->except(['destroy'])->middleware('permission:head-offices.view,head-offices.create,head-offices.edit');
     Route::delete('head-offices/{head_office}', [HeadOfficeController::class, 'destroy'])->name('head-offices.destroy')->middleware('permission:head-offices.delete');

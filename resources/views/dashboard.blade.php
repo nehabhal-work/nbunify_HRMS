@@ -1,77 +1,99 @@
-<!doctype html>
+@extends('layouts.master-layout')
 
-<html lang="en" class="light-style layout-navbar-fixed layout-menu-fixed layout-compact" dir="ltr"
-    data-theme="theme-default" data-assets-path="../../assets/" data-template="vertical-menu-template-starter">
+@section('title', 'Dashboard | NBUnify HRMS')
 
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport"
-        content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+@section('content')
 
-    <title></title>
+    <div class="page active" id="page-dashboard">
 
-    <meta name="description" content="" />
 
-    @include('layouts.partials.styles')
-</head>
+        <!-- 🌸 WELCOME CARD -->
+        <div class="card mb-4 p-4">
 
-<body>
-    <!-- Layout wrapper -->
-    <div class="layout-wrapper layout-content-navbar">
-        <div class="layout-container">
-            <!-- Menu -->
+            <!-- HEADER -->
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h1 class="mb-0">Dashboard</h1>
 
-            @include('layouts.partials.sidebar')
-            <!-- / Menu -->
-
-            <!-- Layout container -->
-            <div class="layout-page">
-                <!-- Navbar -->
-
-                @include('layouts.partials.navbar')
-
-                <!-- / Navbar -->
-
-                <!-- Content wrapper -->
-                <div class="content-wrapper">
-                    <!-- Content -->
-
-                    <div class="container-xxl flex-grow-1 container-p-y">
-                        <div class="row">
-                            <div class="col-12">
-                                <div class="card">
-                                    <div class="card-body">
-                                        <h4 class="card-title">Welcome to Dashboard!!</h4>
-                                        <p class="card-text">You are successfully logged in!</p>
-                                        <a href="{{ route('master.companies.index') }}" class="btn btn-primary">Manage
-                                            Companies</a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- / Content -->
-
-                    <!-- Footer -->
-                    @include('layouts.partials.footer')
-                    <!-- / Footer -->
-
-                    <div class="content-backdrop fade"></div>
+                <div class="date-box">
+                    <i class='bx bx-calendar'></i>
+                    <span id="today-date"></span>
                 </div>
-                <!-- Content wrapper -->
             </div>
-            <!-- / Layout page -->
+
+            <!-- SHORT WELCOME -->
+            <p class="text-muted mb-3">
+                Welcome to NBUnify HRMS — manage everything in one place.
+            </p>
+
+            <!-- ACTIONS -->
+            <div class="d-flex gap-2">
+                <button class="btn btn-dark" onclick="navTo('companies','nav-master')">
+                    <i class='bx bx-buildings'></i> Companies
+                </button>
+
+                <button class="btn btn-outline-dark" onclick="navTo('employees','nav-master')">
+                    <i class='bx bx-group'></i> Employees
+                </button>
+
+                <button class="btn btn-outline-dark" onclick="navTo('reports','nav-reports')">
+                    <i class='bx bx-bar-chart'></i> Reports
+                </button>
+            </div>
+
         </div>
 
-        <!-- Overlay -->
-        <div class="layout-overlay layout-menu-toggle"></div>
+        <!-- 📊 STATS -->
+        <div class="row g-3 mb-4">
 
-        <!-- Drag Target Area To SlideIn Menu On Small Screens -->
-        <div class="drag-target"></div>
+            <div class="col-md-3">
+                <div class="card stat-card p-3">
+                    <h3>{{ $totalCompanies ?? 0 }}</h3>
+                    <p>Total Companies</p>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card stat-card p-3">
+                    <h3>{{ $totalBranches ?? 0 }}</h3>
+                    <p>Active Branches</p>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card stat-card p-3">
+                    <h3>{{ $totalEmployees ?? 0 }}</h3>
+                    <p>Total Employees</p>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="card stat-card p-3">
+                    <h3>{{ $totalDepartments ?? 0 }}</h3>
+                    <p>Departments</p>
+                </div>
+            </div>
+
+        </div>
+
+
+
+
     </div>
-    <!-- / Layout wrapper -->
 
-    @include('layouts.partials.scripts')
-</body>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById("today-date").innerText =
+                new Date().toLocaleDateString('en-IN', {
+                    day: 'numeric',
+                    month: 'short',
+                    year: 'numeric'
+                });
+        });
+    </script>
+@endsection
 
-</html>
+
+@section('pagejs')
+
+@endsection

@@ -54,58 +54,14 @@
                             </thead>
                             <tbody>
                                 {{-- Example static row (replace with @foreach later) --}}
-                                @foreach ($companies as $d)
-                                    <tr>
-                                        <td>{{ $d->id }}</td>
-                                        <td>
-                                            <a href="{{ route('master.companies.show', $d->id) }}">
-                                                {{ $d->name }}
-                                            </a>
-                                        </td>
-
-                                        <td>{{ $d->contact_person_name }}</td>
-                                        <td>{{ $d->phone }}</td>
-                                        <td>{{ $d->email }}</td>
-                                        <td>{{ $d->gstin }}</td>
-                                        <td>
-                                            <div class="dropdown">
-                                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                                    data-bs-toggle="dropdown">
-                                                    <i class="bx bx-dots-vertical-rounded"></i>
-                                                </button>
-                                                <div class="dropdown-menu">
-                                                    
-                                                    <a class="dropdown-item"
-                                                        href="{{ route('master.companies.show', $d->id) }}">
-                                                        <i class="bx bx-show me-1"></i>View</a>
-
-                                                    <a class="dropdown-item"
-                                                        href="{{ route('master.companies.edit', $d->id) }}"><i
-                                                            class="bx bx-edit-alt me-1"></i> Edit</a>
-                                                    <form action="{{ route('master.companies.destroy', $d->id) }}"
-                                                        method="post" onsubmit="return confirmDelete()">
-
-                                                        @csrf
-                                                        @method('DELETE')
-                                                        <button type="submit" class="dropdown-item text-danger delete-btn"
-                                                            data-id="{{ $d->id }}">
-                                                            <i class="bx bx-trash me-1"></i> Delete
-                                                        </button>
-
-                                                    </form>
-
-                                                </div>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @endforeach
+                              
                             </tbody>
                         </table>
                     </div>
                     
                 </div>
             </div>
-        </div>
+        </div> +677+
     </div>
 
 
