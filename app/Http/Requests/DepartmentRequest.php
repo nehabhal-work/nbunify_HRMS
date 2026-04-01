@@ -1,187 +1,121 @@
 <?php
 
-namespace App\Services;
+namespace App\Http\Requests;
 
 use App\Models\Department;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Auth;
+use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
-class DepartmentService
+class DepartmentRequest extends FormRequest
 {
-    // ─── List / Search (flat paginated) ─────────────────────────────────────────
-
-    public function paginate(array $filters = [], int $perPage = 15): LengthAwarePaginator
+    public function authorize(): bool
     {
-        $query = Department::query()
-            ->with(['company', 'branch', 'headOffice', 'parent'])
-            ->ordered();
-
-        if (!empty($filters['company_id'])) {
-            $query->forCompany((int) $filters['company_id']);
-        }
-
-        if (!empty($filters['branch_id'])) {
-            $query->forBranch((int) $filters['branch_id']);
-        }
-
-        if (!empty($filters['head_office_id'])) {
-            $query->forHeadOffice((int) $filters['head_office_id']);
-        }
-
-        if (!empty($filters['dept_type'])) {
-            $query->ofType($filters['dept_type']);
-        }
-
-        if (isset($filters['is_active'])) {
-            $query->where('is_active', filter_var($filters['is_active'], FILTER_VALIDATE_BOOLEAN));
-        }
-
-        if (isset($filters['roots_only']) && filter_var($filters['roots_only'], FILTER_VALIDATE_BOOLEAN)) {
-            $query->roots();
-        }
-
-        if (!empty($filters['parent_id'])) {
-            $query->where('parent_id', $filters['parent_id']);
-        }
-
-        if (!empty($filters['search'])) {
-            $s = $filters['search'];
-            $query->where(function ($q) use ($s) {
-                $q->where('name', 'like', "%{$s}%")
-                    ->orWhere('code', 'like', "%{$s}%")
-                    ->orWhere('head_name', 'like', "%{$s}%")
-                    ->orWhere('cost_centre', 'like', "%{$s}%")
-                    ->orWhere('email', 'like', "%{$s}%");
-            });
-        }
-
-        return $query->paginate($perPage);
+        return true;
     }
 
-    // ─── Full Tree (nested) ──────────────────────────────────────────────────────
-
-    public function tree(int $companyId, ?int $branchId = null, ?int $headOfficeId = null): Collection
+    public function rules(): array
     {
-        $query = Department::with('childrenRecursive')
-            ->forCompany($companyId)
-            ->roots()
-            ->ordered();
-
-        if ($branchId) {
-            $query->forBranch($branchId);
-        }
-
-        if ($headOfficeId) {
-            $query->forHeadOffice($headOfficeId);
-        }
-
-        return $query->get();
-    }
-
-    // ─── Create ──────────────────────────────────────────────────────────────────
-
-    public function create(array $data): Department
-    {
-        return Department::create($data);
-    }
-
-    // ─── Update ──────────────────────────────────────────────────────────────────
-
-    public function update(Department $department, array $data): Department
-    {
-        $department->update($data);
-
-        return $department->fresh(['company', 'branch', 'headOffice', 'parent', 'children']);
-    }
-
-    // ─── Toggle Active ───────────────────────────────────────────────────────────
-
-    public function toggleActive(Department $department): Department
-    {
-        $department->update(['is_active' => !$department->is_active]);
-
-        return $department->fresh();
-    }
-
-    // ─── Move (change parent) ────────────────────────────────────────────────────
-
-    public function move(Department $department, ?int $newParentId): Department
-    {
-        if ($newParentId && $department->wouldCreateCycle($newParentId)) {
-            throw new \InvalidArgumentException('Moving this department would create a circular reference.');
-        }
-
-        $department->update(['parent_id' => $newParentId]);
-
-        return $department->fresh(['parent', 'children']);
-    }
-
-    // ─── Reorder ─────────────────────────────────────────────────────────────────
-
-    public function reorder(array $items): void
-    {
-        foreach ($items as $item) {
-            Department::where('id', $item['id'])->update([
-                'sort_order' => $item['sort_order'],
-            ]);
-        }
-    }
-
-    // ─── Update Meta ─────────────────────────────────────────────────────────────
-
-    public function updateMeta(Department $department, array $meta): Department
-    {
-        $department->update([
-            'meta' => array_merge($department->meta ?? [], $meta),
-        ]);
-
-        return $department->fresh();
-    }
-
-    // ─── Soft Delete ─────────────────────────────────────────────────────────────
-
-    public function delete(Department $department): bool
-    {
-        return $department->delete();
-    }
-
-    // ─── Force Delete ────────────────────────────────────────────────────────────
-
-    public function forceDelete(int $id): bool
-    {
-        $department = Department::withTrashed()->findOrFail($id);
-        return $department->forceDelete();
-    }
-
-    // ─── Restore ─────────────────────────────────────────────────────────────────
-
-    public function restore(int $id): Department
-    {
-        $department = Department::withTrashed()->findOrFail($id);
-        $department->restore();
-        return $department->fresh();
-    }
-
-    // ─── Stats ───────────────────────────────────────────────────────────────────
-
-    public function statsForCompany(int $companyId): array
-    {
-        $base = Department::withTrashed()->forCompany($companyId);
+        $deptId    = $this->route('department')?->id;
+        $companyId = $this->input('company_id');
 
         return [
-            'total'           => (clone $base)->count(),
-            'active'          => (clone $base)->whereNull('deleted_at')->where('is_active', true)->count(),
-            'inactive'        => (clone $base)->whereNull('deleted_at')->where('is_active', false)->count(),
-            'deleted'         => (clone $base)->onlyTrashed()->count(),
-            'root_depts'      => (clone $base)->whereNull('deleted_at')->whereNull('parent_id')->count(),
-            'child_depts'     => (clone $base)->whereNull('deleted_at')->whereNotNull('parent_id')->count(),
-            'total_employees' => (clone $base)->whereNull('deleted_at')->sum('employee_count'),
-            'total_budget'    => (clone $base)->whereNull('deleted_at')->sum('budget'),
-            'by_type'         => (clone $base)->whereNull('deleted_at')
-                ->selectRaw('dept_type, count(*) as count')
-                ->groupBy('dept_type')
-                ->pluck('count', 'dept_type'),
+            'company_id'     => ['required', 'integer', 'exists:companies,id'],
+
+            // branch and head_office are optional but must belong to the company if provided
+            'branch_id'      => [
+                'nullable',
+                'integer',
+                Rule::exists('branches', 'id')->where('company_id', $companyId),
+            ],
+            'head_office_id' => [
+                'nullable',
+                'integer',
+                Rule::exists('head_offices', 'id')->where('company_id', $companyId),
+            ],
+
+            // parent must belong to same company; cannot be self
+            'parent_id'      => [
+                'nullable',
+                'integer',
+                Rule::exists('departments', 'id')->where('company_id', $companyId),
+                function ($attribute, $value, $fail) use ($deptId) {
+                    if ($deptId && $value == $deptId) {
+                        $fail('A department cannot be its own parent.');
+                    }
+                    if ($deptId && $value) {
+                        $dept = Department::find($deptId);
+                        if ($dept && $dept->wouldCreateCycle((int) $value)) {
+                            $fail('Assigning this parent would create a circular reference.');
+                        }
+                    }
+                },
+            ],
+
+            'name'        => ['required', 'string', 'max:255'],
+
+            // code unique per company
+            'code'        => [
+                'required',
+                'string',
+                'max:50',
+                'alpha_dash',
+                Rule::unique('departments')
+                    ->where(fn($q) => $q->where('company_id', $companyId))
+                    ->ignore($deptId),
+            ],
+
+            'description' => ['nullable', 'string', 'max:1000'],
+            'dept_type'   => ['required', Rule::in(array_keys(Department::DEPT_TYPES))],
+            'email'       => ['nullable', 'email', 'max:255'],
+            'phone_ext'   => ['nullable', 'string', 'max:20'],
+            'head_name'   => ['nullable', 'string', 'max:255'],
+            'head_email'  => ['nullable', 'email', 'max:255'],
+
+            'budget'       => ['nullable', 'numeric', 'min:0', 'max:9999999999999.99'],
+            'cost_centre'  => ['nullable', 'string', 'max:50'],
+
+            'employee_count' => ['nullable', 'integer', 'min:0'],
+            'is_active'      => ['nullable', 'boolean'],
+            'sort_order'     => ['nullable', 'integer', 'min:0'],
+
+            'meta'   => ['nullable', 'array'],
+            'meta.*' => ['nullable'],
+        ];
+    }
+
+    public function messages(): array
+    {
+        return [
+            'code.alpha_dash'        => 'Code may only contain letters, numbers, dashes, and underscores.',
+            'code.unique'            => 'This code is already used by another department in the same company.',
+            'branch_id.exists'       => 'The selected branch does not belong to the chosen company.',
+            'head_office_id.exists'  => 'The selected head office does not belong to the chosen company.',
+            'parent_id.exists'       => 'The selected parent department does not exist in the same company.',
+            'budget.max'             => 'Budget value exceeds the maximum allowed amount.',
+        ];
+    }
+
+    public function attributes(): array
+    {
+        return [
+            'company_id'     => 'Company',
+            'branch_id'      => 'Branch',
+            'head_office_id' => 'Head Office',
+            'parent_id'      => 'Parent Department',
+            'name'           => 'Department Name',
+            'code'           => 'Department Code',
+            'description'    => 'Description',
+            'dept_type'      => 'Department Type',
+            'email'          => 'Email Address',
+            'phone_ext'      => 'Phone Extension',
+            'head_name'      => 'Department Head Name',
+            'head_email'     => 'Department Head Email',
+            'budget'         => 'Budget',
+            'cost_centre'    => 'Cost Centre',
+            'employee_count' => 'Employee Count',
+            'is_active'      => 'Status',
+            'sort_order'     => 'Sort Order',
+            'meta'           => 'Meta Data',
         ];
     }
 }
