@@ -17,21 +17,21 @@ class BranchController extends Controller
      * GET /branches
      * Filters: ?company_id= &head_office_id= &branch_type= &status= &search= &per_page=
      */
-    public function index(Request $request): JsonResponse
+    public function index(Request $request)
     {
         $filters = $request->only(['company_id', 'head_office_id', 'branch_type', 'status', 'search']);
         $perPage = $request->integer('per_page', 15);
 
         $branches = $this->branchService->paginate($filters, $perPage);
 
-              return view('content.master.branch.index', compact('branches'));
+              return view('content.master.branches.index', compact('branches'));
 
     }
 
     /**
      * POST /branches
      */
-    public function store(BranchRequest $request): JsonResponse
+    public function store(BranchRequest $request)
     {
         $branch = $this->branchService->create($request->validated());
 
@@ -45,7 +45,7 @@ class BranchController extends Controller
     /**
      * GET /branches/{branch}
      */
-    public function show(Branch $branch): JsonResponse
+    public function show(Branch $branch)
     {
         return response()->json([
             'success' => true,
@@ -56,7 +56,7 @@ class BranchController extends Controller
     /**
      * PUT|PATCH /branches/{branch}
      */
-    public function update(BranchRequest $request, Branch $branch): JsonResponse
+    public function update(BranchRequest $request, Branch $branch)
     {
         $updated = $this->branchService->update($branch, $request->validated());
 
@@ -71,7 +71,7 @@ class BranchController extends Controller
      * DELETE /branches/{branch}
      * Soft delete
      */
-    public function destroy(Branch $branch): JsonResponse
+    public function destroy(Branch $branch)
     {
         $this->branchService->delete($branch);
 
@@ -85,7 +85,7 @@ class BranchController extends Controller
      * DELETE /branches/{id}/force
      * Permanent delete
      */
-    public function forceDestroy(int $id): JsonResponse
+    public function forceDestroy(int $id)
     {
         $this->branchService->forceDelete($id);
 
@@ -98,7 +98,7 @@ class BranchController extends Controller
     /**
      * POST /branches/{id}/restore
      */
-    public function restore(int $id): JsonResponse
+    public function restore(int $id)
     {
         $branch = $this->branchService->restore($id);
 
@@ -113,7 +113,7 @@ class BranchController extends Controller
      * PATCH /branches/{branch}/status
      * Body: { "status": "active|inactive|closed" }
      */
-    public function changeStatus(Request $request, Branch $branch): JsonResponse
+    public function changeStatus(Request $request, Branch $branch)
     {
         $request->validate([
             'status' => ['required', 'in:active,inactive,closed'],
@@ -132,7 +132,7 @@ class BranchController extends Controller
      * POST /branches/reorder
      * Body: { "items": [{ "id": 1, "sort_order": 0 }, ...] }
      */
-    public function reorder(Request $request): JsonResponse
+    public function reorder(Request $request)
     {
         $request->validate([
             'items'              => ['required', 'array'],
@@ -152,7 +152,7 @@ class BranchController extends Controller
      * PATCH /branches/{branch}/opening-hours
      * Body: { "opening_hours": { "mon": { "open": "09:00", "close": "18:00" } } }
      */
-    public function updateOpeningHours(Request $request, Branch $branch): JsonResponse
+    public function updateOpeningHours(Request $request, Branch $branch)
     {
         $request->validate([
             'opening_hours'              => ['required', 'array'],
@@ -174,7 +174,7 @@ class BranchController extends Controller
      * PATCH /branches/{branch}/meta
      * Merge-update meta JSON field
      */
-    public function updateMeta(Request $request, Branch $branch): JsonResponse
+    public function updateMeta(Request $request, Branch $branch)
     {
         $request->validate([
             'meta'   => ['required', 'array'],
@@ -193,7 +193,7 @@ class BranchController extends Controller
     /**
      * GET /branches/stats?company_id=1
      */
-    public function stats(Request $request): JsonResponse
+    public function stats(Request $request)
     {
         $request->validate([
             'company_id' => ['required', 'integer', 'exists:companies,id'],
@@ -210,7 +210,7 @@ class BranchController extends Controller
     /**
      * GET /branches/types
      */
-    public function types(): JsonResponse
+    public function types()
     {
         return response()->json([
             'success' => true,
@@ -221,7 +221,7 @@ class BranchController extends Controller
     /**
      * GET /branches/statuses
      */
-    public function statuses(): JsonResponse
+    public function statuses()
     {
         return response()->json([
             'success' => true,

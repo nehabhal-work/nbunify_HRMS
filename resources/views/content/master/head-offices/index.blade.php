@@ -17,7 +17,7 @@
     <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
             <h5 class="mb-0">All Head Offices</h5>
-            <a href="{{ route('master.head-office.create') }}" class="btn btn-primary btn-sm">
+            <a href="{{ route('master.head-offices.create') }}" class="btn btn-primary btn-sm">
                 <i class="bx bx-plus"></i> Add Head Office
             </a>
           

@@ -69,7 +69,7 @@
                         <tr>
                             <th>#</th>
                             <th>Company</th>
-                            <th>Reg. No.</th>
+                            <th>CIN No.</th>
                             <th>Company Type</th>
                             <th>Country</th>
                             <th>Head Office</th>
