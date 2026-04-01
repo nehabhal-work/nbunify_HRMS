@@ -93,7 +93,7 @@
                                 <label>Phone</label>
                                 <input type="text" name="phone"
                                     class="form-control @error('phone') is-invalid @enderror"
-                                    value="{{ old('phone') }}" placeholder="+91 9876543210">
+                                    value="{{ old('phone') }}" placeholder="Enter phone number">
                                 @error('phone')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror

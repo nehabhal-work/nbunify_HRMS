@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Masters;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\HeadOfficeRequest;
 use App\Models\HeadOffice;
+use App\Models\Company;
 use Illuminate\Http\Request;
 use App\Services\HeadOfficeService;
 use Illuminate\Support\Facades\Auth;
@@ -35,14 +36,16 @@ class HeadOfficeController extends Controller
     /**
      * POST /head-officess
      */
-    public function create(HeadOfficeRequest $request)
+    public function create()
     {
-        return view('content.master.head-offices.create');
+        $companies = Company::get(); // optional filter
 
+        return view('content.master.head-offices.create', compact('companies'));
     }
     public function store(HeadOfficeRequest $request)
     {
         $headOffice = $this->headOfficeService->create($request->validated());
+        return redirect()->route('master.head-offices.index')->with('success', 'Head office created successfully.');
 
 
     }
@@ -59,9 +62,16 @@ class HeadOfficeController extends Controller
     /**
      * PUT|PATCH /head-officess/{head_office}
      */
+    public function edit(HeadOffice $headOffice)
+    {
+        $companies = Company::get(); // optional filter
+
+        return view('content.master.head-offices.edit', compact('companies'));
+    }
     public function update(HeadOfficeRequest $request, HeadOffice $headOffice)
     {
-        $updated = $this->headOfficeService->update($headOffice, $request->validated());
+        $headOffice = $this->headOfficeService->update($headOffice, $request->validated());
+        return redirect()->route('master.head-offices.index')->with('success', 'Head office updated successfully.');
 
 
     }

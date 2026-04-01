@@ -126,7 +126,40 @@
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
+                            <!-- 📧 EMAIL -->
+                            <div class="col-md-4 mb-3">
+                                <label>Email</label>
+                                <input type="email" name="email"
+                                    class="form-control @error('email') is-invalid @enderror"
+                                    value="{{ old('email', $company->email) }}" placeholder="Enter company email">
+                                @error('email')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
 
+                            <!-- ✅ STATUS -->
+                            <div class="col-md-4 mb-3">
+                                <label>Status</label>
+                                <select name="status" class="form-control @error('status') is-invalid @enderror">
+
+                                    <option value="">Select Status</option>
+
+                                    <option value="active"
+                                        {{ old('status', $company->status) == 'active' ? 'selected' : '' }}>
+                                        Active
+                                    </option>
+
+                                    <option value="inactive"
+                                        {{ old('status', $company->status) == 'inactive' ? 'selected' : '' }}>
+                                        Inactive
+                                    </option>
+
+                                </select>
+
+                                @error('status')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
                             <div class="col-md-4 mb-3">
                                 <label>Company Type <span class="text-danger">*</span></label>
                                 <select name="company_type"
