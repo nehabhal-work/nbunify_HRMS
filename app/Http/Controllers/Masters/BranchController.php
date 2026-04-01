@@ -1,72 +1,232 @@
 <?php
 
-namespace App\Http\Controllers\Masters;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreBranchRequest;
+use App\Http\Requests\BranchRequest;
 use App\Models\Branch;
-use App\Models\Company;
 use App\Services\BranchService;
-use App\Services\CompanyService;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class BranchController extends Controller
 {
-    public function __construct(private BranchService $branchService, private CompanyService $CompanyService) {}
+    public function __construct(protected BranchService $branchService) {}
 
-    public function index(): View
+    /**
+     * GET /branches
+     * Filters: ?company_id= &head_office_id= &branch_type= &status= &search= &per_page=
+     */
+    public function index(Request $request): JsonResponse
     {
-        $data = getCountries();
-        $country = $data['country'] ?? null;
-        $states = $data['states'] ?? [];
-        $cities = $data['cities'] ?? [];
+        $filters = $request->only(['company_id', 'head_office_id', 'branch_type', 'status', 'search']);
+        $perPage = $request->integer('per_page', 15);
 
-        // $comp = $this->CompanyService->findFirstOrFail();
-        $company = Company::first();
-        // return $company;
+        $branches = $this->branchService->paginate($filters, $perPage);
 
-        return view('content.master.branches.index', [
-            'branches' => Branch::all()
-        ], compact('country', 'states', 'cities', 'company'));
+        return response()->json([
+            'success' => true,
+            'data'    => $branches,
+        ]);
     }
 
-    public function create(): View
+    /**
+     * POST /branches
+     */
+    public function store(BranchRequest $request): JsonResponse
     {
+        $branch = $this->branchService->create($request->validated());
 
-        return view('content.master.branches.create');
+        return response()->json([
+            'success' => true,
+            'message' => 'Branch created successfully.',
+            'data'    => $branch->load(['company', 'headOffice', 'createdBy', 'updatedBy']),
+        ], 201);
     }
 
-    public function store(StoreBranchRequest $request): RedirectResponse
+    /**
+     * GET /branches/{branch}
+     */
+    public function show(Branch $branch): JsonResponse
     {
-        $this->branchService->createBranch($request->validated());
-        return redirect()->route('master.branches.index')->with('success', 'Branch created successfully.');
+        return response()->json([
+            'success' => true,
+            'data'    => $branch->load(['company', 'headOffice', 'createdBy', 'updatedBy']),
+        ]);
     }
 
-    public function edit($id): View
+    /**
+     * PUT|PATCH /branches/{branch}
+     */
+    public function update(BranchRequest $request, Branch $branch): JsonResponse
     {
-        $branch = $this->branchService->find($id);
-        $data = getCountries();
-        $country = $data['country'] ?? null;
-        $states = $data['states'] ?? [];
-        $cities = $data['cities'] ?? [];
+        $updated = $this->branchService->update($branch, $request->validated());
 
-        return view('content.master.branches.edit', [
-            'branch' => $branch
-        ], compact('country', 'states', 'cities'));
+        return response()->json([
+            'success' => true,
+            'message' => 'Branch updated successfully.',
+            'data'    => $updated,
+        ]);
     }
 
-    public function update(StoreBranchRequest $request, $id): RedirectResponse
+    /**
+     * DELETE /branches/{branch}
+     * Soft delete
+     */
+    public function destroy(Branch $branch): JsonResponse
     {
-        $branch = $this->branchService->find($id);
-        $this->branchService->updateBranch($branch->id, $request->validated());
-        return redirect()->route('master.branches.edit', $branch->id)->with('success', 'Branch updated successfully.');
+        $this->branchService->delete($branch);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Branch deleted successfully.',
+        ]);
     }
 
-    public function destroy($id): RedirectResponse
+    /**
+     * DELETE /branches/{id}/force
+     * Permanent delete
+     */
+    public function forceDestroy(int $id): JsonResponse
     {
-        $branch = $this->branchService->find($id);
-        $this->branchService->deleteBranch($branch->id);
-        return redirect()->route('master.branches.index')->with('success', 'Branch deleted successfully.');
+        $this->branchService->forceDelete($id);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Branch permanently deleted.',
+        ]);
+    }
+
+    /**
+     * POST /branches/{id}/restore
+     */
+    public function restore(int $id): JsonResponse
+    {
+        $branch = $this->branchService->restore($id);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Branch restored successfully.',
+            'data'    => $branch,
+        ]);
+    }
+
+    /**
+     * PATCH /branches/{branch}/status
+     * Body: { "status": "active|inactive|closed" }
+     */
+    public function changeStatus(Request $request, Branch $branch): JsonResponse
+    {
+        $request->validate([
+            'status' => ['required', 'in:active,inactive,closed'],
+        ]);
+
+        $updated = $this->branchService->changeStatus($branch, $request->input('status'));
+
+        return response()->json([
+            'success' => true,
+            'message' => "Branch status changed to: {$updated->status_label}",
+            'data'    => $updated,
+        ]);
+    }
+
+    /**
+     * POST /branches/reorder
+     * Body: { "items": [{ "id": 1, "sort_order": 0 }, ...] }
+     */
+    public function reorder(Request $request): JsonResponse
+    {
+        $request->validate([
+            'items'              => ['required', 'array'],
+            'items.*.id'         => ['required', 'integer', 'exists:branches,id'],
+            'items.*.sort_order' => ['required', 'integer', 'min:0'],
+        ]);
+
+        $this->branchService->reorder($request->input('items'));
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Branch order updated successfully.',
+        ]);
+    }
+
+    /**
+     * PATCH /branches/{branch}/opening-hours
+     * Body: { "opening_hours": { "mon": { "open": "09:00", "close": "18:00" } } }
+     */
+    public function updateOpeningHours(Request $request, Branch $branch): JsonResponse
+    {
+        $request->validate([
+            'opening_hours'              => ['required', 'array'],
+            'opening_hours.*.open'       => ['nullable', 'date_format:H:i'],
+            'opening_hours.*.close'      => ['nullable', 'date_format:H:i'],
+            'opening_hours.*.is_holiday' => ['nullable', 'boolean'],
+        ]);
+
+        $updated = $this->branchService->updateOpeningHours($branch, $request->input('opening_hours'));
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Opening hours updated successfully.',
+            'data'    => $updated,
+        ]);
+    }
+
+    /**
+     * PATCH /branches/{branch}/meta
+     * Merge-update meta JSON field
+     */
+    public function updateMeta(Request $request, Branch $branch): JsonResponse
+    {
+        $request->validate([
+            'meta'   => ['required', 'array'],
+            'meta.*' => ['nullable'],
+        ]);
+
+        $updated = $this->branchService->updateMeta($branch, $request->input('meta'));
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Meta updated successfully.',
+            'data'    => $updated,
+        ]);
+    }
+
+    /**
+     * GET /branches/stats?company_id=1
+     */
+    public function stats(Request $request): JsonResponse
+    {
+        $request->validate([
+            'company_id' => ['required', 'integer', 'exists:companies,id'],
+        ]);
+
+        $stats = $this->branchService->statsForCompany((int) $request->input('company_id'));
+
+        return response()->json([
+            'success' => true,
+            'data'    => $stats,
+        ]);
+    }
+
+    /**
+     * GET /branches/types
+     */
+    public function types(): JsonResponse
+    {
+        return response()->json([
+            'success' => true,
+            'data'    => Branch::BRANCH_TYPES,
+        ]);
+    }
+
+    /**
+     * GET /branches/statuses
+     */
+    public function statuses(): JsonResponse
+    {
+        return response()->json([
+            'success' => true,
+            'data'    => Branch::STATUSES,
+        ]);
     }
 }

@@ -3,95 +3,146 @@
 namespace App\Http\Controllers\Masters;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\HeadOfficeRequest;
 use App\Models\HeadOffice;
 use Illuminate\Http\Request;
 use App\Services\HeadOfficeService;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\StoreHeadOfficeRequest;
-use App\Http\Requests\UpdateHeadOfficeRequest;
+use Illuminate\Http\JsonResponse;
 
 class HeadOfficeController extends Controller
 {
-    protected $service;
+    public function __construct(protected HeadOfficeService $headOfficeService) {}
 
-    public function __construct(HeadOfficeService $service)
+    /**
+     * GET /head-offices
+     * Supports: ?company_id=1 &search=mumbai &is_active=1 &per_page=15
+     */
+    public function index(Request $request): JsonResponse
     {
-        $this->service = $service;
-    }
+        $filters  = $request->only(['company_id', 'search', 'is_active']);
+        $perPage  = $request->integer('per_page', 15);
 
-    public function index(Request $request)
-    {
-        $filters = $request->only(['search', 'company_id']);
-        $data = $this->service->paginate($filters);
+        $offices = $this->headOfficeService->paginate($filters, $perPage);
 
         return response()->json([
             'success' => true,
-            'data' => $data
+            'data'    => $offices,
         ]);
     }
 
-    public function store(StoreHeadOfficeRequest $request)
+    /**
+     * POST /head-offices
+     */
+    public function store(HeadOfficeRequest $request): JsonResponse
     {
-        $data = $request->validated();
-        $data['created_by'] = Auth::id();
-        $data['updated_by'] = Auth::id();
-
-        $record = $this->service->store($data);
+        $headOffice = $this->headOfficeService->create($request->validated());
 
         return response()->json([
             'success' => true,
-            'data' => $record
+            'message' => 'Head office created successfully.',
+            'data'    => $headOffice->load(['company', 'createdBy', 'updatedBy']),
+        ], 201);
+    }
+
+    /**
+     * GET /head-offices/{head_office}
+     */
+    public function show(HeadOffice $headOffice): JsonResponse
+    {
+        return response()->json([
+            'success' => true,
+            'data'    => $headOffice->load(['company', 'createdBy', 'updatedBy']),
         ]);
     }
 
-    public function show(HeadOffice $headOffice)
+    /**
+     * PUT|PATCH /head-offices/{head_office}
+     */
+    public function update(HeadOfficeRequest $request, HeadOffice $headOffice): JsonResponse
     {
+        $updated = $this->headOfficeService->update($headOffice, $request->validated());
+
         return response()->json([
             'success' => true,
-            'data' => $headOffice
+            'message' => 'Head office updated successfully.',
+            'data'    => $updated,
         ]);
     }
 
-    public function update(UpdateHeadOfficeRequest $request, HeadOffice $headOffice)
+    /**
+     * DELETE /head-offices/{head_office}
+     * Soft delete
+     */
+    public function destroy(HeadOffice $headOffice): JsonResponse
     {
-        $data = $request->validated();
-        $data['updated_by'] = Auth::id();
-
-        $record = $this->service->update($headOffice, $data);
+        $this->headOfficeService->delete($headOffice);
 
         return response()->json([
             'success' => true,
-            'data' => $record
+            'message' => 'Head office deleted successfully.',
         ]);
     }
 
-    public function destroy(HeadOffice $headOffice)
+    /**
+     * DELETE /head-offices/{id}/force
+     * Permanent delete
+     */
+    public function forceDestroy(int $id): JsonResponse
     {
-        $this->service->delete($headOffice);
+        $this->headOfficeService->forceDelete($id);
 
         return response()->json([
             'success' => true,
-            'message' => 'Deleted successfully'
+            'message' => 'Head office permanently deleted.',
         ]);
     }
 
-    public function restore($id)
+    /**
+     * POST /head-offices/{id}/restore
+     */
+    public function restore(int $id): JsonResponse
     {
-        $this->service->restore($id);
+        $headOffice = $this->headOfficeService->restore($id);
 
         return response()->json([
             'success' => true,
-            'message' => 'Restored successfully'
+            'message' => 'Head office restored successfully.',
+            'data'    => $headOffice,
         ]);
     }
 
-    public function forceDestroy($id)
+    /**
+     * PATCH /head-offices/{head_office}/toggle-active
+     */
+    public function toggleActive(HeadOffice $headOffice): JsonResponse
     {
-        $this->service->forceDelete($id);
+        $updated = $this->headOfficeService->toggleActive($headOffice);
 
         return response()->json([
             'success' => true,
-            'message' => 'Permanently deleted'
+            'message' => 'Status updated to: ' . $updated->status_label,
+            'data'    => $updated,
+        ]);
+    }
+
+    /**
+     * PATCH /head-offices/{head_office}/meta
+     * Merge-update the meta JSON field
+     */
+    public function updateMeta(Request $request, HeadOffice $headOffice): JsonResponse
+    {
+        $request->validate([
+            'meta'   => ['required', 'array'],
+            'meta.*' => ['nullable'],
+        ]);
+
+        $updated = $this->headOfficeService->updateMeta($headOffice, $request->input('meta'));
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Meta updated successfully.',
+            'data'    => $updated,
         ]);
     }
 }

@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class HeadOffice extends Model
 {
-    use SoftDeletes;
+    use HasFactory, SoftDeletes;
 
     protected $fillable = [
         'company_id',
@@ -39,18 +40,23 @@ class HeadOffice extends Model
         'established_at' => 'date',
     ];
 
-    // रिलेशनशिप
+    protected $attributes = [
+        'timezone' => 'IST',
+        'currency' => 'INR',
+        'is_active' => true,
+    ];
+
     public function company()
     {
         return $this->belongsTo(Company::class);
     }
 
-    public function creator()
+    public function createdBy()
     {
         return $this->belongsTo(User::class, 'created_by');
     }
 
-    public function updater()
+    public function updatedBy()
     {
         return $this->belongsTo(User::class, 'updated_by');
     }
@@ -77,5 +83,10 @@ class HeadOffice extends Model
             $this->pincode,
             $this->country,
         ])->filter()->implode(', ');
+    }
+
+    public function getStatusLabelAttribute(): string
+    {
+        return $this->is_active ? 'Active' : 'Inactive';
     }
 }
