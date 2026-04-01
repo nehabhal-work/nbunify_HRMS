@@ -1,32 +1,33 @@
 @extends('layouts.master-layout')
 
 @section('content')
-<style>
-    .table td, .table th {
-    vertical-align: middle;
-}
+    <style>
+        .table td,
+        .table th {
+            vertical-align: middle;
+        }
 
-.badge {
-    font-weight: 500;
-    border-radius: 8px;
-}
+        .badge {
+            font-weight: 500;
+            border-radius: 8px;
+        }
 
-.card {
-    border-radius: 16px;
-}
+        .card {
+            border-radius: 16px;
+        }
 
-input::placeholder {
-    color: #aaa;
-}
-</style>
+        input::placeholder {
+            color: #aaa;
+        }
+    </style>
     <div class="container-fluid">
 
         <!-- 🌤 HEADER -->
         <div class="d-flex justify-content-between align-items-center mb-4">
-           
-             <h4 class="fw-bold py-3 ">
-            <span class="text-muted fw-light">Master /</span> Companies
-        </h4>
+
+            <h4 class="fw-bold py-3 ">
+                <span class="text-muted fw-light">Master /</span> Companies
+            </h4>
 
             <div class="d-flex gap-2">
 
@@ -51,11 +52,7 @@ input::placeholder {
                     <input type="text" class="form-control" placeholder="🔍 Search companies...">
                 </div>
 
-                <select class="form-select w-auto">
-                    <option>All Status</option>
-                    <option>Active</option>
-                    <option>Inactive</option>
-                </select>
+
 
 
 
@@ -70,13 +67,13 @@ input::placeholder {
 
                     <thead class="table-light">
                         <tr>
+                            <th>#</th>
                             <th>Company</th>
                             <th>Reg. No.</th>
-                            <th>Industry</th>
+                            <th>Company Type</th>
                             <th>Country</th>
                             <th>Head Office</th>
                             <th>Branches</th>
-                            <th>Status</th>
                             <th class="text-end">Actions</th>
                         </tr>
                     </thead>
@@ -85,6 +82,7 @@ input::placeholder {
 
                         @forelse($companies as $company)
                             <tr>
+                                <td>{{ $loop->iteration }}</td>
 
                                 <!-- 🏢 COMPANY -->
                                 <td>
@@ -96,7 +94,7 @@ input::placeholder {
 
                                         <div>
                                             <div class="fw-semibold">{{ $company->name }}</div>
-                                            <small class="text-muted">{{ $company->industry ?? '—' }}</small>
+                                            <small class="text-muted">{{ $company->legal_name ?? '—' }}</small>
                                         </div>
                                     </div>
                                 </td>
@@ -111,7 +109,7 @@ input::placeholder {
                                 <!-- 🏷 INDUSTRY -->
                                 <td>
                                     <span class="badge bg-light border">
-                                        {{ $company->industry ?? '—' }}
+                                        {{ $company->company_type ?? '—' }}
                                     </span>
                                 </td>
 
@@ -124,24 +122,13 @@ input::placeholder {
                                 <!-- 🔢 BRANCH -->
                                 <td>{{ $company->branches_count ?? 0 }}</td>
 
-                                <!-- 🟢 STATUS -->
-                                <td>
-                                    @if ($company->status == 1)
-                                        <span class="badge bg-success-subtle text-success px-3 py-2">
-                                            ● Active
-                                        </span>
-                                    @else
-                                        <span class="badge bg-danger-subtle text-danger px-3 py-2">
-                                            ● Inactive
-                                        </span>
-                                    @endif
-                                </td>
+
 
                                 <!-- ⚙ ACTION -->
                                 <td class="text-end">
                                     <a href="{{ route('master.companies.edit', $company->id) }}"
                                         class="btn btn-sm btn-light border">
-                                        ✏
+                                        <i class="bx bx-edit-alt me-1"></i>
                                     </a>
 
                                     <form action="{{ route('master.companies.destroy', $company->id) }}" method="POST"
@@ -149,8 +136,9 @@ input::placeholder {
                                         @csrf
                                         @method('DELETE')
 
-                                        <button class="btn btn-sm btn-light border text-danger">
-                                            🗑
+                                      
+                                        <button type="submit" class="btn btn-sm btn-outline-danger">
+                                            <i class="bx bx-trash"></i>
                                         </button>
                                     </form>
                                 </td>

@@ -17,7 +17,7 @@ class HeadOfficeController extends Controller
     }
 
     /**
-     * GET /head-offices
+     * GET /head-officess
      * Supports: ?company_id=1 &search=mumbai &is_active=1 &per_page=15
      */
     public function index(Request $request)
@@ -27,17 +27,17 @@ class HeadOfficeController extends Controller
 
         $headOffices = $this->headOfficeService->paginate($filters, $perPage);
 
-        return view('content.master.head-office.index', compact('headOffices'));
+        return view('content.master.head-offices.index', compact('headOffices'));
 
 
     }
 
     /**
-     * POST /head-offices
+     * POST /head-officess
      */
     public function create(HeadOfficeRequest $request)
     {
-        return view('content.master.head-office.create');
+        return view('content.master.head-offices.create');
 
     }
     public function store(HeadOfficeRequest $request)
@@ -48,16 +48,16 @@ class HeadOfficeController extends Controller
     }
 
     /**
-     * GET /head-offices/{head_office}
+     * GET /head-officess/{head_office}
      */
     public function show(HeadOffice $headOffice)
     {
-        return view('content.master.head-office.view');
+        return view('content.master.head-offices.view');
 
     }
 
     /**
-     * PUT|PATCH /head-offices/{head_office}
+     * PUT|PATCH /head-officess/{head_office}
      */
     public function update(HeadOfficeRequest $request, HeadOffice $headOffice)
     {
@@ -67,7 +67,7 @@ class HeadOfficeController extends Controller
     }
 
     /**
-     * DELETE /head-offices/{head_office}
+     * DELETE /head-officess/{head_office}
      * Soft delete
      */
     public function destroy(HeadOffice $headOffice)
@@ -81,7 +81,7 @@ class HeadOfficeController extends Controller
     }
 
     /**
-     * DELETE /head-offices/{id}/force
+     * DELETE /head-officess/{id}/force
      * Permanent delete
      */
     public function forceDestroy(int $id)
@@ -95,7 +95,7 @@ class HeadOfficeController extends Controller
     }
 
     /**
-     * POST /head-offices/{id}/restore
+     * POST /head-officess/{id}/restore
      */
     public function restore(int $id)
     {
@@ -109,7 +109,7 @@ class HeadOfficeController extends Controller
     }
 
     /**
-     * PATCH /head-offices/{head_office}/toggle-active
+     * PATCH /head-officess/{head_office}/toggle-active
      */
     public function toggleActive(HeadOffice $headOffice)
     {
@@ -123,7 +123,7 @@ class HeadOfficeController extends Controller
     }
 
     /**
-     * PATCH /head-offices/{head_office}/meta
+     * PATCH /head-officess/{head_office}/meta
      * Merge-update the meta JSON field
      */
     public function updateMeta(Request $request, HeadOffice $headOffice)

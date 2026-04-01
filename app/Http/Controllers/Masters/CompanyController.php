@@ -11,7 +11,9 @@ use Illuminate\Http\Request;
 
 class CompanyController extends Controller
 {
-    public function __construct(protected CompanyService $companyService) {}
+    public function __construct(protected CompanyService $companyService)
+    {
+    }
 
     /**
      * GET /companies
@@ -94,7 +96,7 @@ class CompanyController extends Controller
 
         // $company = $this->companyService->create($request);
         $company = $this->companyService->create($request->validated());
-        return 'done' . $company->id;
+        return redirect()->route('content.master.companies.index')->with('success', 'Company created successfully.');
         // return response()->json([
         //     'success' => true,
         //     'message' => 'Company created successfully.',
@@ -128,8 +130,8 @@ class CompanyController extends Controller
     public function update(CompanyRequest $request, Company $company)
     {
         $updated = $this->companyService->update($company, $request->validated());
-
-        return view('content.master.companies.view', compact('company'));
+        return redirect()->route('master.companies.index')
+            ->with('success', 'Company updated successfully.');
     }
 
     /**
@@ -169,7 +171,7 @@ class CompanyController extends Controller
         return response()->json([
             'success' => true,
             'message' => 'Company restored successfully.',
-            'data'    => $company,
+            'data' => $company,
         ]);
     }
 
@@ -202,7 +204,7 @@ class CompanyController extends Controller
     {
         return response()->json([
             'success' => true,
-            'data'    => Company::COMPANY_TYPES,
+            'data' => Company::COMPANY_TYPES,
         ]);
     }
 }
