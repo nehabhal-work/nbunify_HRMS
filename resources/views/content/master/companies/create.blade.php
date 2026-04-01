@@ -140,7 +140,7 @@
                                 <!-- ✅ STATUS -->
                                 <div class="col-md-4 mb-3">
                                     <label>Status</label>
-                                    <select name="status" class="form-control @error('status') is-invalid @enderror">
+                                    <select name="status" class="form-select @error('status') is-invalid @enderror">
                                         <option value="">Select Status</option>
                                         <option value="active" {{ old('status') == 'active' ? 'selected' : '' }}>Active
                                         </option>
@@ -176,11 +176,17 @@
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label>Website</label>
-                                <input type="url" name="website"
-                                    class="form-control @error('website') is-invalid @enderror"
-                                    value="{{ old('website') }}" placeholder="https://example.com">
+
+                                <div class="input-group">
+                                    <span class="input-group-text">https://</span>
+                                    <input type="text" name="website"
+                                        class="form-control @error('website') is-invalid @enderror"
+                                        value="{{ old('website', str_replace('https://', '', $company->website)) }}"
+                                        placeholder="example.com">
+                                </div>
+
                                 @error('website')
-                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
                                 @enderror
                             </div>
 
@@ -744,47 +750,35 @@
 @push('scripts')
     <script>
         // ── Address copy ──────────────────────────────────────────────
-        const checkbox = document.getElementById('sameAddress');
-        const pairs = [
-            ['reg_address_line1', 'op_address_line1'],
-            ['reg_address_line2', 'op_address_line2'],
-            ['reg_city', 'op_city'],
-            ['reg_pincode', 'op_pincode'],
-            ['reg_state', 'op_state'],
-            ['reg_country', 'op_country'],
-        ];
+        $('#sameAddress').on('change', function() {
 
-        function copyAddress() {
-            pairs.forEach(([r, o]) => {
-                const reg = document.querySelector(`[name="${r}"]`);
-                const op = document.querySelector(`[name="${o}"]`);
-                if (!reg || !op) return;
-                op.value = reg.value;
-                if (op.tagName === 'SELECT') op.dispatchEvent(new Event('change'));
-                op.setAttribute('readonly', true);
-                op.setAttribute('disabled', true);
-            });
-        }
+            if ($(this).is(':checked')) {
 
-        function resetAddress() {
-            pairs.forEach(([_, o]) => {
-                const op = document.querySelector(`[name="${o}"]`);
-                if (!op) return;
-                op.value = '';
-                if (op.tagName === 'SELECT') op.selectedIndex = 0;
-                op.removeAttribute('readonly');
-                op.removeAttribute('disabled');
-            });
-        }
-        checkbox.addEventListener('change', () => checkbox.checked ? copyAddress() : resetAddress());
-        document.querySelectorAll('[name^="reg_"]').forEach(el => {
-            el.addEventListener('input', () => {
-                if (checkbox.checked) copyAddress();
-            });
-            el.addEventListener('change', () => {
-                if (checkbox.checked) copyAddress();
-            });
+                // Copy values
+                $('input[name="op_address_line1"]').val($('input[name="reg_address_line1"]').val());
+                $('input[name="op_address_line2"]').val($('input[name="reg_address_line2"]').val());
+                $('input[name="op_city"]').val($('input[name="reg_city"]').val());
+                $('input[name="op_pincode"]').val($('input[name="reg_pincode"]').val());
+
+                $('select[name="op_state"]').val($('select[name="reg_state"]').val());
+                $('select[name="op_country"]').val($('select[name="reg_country"]').val());
+
+            } else {
+
+                // Clear values when unchecked
+                $('input[name="op_address_line1"]').val('');
+                $('input[name="op_address_line2"]').val('');
+                $('input[name="op_city"]').val('');
+                $('input[name="op_pincode"]').val('');
+
+                $('select[name="op_state"]').val('');
+                $('select[name="op_country"]').val('');
+
+            }
+
         });
+
+
 
         // ── Doc upload helpers ────────────────────────────────────────
         function triggerFile(id) {

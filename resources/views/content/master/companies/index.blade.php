@@ -87,10 +87,7 @@
                                 <!-- 🏢 COMPANY -->
                                 <td>
                                     <div class="d-flex align-items-center gap-2">
-                                        <div class="rounded-circle bg-light text-center"
-                                            style="width:40px;height:40px;line-height:40px;">
-                                            {{ strtoupper(substr($company->name, 0, 1)) }}
-                                        </div>
+                                      
 
                                         <div>
                                             <div class="fw-semibold">{{ $company->name }}</div>

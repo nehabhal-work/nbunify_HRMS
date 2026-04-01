@@ -140,7 +140,7 @@
                             <!-- ✅ STATUS -->
                             <div class="col-md-4 mb-3">
                                 <label>Status</label>
-                                <select name="status" class="form-control @error('status') is-invalid @enderror">
+                                <select name="status" class="form-select @error('status') is-invalid @enderror">
 
                                     <option value="">Select Status</option>
 
@@ -162,16 +162,21 @@
                             </div>
                             <div class="col-md-4 mb-3">
                                 <label>Company Type <span class="text-danger">*</span></label>
+
                                 <select name="company_type"
                                     class="form-control @error('company_type') is-invalid @enderror">
+
                                     <option value="">Select type</option>
+
                                     @foreach ($companyTypes as $key => $value)
                                         <option value="{{ $key }}"
-                                            {{ old('company_type') == $key ? 'selected' : '' }}>
+                                            {{ old('company_type', $company->company_type) == $key ? 'selected' : '' }}>
                                             {{ $value }}
                                         </option>
                                     @endforeach
+
                                 </select>
+
                                 @error('company_type')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -179,11 +184,17 @@
 
                             <div class="col-md-4 mb-3">
                                 <label>Website</label>
-                                <input type="url" name="website"
-                                    class="form-control @error('website') is-invalid @enderror"
-                                    value="{{ old('website', $company->website) }}" placeholder="https://example.com">
+
+                                <div class="input-group">
+                                    <span class="input-group-text">https://</span>
+                                    <input type="text" name="website"
+                                        class="form-control @error('website') is-invalid @enderror"
+                                        value="{{ old('website', str_replace(['https://', 'http://'], '', $company->website)) }}"
+                                        placeholder="example.com">
+                                </div>
+
                                 @error('website')
-                                    <div class="invalid-feedback">{{ $message }}</div>
+                                    <div class="invalid-feedback d-block">{{ $message }}</div>
                                 @enderror
                             </div>
 
