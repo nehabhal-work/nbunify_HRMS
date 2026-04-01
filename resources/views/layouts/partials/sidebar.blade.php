@@ -11,7 +11,7 @@
     </div>
 
     <div class="menu-inner-shadow"></div>
-    
+
     <ul class="menu-inner py-1">
         <li class="menu-item {{ request()->routeIs('dashboard.*') ? 'active' : '' }}">
             <a href="{{ route('dashboard') }}" class="menu-link">
@@ -33,13 +33,6 @@
                     </a>
                 </li>
 
-                {{-- <li class="menu-item {{ request()->routeIs('master.branches.*') ? 'active' : '' }}">
-                    <a href="{{ route('master.branches.index') }}" class="menu-link">
-                        <i class="menu-icon bx bx-git-branch"></i>
-                        <div class="text-truncate">Branches</div>
-                    </a>
-                </li>
-
                 <li class="menu-item {{ request()->routeIs('master.head-offices.*') ? 'active' : '' }}">
                     <a href="{{ route('master.head-offices.index') }}" class="menu-link">
                         <i class="menu-icon bx bx-building-house"></i>
@@ -47,7 +40,16 @@
                     </a>
                 </li>
 
-                <li class="menu-item {{ request()->routeIs('master.departments.*') ? 'active' : '' }}">
+                <li class="menu-item {{ request()->routeIs('master.branches.*') ? 'active' : '' }}">
+                    <a href="{{ route('master.branches.index') }}" class="menu-link">
+                        <i class="menu-icon bx bx-git-branch"></i>
+                        <div class="text-truncate">Branches</div>
+                    </a>
+                </li>
+
+
+
+                {{--   <li class="menu-item {{ request()->routeIs('master.departments.*') ? 'active' : '' }}">
                     <a href="{{ route('master.departments.index') }}" class="menu-link">
                         <i class="menu-icon bx bx-network-chart"></i>
                         <div class="text-truncate">Departments</div>

@@ -24,10 +24,8 @@ class BranchController extends Controller
 
         $branches = $this->branchService->paginate($filters, $perPage);
 
-        return response()->json([
-            'success' => true,
-            'data'    => $branches,
-        ]);
+              return view('content.master.branch.index', compact('branches'));
+
     }
 
     /**
