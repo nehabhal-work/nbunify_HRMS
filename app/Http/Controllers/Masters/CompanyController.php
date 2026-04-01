@@ -47,8 +47,8 @@ class CompanyController extends Controller
         return view('content.master.companies.create', compact('country', 'states', 'cities', 'companyTypes'));
     }
 
-    // public function store(Request $request)
-    public function store(CompanyRequest $request)
+    public function store(Request $request)
+    // public function store(CompanyRequest $request)
     {
         // return 'company store';
 
@@ -92,7 +92,7 @@ class CompanyController extends Controller
         //     'updated_by' => 1,
         // ];
 
-        // return $request;
+        return $request;
 
         // $company = $this->companyService->create($request);
         $company = $this->companyService->create($request->validated());

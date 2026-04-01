@@ -3,9 +3,11 @@
 namespace App\Services;
 
 use App\Models\Company;
+use App\Models\HeadOffice;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -53,13 +55,70 @@ class CompanyService
 
     public function create(array $data): Company
     {
-        $data = $this->handleFileUploads($data);
-        $data['created_by'] = Auth::id();
-        $data['updated_by'] = Auth::id();
+        return DB::transaction(function () use ($data) {
 
-        return Company::create($data);
+            // Handle file uploads
+            $data = $this->handleFileUploads($data);
+
+            // Add audit fields
+            $data['created_by'] = Auth::id();
+            $data['updated_by'] = Auth::id();
+
+            // 1️⃣ Create Company
+            $company = Company::create($data);
+
+            // 2️⃣ Create Head Office (Registered Address)
+            HeadOffice::create([
+                'company_id'     => $company->id,
+                'name'           => $company->name . ' Head Office',
+                'code'           => 'HO-1', // you can make dynamic later
+                'email'          => $data['email'] ?? 'default@email.com',
+
+                'address_line_1' => $data['reg_address_line1'] ?? null,
+                'address_line_2' => $data['reg_address_line2'] ?? null,
+                'city'           => $data['reg_city'] ?? null,
+                'state'          => $data['reg_state'] ?? null,
+                'country'        => $data['reg_country'] ?? 'India',
+                'pincode'        => $data['reg_pincode'] ?? null,
+
+                'created_by'     => Auth::id(),
+                'updated_by'     => Auth::id(),
+            ]);
+
+            return $company;
+        });
     }
 
+
+    $('#sameAddress').on('change', function() {
+
+                if ($(this).is(':checked')) {
+
+                    // Copy values
+                    $('input[name="op_address_line1"]').val($('input[name="reg_address_line1"]').val());
+                    $('input[name="op_address_line2"]').val($('input[name="reg_address_line2"]').val());
+                    $('input[name="op_city"]').val($('input[name="reg_city"]').val());
+                    $('input[name="op_pincode"]').val($('input[name="reg_pincode"]').val());
+
+                    $('select[name="op_state"]').val($('select[name="reg_state"]').val());
+                    $('select[name="op_country"]').val($('select[name="reg_country"]').val());
+
+                } else {
+
+                    // Clear values when unchecked
+                    $('input[name="op_address_line1"]').val('');
+                    $('input[name="op_address_line2"]').val('');
+                    $('input[name="op_city"]').val('');
+                    $('input[name="op_pincode"]').val('');
+
+                    $('select[name="op_state"]').val('');
+                    $('select[name="op_country"]').val('');
+
+                }
+
+            });
+
+            
     // ─── Update ──────────────────────────────────────────────────────────────────
 
     public function update(Company $company, array $data): Company

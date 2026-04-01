@@ -21,6 +21,13 @@ return new class extends Migration
             $table->string('website')->nullable();
             $table->string('logo')->nullable();
 
+            $table->string('address_line_1');
+            $table->string('address_line_2')->nullable();
+            $table->string('city', 100);
+            $table->string('state', 100);
+            $table->string('country', 100);
+            $table->string('pincode', 20)->nullable();
+
             // Registration Numbers
             $table->string('watermark_no')->nullable();
             $table->string('copyrights_no')->nullable();
