@@ -35,6 +35,11 @@ class HeadOfficeController extends Controller
     /**
      * POST /head-offices
      */
+    public function create(HeadOfficeRequest $request)
+    {
+        return view('content.master.head-office.create');
+
+    }
     public function store(HeadOfficeRequest $request)
     {
         $headOffice = $this->headOfficeService->create($request->validated());
