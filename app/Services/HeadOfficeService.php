@@ -7,35 +7,51 @@ use App\Models\HeadOffice;
 class HeadOfficeService
 {
 
-    public function find($id) {
-        return HeadOffice::findOrFail($id);
-    }
-
-    public function getAllHeadOffices()
+    public function getAll()
     {
         return HeadOffice::all();
     }
 
-    public function createHeadOffice(array $data)
+    public function paginate($filters, $perPage = 15)
+    {
+        return HeadOffice::query()
+            ->when($filters['search'] ?? null, function ($q, $search) {
+                $q->where('name', 'like', "%$search%")
+                    ->orWhere('code', 'like', "%$search%");
+            })
+            ->when(isset($filters['company_id']), function ($q) use ($filters) {
+                $q->where('company_id', $filters['company_id']);
+            })
+            ->latest()
+            ->paginate($perPage);
+    }
+
+    public function store($data)
     {
         return HeadOffice::create($data);
     }
 
-    public function getHeadOfficeById($id)
+    public function update(HeadOffice $headOffice, $data)
     {
-        return HeadOffice::findOrFail($id);
-    }
-
-    public function updateHeadOffice($id, array $data)
-    {
-        $headOffice = HeadOffice::findOrFail($id);
         $headOffice->update($data);
         return $headOffice;
     }
 
-    public function deleteHeadOffice($id)
+    public function delete(HeadOffice $headOffice)
     {
-        $headOffice = HeadOffice::findOrFail($id);
         return $headOffice->delete();
+    }
+
+    public function restore($id)
+    {
+        $record = HeadOffice::withTrashed()->findOrFail($id);
+        $record->restore();
+        return $record;
+    }
+
+    public function forceDelete($id)
+    {
+        $record = HeadOffice::withTrashed()->findOrFail($id);
+        return $record->forceDelete();
     }
 }
