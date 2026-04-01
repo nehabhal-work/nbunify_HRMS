@@ -18,20 +18,24 @@
             transition: all 0.25s ease;
             cursor: pointer;
         }
+
         .doc-card:hover {
             border-color: #3b82f6;
             background: #f0f5ff;
             transform: translateY(-3px);
             box-shadow: 0 6px 20px rgba(59, 130, 246, 0.1);
         }
+
         .doc-card--uploaded {
             border: 1.5px solid #22c55e;
             background: #f0fdf4;
         }
+
         .doc-card--uploaded:hover {
             border-color: #16a34a;
             background: #dcfce7;
         }
+
         .doc-badge {
             font-size: 10px;
             font-weight: 600;
@@ -40,24 +44,33 @@
             border-radius: 6px;
             text-transform: uppercase;
         }
+
         .doc-badge--required {
             background: #fff1f1;
             color: #dc2626;
             border: 1px solid #fca5a5;
         }
+
         .doc-badge--uploaded {
             background: #dcfce7;
             color: #15803d;
             border: 1px solid #86efac;
         }
+
         .status-dot {
             display: inline-block;
             width: 8px;
             height: 8px;
             border-radius: 50%;
         }
-        .status-dot--red  { background: #ef4444; }
-        .status-dot--green { background: #22c55e; }
+
+        .status-dot--red {
+            background: #ef4444;
+        }
+
+        .status-dot--green {
+            background: #22c55e;
+        }
     </style>
 
     @if ($errors->any())
@@ -93,8 +106,8 @@
                             <div class="col-md-4 mb-3">
                                 <label>Company Name <span class="text-danger">*</span></label>
                                 <input type="text" name="name"
-                                    class="form-control @error('name') is-invalid @enderror"
-                                    value="{{ old('name') }}" placeholder="Enter company name">
+                                    class="form-control @error('name') is-invalid @enderror" value="{{ old('name') }}"
+                                    placeholder="Enter company name">
                                 @error('name')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -114,15 +127,22 @@
                                 <label>Company Type <span class="text-danger">*</span></label>
                                 <select name="company_type"
                                     class="form-control @error('company_type') is-invalid @enderror">
+
                                     <option value="">Select type</option>
-                                    <option value="pvt_ltd" {{ old('company_type') == 'pvt_ltd' ? 'selected' : '' }}>Private Ltd</option>
-                                    <option value="llp"     {{ old('company_type') == 'llp'     ? 'selected' : '' }}>LLP</option>
+
+                                    @foreach ($companyTypes as $key => $value)
+                                        <option value="{{ $key }}"
+                                            {{ old('company_type') == $key ? 'selected' : '' }}>
+                                            {{ $value }}
+                                        </option>
+                                    @endforeach
+
                                 </select>
+
                                 @error('company_type')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
-
                             <div class="col-md-4 mb-3">
                                 <label>Website</label>
                                 <input type="url" name="website"
@@ -159,8 +179,7 @@
 
                                 <div class="mb-3">
                                     <label>Address Line 1 <span class="text-danger">*</span></label>
-                                    <input type="text" name="reg_address_line1"
-                                        placeholder="Building No., Street, Area"
+                                    <input type="text" name="reg_address_line1" placeholder="Building No., Street, Area"
                                         class="form-control @error('reg_address_line1') is-invalid @enderror"
                                         value="{{ old('reg_address_line1') }}">
                                     @error('reg_address_line1')
@@ -170,8 +189,7 @@
 
                                 <div class="mb-3">
                                     <label>Address Line 2</label>
-                                    <input type="text" name="reg_address_line2"
-                                        placeholder="Floor, Suite, Landmark"
+                                    <input type="text" name="reg_address_line2" placeholder="Floor, Suite, Landmark"
                                         class="form-control" value="{{ old('reg_address_line2') }}">
                                 </div>
 
@@ -190,7 +208,9 @@
                                         <select name="reg_state"
                                             class="form-select @error('reg_state') is-invalid @enderror">
                                             <option value="">Select state...</option>
-                                            <option value="Maharashtra" {{ old('reg_state') == 'Maharashtra' ? 'selected' : '' }}>Maharashtra</option>
+                                            <option value="Maharashtra"
+                                                {{ old('reg_state') == 'Maharashtra' ? 'selected' : '' }}>Maharashtra
+                                            </option>
                                         </select>
                                         @error('reg_state')
                                             <div class="invalid-feedback">{{ $message }}</div>
@@ -249,7 +269,9 @@
                                         <select name="op_state"
                                             class="form-select @error('op_state') is-invalid @enderror">
                                             <option value="">Select state...</option>
-                                            <option value="Maharashtra" {{ old('op_state') == 'Maharashtra' ? 'selected' : '' }}>Maharashtra</option>
+                                            <option value="Maharashtra"
+                                                {{ old('op_state') == 'Maharashtra' ? 'selected' : '' }}>Maharashtra
+                                            </option>
                                         </select>
                                         @error('op_state')
                                             <div class="invalid-feedback">{{ $message }}</div>
@@ -371,8 +393,8 @@
                             <div class="col-md-3 mb-3">
                                 <label>CKYC</label>
                                 <input type="text" name="ckyc" maxlength="14"
-                                    class="form-control @error('ckyc') is-invalid @enderror"
-                                    value="{{ old('ckyc') }}" placeholder="CKYC Number">
+                                    class="form-control @error('ckyc') is-invalid @enderror" value="{{ old('ckyc') }}"
+                                    placeholder="CKYC Number">
                                 @error('ckyc')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -460,14 +482,30 @@
                                     <select name="banks[0][account_type]"
                                         class="form-select @error('banks.0.account_type') is-invalid @enderror">
                                         <option value="">Select Type</option>
-                                        <option value="savings"     {{ old('banks.0.account_type') == 'savings'     ? 'selected' : '' }}>Saving Account</option>
-                                        <option value="current"     {{ old('banks.0.account_type') == 'current'     ? 'selected' : '' }}>Current Account</option>
-                                        <option value="od_cc"       {{ old('banks.0.account_type') == 'od_cc'       ? 'selected' : '' }}>Overdraft/CC</option>
-                                        <option value="nre"         {{ old('banks.0.account_type') == 'nre'         ? 'selected' : '' }}>NRE</option>
-                                        <option value="nri"         {{ old('banks.0.account_type') == 'nri'         ? 'selected' : '' }}>NRI</option>
-                                        <option value="nro"         {{ old('banks.0.account_type') == 'nro'         ? 'selected' : '' }}>NRO</option>
-                                        <option value="tem_deposit" {{ old('banks.0.account_type') == 'tem_deposit' ? 'selected' : '' }}>Term Deposit</option>
-                                        <option value="ra"          {{ old('banks.0.account_type') == 'ra'          ? 'selected' : '' }}>Recurring</option>
+                                        <option value="savings"
+                                            {{ old('banks.0.account_type') == 'savings' ? 'selected' : '' }}>Saving
+                                            Account</option>
+                                        <option value="current"
+                                            {{ old('banks.0.account_type') == 'current' ? 'selected' : '' }}>Current
+                                            Account</option>
+                                        <option value="od_cc"
+                                            {{ old('banks.0.account_type') == 'od_cc' ? 'selected' : '' }}>
+                                            Overdraft/CC</option>
+                                        <option value="nre"
+                                            {{ old('banks.0.account_type') == 'nre' ? 'selected' : '' }}>NRE
+                                        </option>
+                                        <option value="nri"
+                                            {{ old('banks.0.account_type') == 'nri' ? 'selected' : '' }}>NRI
+                                        </option>
+                                        <option value="nro"
+                                            {{ old('banks.0.account_type') == 'nro' ? 'selected' : '' }}>NRO
+                                        </option>
+                                        <option value="tem_deposit"
+                                            {{ old('banks.0.account_type') == 'tem_deposit' ? 'selected' : '' }}>Term
+                                            Deposit</option>
+                                        <option value="ra"
+                                            {{ old('banks.0.account_type') == 'ra' ? 'selected' : '' }}>Recurring
+                                        </option>
                                     </select>
                                     @error('banks.0.account_type')
                                         <div class="invalid-feedback">{{ $message }}</div>
@@ -544,16 +582,20 @@
 
                         @php
                             $docs = [
-                                ['name' => 'attachment_pan',              'label' => 'PAN Card',           'icon' => '🪪'],
-                                ['name' => 'attachment_tan',              'label' => 'TAN Certificate',    'icon' => '📋'],
-                                ['name' => 'attachment_gstin',            'label' => 'GST Certificate',    'icon' => '📄'],
-                                ['name' => 'attachment_msme',             'label' => 'MSME Certificate',   'icon' => '🏢'],
-                                ['name' => 'attachment_udyam_aadhar',     'label' => 'Udyam Aadhar',       'icon' => '🪪'],
-                                ['name' => 'attachment_gumasta',          'label' => 'Gumasta License',    'icon' => '📄'],
-                                ['name' => 'attachment_ckyc',             'label' => 'CKYC Document',      'icon' => '📄'],
-                                ['name' => 'attachment_cancelled_cheque', 'label' => 'Cancelled Cheque',   'icon' => '🏦'],
-                                ['name' => 'attachment_proprietor',       'label' => 'Proprietor Photo',   'icon' => '👤'],
-                                ['name' => 'logo',                        'label' => 'Company Logo',       'icon' => '🏷️'],
+                                ['name' => 'attachment_pan', 'label' => 'PAN Card', 'icon' => '🪪'],
+                                ['name' => 'attachment_tan', 'label' => 'TAN Certificate', 'icon' => '📋'],
+                                ['name' => 'attachment_gstin', 'label' => 'GST Certificate', 'icon' => '📄'],
+                                ['name' => 'attachment_msme', 'label' => 'MSME Certificate', 'icon' => '🏢'],
+                                ['name' => 'attachment_udyam_aadhar', 'label' => 'Udyam Aadhar', 'icon' => '🪪'],
+                                ['name' => 'attachment_gumasta', 'label' => 'Gumasta License', 'icon' => '📄'],
+                                ['name' => 'attachment_ckyc', 'label' => 'CKYC Document', 'icon' => '📄'],
+                                [
+                                    'name' => 'attachment_cancelled_cheque',
+                                    'label' => 'Cancelled Cheque',
+                                    'icon' => '🏦',
+                                ],
+                                ['name' => 'attachment_proprietor', 'label' => 'Proprietor Photo', 'icon' => '👤'],
+                                ['name' => 'logo', 'label' => 'Company Logo', 'icon' => '🏷️'],
                             ];
                         @endphp
 
@@ -567,9 +609,11 @@
 
                                         {{-- BADGE --}}
                                         @if ($uploadedUrl)
-                                            <span class="doc-badge doc-badge--uploaded position-absolute top-0 end-0 m-2">✓ Uploaded</span>
+                                            <span class="doc-badge doc-badge--uploaded position-absolute top-0 end-0 m-2">✓
+                                                Uploaded</span>
                                         @else
-                                            <span class="doc-badge doc-badge--required position-absolute top-0 end-0 m-2">Required</span>
+                                            <span
+                                                class="doc-badge doc-badge--required position-absolute top-0 end-0 m-2">Required</span>
                                         @endif
 
                                         {{-- ICON --}}
@@ -595,9 +639,7 @@
                                         </p>
 
                                         {{-- FILE INPUT --}}
-                                        <input type="file"
-                                            id="{{ $doc['name'] }}"
-                                            name="{{ $doc['name'] }}"
+                                        <input type="file" id="{{ $doc['name'] }}" name="{{ $doc['name'] }}"
                                             accept=".pdf,.jpg,.jpeg,.png,.webp"
                                             class="d-none @error($doc['name']) is-invalid @enderror"
                                             onchange="uploadTempFile(this, '{{ $doc['name'] }}')">
@@ -605,7 +647,8 @@
                                         {{-- HINT / FILENAME --}}
                                         <div class="upload-hint">
                                             @if ($uploadedUrl)
-                                                <span style="font-size:12px;color:#3b82f6;">📎 {{ basename($uploadedUrl) }}</span>
+                                                <span style="font-size:12px;color:#3b82f6;">📎
+                                                    {{ basename($uploadedUrl) }}</span>
                                             @else
                                                 <p class="text-muted mb-0 small">Click to upload</p>
                                             @endif
@@ -620,13 +663,14 @@
                                         <div class="upload-error text-danger small mt-1" style="display:none;"></div>
 
                                         {{-- HIDDEN URL --}}
-                                        <input type="hidden" name="{{ $doc['name'] }}_url" value="{{ $uploadedUrl }}">
+                                        <input type="hidden" name="{{ $doc['name'] }}_url"
+                                            value="{{ $uploadedUrl }}">
 
                                         {{-- EXISTING PREVIEW --}}
                                         @if ($uploadedUrl)
                                             @php $ext = strtolower(pathinfo($uploadedUrl, PATHINFO_EXTENSION)); @endphp
                                             <div class="mt-3 position-relative d-inline-block doc-preview">
-                                                @if (in_array($ext, ['jpg','jpeg','png','webp']))
+                                                @if (in_array($ext, ['jpg', 'jpeg', 'png', 'webp']))
                                                     <img src="{{ $uploadedUrl }}" width="70" height="70"
                                                         class="rounded shadow-sm"
                                                         style="object-fit:cover;border:2px solid #86efac;">
@@ -634,7 +678,8 @@
                                                     <div class="d-flex align-items-center gap-2 rounded px-3 py-2"
                                                         style="background:#f1f5f9;border:1px solid #e2e8f0;font-size:12px;">
                                                         <span style="font-size:22px;">📄</span>
-                                                        <span class="text-muted" style="max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
+                                                        <span class="text-muted"
+                                                            style="max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">
                                                             {{ basename($uploadedUrl) }}
                                                         </span>
                                                     </div>
@@ -666,176 +711,186 @@
 @endsection
 
 @push('scripts')
-<script>
-    // ── Address copy ──────────────────────────────────────────────
-    const checkbox = document.getElementById('sameAddress');
-    const pairs = [
-        ['reg_address_line1','op_address_line1'],
-        ['reg_address_line2','op_address_line2'],
-        ['reg_city','op_city'],
-        ['reg_pincode','op_pincode'],
-        ['reg_state','op_state'],
-        ['reg_country','op_country'],
-    ];
-    function copyAddress() {
-        pairs.forEach(([r, o]) => {
-            const reg = document.querySelector(`[name="${r}"]`);
-            const op  = document.querySelector(`[name="${o}"]`);
-            if (!reg || !op) return;
-            op.value = reg.value;
-            if (op.tagName === 'SELECT') op.dispatchEvent(new Event('change'));
-            op.setAttribute('readonly', true);
-            op.setAttribute('disabled', true);
+    <script>
+        // ── Address copy ──────────────────────────────────────────────
+        const checkbox = document.getElementById('sameAddress');
+        const pairs = [
+            ['reg_address_line1', 'op_address_line1'],
+            ['reg_address_line2', 'op_address_line2'],
+            ['reg_city', 'op_city'],
+            ['reg_pincode', 'op_pincode'],
+            ['reg_state', 'op_state'],
+            ['reg_country', 'op_country'],
+        ];
+
+        function copyAddress() {
+            pairs.forEach(([r, o]) => {
+                const reg = document.querySelector(`[name="${r}"]`);
+                const op = document.querySelector(`[name="${o}"]`);
+                if (!reg || !op) return;
+                op.value = reg.value;
+                if (op.tagName === 'SELECT') op.dispatchEvent(new Event('change'));
+                op.setAttribute('readonly', true);
+                op.setAttribute('disabled', true);
+            });
+        }
+
+        function resetAddress() {
+            pairs.forEach(([_, o]) => {
+                const op = document.querySelector(`[name="${o}"]`);
+                if (!op) return;
+                op.value = '';
+                if (op.tagName === 'SELECT') op.selectedIndex = 0;
+                op.removeAttribute('readonly');
+                op.removeAttribute('disabled');
+            });
+        }
+        checkbox.addEventListener('change', () => checkbox.checked ? copyAddress() : resetAddress());
+        document.querySelectorAll('[name^="reg_"]').forEach(el => {
+            el.addEventListener('input', () => {
+                if (checkbox.checked) copyAddress();
+            });
+            el.addEventListener('change', () => {
+                if (checkbox.checked) copyAddress();
+            });
         });
-    }
-    function resetAddress() {
-        pairs.forEach(([_, o]) => {
-            const op = document.querySelector(`[name="${o}"]`);
-            if (!op) return;
-            op.value = '';
-            if (op.tagName === 'SELECT') op.selectedIndex = 0;
-            op.removeAttribute('readonly');
-            op.removeAttribute('disabled');
-        });
-    }
-    checkbox.addEventListener('change', () => checkbox.checked ? copyAddress() : resetAddress());
-    document.querySelectorAll('[name^="reg_"]').forEach(el => {
-        el.addEventListener('input',  () => { if (checkbox.checked) copyAddress(); });
-        el.addEventListener('change', () => { if (checkbox.checked) copyAddress(); });
-    });
 
-    // ── Doc upload helpers ────────────────────────────────────────
-    function triggerFile(id) {
-        document.getElementById(id).click();
-    }
+        // ── Doc upload helpers ────────────────────────────────────────
+        function triggerFile(id) {
+            document.getElementById(id).click();
+        }
 
-    function uploadTempFile(input, fieldName) {
-        const file = input.files[0];
-        if (!file) return;
+        function uploadTempFile(input, fieldName) {
+            const file = input.files[0];
+            if (!file) return;
 
-        const card = input.closest('.doc-card');
-        const formData = new FormData();
-        formData.append('file', file);
+            const card = input.closest('.doc-card');
+            const formData = new FormData();
+            formData.append('file', file);
 
-        setCardLoading(card, true);
+            setCardLoading(card, true);
 
-        fetch('/upload-temp', {
-            method: 'POST',
-            headers: { 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content },
-            body: formData
-        })
-        .then(res => {
-            if (!res.ok) return res.json().then(e => { throw new Error(e.message || 'Server error'); });
-            return res.json();
-        })
-        .then(data => {
-            if (data.url) {
-                card.querySelector(`input[name="${fieldName}_url"]`).value = data.url;
-                setCardUploaded(card, file.name, data.url, file);
-            }
-        })
-        .catch(err => {
-            console.error('Upload error:', err);
-            const hint = card.querySelector('.upload-hint');
-            if (hint) hint.innerHTML = `<p class="text-muted mb-0 small">Click to upload</p>`;
-            const errorDiv = card.querySelector('.upload-error');
-            if (errorDiv) {
-                errorDiv.textContent = '⚠ Upload failed. Try again.';
-                errorDiv.style.display = 'block';
-                setTimeout(() => errorDiv.style.display = 'none', 4000);
-            }
-        })
-        .finally(() => setCardLoading(card, false));
-    }
+            fetch('/upload-temp', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: formData
+                })
+                .then(res => {
+                    if (!res.ok) return res.json().then(e => {
+                        throw new Error(e.message || 'Server error');
+                    });
+                    return res.json();
+                })
+                .then(data => {
+                    if (data.url) {
+                        card.querySelector(`input[name="${fieldName}_url"]`).value = data.url;
+                        setCardUploaded(card, file.name, data.url, file);
+                    }
+                })
+                .catch(err => {
+                    console.error('Upload error:', err);
+                    const hint = card.querySelector('.upload-hint');
+                    if (hint) hint.innerHTML = `<p class="text-muted mb-0 small">Click to upload</p>`;
+                    const errorDiv = card.querySelector('.upload-error');
+                    if (errorDiv) {
+                        errorDiv.textContent = '⚠ Upload failed. Try again.';
+                        errorDiv.style.display = 'block';
+                        setTimeout(() => errorDiv.style.display = 'none', 4000);
+                    }
+                })
+                .finally(() => setCardLoading(card, false));
+        }
 
-    function setCardUploaded(card, fileName, fileUrl, fileObj = null) {
-        card.classList.add('doc-card--uploaded');
+        function setCardUploaded(card, fileName, fileUrl, fileObj = null) {
+            card.classList.add('doc-card--uploaded');
 
-        const badge = card.querySelector('.doc-badge');
-        badge.className = 'doc-badge doc-badge--uploaded position-absolute top-0 end-0 m-2';
-        badge.textContent = '✓ Uploaded';
+            const badge = card.querySelector('.doc-badge');
+            badge.className = 'doc-badge doc-badge--uploaded position-absolute top-0 end-0 m-2';
+            badge.textContent = '✓ Uploaded';
 
-        card.querySelector('.status-dot').className = 'status-dot status-dot--green';
-        const st = card.querySelector('.status-text');
-        st.className = 'status-text small fw-medium text-success';
-        st.textContent = 'Uploaded';
+            card.querySelector('.status-dot').className = 'status-dot status-dot--green';
+            const st = card.querySelector('.status-text');
+            st.className = 'status-text small fw-medium text-success';
+            st.textContent = 'Uploaded';
 
-        card.querySelector('.upload-hint').innerHTML =
-            `<span style="font-size:12px;color:#3b82f6;">📎 ${fileName}</span>`;
+            card.querySelector('.upload-hint').innerHTML =
+                `<span style="font-size:12px;color:#3b82f6;">📎 ${fileName}</span>`;
 
-        showPreview(card, fileUrl, fileName, fileObj);
-    }
+            showPreview(card, fileUrl, fileName, fileObj);
+        }
 
-    function showPreview(card, fileUrl, fileName, fileObj = null) {
-        const old = card.querySelector('.doc-preview');
-        if (old) old.remove();
+        function showPreview(card, fileUrl, fileName, fileObj = null) {
+            const old = card.querySelector('.doc-preview');
+            if (old) old.remove();
 
-        const id      = card.querySelector('input[type=file]').id;
-        const isImage = /\.(jpg|jpeg|png|webp)$/i.test(fileName);
-        const preview = document.createElement('div');
-        preview.className = 'mt-3 position-relative d-inline-block doc-preview';
+            const id = card.querySelector('input[type=file]').id;
+            const isImage = /\.(jpg|jpeg|png|webp)$/i.test(fileName);
+            const preview = document.createElement('div');
+            preview.className = 'mt-3 position-relative d-inline-block doc-preview';
 
-        const removeBtn = `<button type="button"
+            const removeBtn = `<button type="button"
             class="btn btn-sm btn-danger position-absolute top-0 start-100 translate-middle"
             style="width:20px;height:20px;padding:0;font-size:10px;line-height:1;border-radius:50%;"
             onclick="event.stopPropagation(); removeImage('${id}')">✕</button>`;
 
-        if (isImage) {
-            const src = fileObj ? URL.createObjectURL(fileObj) : fileUrl;
-            preview.innerHTML = `<img src="${src}" width="70" height="70" class="rounded shadow-sm"
+            if (isImage) {
+                const src = fileObj ? URL.createObjectURL(fileObj) : fileUrl;
+                preview.innerHTML = `<img src="${src}" width="70" height="70" class="rounded shadow-sm"
                 style="object-fit:cover;border:2px solid #86efac;">${removeBtn}`;
-        } else {
-            preview.innerHTML = `
+            } else {
+                preview.innerHTML = `
                 <div class="d-flex align-items-center gap-2 rounded px-3 py-2"
                     style="background:#f1f5f9;border:1px solid #e2e8f0;font-size:12px;max-width:180px;">
                     <span style="font-size:24px;flex-shrink:0;">📄</span>
                     <span class="text-muted" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;"
                         title="${fileName}">${fileName}</span>
                 </div>${removeBtn}`;
+            }
+
+            card.appendChild(preview);
         }
 
-        card.appendChild(preview);
-    }
-
-    function setCardLoading(card, loading) {
-        card.style.opacity       = loading ? '0.6' : '1';
-        card.style.pointerEvents = loading ? 'none' : 'auto';
-        if (loading) {
-            const hint = card.querySelector('.upload-hint');
-            if (hint) hint.innerHTML = `
+        function setCardLoading(card, loading) {
+            card.style.opacity = loading ? '0.6' : '1';
+            card.style.pointerEvents = loading ? 'none' : 'auto';
+            if (loading) {
+                const hint = card.querySelector('.upload-hint');
+                if (hint) hint.innerHTML = `
                 <span class="small text-muted d-flex align-items-center justify-content-center gap-1">
                     <span class="spinner-border spinner-border-sm" style="width:10px;height:10px;"></span>
                     Uploading...
                 </span>`;
+            }
         }
-    }
 
-    function removeImage(fieldName) {
-        const input = document.getElementById(fieldName);
-        const card  = input.closest('.doc-card');
+        function removeImage(fieldName) {
+            const input = document.getElementById(fieldName);
+            const card = input.closest('.doc-card');
 
-        const img = card.querySelector('.doc-preview img');
-        if (img && img.src.startsWith('blob:')) URL.revokeObjectURL(img.src);
+            const img = card.querySelector('.doc-preview img');
+            if (img && img.src.startsWith('blob:')) URL.revokeObjectURL(img.src);
 
-        input.value = '';
-        card.querySelector(`input[name="${fieldName}_url"]`).value = '';
+            input.value = '';
+            card.querySelector(`input[name="${fieldName}_url"]`).value = '';
 
-        const preview = card.querySelector('.doc-preview');
-        if (preview) preview.remove();
+            const preview = card.querySelector('.doc-preview');
+            if (preview) preview.remove();
 
-        card.classList.remove('doc-card--uploaded');
+            card.classList.remove('doc-card--uploaded');
 
-        const badge = card.querySelector('.doc-badge');
-        badge.className = 'doc-badge doc-badge--required position-absolute top-0 end-0 m-2';
-        badge.textContent = 'Required';
+            const badge = card.querySelector('.doc-badge');
+            badge.className = 'doc-badge doc-badge--required position-absolute top-0 end-0 m-2';
+            badge.textContent = 'Required';
 
-        card.querySelector('.status-dot').className = 'status-dot status-dot--red';
-        const st = card.querySelector('.status-text');
-        st.className = 'status-text small fw-medium text-danger';
-        st.textContent = 'Not Uploaded';
+            card.querySelector('.status-dot').className = 'status-dot status-dot--red';
+            const st = card.querySelector('.status-text');
+            st.className = 'status-text small fw-medium text-danger';
+            st.textContent = 'Not Uploaded';
 
-        card.querySelector('.upload-hint').innerHTML =
-            `<p class="text-muted mb-0 small">Click to upload</p>`;
-    }
-</script>
+            card.querySelector('.upload-hint').innerHTML =
+                `<p class="text-muted mb-0 small">Click to upload</p>`;
+        }
+    </script>
 @endpush

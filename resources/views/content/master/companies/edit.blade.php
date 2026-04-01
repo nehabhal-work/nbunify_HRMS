@@ -132,12 +132,12 @@
                                 <select name="company_type"
                                     class="form-control @error('company_type') is-invalid @enderror">
                                     <option value="">Select type</option>
-                                    <option value="pvt_ltd"
-                                        {{ old('company_type', $company->company_type) == 'pvt_ltd' ? 'selected' : '' }}>
-                                        Private Ltd</option>
-                                    <option value="llp"
-                                        {{ old('company_type', $company->company_type) == 'llp' ? 'selected' : '' }}>LLP
-                                    </option>
+                                    @foreach ($companyTypes as $key => $value)
+                                        <option value="{{ $key }}"
+                                            {{ old('company_type') == $key ? 'selected' : '' }}>
+                                            {{ $value }}
+                                        </option>
+                                    @endforeach
                                 </select>
                                 @error('company_type')
                                     <div class="invalid-feedback">{{ $message }}</div>

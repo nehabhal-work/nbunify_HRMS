@@ -8,12 +8,11 @@ use App\Models\Company;
 use App\Services\CompanyService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 class CompanyController extends Controller
 {
-    public function __construct(protected CompanyService $companyService)
-    {
-    }
+    public function __construct(protected CompanyService $companyService) {}
 
     /**
      * GET /companies
@@ -44,7 +43,8 @@ class CompanyController extends Controller
         $country = $data['country'] ?? null;
         $states = $data['states'] ?? [];
         $cities = $data['cities'] ?? [];
-        return view('content.master.companies.create', compact('country', 'states', 'cities'));
+        $companyTypes = Company::COMPANY_TYPES;
+        return view('content.master.companies.create', compact('country', 'states', 'cities', 'companyTypes'));
     }
 
     // public function store(Request $request)
@@ -92,11 +92,13 @@ class CompanyController extends Controller
         //     'updated_by' => 1,
         // ];
 
-
+        // return $request;
 
         // $company = $this->companyService->create($request);
         $company = $this->companyService->create($request->validated());
-        return redirect()->route('content.master.companies.index')->with('success', 'Company created successfully.');
+
+        return redirect()->route('master.companies.index')->with('success', 'Company created successfully.');
+
         // return response()->json([
         //     'success' => true,
         //     'message' => 'Company created successfully.',
