@@ -22,7 +22,7 @@ class CompanyRequest extends FormRequest
             'name'          => ['required', 'string', 'max:255'],
             'legal_name'    => ['nullable', 'string', 'max:255'],
             'company_type'  => ['required', Rule::in(array_keys(Company::COMPANY_TYPES))],
-            'website'       => ['nullable', 'url', 'max:255'],
+            'website'       => ['nullable', 'string', 'max:255'],
             'logo'          => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp', 'max:2048'],
             'email'          => ['nullable', 'email', 'max:255'],
             'mobile'          => ['nullable', 'string', 'max:15'],

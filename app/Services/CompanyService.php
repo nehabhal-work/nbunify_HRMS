@@ -30,6 +30,11 @@ class CompanyService
 
     // ─── List / Search ───────────────────────────────────────────────────────────
 
+    public function getFirst(): ?Company
+    {
+        return Company::query()->with(['createdBy', 'updatedBy'])->first();
+    }
+
     public function paginate(array $filters = [], int $perPage = 15): LengthAwarePaginator
     {
         $query = Company::query()->with(['createdBy', 'updatedBy']);

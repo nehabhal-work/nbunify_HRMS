@@ -20,11 +20,8 @@ class CompanyController extends Controller
      */
     public function index(Request $request)
     {
-        // return 'index';
-        $filters = $request->only(['search', 'company_type']);
-        $perPage = $request->integer('per_page', 15);
 
-        $companies = $this->companyService->paginate($filters, $perPage);
+        $companies = $this->companyService->getFirst();
 
         return view('content.master.companies.index', compact('companies'));
         // return response()->json([
