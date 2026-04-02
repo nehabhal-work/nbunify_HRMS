@@ -15,9 +15,17 @@ class Company extends Model
         // Basic Info
         'name',
         'legal_name',
+        'email',
         'company_type',
         'website',
         'logo',
+
+        "reg_address_line1",
+        "reg_address_line2",
+        "reg_city",
+        "reg_state",
+        "reg_pincode",
+        "reg_country",
 
         // Registration Numbers
         'watermark_no',
@@ -46,6 +54,7 @@ class Company extends Model
         'attachment_gumasta',
         'attachment_msme',
 
+        'is_active',
         // Audit
         'created_by',
         'updated_by',

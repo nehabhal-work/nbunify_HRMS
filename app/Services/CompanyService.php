@@ -64,6 +64,12 @@ class CompanyService
             $data['created_by'] = Auth::id();
             $data['updated_by'] = Auth::id();
 
+
+            if (!empty($data['website'])) {
+                $data['website'] = 'https://' . preg_replace('#^https?://#', '', $data['website']);
+            }
+
+            return $data;
             // 1️⃣ Create Company
             $company = Company::create($data);
 
@@ -72,7 +78,7 @@ class CompanyService
                 'company_id'     => $company->id,
                 'name'           => $company->name . ' Head Office',
                 'code'           => 'HO-1', // you can make dynamic later
-                'email'          => $data['email'] ?? 'default@email.com',
+                'email'          => $data['email'] ?? '',
 
                 'address_line_1' => $data['reg_address_line1'] ?? null,
                 'address_line_2' => $data['reg_address_line2'] ?? null,
@@ -90,35 +96,7 @@ class CompanyService
     }
 
 
-    $('#sameAddress').on('change', function() {
 
-                if ($(this).is(':checked')) {
-
-                    // Copy values
-                    $('input[name="op_address_line1"]').val($('input[name="reg_address_line1"]').val());
-                    $('input[name="op_address_line2"]').val($('input[name="reg_address_line2"]').val());
-                    $('input[name="op_city"]').val($('input[name="reg_city"]').val());
-                    $('input[name="op_pincode"]').val($('input[name="reg_pincode"]').val());
-
-                    $('select[name="op_state"]').val($('select[name="reg_state"]').val());
-                    $('select[name="op_country"]').val($('select[name="reg_country"]').val());
-
-                } else {
-
-                    // Clear values when unchecked
-                    $('input[name="op_address_line1"]').val('');
-                    $('input[name="op_address_line2"]').val('');
-                    $('input[name="op_city"]').val('');
-                    $('input[name="op_pincode"]').val('');
-
-                    $('select[name="op_state"]').val('');
-                    $('select[name="op_country"]').val('');
-
-                }
-
-            });
-
-            
     // ─── Update ──────────────────────────────────────────────────────────────────
 
     public function update(Company $company, array $data): Company

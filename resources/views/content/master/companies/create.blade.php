@@ -140,14 +140,14 @@
                                 <!-- ✅ STATUS -->
                                 <div class="col-md-4 mb-3">
                                     <label>Status</label>
-                                    <select name="status" class="form-select @error('status') is-invalid @enderror">
+                                    <select name="is_active" class="form-select @error('is_active') is-invalid @enderror">
                                         <option value="">Select Status</option>
-                                        <option value="active" {{ old('status') == 'active' ? 'selected' : '' }}>Active
+                                        <option value="active" {{ old('is_active') == 'active' ? 'selected' : '' }}>Active
                                         </option>
-                                        <option value="inactive" {{ old('status') == 'inactive' ? 'selected' : '' }}>
+                                        <option value="inactive" {{ old('is_active') == 'inactive' ? 'selected' : '' }}>
                                             Inactive</option>
                                     </select>
-                                    @error('status')
+                                    @error('is_active')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -179,9 +179,10 @@
 
                                 <div class="input-group">
                                     <span class="input-group-text">https://</span>
+
                                     <input type="text" name="website"
                                         class="form-control @error('website') is-invalid @enderror"
-                                        value="{{ old('website', str_replace('https://', '', $company->website)) }}"
+                                        value="{{ old('website', isset($company) ? ''$company->website : '') }}"
                                         placeholder="example.com">
                                 </div>
 

@@ -19,14 +19,15 @@ return new class extends Migration
             $table->string('legal_name')->nullable();
             $table->enum('company_type', ['sole_proprietorship', 'partnership', 'pvt_ltd', 'public_ltd', 'llp', 'huf', 'ngo']);
             $table->string('website')->nullable();
+            $table->string('email')->nullable();
             $table->string('logo')->nullable();
 
-            $table->string('address_line_1');
-            $table->string('address_line_2')->nullable();
-            $table->string('city', 100);
-            $table->string('state', 100);
-            $table->string('country', 100);
-            $table->string('pincode', 20)->nullable();
+            $table->string('reg_address_line1');
+            $table->string('reg_address_line2')->nullable();
+            $table->string('reg_city', 100);
+            $table->string('reg_state', 100);
+            $table->string('reg_country', 100);
+            $table->string('reg_pincode', 20)->nullable();
 
             // Registration Numbers
             $table->string('watermark_no')->nullable();
@@ -54,6 +55,8 @@ return new class extends Migration
             $table->string('attachment_udyam_aadhar')->nullable();
             $table->string('attachment_gumasta')->nullable();
             $table->string('attachment_msme')->nullable();
+
+            $table->string('is_active')->default('active');
 
             $table->softDeletes();
             $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
