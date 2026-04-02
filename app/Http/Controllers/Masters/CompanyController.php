@@ -141,8 +141,7 @@ class CompanyController extends Controller
      */
     public function destroy($id)
     {
-        $company = Company::findOrFail($id);
-        $this->companyService->delete($company);
+        $company = Company::destroy($id);
 
         return view('content.master.companies.index')->with('success', 'Company deleted successfully.');
     }
