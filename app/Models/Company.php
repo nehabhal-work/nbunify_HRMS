@@ -16,6 +16,7 @@ class Company extends Model
         'name',
         'legal_name',
         'email',
+        'mobile',
         'company_type',
         'website',
         'logo',

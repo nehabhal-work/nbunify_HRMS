@@ -24,6 +24,9 @@ class CompanyRequest extends FormRequest
             'company_type'  => ['required', Rule::in(array_keys(Company::COMPANY_TYPES))],
             'website'       => ['nullable', 'url', 'max:255'],
             'logo'          => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp', 'max:2048'],
+            'email'          => ['nullable', 'email', 'max:255'],
+            'mobile'          => ['nullable', 'string', 'max:15'],
+            'is_active'      => ['nullable', 'string'],
 
             // Registration Numbers
             'watermark_no'               => ['nullable', 'string', 'max:100'],
@@ -71,6 +74,8 @@ class CompanyRequest extends FormRequest
             'company_type'                => 'Company Type',
             'website'                     => 'Website',
             'logo'                        => 'Logo',
+            'email'                        => 'Email',
+            'mobile'                       => 'Mobile',
             'watermark_no'                => 'Watermark Number',
             'copyrights_no'               => 'Copyrights Number',
             'cin_no'                      => 'CIN Number',

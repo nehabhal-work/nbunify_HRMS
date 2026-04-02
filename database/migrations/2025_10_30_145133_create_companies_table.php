@@ -20,13 +20,14 @@ return new class extends Migration
             $table->enum('company_type', ['sole_proprietorship', 'partnership', 'pvt_ltd', 'public_ltd', 'llp', 'huf', 'ngo']);
             $table->string('website')->nullable();
             $table->string('email')->nullable();
+            $table->string('mobile')->nullable();
             $table->string('logo')->nullable();
 
-            $table->string('reg_address_line1');
+            $table->string('reg_address_line1')->nullable();
             $table->string('reg_address_line2')->nullable();
-            $table->string('reg_city', 100);
-            $table->string('reg_state', 100);
-            $table->string('reg_country', 100);
+            $table->string('reg_city', 100)->nullable();
+            $table->string('reg_state', 100)->nullable();
+            $table->string('reg_country', 100)->nullable();
             $table->string('reg_pincode', 20)->nullable();
 
             // Registration Numbers

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Company;
+use App\Models\CompanyBank;
 use App\Models\HeadOffice;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -64,43 +65,85 @@ class CompanyService
             $data['created_by'] = Auth::id();
             $data['updated_by'] = Auth::id();
 
-
+            // Fix website
             if (!empty($data['website'])) {
                 $data['website'] = 'https://' . preg_replace('#^https?://#', '', $data['website']);
             }
 
-            return $data;
-            // 1️⃣ Create Company
-            $company = Company::create($data);
+            // Extract banks separately
+            $banks = $data['banks'] ?? [];
+            unset($data['banks']);
 
-            // 2️⃣ Create Head Office (Registered Address)
+            // Remove address fields from company
+            $companyData = collect($data)->except([
+                'reg_address_line1',
+                'reg_address_line2',
+                'reg_city',
+                'reg_state',
+                'reg_country',
+                'reg_pincode',
+                'op_address_line1',
+                'op_address_line2',
+                'op_city',
+                'op_state',
+                'op_country',
+                'op_pincode',
+            ])->toArray();
+
+            // 1️⃣ Create Company
+            $company = Company::create($companyData);
+
+            // 2️⃣ Create Head Office
             HeadOffice::create([
                 'company_id'     => $company->id,
                 'name'           => $company->name . ' Head Office',
-                'code'           => 'HO-1', // you can make dynamic later
+                'code'           => 'HO-1',
                 'email'          => $data['email'] ?? '',
 
-                'address_line_1' => $data['reg_address_line1'] ?? null,
-                'address_line_2' => $data['reg_address_line2'] ?? null,
-                'city'           => $data['reg_city'] ?? null,
-                'state'          => $data['reg_state'] ?? null,
-                'country'        => $data['reg_country'] ?? 'India',
-                'pincode'        => $data['reg_pincode'] ?? null,
+                'address_line_1' => $data['op_address_line1'] ?? null,
+                'address_line_2' => $data['op_address_line2'] ?? null,
+                'city'           => $data['op_city'] ?? null,
+                'state'          => $data['op_state'] ?? null,
+                'country'        => $data['op_country'] ?? 'India',
+                'pincode'        => $data['op_pincode'] ?? null,
 
                 'created_by'     => Auth::id(),
                 'updated_by'     => Auth::id(),
             ]);
 
+            // 3️⃣ Save Multiple Banks
+            if (!empty($banks)) {
+                foreach ($banks as $bank) {
+
+                    // skip empty rows
+                    if (empty($bank['account_number']) && empty($bank['ifsc_code'])) {
+                        continue;
+                    }
+
+                    CompanyBank::create([
+                        'company_id'     => $company->id,
+                        'bank_name'      => $bank['bank_name'] ?? null,
+                        'branch_name'    => $bank['branch_name'] ?? null,
+                        'ifsc_code'      => $bank['ifsc_code'] ?? null,
+                        'account_number' => $bank['account_number'] ?? null,
+                        'account_type'   => $bank['account_type'] ?? null,
+                        'bank_code'      => $bank['bank_code'] ?? null,
+                        'is_primary'     => $bank['is_primary'] ?? 0,
+
+                        'created_by'     => Auth::id(),
+                        'updated_by'     => Auth::id(),
+                    ]);
+                }
+            }
+
             return $company;
         });
-
-        
     }
 
 
-  
 
-            
+
+
     // ─── Update ──────────────────────────────────────────────────────────────────
 
     public function update(Company $company, array $data): Company

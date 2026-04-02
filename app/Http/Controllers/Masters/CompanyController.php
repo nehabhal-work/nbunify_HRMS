@@ -47,8 +47,8 @@ class CompanyController extends Controller
         return view('content.master.companies.create', compact('country', 'states', 'cities', 'companyTypes'));
     }
 
-    public function store(Request $request)
-    // public function store(CompanyRequest $request)
+    // public function store(Request $request)
+    public function store(CompanyRequest $request)
     {
         // return 'company store';
 
