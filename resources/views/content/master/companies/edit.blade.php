@@ -1,2164 +1,1161 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.master-layout')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Company Profile — Acme Technologies Pvt. Ltd.</title>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&display=swap"
+@section('content')
+
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
         rel="stylesheet">
     <style>
-        :root {
-            --ink: #0f1117;
-            --ink-soft: #4a5568;
-            --ink-muted: #94a3b8;
-            --surface: #ffffff;
-            --surface-2: #f8fafc;
-            --surface-3: #f1f5f9;
-            --border: #e2e8f0;
-            --border-active: #6366f1;
-            --accent: #6366f1;
-            --accent-2: #0ea5e9;
-            --accent-light: #eef2ff;
-            --success: #10b981;
-            --success-light: #d1fae5;
-            --danger: #ef4444;
-            --danger-light: #fee2e2;
-            --warning: #f59e0b;
-            --warning-light: #fef3c7;
-            --radius: 12px;
-            --radius-sm: 8px;
-            --shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 4px 16px rgba(0, 0, 0, 0.04);
-            --shadow-md: 0 4px 24px rgba(0, 0, 0, 0.08), 0 1px 4px rgba(0, 0, 0, 0.04);
+        * {
+            font-family: 'Plus Jakarta Sans', sans-serif;
         }
 
-        *,
-        *::before,
-        *::after {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'DM Sans', sans-serif;
-            background: #f0f4f8;
-            color: var(--ink);
-            min-height: 100vh;
-            font-size: 14px;
-            line-height: 1.6;
-        }
-
-        /* ── Layout ── */
-        .page-shell {
-            display: flex;
-            min-height: 100vh;
-        }
-
-        /* ── Sidebar ── */
-        .sidebar {
-            width: 240px;
-            background: var(--ink);
-            position: fixed;
-            top: 0;
-            left: 0;
-            bottom: 0;
-            display: flex;
-            flex-direction: column;
-            z-index: 100;
-        }
-
-        .sidebar-logo {
-            padding: 24px 20px 20px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        .logo-mark {
-            font-family: 'Syne', sans-serif;
-            font-weight: 800;
+        .page-title {
             font-size: 20px;
-            color: #fff;
-            letter-spacing: -0.5px;
-        }
-
-        .logo-mark span {
-            color: var(--accent);
-        }
-
-        .sidebar-nav {
-            flex: 1;
-            padding: 16px 12px;
-            overflow-y: auto;
-        }
-
-        .nav-section-label {
-            font-size: 10px;
-            font-weight: 600;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            color: rgba(255, 255, 255, 0.3);
-            padding: 12px 8px 6px;
-        }
-
-        .nav-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 9px 12px;
-            border-radius: 8px;
-            color: rgba(255, 255, 255, 0.55);
-            font-size: 13.5px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.18s;
-            margin-bottom: 2px;
-            text-decoration: none;
-        }
-
-        .nav-item:hover {
-            background: rgba(255, 255, 255, 0.07);
-            color: rgba(255, 255, 255, 0.9);
-        }
-
-        .nav-item.active {
-            background: var(--accent);
-            color: #fff;
-        }
-
-        .nav-icon {
-            font-size: 16px;
-            width: 20px;
-            text-align: center;
-            flex-shrink: 0;
-        }
-
-        /* ── Main ── */
-        .main-content {
-            margin-left: 240px;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
-
-        /* ── Topbar ── */
-        .topbar {
-            background: var(--surface);
-            border-bottom: 1px solid var(--border);
-            padding: 0 32px;
-            height: 64px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: sticky;
-            top: 0;
-            z-index: 50;
-        }
-
-        .breadcrumb-trail {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-size: 13px;
-            color: var(--ink-muted);
-        }
-
-        .breadcrumb-trail a {
-            color: var(--ink-muted);
-            text-decoration: none;
-        }
-
-        .breadcrumb-trail a:hover {
-            color: var(--accent);
-        }
-
-        .breadcrumb-trail .sep {
-            opacity: 0.4;
-        }
-
-        .breadcrumb-trail .current {
-            color: var(--ink);
-            font-weight: 600;
-        }
-
-        .topbar-right {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-            padding: 9px 18px;
-            border-radius: var(--radius-sm);
-            font-family: 'DM Sans', sans-serif;
-            font-size: 13.5px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.18s;
-            border: none;
-            text-decoration: none;
-        }
-
-        .btn-primary {
-            background: var(--accent);
-            color: #fff;
-            box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
-        }
-
-        .btn-primary:hover {
-            background: #4f46e5;
-            transform: translateY(-1px);
-            box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
-        }
-
-        .btn-outline {
-            background: transparent;
-            color: var(--ink-soft);
-            border: 1px solid var(--border);
-        }
-
-        .btn-outline:hover {
-            background: var(--surface-3);
-            border-color: var(--ink-soft);
-        }
-
-        .btn-danger {
-            background: var(--danger);
-            color: #fff;
-        }
-
-        .btn-danger:hover {
-            background: #dc2626;
-        }
-
-        .btn-sm {
-            padding: 6px 12px;
-            font-size: 12.5px;
-        }
-
-        .btn-xs {
-            padding: 4px 10px;
-            font-size: 11.5px;
-            border-radius: 6px;
-        }
-
-        /* ── Page body ── */
-        .page-body {
-            padding: 28px 32px 48px;
-        }
-
-        /* ── Company Header Card ── */
-        .company-hero {
-            background: var(--surface);
-            border-radius: 16px;
-            box-shadow: var(--shadow);
-            margin-bottom: 24px;
-            overflow: hidden;
-        }
-
-        .hero-cover {
-            height: 96px;
-            background: linear-gradient(135deg, #6366f1 0%, #0ea5e9 60%, #10b981 100%);
-            position: relative;
-        }
-
-        .hero-cover::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-        }
-
-        .hero-body {
-            padding: 0 32px 24px;
-            display: flex;
-            align-items: flex-end;
-            gap: 20px;
-        }
-
-        .company-avatar {
-            width: 80px;
-            height: 80px;
-            border-radius: 16px;
-            background: var(--surface);
-            border: 3px solid var(--surface);
-            box-shadow: var(--shadow-md);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 32px;
-            margin-top: -36px;
-            flex-shrink: 0;
-            overflow: hidden;
-        }
-
-        .company-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .hero-meta {
-            flex: 1;
-            padding-top: 12px;
-        }
-
-        .company-name {
-            font-family: 'Syne', sans-serif;
-            font-size: 22px;
             font-weight: 700;
-            color: var(--ink);
-            line-height: 1.2;
+            color: #111827;
+            margin-bottom: 4px;
         }
 
-        .company-sub {
-            color: var(--ink-muted);
+        .page-sub {
             font-size: 13px;
-            margin-top: 2px;
-        }
-
-        .hero-badges {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 8px;
-            flex-wrap: wrap;
-        }
-
-        .badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 4px;
-            padding: 3px 10px;
-            border-radius: 20px;
-            font-size: 11.5px;
-            font-weight: 600;
-        }
-
-        .badge-active {
-            background: var(--success-light);
-            color: #065f46;
-        }
-
-        .badge-inactive {
-            background: var(--danger-light);
-            color: #991b1b;
-        }
-
-        .badge-type {
-            background: var(--accent-light);
-            color: #3730a3;
-        }
-
-        .badge-dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: currentColor;
-        }
-
-        .hero-actions {
-            display: flex;
-            align-items: flex-end;
-            gap: 8px;
-            padding-top: 24px;
-        }
-
-        /* ── Mode Toggle Bar ── */
-        .mode-toggle-bar {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            background: var(--surface-3);
-            border-radius: var(--radius-sm);
-            padding: 4px;
-            width: fit-content;
-        }
-
-        .mode-btn {
-            padding: 6px 16px;
-            border-radius: 6px;
-            font-size: 13px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.18s;
-            border: none;
-            background: transparent;
-            color: var(--ink-soft);
-            font-family: 'DM Sans', sans-serif;
-        }
-
-        .mode-btn.active {
-            background: var(--surface);
-            color: var(--ink);
-            box-shadow: var(--shadow);
-        }
-
-        /* ── Tab Nav ── */
-        .tab-nav {
-            display: flex;
-            gap: 0;
-            border-bottom: 1px solid var(--border);
+            color: #6b7280;
             margin-bottom: 24px;
-            overflow-x: auto;
         }
 
-        .tab-btn {
-            padding: 12px 20px;
-            font-size: 13.5px;
-            font-weight: 500;
-            color: var(--ink-muted);
-            cursor: pointer;
-            border: none;
-            background: none;
-            border-bottom: 2px solid transparent;
-            transition: all 0.18s;
-            white-space: nowrap;
-            font-family: 'DM Sans', sans-serif;
-            display: flex;
-            align-items: center;
-            gap: 7px;
-        }
-
-        .tab-btn:hover {
-            color: var(--ink);
-        }
-
-        .tab-btn.active {
-            color: var(--accent);
-            border-bottom-color: var(--accent);
-        }
-
-        .tab-count {
-            background: var(--accent-light);
-            color: var(--accent);
-            border-radius: 20px;
-            padding: 1px 7px;
-            font-size: 11px;
-            font-weight: 700;
-        }
-
-        /* ── Section Cards ── */
-        .section-card {
-            background: var(--surface);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
+        /* ── Section Card ── */
+        .sc {
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
             margin-bottom: 20px;
             overflow: hidden;
         }
 
-        .section-header {
-            padding: 18px 24px;
-            border-bottom: 1px solid var(--border);
+        .sc-head {
+            padding: 14px 20px;
+            border-bottom: 1px solid #f3f4f6;
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            gap: 10px;
+            background: #fafafa;
         }
 
-        .section-title {
-            font-family: 'Syne', sans-serif;
+        .sc-head-icon {
+            width: 30px;
+            height: 30px;
+            border-radius: 8px;
+            background: #eff6ff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 15px;
-            font-weight: 600;
-            color: var(--ink);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .section-icon {
-            width: 28px;
-            height: 28px;
-            border-radius: 7px;
-            background: var(--accent-light);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-        }
-
-        .section-body {
-            padding: 24px;
-        }
-
-        /* ── View Mode: Info Grid ── */
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 20px 32px;
-        }
-
-        .info-item {}
-
-        .info-label {
-            font-size: 11px;
-            font-weight: 600;
-            letter-spacing: 0.6px;
-            text-transform: uppercase;
-            color: var(--ink-muted);
-            margin-bottom: 4px;
-        }
-
-        .info-value {
-            font-size: 14px;
-            font-weight: 500;
-            color: var(--ink);
-            word-break: break-all;
-        }
-
-        .info-value.empty {
-            color: var(--ink-muted);
-            font-style: italic;
-            font-weight: 400;
-        }
-
-        .info-link {
-            color: var(--accent);
-            text-decoration: none;
-        }
-
-        .info-link:hover {
-            text-decoration: underline;
-        }
-
-        /* ── Address Grid ── */
-        .address-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1px;
-            background: var(--border);
-            border-radius: var(--radius-sm);
-            overflow: hidden;
-        }
-
-        .address-block {
-            background: var(--surface);
-            padding: 20px;
-        }
-
-        .address-tag {
-            font-size: 10.5px;
-            font-weight: 700;
-            letter-spacing: 0.8px;
-            text-transform: uppercase;
-            color: var(--accent);
-            margin-bottom: 10px;
-        }
-
-        .address-text {
-            font-size: 13.5px;
-            color: var(--ink);
-            line-height: 1.7;
-        }
-
-        /* ── Reg Badges ── */
-        .reg-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 12px;
-        }
-
-        .reg-chip {
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            padding: 12px 14px;
-            transition: border-color 0.18s;
-        }
-
-        .reg-chip:hover {
-            border-color: var(--accent);
-        }
-
-        .reg-chip-label {
-            font-size: 10.5px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: var(--ink-muted);
-            margin-bottom: 4px;
-        }
-
-        .reg-chip-value {
-            font-size: 13.5px;
-            font-weight: 600;
-            color: var(--ink);
-        }
-
-        .reg-chip-value.empty {
-            font-size: 12px;
-            color: var(--ink-muted);
-            font-style: italic;
-            font-weight: 400;
-        }
-
-        /* ── Bank Card ── */
-        .bank-card {
-            border: 1px solid var(--border);
-            border-radius: var(--radius-sm);
-            padding: 16px;
-            display: flex;
-            align-items: flex-start;
-            gap: 14px;
-            margin-bottom: 10px;
-            transition: all 0.18s;
-        }
-
-        .bank-card:hover {
-            border-color: var(--accent);
-            box-shadow: 0 2px 12px rgba(99, 102, 241, 0.07);
-        }
-
-        .bank-icon {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(135deg, var(--accent-light), #dbeafe);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
             flex-shrink: 0;
         }
 
-        .bank-info {
-            flex: 1;
-        }
-
-        .bank-name {
-            font-weight: 600;
+        .sc-head-title {
             font-size: 14px;
-            color: var(--ink);
+            font-weight: 600;
+            color: #111827;
         }
 
-        .bank-branch {
-            color: var(--ink-muted);
-            font-size: 12.5px;
+        .sc-head-sub {
+            font-size: 12px;
+            color: #9ca3af;
+            margin-left: auto;
         }
 
-        .bank-meta {
-            display: flex;
+        .sc-body {
+            padding: 20px;
+        }
+
+        /* ── Form grid ── */
+        .fg {
+            display: grid;
             gap: 16px;
-            margin-top: 8px;
-            flex-wrap: wrap;
         }
 
-        .bank-meta-item {
-            font-size: 12px;
-            color: var(--ink-soft);
+        .fg-2 {
+            grid-template-columns: repeat(2, 1fr);
         }
 
-        .bank-meta-label {
-            font-weight: 600;
-            color: var(--ink-muted);
-        }
-
-        .bank-primary-tag {
-            background: var(--success-light);
-            color: #065f46;
-            font-size: 10.5px;
-            font-weight: 700;
-            padding: 2px 8px;
-            border-radius: 20px;
-            margin-left: 8px;
-        }
-
-        /* ── Doc Gallery ── */
-        .doc-gallery {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-            gap: 14px;
-        }
-
-        .doc-tile {
-            border: 1.5px solid var(--border);
-            border-radius: var(--radius);
-            padding: 16px 12px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.22s;
-            position: relative;
-            background: var(--surface-2);
-        }
-
-        .doc-tile:hover {
-            border-color: var(--accent);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.1);
-        }
-
-        .doc-tile.has-doc {
-            border-color: var(--success);
-            background: #f0fdf4;
-        }
-
-        .doc-tile-icon {
-            font-size: 26px;
-            margin-bottom: 8px;
-        }
-
-        .doc-tile-label {
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--ink);
-            margin-bottom: 4px;
-        }
-
-        .doc-status-dot {
-            display: inline-block;
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-            margin-right: 4px;
-        }
-
-        .doc-status-dot.green {
-            background: var(--success);
-        }
-
-        .doc-status-dot.red {
-            background: var(--danger);
-        }
-
-        .doc-status-label {
-            font-size: 11px;
-            font-weight: 600;
-        }
-
-        .doc-status-label.ok {
-            color: var(--success);
-        }
-
-        .doc-status-label.missing {
-            color: var(--danger);
-        }
-
-        .doc-corner-badge {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            font-size: 9px;
-            font-weight: 700;
-            padding: 2px 6px;
-            border-radius: 4px;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-        }
-
-        .doc-corner-badge.ok {
-            background: var(--success-light);
-            color: #065f46;
-        }
-
-        .doc-corner-badge.missing {
-            background: var(--danger-light);
-            color: #991b1b;
-        }
-
-        /* ── EDIT MODE ── */
-        #edit-panel {
-            display: none;
-        }
-
-        #view-panel {
-            display: block;
-        }
-
-        .form-section {
-            margin-bottom: 24px;
-        }
-
-        .form-row {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 16px 20px;
-        }
-
-        .form-row-2 {
-            grid-template-columns: 1fr 1fr;
-        }
-
-        .form-row-3 {
+        .fg-3 {
             grid-template-columns: repeat(3, 1fr);
         }
 
-        .form-row-4 {
+        .fg-4 {
             grid-template-columns: repeat(4, 1fr);
         }
 
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
+        .fg-6 {
+            grid-template-columns: repeat(6, 1fr);
         }
 
-        .form-label {
-            font-size: 12px;
+        .col-span-2 {
+            grid-column: span 2;
+        }
+
+        .col-span-3 {
+            grid-column: span 3;
+        }
+
+        .fl label {
+            display: block;
+            font-size: 11.5px;
             font-weight: 600;
-            color: var(--ink-soft);
-            letter-spacing: 0.2px;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            margin-bottom: 5px;
         }
 
-        .form-label .req {
-            color: var(--danger);
-        }
-
-        .form-control {
+        .fl input,
+        .fl select,
+        .fl textarea {
             width: 100%;
-            padding: 9px 13px;
-            border: 1.5px solid var(--border);
-            border-radius: var(--radius-sm);
-            font-family: 'DM Sans', sans-serif;
+            padding: 8px 11px;
+            border: 1px solid #d1d5db;
+            border-radius: 7px;
             font-size: 13.5px;
-            color: var(--ink);
-            background: var(--surface);
-            transition: all 0.18s;
+            color: #111827;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: #fff;
+            transition: border-color 0.15s, box-shadow 0.15s;
             outline: none;
         }
 
-        .form-control:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+        .fl input:focus,
+        .fl select:focus,
+        .fl textarea:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
 
-        .form-control:read-only {
-            background: var(--surface-3);
-            color: var(--ink-muted);
+        .fl input[readonly] {
+            background: #f9fafb;
+            color: #9ca3af;
+            cursor: not-allowed;
         }
 
-        .form-select {
-            width: 100%;
-            padding: 9px 13px;
-            border: 1.5px solid var(--border);
-            border-radius: var(--radius-sm);
-            font-family: 'DM Sans', sans-serif;
-            font-size: 13.5px;
-            color: var(--ink);
-            background: var(--surface);
-            cursor: pointer;
-            outline: none;
-            transition: all 0.18s;
-            appearance: none;
-            background-image: url("data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4 6l4 4 4-4' stroke='%2394a3b8' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-            background-repeat: no-repeat;
-            background-position: right 12px center;
-            padding-right: 36px;
+        .fl .req {
+            color: #ef4444;
         }
 
-        .form-select:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
-        }
-
-        .input-prefix {
+        .input-group-wrap {
             display: flex;
-            border: 1.5px solid var(--border);
-            border-radius: var(--radius-sm);
+            border: 1px solid #d1d5db;
+            border-radius: 7px;
             overflow: hidden;
-            transition: border-color 0.18s, box-shadow 0.18s;
+            transition: border-color 0.15s, box-shadow 0.15s;
         }
 
-        .input-prefix:focus-within {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+        .input-group-wrap:focus-within {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         }
 
-        .prefix-text {
-            padding: 9px 12px;
-            background: var(--surface-3);
-            border-right: 1.5px solid var(--border);
-            color: var(--ink-muted);
+        .input-group-wrap .prefix {
+            padding: 8px 11px;
+            background: #f3f4f6;
+            color: #6b7280;
             font-size: 13px;
-            font-weight: 500;
+            border-right: 1px solid #d1d5db;
             white-space: nowrap;
         }
 
-        .input-prefix .form-control {
-            border: none;
-            border-radius: 0;
-            box-shadow: none;
+        .input-group-wrap input {
+            border: none !important;
+            box-shadow: none !important;
+            border-radius: 0 !important;
+            flex: 1;
         }
 
-        .input-prefix .form-control:focus {
-            box-shadow: none;
-        }
-
+        /* ── Address split ── */
         .addr-split {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 20px;
         }
 
-        .addr-col {
-            padding: 20px;
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-        }
+        .addr-col {}
 
         .addr-col-title {
-            font-size: 11.5px;
+            font-size: 11px;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.6px;
-            color: var(--accent);
+            color: #3b82f6;
             margin-bottom: 14px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #eff6ff;
         }
 
-        /* ── Doc Upload (Edit) ── */
-        .doc-upload-grid {
+        .same-addr-row {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            margin-left: auto;
+            font-size: 12.5px;
+            color: #6b7280;
+            cursor: pointer;
+        }
+
+        .same-addr-row input[type=checkbox] {
+            accent-color: #3b82f6;
+            width: 14px;
+            height: 14px;
+        }
+
+        /* ── Doc cards ── */
+        .doc-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            grid-template-columns: repeat(5, 1fr);
             gap: 14px;
         }
 
-        .doc-upload-tile {
-            border: 1.5px dashed var(--border);
-            border-radius: var(--radius);
-            padding: 16px 12px;
+        .doc-card {
+            border: 1.5px dashed #d1d5db;
+            border-radius: 10px;
+            padding: 16px 10px;
             text-align: center;
             cursor: pointer;
-            transition: all 0.22s;
+            transition: all 0.2s;
+            background: #fafafa;
             position: relative;
-            background: var(--surface-2);
         }
 
-        .doc-upload-tile:hover {
-            border-color: var(--accent);
-            background: var(--accent-light);
+        .doc-card:hover {
+            border-color: #3b82f6;
+            background: #eff6ff;
         }
 
-        .doc-upload-tile.uploaded {
+        .doc-card.uploaded {
             border-style: solid;
-            border-color: var(--success);
+            border-color: #22c55e;
             background: #f0fdf4;
         }
 
-        .doc-upload-tile-icon {
+        .doc-card input[type=file] {
+            display: none;
+        }
+
+        .doc-card-icon {
             font-size: 24px;
             margin-bottom: 6px;
         }
 
-        .doc-upload-tile-label {
+        .doc-card-label {
             font-size: 11.5px;
             font-weight: 600;
-            color: var(--ink);
+            color: #374151;
+            margin-bottom: 6px;
+            line-height: 1.3;
+        }
+
+        .doc-status {
+            font-size: 10.5px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+        }
+
+        .doc-status .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .doc-status.ok {
+            color: #16a34a;
+        }
+
+        .doc-status.ok .dot {
+            background: #22c55e;
+        }
+
+        .doc-status.miss {
+            color: #dc2626;
+        }
+
+        .doc-status.miss .dot {
+            background: #ef4444;
+        }
+
+        /* Doc image preview */
+        .doc-preview-img {
+            width: 100%;
+            height: 64px;
+            object-fit: contain;
+            border-radius: 6px;
+            margin-bottom: 6px;
+            border: 1px solid #e5e7eb;
+            background: #fff;
+        }
+
+        .doc-preview-file {
+            font-size: 10px;
+            color: #6b7280;
+            word-break: break-all;
             margin-bottom: 4px;
         }
 
-        .doc-upload-hint {
-            font-size: 10.5px;
-            color: var(--ink-muted);
-        }
-
-        /* ── Bank rows (Edit) ── */
-        .bank-row-edit {
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            padding: 18px;
-            margin-bottom: 14px;
-            position: relative;
-        }
-
-        .bank-row-number {
+        .doc-remove-btn {
             position: absolute;
-            top: -10px;
-            left: 16px;
-            background: var(--accent);
+            top: 6px;
+            right: 6px;
+            width: 18px;
+            height: 18px;
+            background: #ef4444;
             color: #fff;
-            font-size: 10px;
-            font-weight: 700;
-            padding: 2px 8px;
-            border-radius: 10px;
-        }
-
-        .bank-row-remove {
-            position: absolute;
-            top: 12px;
-            right: 12px;
-        }
-
-        /* ── Divider ── */
-        .divider {
             border: none;
-            border-top: 1px solid var(--border);
-            margin: 20px 0;
-        }
-
-        /* ── Audit row ── */
-        .audit-row {
-            display: flex;
-            gap: 24px;
-            flex-wrap: wrap;
-            padding-top: 12px;
-            border-top: 1px solid var(--border);
-            margin-top: 20px;
-        }
-
-        .audit-item {
-            font-size: 12px;
-            color: var(--ink-muted);
-        }
-
-        .audit-item strong {
-            color: var(--ink-soft);
-            font-weight: 600;
-        }
-
-        /* ── Alert ── */
-        .alert-success {
-            background: var(--success-light);
-            border: 1px solid #6ee7b7;
-            color: #065f46;
-            padding: 12px 16px;
-            border-radius: var(--radius-sm);
-            font-size: 13.5px;
-            margin-bottom: 20px;
+            border-radius: 50%;
+            font-size: 9px;
+            cursor: pointer;
             display: flex;
             align-items: center;
-            gap: 8px;
+            justify-content: center;
+            line-height: 1;
         }
 
-        /* ── Sticky save bar ── */
-        .save-bar {
-            position: sticky;
-            bottom: 0;
-            background: var(--surface);
-            border-top: 1px solid var(--border);
-            padding: 16px 32px;
+        /* ── Bank rows ── */
+        .bank-row {
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 16px;
+            margin-bottom: 12px;
+            position: relative;
+            background: #fafafa;
+        }
+
+        .bank-row-num {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #3b82f6;
+            margin-bottom: 12px;
+        }
+
+        .bank-remove {
+            position: absolute;
+            top: 14px;
+            right: 14px;
+            background: #fee2e2;
+            border: none;
+            color: #dc2626;
+            font-size: 11.5px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .bank-remove:hover {
+            background: #fca5a5;
+        }
+
+        /* ── Primary checkbox ── */
+        .check-row {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            padding-top: 26px;
+        }
+
+        .check-row input[type=checkbox] {
+            accent-color: #3b82f6;
+            width: 15px;
+            height: 15px;
+        }
+
+        .check-row label {
+            font-size: 13px;
+            color: #374151;
+            cursor: pointer;
+            margin: 0;
+        }
+
+        /* ── Bottom actions ── */
+        .form-actions {
             display: flex;
             justify-content: flex-end;
             gap: 10px;
-            z-index: 40;
-            margin-left: -32px;
-            margin-right: -32px;
+            padding-top: 4px;
+            margin-bottom: 48px;
         }
 
-        /* ── Timeline ── */
-        .timeline {
-            position: relative;
-            padding-left: 20px;
+        .btn-save {
+            background: #2563eb;
+            color: #fff;
+            border: none;
+            padding: 10px 28px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            transition: background 0.15s;
         }
 
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 7px;
-            top: 4px;
-            bottom: 4px;
-            width: 1.5px;
-            background: var(--border);
+        .btn-save:hover {
+            background: #1d4ed8;
         }
 
-        .timeline-item {
-            position: relative;
-            padding-bottom: 18px;
+        .btn-cancel {
+            background: #f3f4f6;
+            color: #374151;
+            border: 1px solid #d1d5db;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
         }
 
-        .timeline-dot {
-            position: absolute;
-            left: -20px;
-            top: 4px;
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            background: var(--surface);
-            border: 2px solid var(--accent);
+        .btn-cancel:hover {
+            background: #e5e7eb;
+            color: #111827;
         }
 
-        .timeline-time {
-            font-size: 11px;
-            color: var(--ink-muted);
-            margin-bottom: 2px;
-        }
-
-        .timeline-event {
+        .btn-add {
+            background: #fff;
+            color: #2563eb;
+            border: 1px dashed #93c5fd;
+            padding: 8px 16px;
+            border-radius: 7px;
             font-size: 13px;
-            color: var(--ink-soft);
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            margin-top: 4px;
         }
 
-        .timeline-event strong {
-            color: var(--ink);
+        .btn-add:hover {
+            background: #eff6ff;
         }
 
-        /* ── Scrollbar ── */
-        ::-webkit-scrollbar {
-            width: 5px;
-            height: 5px;
+        /* ── Divider ── */
+        .sec-divider {
+            height: 1px;
+            background: #f3f4f6;
+            margin: 4px 0 16px;
         }
 
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: var(--border);
-            border-radius: 10px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--ink-muted);
-        }
-
-        /* ── Tab panels ── */
-        .tab-panel {
-            display: none;
-        }
-
-        .tab-panel.active {
-            display: block;
-        }
-
-        /* ── Responsive ── */
-        @media (max-width: 900px) {
-            .sidebar {
-                display: none;
+        @media (max-width: 1024px) {
+            .fg-4 {
+                grid-template-columns: repeat(2, 1fr);
             }
 
-            .main-content {
-                margin-left: 0;
+            .fg-6 {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .doc-grid {
+                grid-template-columns: repeat(3, 1fr);
             }
 
             .addr-split {
                 grid-template-columns: 1fr;
             }
         }
+
+        @media (max-width: 640px) {
+
+            .fg-2,
+            .fg-3,
+            .fg-4 {
+                grid-template-columns: 1fr;
+            }
+
+            .doc-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
     </style>
-</head>
 
-<body>
-
-    <div class="page-shell">
-
-        <!-- ── Sidebar ── -->
-        <aside class="sidebar">
-            <div class="sidebar-logo">
-                <div class="logo-mark">Corp<span>Desk</span></div>
-                <div style="font-size:11px;color:rgba(255,255,255,0.3);margin-top:2px;">Enterprise Suite</div>
-            </div>
-            <nav class="sidebar-nav">
-                <div class="nav-section-label">Main</div>
-                <a class="nav-item" href="#"><span class="nav-icon">🏠</span> Dashboard</a>
-                <a class="nav-item active" href="#"><span class="nav-icon">🏢</span> Companies</a>
-                <a class="nav-item" href="#"><span class="nav-icon">👥</span> Contacts</a>
-                <a class="nav-item" href="#"><span class="nav-icon">📦</span> Products</a>
-                <div class="nav-section-label">Finance</div>
-                <a class="nav-item" href="#"><span class="nav-icon">🧾</span> Invoices</a>
-                <a class="nav-item" href="#"><span class="nav-icon">💳</span> Payments</a>
-                <a class="nav-item" href="#"><span class="nav-icon">📊</span> Reports</a>
-                <div class="nav-section-label">Settings</div>
-                <a class="nav-item" href="#"><span class="nav-icon">⚙️</span> Configuration</a>
-                <a class="nav-item" href="#"><span class="nav-icon">🔐</span> Roles & Access</a>
-            </nav>
-        </aside>
-
-        <!-- ── Main ── -->
-        <div class="main-content">
-
-            <!-- Topbar -->
-            <div class="topbar">
-                <div class="breadcrumb-trail">
-                    <a href="#">Master</a>
-                    <span class="sep">/</span>
-                    <a href="#">Company</a>
-                    <span class="sep">/</span>
-                    <span class="current">Acme Technologies Pvt. Ltd.</span>
-                </div>
-                <div class="topbar-right">
-                    <div class="mode-toggle-bar">
-                        <button class="mode-btn active" id="viewModeBtn" onclick="setMode('view')">👁 View</button>
-                        <button class="mode-btn" id="editModeBtn" onclick="setMode('edit')">✏️ Edit</button>
-                    </div>
-                    <button class="btn btn-outline btn-sm">⬇ Export</button>
-                </div>
-            </div>
-
-            <!-- Page Body -->
-            <div class="page-body">
-
-                <!-- Company Hero -->
-                <div class="company-hero">
-                    <div class="hero-cover"></div>
-                    <div class="hero-body">
-                        <div class="company-avatar">🏢</div>
-                        <div class="hero-meta">
-                            <div class="company-name">Acme Technologies Pvt. Ltd.</div>
-                            <div class="company-sub">Legal: Acme Technologies Private Limited &nbsp;·&nbsp; Est. 12 Jan
-                                2010</div>
-                            <div class="hero-badges">
-                                <span class="badge badge-active"><span class="badge-dot"></span> Active</span>
-                                <span class="badge badge-type">Private Limited</span>
-                                <span class="badge" style="background:#fef3c7;color:#92400e;">CIN:
-                                    U72900MH2010PTC205678</span>
-                            </div>
-                        </div>
-                        <div class="hero-actions">
-                            <button class="btn btn-outline btn-sm">📞 Call</button>
-                            <button class="btn btn-outline btn-sm">📧 Email</button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tab Nav -->
-                <div class="tab-nav">
-                    <button class="tab-btn active" onclick="switchTab('basic', this)">📋 Basic Info</button>
-                    <button class="tab-btn" onclick="switchTab('address', this)">📍 Addresses</button>
-                    <button class="tab-btn" onclick="switchTab('registration', this)">🔖 Registration</button>
-                    <button class="tab-btn" onclick="switchTab('bank', this)">🏦 Bank Details <span
-                            class="tab-count">2</span></button>
-                    <button class="tab-btn" onclick="switchTab('docs', this)">📂 Documents <span
-                            class="tab-count">7</span></button>
-                    <button class="tab-btn" onclick="switchTab('activity', this)">🕑 Activity</button>
-                </div>
-
-                <!-- ════════════════ VIEW PANEL ════════════════ -->
-                <div id="view-panel">
-
-                    <!-- BASIC INFO -->
-                    <div class="tab-panel active" id="view-basic">
-                        <div class="section-card">
-                            <div class="section-header">
-                                <div class="section-title">
-                                    <div class="section-icon">🏢</div> Basic Information
-                                </div>
-                            </div>
-                            <div class="section-body">
-                                <div class="info-grid">
-                                    <div class="info-item">
-                                        <div class="info-label">Company Name</div>
-                                        <div class="info-value">Acme Technologies Pvt. Ltd.</div>
-                                    </div>
-                                    <div class="info-item">
-                                        <div class="info-label">Legal Name</div>
-                                        <div class="info-value">Acme Technologies Private Limited</div>
-                                    </div>
-                                    <div class="info-item">
-                                        <div class="info-label">Company Type</div>
-                                        <div class="info-value">Private Limited</div>
-                                    </div>
-                                    <div class="info-item">
-                                        <div class="info-label">Status</div>
-                                        <div class="info-value"><span class="badge badge-active"><span
-                                                    class="badge-dot"></span> Active</span></div>
-                                    </div>
-                                    <div class="info-item">
-                                        <div class="info-label">Website</div>
-                                        <div class="info-value"><a href="#"
-                                                class="info-link">https://acmetechnologies.in</a></div>
-                                    </div>
-                                    <div class="info-item">
-                                        <div class="info-label">Email</div>
-                                        <div class="info-value"><a href="mailto:info@acme.in"
-                                                class="info-link">info@acme.in</a></div>
-                                    </div>
-                                    <div class="info-item">
-                                        <div class="info-label">Mobile Number</div>
-                                        <div class="info-value">+91 9876543210</div>
-                                    </div>
-                                    <div class="info-item">
-                                        <div class="info-label">Establishment Date</div>
-                                        <div class="info-value">12 January 2010</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- ADDRESS -->
-                    <div class="tab-panel" id="view-address">
-                        <div class="section-card">
-                            <div class="section-header">
-                                <div class="section-title">
-                                    <div class="section-icon">📍</div> Addresses
-                                </div>
-                            </div>
-                            <div class="section-body">
-                                <div class="address-grid">
-                                    <div class="address-block">
-                                        <div class="address-tag">Registered Address</div>
-                                        <div class="address-text">
-                                            B-204, Techno Park, MG Road<br>
-                                            Near Juhu Circle<br>
-                                            Mumbai, Maharashtra — 400 049<br>
-                                            India
-                                        </div>
-                                    </div>
-                                    <div class="address-block">
-                                        <div class="address-tag">Operational / Correspondence Address</div>
-                                        <div class="address-text">
-                                            3rd Floor, Lotus Tower, BKC<br>
-                                            Bandra Kurla Complex<br>
-                                            Mumbai, Maharashtra — 400 051<br>
-                                            India
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- REGISTRATION -->
-                    <div class="tab-panel" id="view-registration">
-                        <div class="section-card">
-                            <div class="section-header">
-                                <div class="section-title">
-                                    <div class="section-icon">🔖</div> Registration & Legal Numbers
-                                </div>
-                            </div>
-                            <div class="section-body">
-                                <div class="reg-grid">
-                                    <div class="reg-chip">
-                                        <div class="reg-chip-label">CIN No</div>
-                                        <div class="reg-chip-value">U72900MH2010PTC205678</div>
-                                    </div>
-                                    <div class="reg-chip">
-                                        <div class="reg-chip-label">PAN No</div>
-                                        <div class="reg-chip-value">AABCA1234C</div>
-                                    </div>
-                                    <div class="reg-chip">
-                                        <div class="reg-chip-label">TAN No</div>
-                                        <div class="reg-chip-value">MUMA12345A</div>
-                                    </div>
-                                    <div class="reg-chip">
-                                        <div class="reg-chip-label">GSTIN</div>
-                                        <div class="reg-chip-value">27AABCA1234C1Z3</div>
-                                    </div>
-                                    <div class="reg-chip">
-                                        <div class="reg-chip-label">Udyam Aadhar</div>
-                                        <div class="reg-chip-value">UDYAM-MH-10-0012345</div>
-                                    </div>
-                                    <div class="reg-chip">
-                                        <div class="reg-chip-label">MSME No</div>
-                                        <div class="reg-chip-value">MH/2010/0056789</div>
-                                    </div>
-                                    <div class="reg-chip">
-                                        <div class="reg-chip-label">ROC No</div>
-                                        <div class="reg-chip-value">ROC-205678</div>
-                                    </div>
-                                    <div class="reg-chip">
-                                        <div class="reg-chip-label">Partnership Reg. No</div>
-                                        <div class="reg-chip-value empty">Not provided</div>
-                                    </div>
-                                    <div class="reg-chip">
-                                        <div class="reg-chip-label">CKYC</div>
-                                        <div class="reg-chip-value">10012345678901</div>
-                                    </div>
-                                    <div class="reg-chip">
-                                        <div class="reg-chip-label">Gumasta No</div>
-                                        <div class="reg-chip-value">MH/GU/2010/2345</div>
-                                    </div>
-                                    <div class="reg-chip">
-                                        <div class="reg-chip-label">Watermark No</div>
-                                        <div class="reg-chip-value empty">Not provided</div>
-                                    </div>
-                                    <div class="reg-chip">
-                                        <div class="reg-chip-label">Copyright No</div>
-                                        <div class="reg-chip-value empty">Not provided</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- BANK -->
-                    <div class="tab-panel" id="view-bank">
-                        <div class="section-card">
-                            <div class="section-header">
-                                <div class="section-title">
-                                    <div class="section-icon">🏦</div> Bank Details
-                                </div>
-                            </div>
-                            <div class="section-body">
-                                <div class="bank-card">
-                                    <div class="bank-icon">🏦</div>
-                                    <div class="bank-info">
-                                        <div class="bank-name">HDFC Bank <span class="bank-primary-tag">★
-                                                Primary</span></div>
-                                        <div class="bank-branch">Bandra Kurla Complex, Mumbai</div>
-                                        <div class="bank-meta">
-                                            <div class="bank-meta-item"><span class="bank-meta-label">Account No:
-                                                </span>50100234567890</div>
-                                            <div class="bank-meta-item"><span class="bank-meta-label">IFSC:
-                                                </span>HDFC0001234</div>
-                                            <div class="bank-meta-item"><span class="bank-meta-label">Type:
-                                                </span>Current Account</div>
-                                            <div class="bank-meta-item"><span class="bank-meta-label">Code:
-                                                </span>HDFC</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="bank-card">
-                                    <div class="bank-icon">🏦</div>
-                                    <div class="bank-info">
-                                        <div class="bank-name">ICICI Bank</div>
-                                        <div class="bank-branch">Andheri West, Mumbai</div>
-                                        <div class="bank-meta">
-                                            <div class="bank-meta-item"><span class="bank-meta-label">Account No:
-                                                </span>000501234567</div>
-                                            <div class="bank-meta-item"><span class="bank-meta-label">IFSC:
-                                                </span>ICIC0000501</div>
-                                            <div class="bank-meta-item"><span class="bank-meta-label">Type:
-                                                </span>Savings Account</div>
-                                            <div class="bank-meta-item"><span class="bank-meta-label">Code:
-                                                </span>ICICI</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- DOCUMENTS -->
-                    <div class="tab-panel" id="view-docs">
-                        <div class="section-card">
-                            <div class="section-header">
-                                <div class="section-title">
-                                    <div class="section-icon">📂</div> Documents
-                                </div>
-                                <span style="font-size:12px;color:var(--success);font-weight:600;">7 / 10
-                                    Uploaded</span>
-                            </div>
-                            <div class="section-body">
-                                <div class="doc-gallery">
-                                    <div class="doc-tile has-doc">
-                                        <span class="doc-corner-badge ok">✓ Done</span>
-                                        <div class="doc-tile-icon">🪪</div>
-                                        <div class="doc-tile-label">PAN Card</div>
-                                        <div><span class="doc-status-dot green"></span><span
-                                                class="doc-status-label ok">Uploaded</span></div>
-                                    </div>
-                                    <div class="doc-tile has-doc">
-                                        <span class="doc-corner-badge ok">✓ Done</span>
-                                        <div class="doc-tile-icon">📋</div>
-                                        <div class="doc-tile-label">TAN Certificate</div>
-                                        <div><span class="doc-status-dot green"></span><span
-                                                class="doc-status-label ok">Uploaded</span></div>
-                                    </div>
-                                    <div class="doc-tile has-doc">
-                                        <span class="doc-corner-badge ok">✓ Done</span>
-                                        <div class="doc-tile-icon">📄</div>
-                                        <div class="doc-tile-label">GST Certificate</div>
-                                        <div><span class="doc-status-dot green"></span><span
-                                                class="doc-status-label ok">Uploaded</span></div>
-                                    </div>
-                                    <div class="doc-tile has-doc">
-                                        <span class="doc-corner-badge ok">✓ Done</span>
-                                        <div class="doc-tile-icon">🏢</div>
-                                        <div class="doc-tile-label">MSME Certificate</div>
-                                        <div><span class="doc-status-dot green"></span><span
-                                                class="doc-status-label ok">Uploaded</span></div>
-                                    </div>
-                                    <div class="doc-tile">
-                                        <span class="doc-corner-badge missing">Missing</span>
-                                        <div class="doc-tile-icon">🪪</div>
-                                        <div class="doc-tile-label">Udyam Aadhar</div>
-                                        <div><span class="doc-status-dot red"></span><span
-                                                class="doc-status-label missing">Not Uploaded</span></div>
-                                    </div>
-                                    <div class="doc-tile has-doc">
-                                        <span class="doc-corner-badge ok">✓ Done</span>
-                                        <div class="doc-tile-icon">📄</div>
-                                        <div class="doc-tile-label">Gumasta License</div>
-                                        <div><span class="doc-status-dot green"></span><span
-                                                class="doc-status-label ok">Uploaded</span></div>
-                                    </div>
-                                    <div class="doc-tile">
-                                        <span class="doc-corner-badge missing">Missing</span>
-                                        <div class="doc-tile-icon">📄</div>
-                                        <div class="doc-tile-label">CKYC Document</div>
-                                        <div><span class="doc-status-dot red"></span><span
-                                                class="doc-status-label missing">Not Uploaded</span></div>
-                                    </div>
-                                    <div class="doc-tile has-doc">
-                                        <span class="doc-corner-badge ok">✓ Done</span>
-                                        <div class="doc-tile-icon">🏦</div>
-                                        <div class="doc-tile-label">Cancelled Cheque</div>
-                                        <div><span class="doc-status-dot green"></span><span
-                                                class="doc-status-label ok">Uploaded</span></div>
-                                    </div>
-                                    <div class="doc-tile has-doc">
-                                        <span class="doc-corner-badge ok">✓ Done</span>
-                                        <div class="doc-tile-icon">👤</div>
-                                        <div class="doc-tile-label">Proprietor Photo</div>
-                                        <div><span class="doc-status-dot green"></span><span
-                                                class="doc-status-label ok">Uploaded</span></div>
-                                    </div>
-                                    <div class="doc-tile">
-                                        <span class="doc-corner-badge missing">Missing</span>
-                                        <div class="doc-tile-icon">🏷️</div>
-                                        <div class="doc-tile-label">Company Logo</div>
-                                        <div><span class="doc-status-dot red"></span><span
-                                                class="doc-status-label missing">Not Uploaded</span></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- ACTIVITY -->
-                    <div class="tab-panel" id="view-activity">
-                        <div class="section-card">
-                            <div class="section-header">
-                                <div class="section-title">
-                                    <div class="section-icon">🕑</div> Activity Log
-                                </div>
-                            </div>
-                            <div class="section-body">
-                                <div class="timeline">
-                                    <div class="timeline-item">
-                                        <div class="timeline-dot"></div>
-                                        <div class="timeline-time">02 Apr 2026, 10:34 AM</div>
-                                        <div class="timeline-event"><strong>Rahul Sharma</strong> updated bank details
-                                            — added ICICI Bank account.</div>
-                                    </div>
-                                    <div class="timeline-item">
-                                        <div class="timeline-dot"></div>
-                                        <div class="timeline-time">28 Mar 2026, 03:15 PM</div>
-                                        <div class="timeline-event"><strong>Priya Mehta</strong> uploaded GST
-                                            Certificate document.</div>
-                                    </div>
-                                    <div class="timeline-item">
-                                        <div class="timeline-dot"></div>
-                                        <div class="timeline-time">15 Mar 2026, 11:00 AM</div>
-                                        <div class="timeline-event"><strong>Admin</strong> changed company status from
-                                            <strong>Inactive</strong> to <strong>Active</strong>.</div>
-                                    </div>
-                                    <div class="timeline-item">
-                                        <div class="timeline-dot"></div>
-                                        <div class="timeline-time">12 Jan 2026, 09:00 AM</div>
-                                        <div class="timeline-event"><strong>Rahul Sharma</strong> created company
-                                            record.</div>
-                                    </div>
-                                </div>
-                                <div class="audit-row">
-                                    <div class="audit-item">Created: <strong>12 Jan 2026</strong> by Rahul Sharma</div>
-                                    <div class="audit-item">Last Updated: <strong>02 Apr 2026</strong> by Rahul Sharma
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-                <!-- END VIEW PANEL -->
-
-
-                <!-- ════════════════ EDIT PANEL ════════════════ -->
-                <div id="edit-panel">
-
-                    <div class="alert-success">✅ You are in edit mode. Modify the details below and click <strong>Save
-                            Changes</strong> to update.</div>
-
-                    <!-- BASIC INFO -->
-                    <div class="tab-panel active" id="edit-basic">
-                        <div class="section-card">
-                            <div class="section-header">
-                                <div class="section-title">
-                                    <div class="section-icon">🏢</div> Basic Information
-                                </div>
-                                <small style="color:var(--ink-muted)">Company Primary Details</small>
-                            </div>
-                            <div class="section-body">
-                                <div class="form-row" style="grid-template-columns: repeat(4, 1fr);">
-                                    <div class="form-group" style="grid-column: span 2;">
-                                        <label class="form-label">Company Name <span class="req">*</span></label>
-                                        <input class="form-control" type="text"
-                                            value="Acme Technologies Pvt. Ltd." placeholder="Enter company name">
-                                    </div>
-                                    <div class="form-group" style="grid-column: span 2;">
-                                        <label class="form-label">Legal Name</label>
-                                        <input class="form-control" type="text"
-                                            value="Acme Technologies Private Limited"
-                                            placeholder="Legal registered name">
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="form-label">Company Type <span class="req">*</span></label>
-                                        <select class="form-select">
-                                            <option>Private Limited</option>
-                                            <option>Public Limited</option>
-                                            <option>LLP</option>
-                                            <option>Partnership</option>
-                                            <option>Proprietorship</option>
-                                            <option>OPC</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="form-label">Status</label>
-                                        <select class="form-select">
-                                            <option selected>Active</option>
-                                            <option>Inactive</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group" style="grid-column: span 2;">
-                                        <label class="form-label">Website</label>
-                                        <div class="input-prefix">
-                                            <span class="prefix-text">https://</span>
-                                            <input class="form-control" type="text" value="acmetechnologies.in">
-                                        </div>
-                                    </div>
-                                    <div class="form-group" style="grid-column: span 2;">
-                                        <label class="form-label">Email</label>
-                                        <input class="form-control" type="email" value="info@acme.in"
-                                            placeholder="Company email">
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="form-label">Mobile Number</label>
-                                        <input class="form-control" type="text" value="9876543210"
-                                            maxlength="10">
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="form-label">Establishment Date</label>
-                                        <input class="form-control" type="date" value="2010-01-12">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- ADDRESS -->
-                    <div class="tab-panel" id="edit-address">
-                        <div class="section-card">
-                            <div class="section-header">
-                                <div class="section-title">
-                                    <div class="section-icon">📍</div> Address Details
-                                </div>
-                                <label
-                                    style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-soft);cursor:pointer;">
-                                    <input type="checkbox" id="sameAddr" onchange="copySameAddr(this)"
-                                        style="accent-color:var(--accent);width:15px;height:15px;">
-                                    Same as Registered Address
-                                </label>
-                            </div>
-                            <div class="section-body">
-                                <div class="addr-split">
-                                    <div class="addr-col">
-                                        <div class="addr-col-title">📌 Registered Address</div>
-                                        <div class="form-group" style="margin-bottom:12px;">
-                                            <label class="form-label">Address Line 1 <span
-                                                    class="req">*</span></label>
-                                            <input class="form-control" id="reg_addr1" type="text"
-                                                value="B-204, Techno Park, MG Road"
-                                                placeholder="Building No., Street, Area">
-                                        </div>
-                                        <div class="form-group" style="margin-bottom:12px;">
-                                            <label class="form-label">Address Line 2</label>
-                                            <input class="form-control" id="reg_addr2" type="text"
-                                                value="Near Juhu Circle" placeholder="Floor, Suite, Landmark">
-                                        </div>
-                                        <div class="form-row"
-                                            style="grid-template-columns:1fr 1fr;margin-bottom:12px;">
-                                            <div class="form-group">
-                                                <label class="form-label">City</label>
-                                                <input class="form-control" id="reg_city" type="text"
-                                                    value="Mumbai">
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="form-label">State</label>
-                                                <select class="form-select" id="reg_state">
-                                                    <option selected>Maharashtra</option>
-                                                    <option>Delhi</option>
-                                                    <option>Karnataka</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="form-row" style="grid-template-columns:1fr 1fr;">
-                                            <div class="form-group">
-                                                <label class="form-label">Postal Code</label>
-                                                <input class="form-control" id="reg_pin" type="text"
-                                                    value="400049" maxlength="6">
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="form-label">Country</label>
-                                                <select class="form-select" id="reg_country">
-                                                    <option>India</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="addr-col" id="opAddrCol">
-                                        <div class="addr-col-title">🗺️ Operational / Correspondence Address</div>
-                                        <div class="form-group" style="margin-bottom:12px;">
-                                            <label class="form-label">Address Line 1</label>
-                                            <input class="form-control" id="op_addr1" type="text"
-                                                value="3rd Floor, Lotus Tower, BKC"
-                                                placeholder="Building No., Street, Area">
-                                        </div>
-                                        <div class="form-group" style="margin-bottom:12px;">
-                                            <label class="form-label">Address Line 2</label>
-                                            <input class="form-control" id="op_addr2" type="text"
-                                                value="Bandra Kurla Complex" placeholder="Floor, Suite, Landmark">
-                                        </div>
-                                        <div class="form-row"
-                                            style="grid-template-columns:1fr 1fr;margin-bottom:12px;">
-                                            <div class="form-group">
-                                                <label class="form-label">City</label>
-                                                <input class="form-control" id="op_city" type="text"
-                                                    value="Mumbai">
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="form-label">State</label>
-                                                <select class="form-select" id="op_state">
-                                                    <option selected>Maharashtra</option>
-                                                    <option>Delhi</option>
-                                                    <option>Karnataka</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="form-row" style="grid-template-columns:1fr 1fr;">
-                                            <div class="form-group">
-                                                <label class="form-label">Postal Code</label>
-                                                <input class="form-control" id="op_pin" type="text"
-                                                    value="400051" maxlength="6">
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="form-label">Country</label>
-                                                <select class="form-select" id="op_country">
-                                                    <option>India</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- REGISTRATION -->
-                    <div class="tab-panel" id="edit-registration">
-                        <div class="section-card">
-                            <div class="section-header">
-                                <div class="section-title">
-                                    <div class="section-icon">🔖</div> Registration Details
-                                </div>
-                                <small style="color:var(--ink-muted)">Legal & Tax Numbers</small>
-                            </div>
-                            <div class="section-body">
-                                <div class="form-row" style="grid-template-columns:repeat(4,1fr);">
-                                    <div class="form-group">
-                                        <label class="form-label">CIN No</label>
-                                        <input class="form-control" type="text" value="U72900MH2010PTC205678"
-                                            maxlength="21" placeholder="CIN Number">
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="form-label">PAN No</label>
-                                        <input class="form-control" type="text" value="AABCA1234C" maxlength="10"
-                                            placeholder="ABCDE1234F">
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="form-label">TAN No</label>
-                                        <input class="form-control" type="text" value="MUMA12345A" maxlength="10"
-                                            placeholder="TAN Number">
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="form-label">GSTIN</label>
-                                        <input class="form-control" type="text" value="27AABCA1234C1Z3"
-                                            maxlength="15" placeholder="27ABCDE1234F1Z5">
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="form-label">Udyam Aadhar</label>
-                                        <input class="form-control" type="text" value="UDYAM-MH-10-0012345"
-                                            maxlength="19" placeholder="Udyam Registration No">
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="form-label">MSME No</label>
-                                        <input class="form-control" type="text" value="MH/2010/0056789"
-                                            maxlength="100" placeholder="MSME Certificate No">
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="form-label">ROC No</label>
-                                        <input class="form-control" type="text" value="ROC-205678"
-                                            maxlength="100" placeholder="ROC Number">
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="form-label">Partnership Reg. No</label>
-                                        <input class="form-control" type="text" value="" maxlength="100"
-                                            placeholder="Registration No">
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="form-label">CKYC</label>
-                                        <input class="form-control" type="text" value="10012345678901"
-                                            maxlength="14" placeholder="CKYC Number">
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="form-label">Gumasta No</label>
-                                        <input class="form-control" type="text" value="MH/GU/2010/2345"
-                                            maxlength="100" placeholder="Gumasta License No">
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="form-label">Watermark No</label>
-                                        <input class="form-control" type="text" value="" maxlength="100"
-                                            placeholder="Watermark Number">
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="form-label">Copyright No</label>
-                                        <input class="form-control" type="text" value="" maxlength="100"
-                                            placeholder="Copyright Number">
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="form-label">Establishment Date</label>
-                                        <input class="form-control" type="date" value="2010-01-12">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- BANK -->
-                    <div class="tab-panel" id="edit-bank">
-                        <div class="section-card">
-                            <div class="section-header">
-                                <div class="section-title">
-                                    <div class="section-icon">🏦</div> Bank Details
-                                </div>
-                            </div>
-                            <div class="section-body">
-                                <div id="bankEditWrapper">
-
-                                    <!-- Bank Row 1 -->
-                                    <div class="bank-row-edit">
-                                        <span class="bank-row-number">Bank 1</span>
-                                        <div class="form-row" style="grid-template-columns:repeat(4,1fr);">
-                                            <div class="form-group">
-                                                <label class="form-label">IFSC Code</label>
-                                                <input class="form-control" type="text" value="HDFC0001234"
-                                                    placeholder="IFSC Code">
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="form-label">Account No</label>
-                                                <input class="form-control" type="text" value="50100234567890"
-                                                    maxlength="15" placeholder="Account Number">
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="form-label">Account Type</label>
-                                                <select class="form-select">
-                                                    <option>Saving Account</option>
-                                                    <option selected>Current Account</option>
-                                                    <option>Overdraft/CC</option>
-                                                    <option>NRE</option>
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="form-label">Bank Name</label>
-                                                <input class="form-control" type="text" value="HDFC Bank"
-                                                    readonly>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="form-label">Branch Name</label>
-                                                <input class="form-control" type="text"
-                                                    value="Bandra Kurla Complex, Mumbai" readonly>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="form-label">Bank Code</label>
-                                                <input class="form-control" type="text" value="HDFC" readonly>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="form-label">Primary Account</label>
-                                                <div style="padding-top:8px;display:flex;align-items:center;gap:8px;">
-                                                    <input type="checkbox" checked
-                                                        style="accent-color:var(--accent);width:16px;height:16px;">
-                                                    <span style="font-size:13px;color:var(--ink-soft);">Set as
-                                                        primary</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Bank Row 2 -->
-                                    <div class="bank-row-edit">
-                                        <span class="bank-row-number">Bank 2</span>
-                                        <button class="btn btn-danger btn-xs bank-row-remove"
-                                            style="position:absolute;top:12px;right:12px;"
-                                            onclick="removeBankRow(this)">✕ Remove</button>
-                                        <div class="form-row" style="grid-template-columns:repeat(4,1fr);">
-                                            <div class="form-group">
-                                                <label class="form-label">IFSC Code</label>
-                                                <input class="form-control" type="text" value="ICIC0000501"
-                                                    placeholder="IFSC Code">
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="form-label">Account No</label>
-                                                <input class="form-control" type="text" value="000501234567"
-                                                    maxlength="15" placeholder="Account Number">
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="form-label">Account Type</label>
-                                                <select class="form-select">
-                                                    <option selected>Saving Account</option>
-                                                    <option>Current Account</option>
-                                                    <option>Overdraft/CC</option>
-                                                </select>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="form-label">Bank Name</label>
-                                                <input class="form-control" type="text" value="ICICI Bank"
-                                                    readonly>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="form-label">Branch Name</label>
-                                                <input class="form-control" type="text"
-                                                    value="Andheri West, Mumbai" readonly>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="form-label">Bank Code</label>
-                                                <input class="form-control" type="text" value="ICICI" readonly>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="form-label">Primary Account</label>
-                                                <div style="padding-top:8px;display:flex;align-items:center;gap:8px;">
-                                                    <input type="checkbox"
-                                                        style="accent-color:var(--accent);width:16px;height:16px;">
-                                                    <span style="font-size:13px;color:var(--ink-soft);">Set as
-                                                        primary</span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <button class="btn btn-outline btn-sm" onclick="addBankRow()"
-                                    style="margin-top:4px;">
-                                    ＋ Add More Bank
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- DOCUMENTS -->
-                    <div class="tab-panel" id="edit-docs">
-                        <div class="section-card">
-                            <div class="section-header">
-                                <div class="section-title">
-                                    <div class="section-icon">📂</div> Documents
-                                </div>
-                                <small style="color:var(--ink-muted)">PDF, JPG, PNG, JPEG, WEBP · max 5MB each</small>
-                            </div>
-                            <div class="section-body">
-                                <div class="doc-upload-grid">
-                                    <div class="doc-upload-tile uploaded" onclick="triggerUpload('f1')">
-                                        <div class="doc-upload-tile-icon">🪪</div>
-                                        <div class="doc-upload-tile-label">PAN Card</div>
-                                        <div class="doc-upload-hint" style="color:var(--success);font-weight:600;">✓
-                                            Uploaded</div>
-                                        <input type="file" id="f1" class="d-none"
-                                            accept=".pdf,.jpg,.jpeg,.png,.webp" style="display:none"
-                                            onchange="markUploaded(this)">
-                                    </div>
-                                    <div class="doc-upload-tile uploaded" onclick="triggerUpload('f2')">
-                                        <div class="doc-upload-tile-icon">📋</div>
-                                        <div class="doc-upload-tile-label">TAN Certificate</div>
-                                        <div class="doc-upload-hint" style="color:var(--success);font-weight:600;">✓
-                                            Uploaded</div>
-                                        <input type="file" id="f2" class="d-none"
-                                            accept=".pdf,.jpg,.jpeg,.png,.webp" style="display:none"
-                                            onchange="markUploaded(this)">
-                                    </div>
-                                    <div class="doc-upload-tile uploaded" onclick="triggerUpload('f3')">
-                                        <div class="doc-upload-tile-icon">📄</div>
-                                        <div class="doc-upload-tile-label">GST Certificate</div>
-                                        <div class="doc-upload-hint" style="color:var(--success);font-weight:600;">✓
-                                            Uploaded</div>
-                                        <input type="file" id="f3" class="d-none"
-                                            accept=".pdf,.jpg,.jpeg,.png,.webp" style="display:none"
-                                            onchange="markUploaded(this)">
-                                    </div>
-                                    <div class="doc-upload-tile uploaded" onclick="triggerUpload('f4')">
-                                        <div class="doc-upload-tile-icon">🏢</div>
-                                        <div class="doc-upload-tile-label">MSME Certificate</div>
-                                        <div class="doc-upload-hint" style="color:var(--success);font-weight:600;">✓
-                                            Uploaded</div>
-                                        <input type="file" id="f4" class="d-none"
-                                            accept=".pdf,.jpg,.jpeg,.png,.webp" style="display:none"
-                                            onchange="markUploaded(this)">
-                                    </div>
-                                    <div class="doc-upload-tile" onclick="triggerUpload('f5')">
-                                        <div class="doc-upload-tile-icon">🪪</div>
-                                        <div class="doc-upload-tile-label">Udyam Aadhar</div>
-                                        <div class="doc-upload-hint">Click to upload</div>
-                                        <input type="file" id="f5" class="d-none"
-                                            accept=".pdf,.jpg,.jpeg,.png,.webp" style="display:none"
-                                            onchange="markUploaded(this)">
-                                    </div>
-                                    <div class="doc-upload-tile uploaded" onclick="triggerUpload('f6')">
-                                        <div class="doc-upload-tile-icon">📄</div>
-                                        <div class="doc-upload-tile-label">Gumasta License</div>
-                                        <div class="doc-upload-hint" style="color:var(--success);font-weight:600;">✓
-                                            Uploaded</div>
-                                        <input type="file" id="f6" class="d-none"
-                                            accept=".pdf,.jpg,.jpeg,.png,.webp" style="display:none"
-                                            onchange="markUploaded(this)">
-                                    </div>
-                                    <div class="doc-upload-tile" onclick="triggerUpload('f7')">
-                                        <div class="doc-upload-tile-icon">📄</div>
-                                        <div class="doc-upload-tile-label">CKYC Document</div>
-                                        <div class="doc-upload-hint">Click to upload</div>
-                                        <input type="file" id="f7" class="d-none"
-                                            accept=".pdf,.jpg,.jpeg,.png,.webp" style="display:none"
-                                            onchange="markUploaded(this)">
-                                    </div>
-                                    <div class="doc-upload-tile uploaded" onclick="triggerUpload('f8')">
-                                        <div class="doc-upload-tile-icon">🏦</div>
-                                        <div class="doc-upload-tile-label">Cancelled Cheque</div>
-                                        <div class="doc-upload-hint" style="color:var(--success);font-weight:600;">✓
-                                            Uploaded</div>
-                                        <input type="file" id="f8" class="d-none"
-                                            accept=".pdf,.jpg,.jpeg,.png,.webp" style="display:none"
-                                            onchange="markUploaded(this)">
-                                    </div>
-                                    <div class="doc-upload-tile uploaded" onclick="triggerUpload('f9')">
-                                        <div class="doc-upload-tile-icon">👤</div>
-                                        <div class="doc-upload-tile-label">Proprietor Photo</div>
-                                        <div class="doc-upload-hint" style="color:var(--success);font-weight:600;">✓
-                                            Uploaded</div>
-                                        <input type="file" id="f9" class="d-none"
-                                            accept=".pdf,.jpg,.jpeg,.png,.webp" style="display:none"
-                                            onchange="markUploaded(this)">
-                                    </div>
-                                    <div class="doc-upload-tile" onclick="triggerUpload('f10')">
-                                        <div class="doc-upload-tile-icon">🏷️</div>
-                                        <div class="doc-upload-tile-label">Company Logo</div>
-                                        <div class="doc-upload-hint">Click to upload</div>
-                                        <input type="file" id="f10" class="d-none"
-                                            accept=".pdf,.jpg,.jpeg,.png,.webp" style="display:none"
-                                            onchange="markUploaded(this)">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Sticky Save Bar -->
-                    <div class="save-bar">
-                        <button class="btn btn-outline" onclick="setMode('view')">✕ Cancel</button>
-                        <button class="btn btn-primary" onclick="saveChanges()">💾 Save Changes</button>
-                    </div>
-
-                </div>
-                <!-- END EDIT PANEL -->
-
-            </div>
-        </div>
+    {{-- Alerts --}}
+    <div>
+        @if (session('success'))
+            <x-alert-sweet type="success" :message="session('success')" />
+        @endif
+        @if (session('error'))
+            <x-alert-sweet type="danger" :message="session('error')" />
+        @endif
     </div>
 
+    @if ($errors->any())
+        <div class="alert alert-danger mb-3">
+            <ul class="mb-0">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    <div class="page-title">{{ $company->name }}</div>
+    <div class="page-sub">
+        <span class="text-muted">Master / <a href="{{ route('master.companies.index') }}"
+                class="text-decoration-none text-muted">Company</a> /</span>
+        Edit
+    </div>
+
+    <form action="{{ route('master.companies.update', $company->id) }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        @method('PUT')
+
+        {{-- ── 1. Basic Information ── --}}
+        <div class="sc">
+            <div class="sc-head">
+                <div class="sc-head-icon">🏢</div>
+                <div class="sc-head-title">Basic Information</div>
+                <span class="sc-head-sub">Primary Details</span>
+            </div>
+            <div class="sc-body">
+                <div class="fg fg-4">
+                    <div class="fl col-span-2">
+                        <label>Company Name <span class="req">*</span></label>
+                        <input type="text" name="name" class="@error('name') is-invalid @enderror"
+                            value="{{ old('name', $company->name) }}" placeholder="Company name">
+                        @error('name')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="fl col-span-2">
+                        <label>Legal Name</label>
+                        <input type="text" name="legal_name" class="@error('legal_name') is-invalid @enderror"
+                            value="{{ old('legal_name', $company->legal_name) }}" placeholder="Legal registered name">
+                        @error('legal_name')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="fl">
+                        <label>Company Type <span class="req">*</span></label>
+                        <select name="company_type" class="@error('company_type') is-invalid @enderror">
+                            <option value="">Select type</option>
+                            @foreach ($companyTypes as $key => $value)
+                                <option value="{{ $key }}"
+                                    {{ old('company_type', $company->company_type) == $key ? 'selected' : '' }}>
+                                    {{ $value }}</option>
+                            @endforeach
+                        </select>
+                        @error('company_type')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="fl">
+                        <label>Status</label>
+                        <select name="is_active" class="@error('is_active') is-invalid @enderror">
+                            <option value="">Select status</option>
+                            <option value="active"
+                                {{ old('is_active', $company->is_active) == 'active' ? 'selected' : '' }}>Active</option>
+                            <option value="inactive"
+                                {{ old('is_active', $company->is_active) == 'inactive' ? 'selected' : '' }}>Inactive
+                            </option>
+                        </select>
+                        @error('is_active')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="fl col-span-2">
+                        <label>Website</label>
+                        <div class="input-group-wrap">
+                            <span class="prefix">https://</span>
+                            <input type="text" name="website" class="@error('website') is-invalid @enderror"
+                                value="{{ old('website', $company->website) }}" placeholder="example.com">
+                        </div>
+                        @error('website')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="fl">
+                        <label>Email</label>
+                        <input type="email" name="email" class="@error('email') is-invalid @enderror"
+                            value="{{ old('email', $company->email) }}" placeholder="company@email.com">
+                        @error('email')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="fl">
+                        <label>Mobile Number</label>
+                        <input type="text" name="mobile" class="onlydigit @error('mobile') is-invalid @enderror"
+                            value="{{ old('mobile', $company->mobile) }}" placeholder="10-digit mobile number"
+                            maxlength="10">
+                        @error('mobile')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="fl">
+                        <label>Establishment Date</label>
+                        <input type="date" name="est_date" class="@error('est_date') is-invalid @enderror"
+                            value="{{ old('est_date', optional($company->est_date)->format('Y-m-d')) }}">
+                        @error('est_date')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- ── 2. Address Details ── --}}
+        <div class="sc">
+            <div class="sc-head">
+                <div class="sc-head-icon">📍</div>
+                <div class="sc-head-title">Address Details</div>
+                <label class="same-addr-row">
+                    <input type="checkbox" id="sameAddress"> Same as Registered Address
+                </label>
+            </div>
+            <div class="sc-body">
+                <div class="addr-split">
+
+                    {{-- Registered --}}
+                    <div class="addr-col">
+                        <div class="addr-col-title">Registered Address</div>
+                        <div class="fg" style="gap:12px;">
+                            <div class="fl">
+                                <label>Address Line 1 <span class="req">*</span></label>
+                                <input type="text" name="reg_address_line1"
+                                    class="@error('reg_address_line1') is-invalid @enderror"
+                                    value="{{ old('reg_address_line1', $company->reg_address_line1) }}"
+                                    placeholder="Building, Street, Area">
+                                @error('reg_address_line1')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="fl">
+                                <label>Address Line 2</label>
+                                <input type="text" name="reg_address_line2"
+                                    value="{{ old('reg_address_line2', $company->reg_address_line2) }}"
+                                    placeholder="Floor, Suite, Landmark">
+                            </div>
+                            <div class="fg fg-2" style="gap:12px;">
+                                <div class="fl">
+                                    <label>City</label>
+                                    <input type="text" name="reg_city" class="@error('reg_city') is-invalid @enderror"
+                                        value="{{ old('reg_city', $company->reg_city) }}" placeholder="City">
+                                    @error('reg_city')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="fl">
+                                    <label>State</label>
+                                    <select name="reg_state" class="@error('reg_state') is-invalid @enderror">
+                                        <option value="">Select state</option>
+                                        <option value="Maharashtra"
+                                            {{ old('reg_state', $company->reg_state) == 'Maharashtra' ? 'selected' : '' }}>
+                                            Maharashtra</option>
+                                    </select>
+                                    @error('reg_state')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="fl">
+                                    <label>Postal Code</label>
+                                    <input type="text" name="reg_pincode"
+                                        class="onlydigit @error('reg_pincode') is-invalid @enderror"
+                                        value="{{ old('reg_pincode', $company->reg_pincode) }}" placeholder="Pincode"
+                                        maxlength="6">
+                                    @error('reg_pincode')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="fl">
+                                    <label>Country</label>
+                                    <select name="reg_country">
+                                        <option value="India">India</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {{-- Operational --}}
+                    <div class="addr-col" id="operationalAddress">
+                        <div class="addr-col-title">Operational / Correspondence Address</div>
+                        <div class="fg" style="gap:12px;">
+                            <div class="fl">
+                                <label>Address Line 1</label>
+                                <input type="text" name="op_address_line1"
+                                    class="@error('op_address_line1') is-invalid @enderror"
+                                    value="{{ old('op_address_line1', $company->op_address_line1) }}"
+                                    placeholder="Building, Street, Area">
+                                @error('op_address_line1')
+                                    <div class="invalid-feedback">{{ $message }}</div>
+                                @enderror
+                            </div>
+                            <div class="fl">
+                                <label>Address Line 2</label>
+                                <input type="text" name="op_address_line2"
+                                    value="{{ old('op_address_line2', $company->op_address_line2) }}"
+                                    placeholder="Floor, Suite, Landmark">
+                            </div>
+                            <div class="fg fg-2" style="gap:12px;">
+                                <div class="fl">
+                                    <label>City</label>
+                                    <input type="text" name="op_city" class="@error('op_city') is-invalid @enderror"
+                                        value="{{ old('op_city', $company->op_city) }}" placeholder="City">
+                                    @error('op_city')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="fl">
+                                    <label>State</label>
+                                    <select name="op_state" class="@error('op_state') is-invalid @enderror">
+                                        <option value="">Select state</option>
+                                        <option value="Maharashtra"
+                                            {{ old('op_state', $company->op_state) == 'Maharashtra' ? 'selected' : '' }}>
+                                            Maharashtra</option>
+                                    </select>
+                                    @error('op_state')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="fl">
+                                    <label>Postal Code</label>
+                                    <input type="text" name="op_pincode"
+                                        class="onlydigit @error('op_pincode') is-invalid @enderror"
+                                        value="{{ old('op_pincode', $company->op_pincode) }}" placeholder="Pincode"
+                                        maxlength="6">
+                                    @error('op_pincode')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="fl">
+                                    <label>Country</label>
+                                    <select name="op_country">
+                                        <option value="India">India</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        {{-- ── 3. Registration Details ── --}}
+        <div class="sc">
+            <div class="sc-head">
+                <div class="sc-head-icon">📋</div>
+                <div class="sc-head-title">Registration Details</div>
+                <span class="sc-head-sub">Legal &amp; Tax Numbers</span>
+            </div>
+            <div class="sc-body">
+                <div class="fg fg-4">
+                    <div class="fl">
+                        <label>CIN No</label>
+                        <input type="text" name="cin_no" maxlength="21"
+                            class="@error('cin_no') is-invalid @enderror" value="{{ old('cin_no', $company->cin_no) }}"
+                            placeholder="CIN Number">
+                        @error('cin_no')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="fl">
+                        <label>PAN No</label>
+                        <input type="text" name="pan_no" maxlength="10"
+                            class="@error('pan_no') is-invalid @enderror" value="{{ old('pan_no', $company->pan_no) }}"
+                            placeholder="ABCDE1234F">
+                        @error('pan_no')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="fl">
+                        <label>TAN No</label>
+                        <input type="text" name="tan_no" maxlength="10"
+                            class="@error('tan_no') is-invalid @enderror" value="{{ old('tan_no', $company->tan_no) }}"
+                            placeholder="TAN Number">
+                        @error('tan_no')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="fl">
+                        <label>GSTIN</label>
+                        <input type="text" name="gstin" maxlength="15"
+                            class="@error('gstin') is-invalid @enderror" value="{{ old('gstin', $company->gstin) }}"
+                            placeholder="27ABCDE1234F1Z5">
+                        @error('gstin')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="fl">
+                        <label>Udyam Aadhar</label>
+                        <input type="text" name="udyam_aadhar_no" maxlength="19"
+                            class="@error('udyam_aadhar_no') is-invalid @enderror"
+                            value="{{ old('udyam_aadhar_no', $company->udyam_aadhar_no) }}" placeholder="Udyam Reg. No">
+                        @error('udyam_aadhar_no')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="fl">
+                        <label>MSME No</label>
+                        <input type="text" name="msme_certification_no" maxlength="100"
+                            class="@error('msme_certification_no') is-invalid @enderror"
+                            value="{{ old('msme_certification_no', $company->msme_certification_no) }}"
+                            placeholder="MSME Certificate No">
+                        @error('msme_certification_no')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="fl">
+                        <label>ROC No</label>
+                        <input type="text" name="roc_no" maxlength="100"
+                            class="@error('roc_no') is-invalid @enderror" value="{{ old('roc_no', $company->roc_no) }}"
+                            placeholder="ROC Number">
+                        @error('roc_no')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="fl">
+                        <label>Partnership Reg. No</label>
+                        <input type="text" name="partnership_registration_no" maxlength="100"
+                            class="@error('partnership_registration_no') is-invalid @enderror"
+                            value="{{ old('partnership_registration_no', $company->partnership_registration_no) }}"
+                            placeholder="Registration No">
+                        @error('partnership_registration_no')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="fl">
+                        <label>CKYC</label>
+                        <input type="text" name="ckyc" maxlength="14" class="@error('ckyc') is-invalid @enderror"
+                            value="{{ old('ckyc', $company->ckyc) }}" placeholder="CKYC Number">
+                        @error('ckyc')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="fl">
+                        <label>Gumasta No</label>
+                        <input type="text" name="gumasta_no" maxlength="100"
+                            class="@error('gumasta_no') is-invalid @enderror"
+                            value="{{ old('gumasta_no', $company->gumasta_no) }}" placeholder="Gumasta License No">
+                        @error('gumasta_no')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="fl">
+                        <label>Watermark No</label>
+                        <input type="text" name="watermark_no" maxlength="100"
+                            class="@error('watermark_no') is-invalid @enderror"
+                            value="{{ old('watermark_no', $company->watermark_no) }}" placeholder="Watermark Number">
+                        @error('watermark_no')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="fl">
+                        <label>Copyright No</label>
+                        <input type="text" name="copyrights_no" maxlength="100"
+                            class="@error('copyrights_no') is-invalid @enderror"
+                            value="{{ old('copyrights_no', $company->copyrights_no) }}" placeholder="Copyright Number">
+                        @error('copyrights_no')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {{-- ── 4. Bank Details ── --}}
+        <div class="sc">
+            <div class="sc-head">
+                <div class="sc-head-icon">🏦</div>
+                <div class="sc-head-title">Bank Details</div>
+                <span class="sc-head-sub">Bank Information</span>
+            </div>
+            <div class="sc-body">
+                <div id="bankWrapper">
+                    @foreach ($company->banks ?? [] as $i => $bank)
+                        <div class="bank-row">
+                            <div class="bank-row-num">Bank {{ $i + 1 }}</div>
+                            @if ($i > 0)
+                                <button type="button" class="bank-remove" onclick="this.closest('.bank-row').remove()">✕
+                                    Remove</button>
+                            @endif
+                            <div class="fg fg-4" style="gap:14px;">
+                                <div class="fl">
+                                    <label>IFSC Code</label>
+                                    <input type="text" name="banks[{{ $i }}][ifsc_code]"
+                                        class="ifsc_code @error('banks.' . $i . '.ifsc_code') is-invalid @enderror"
+                                        value="{{ old('banks.' . $i . '.ifsc_code', $bank->ifsc_code) }}"
+                                        placeholder="IFSC Code">
+                                    @error('banks.' . $i . '.ifsc_code')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="fl">
+                                    <label>Account No</label>
+                                    <input type="text" name="banks[{{ $i }}][account_number]"
+                                        class="@error('banks.' . $i . '.account_number') is-invalid @enderror"
+                                        value="{{ old('banks.' . $i . '.account_number', $bank->account_number) }}"
+                                        placeholder="Account Number" maxlength="15">
+                                    @error('banks.' . $i . '.account_number')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="fl">
+                                    <label>Account Type</label>
+                                    <select name="banks[{{ $i }}][account_type]"
+                                        class="@error('banks.' . $i . '.account_type') is-invalid @enderror">
+                                        <option value="">Select type</option>
+                                        @foreach (['savings' => 'Saving Account', 'current' => 'Current Account', 'od_cc' => 'Overdraft/CC', 'nre' => 'NRE', 'nri' => 'NRI', 'nro' => 'NRO', 'tem_deposit' => 'Term Deposit', 'ra' => 'Recurring'] as $val => $label)
+                                            <option value="{{ $val }}"
+                                                {{ old('banks.' . $i . '.account_type', $bank->account_type) == $val ? 'selected' : '' }}>
+                                                {{ $label }}</option>
+                                        @endforeach
+                                    </select>
+                                    @error('banks.' . $i . '.account_type')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="fl">
+                                    <label>Bank Name</label>
+                                    <input type="text" name="banks[{{ $i }}][bank_name]" class="bank_name"
+                                        value="{{ old('banks.' . $i . '.bank_name', $bank->bank_name) }}" readonly>
+                                </div>
+                                <div class="fl">
+                                    <label>Branch Name</label>
+                                    <input type="text" name="banks[{{ $i }}][branch_name]"
+                                        class="branch_name"
+                                        value="{{ old('banks.' . $i . '.branch_name', $bank->branch_name) }}" readonly>
+                                </div>
+                                <div class="fl">
+                                    <label>Bank Code</label>
+                                    <input type="text" name="banks[{{ $i }}][bank_code]" class="bank_code"
+                                        value="{{ old('banks.' . $i . '.bank_code', $bank->bank_code) }}" readonly>
+                                </div>
+                                <div class="check-row">
+                                    <input type="hidden" name="banks[{{ $i }}][is_primary]" value="0">
+                                    <input type="checkbox" id="primary_{{ $i }}"
+                                        name="banks[{{ $i }}][is_primary]" value="1" class="setPrimary"
+                                        {{ old('banks.' . $i . '.is_primary', $bank->is_primary) == 1 ? 'checked' : '' }}>
+                                    <label for="primary_{{ $i }}">Primary Account</label>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+                <button type="button" class="btn-add" onclick="addBankRow()">＋ Add More Bank</button>
+            </div>
+        </div>
+
+        {{-- ── 5. Documents ── --}}
+        <div class="sc">
+            <div class="sc-head">
+                <div class="sc-head-icon">📂</div>
+                <div class="sc-head-title">Documents</div>
+                <span class="sc-head-sub">PDF, JPG, PNG · max 5MB</span>
+            </div>
+            <div class="sc-body">
+                @php
+                    $docs = [
+                        ['name' => 'attachment_pan', 'label' => 'PAN Card', 'icon' => '🪪'],
+                        ['name' => 'attachment_tan', 'label' => 'TAN Certificate', 'icon' => '📋'],
+                        ['name' => 'attachment_gstin', 'label' => 'GST Certificate', 'icon' => '📄'],
+                        ['name' => 'attachment_msme', 'label' => 'MSME Certificate', 'icon' => '🏢'],
+                        ['name' => 'attachment_udyam_aadhar', 'label' => 'Udyam Aadhar', 'icon' => '🪪'],
+                        ['name' => 'attachment_gumasta', 'label' => 'Gumasta License', 'icon' => '📄'],
+                        ['name' => 'attachment_ckyc', 'label' => 'CKYC Document', 'icon' => '📄'],
+                        ['name' => 'attachment_cancelled_cheque', 'label' => 'Cancelled Cheque', 'icon' => '🏦'],
+                        ['name' => 'attachment_proprietor', 'label' => 'Proprietor Photo', 'icon' => '👤'],
+                        ['name' => 'logo', 'label' => 'Company Logo', 'icon' => '🏷️'],
+                    ];
+                @endphp
+
+                <div class="doc-grid">
+                    @foreach ($docs as $doc)
+                        @php
+                            $existing = $company->{$doc['name']} ?? null;
+                            $isImage = $existing && preg_match('/\.(jpg|jpeg|png|webp)$/i', $existing);
+                            $isPdf = $existing && preg_match('/\.pdf$/i', $existing);
+                            $hasFile = (bool) $existing;
+                        @endphp
+
+                        <div class="doc-card {{ $hasFile ? 'uploaded' : '' }}"
+                            onclick="document.getElementById('{{ $doc['name'] }}').click()">
+
+                            {{-- existing remove button --}}
+                            @if ($hasFile)
+                                <button type="button" class="doc-remove-btn"
+                                    onclick="event.stopPropagation(); removeDoc('{{ $doc['name'] }}')">✕</button>
+                            @endif
+
+                            {{-- image preview --}}
+                            @if ($isImage)
+                                <img src="{{ asset('storage/' . $existing) }}" class="doc-preview-img"
+                                    id="preview_{{ $doc['name'] }}" alt="{{ $doc['label'] }}">
+                            @elseif ($isPdf)
+                                <div class="doc-card-icon">📄</div>
+                                <div class="doc-preview-file" id="preview_{{ $doc['name'] }}">{{ basename($existing) }}
+                                </div>
+                            @else
+                                <div class="doc-card-icon" id="icon_{{ $doc['name'] }}">{{ $doc['icon'] }}</div>
+                            @endif
+
+                            <div class="doc-card-label">{{ $doc['label'] }}</div>
+
+                            <div class="doc-status {{ $hasFile ? 'ok' : 'miss' }}" id="status_{{ $doc['name'] }}">
+                                <span class="dot"></span>
+                                {{ $hasFile ? 'Uploaded' : 'Not Uploaded' }}
+                            </div>
+
+                            {{-- file input --}}
+                            <input type="file" id="{{ $doc['name'] }}" name="{{ $doc['name'] }}"
+                                accept=".pdf,.jpg,.jpeg,.png,.webp" onchange="previewDoc(this, '{{ $doc['name'] }}')">
+
+                            {{-- keep existing if not replaced --}}
+                            <input type="hidden" name="{{ $doc['name'] }}_existing" value="{{ $existing }}">
+
+                            @error($doc['name'])
+                                <div style="font-size:10.5px;color:#dc2626;margin-top:4px;">{{ $message }}</div>
+                            @enderror
+
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+
+        {{-- ── Actions ── --}}
+        <div class="form-actions">
+            <a href="{{ route('master.companies.index') }}" class="btn-cancel">Cancel</a>
+            <button type="submit" class="btn-save">Save Changes</button>
+        </div>
+
+    </form>
+
+@endsection
+
+@push('scripts')
     <script>
-        // ── Mode toggle ──
-        let currentMode = 'view';
-        let currentTab = 'basic';
-
-        function setMode(mode) {
-            currentMode = mode;
-            document.getElementById('view-panel').style.display = mode === 'view' ? 'block' : 'none';
-            document.getElementById('edit-panel').style.display = mode === 'edit' ? 'block' : 'none';
-            document.getElementById('viewModeBtn').classList.toggle('active', mode === 'view');
-            document.getElementById('editModeBtn').classList.toggle('active', mode === 'edit');
-            // sync tab
-            showTabPanel(currentTab, mode);
-        }
-
-        // ── Tabs ──
-        function switchTab(tab, btn) {
-            currentTab = tab;
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            showTabPanel(tab, currentMode);
-        }
-
-        function showTabPanel(tab, mode) {
-            const prefix = mode === 'view' ? 'view' : 'edit';
-            // Hide all in both panels
-            document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-            const target = document.getElementById(`${prefix}-${tab}`);
-            if (target) target.classList.add('active');
-        }
-
-        // ── Same address ──
-        function copySameAddr(cb) {
-            const fields = ['addr1', 'addr2', 'city', 'pin'];
-            if (cb.checked) {
-                document.getElementById('op_addr1').value = document.getElementById('reg_addr1').value;
-                document.getElementById('op_addr2').value = document.getElementById('reg_addr2').value;
-                document.getElementById('op_city').value = document.getElementById('reg_city').value;
-                document.getElementById('op_pin').value = document.getElementById('reg_pin').value;
-                document.getElementById('op_state').value = document.getElementById('reg_state').value;
-                document.getElementById('op_country').value = document.getElementById('reg_country').value;
-                document.getElementById('opAddrCol').style.opacity = '0.6';
-                document.getElementById('opAddrCol').style.pointerEvents = 'none';
+        // ── Same Address ──
+        document.getElementById('sameAddress').addEventListener('change', function() {
+            const fields = ['address_line1', 'address_line2', 'city', 'pincode'];
+            const selects = ['state', 'country'];
+            if (this.checked) {
+                fields.forEach(f => document.querySelector(`[name="op_${f}"]`).value = document.querySelector(
+                    `[name="reg_${f}"]`).value);
+                selects.forEach(s => document.querySelector(`[name="op_${s}"]`).value = document.querySelector(
+                    `[name="reg_${s}"]`).value);
             } else {
-                document.getElementById('opAddrCol').style.opacity = '1';
-                document.getElementById('opAddrCol').style.pointerEvents = 'auto';
+                fields.forEach(f => document.querySelector(`[name="op_${f}"]`).value = '');
+                selects.forEach(s => {
+                    const el = document.querySelector(`[name="op_${s}"]`);
+                    if (el) el.value = '';
+                });
+            }
+        });
+
+        // ── Doc preview on file select ──
+        function previewDoc(input, name) {
+            const file = input.files[0];
+            if (!file) return;
+            const card = input.closest('.doc-card');
+            card.classList.add('uploaded');
+
+            const status = document.getElementById('status_' + name);
+            status.className = 'doc-status ok';
+            status.innerHTML = '<span class="dot"></span> Uploaded';
+
+            // show image or filename
+            const isImage = /\.(jpg|jpeg|png|webp)$/i.test(file.name);
+            let preview = document.getElementById('preview_' + name);
+            const icon = document.getElementById('icon_' + name);
+
+            if (isImage) {
+                if (!preview) {
+                    preview = document.createElement('img');
+                    preview.id = 'preview_' + name;
+                    preview.className = 'doc-preview-img';
+                    card.insertBefore(preview, card.querySelector('.doc-card-label'));
+                    if (icon) icon.remove();
+                }
+                preview.src = URL.createObjectURL(file);
+            } else {
+                if (!preview) {
+                    preview = document.createElement('div');
+                    preview.id = 'preview_' + name;
+                    preview.className = 'doc-preview-file';
+                    card.insertBefore(preview, card.querySelector('.doc-card-label'));
+                    if (icon) icon.remove();
+                }
+                preview.textContent = file.name;
             }
         }
 
-        // ── Bank rows ──
-        let bankCount = 2;
+        // ── Remove doc ──
+        function removeDoc(name) {
+            const input = document.getElementById(name);
+            input.value = '';
+            const card = input.closest('.doc-card');
+            card.classList.remove('uploaded');
+
+            const status = document.getElementById('status_' + name);
+            status.className = 'doc-status miss';
+            status.innerHTML = '<span class="dot"></span> Not Uploaded';
+
+            const preview = document.getElementById('preview_' + name);
+            if (preview) preview.remove();
+
+            card.querySelector('input[name$="_existing"]').value = '';
+
+            // restore icon
+            const label = card.querySelector('.doc-card-label');
+            const rmBtn = card.querySelector('.doc-remove-btn');
+            if (rmBtn) rmBtn.remove();
+        }
+
+        // ── Add bank row ──
+        let bankIndex = {{ count($company->banks ?? []) }};
 
         function addBankRow() {
-            bankCount++;
-            const wrapper = document.getElementById('bankEditWrapper');
-            const div = document.createElement('div');
-            div.className = 'bank-row-edit';
-            div.innerHTML = `
-      <span class="bank-row-number">Bank ${bankCount}</span>
-      <button class="btn btn-danger btn-xs" style="position:absolute;top:12px;right:12px;" onclick="removeBankRow(this)">✕ Remove</button>
-      <div class="form-row" style="grid-template-columns:repeat(4,1fr);">
-        <div class="form-group"><label class="form-label">IFSC Code</label><input class="form-control" type="text" placeholder="IFSC Code"></div>
-        <div class="form-group"><label class="form-label">Account No</label><input class="form-control" type="text" maxlength="15" placeholder="Account Number"></div>
-        <div class="form-group"><label class="form-label">Account Type</label>
-          <select class="form-select"><option>Saving Account</option><option>Current Account</option><option>Overdraft/CC</option><option>NRE</option></select>
-        </div>
-        <div class="form-group"><label class="form-label">Bank Name</label><input class="form-control" type="text" readonly placeholder="Auto-filled"></div>
-        <div class="form-group"><label class="form-label">Branch Name</label><input class="form-control" type="text" readonly placeholder="Auto-filled"></div>
-        <div class="form-group"><label class="form-label">Bank Code</label><input class="form-control" type="text" readonly placeholder="Auto-filled"></div>
-        <div class="form-group"><label class="form-label">Primary Account</label>
-          <div style="padding-top:8px;display:flex;align-items:center;gap:8px;">
-            <input type="checkbox" style="accent-color:var(--accent);width:16px;height:16px;">
-            <span style="font-size:13px;color:var(--ink-soft);">Set as primary</span>
-          </div>
-        </div>
-      </div>`;
-            wrapper.appendChild(div);
-            div.scrollIntoView({
-                behavior: 'smooth',
-                block: 'center'
-            });
-        }
+            const i = bankIndex++;
+            const accountTypes = {
+                savings: 'Saving Account',
+                current: 'Current Account',
+                od_cc: 'Overdraft/CC',
+                nre: 'NRE',
+                nri: 'NRI',
+                nro: 'NRO',
+                tem_deposit: 'Term Deposit',
+                ra: 'Recurring'
+            };
+            let opts = Object.entries(accountTypes).map(([v, l]) => `<option value="${v}">${l}</option>`).join('');
 
-        function removeBankRow(btn) {
-            btn.closest('.bank-row-edit').remove();
-        }
+            const html = `
+        <div class="bank-row">
+            <div class="bank-row-num">Bank ${i + 1}</div>
+            <button type="button" class="bank-remove" onclick="this.closest('.bank-row').remove()">✕ Remove</button>
+            <div class="fg fg-4" style="gap:14px;">
+                <div class="fl"><label>IFSC Code</label><input type="text" name="banks[${i}][ifsc_code]" class="ifsc_code" placeholder="IFSC Code"></div>
+                <div class="fl"><label>Account No</label><input type="text" name="banks[${i}][account_number]" maxlength="15" placeholder="Account Number"></div>
+                <div class="fl"><label>Account Type</label><select name="banks[${i}][account_type]"><option value="">Select type</option>${opts}</select></div>
+                <div class="fl"><label>Bank Name</label><input type="text" name="banks[${i}][bank_name]" class="bank_name" readonly></div>
+                <div class="fl"><label>Branch Name</label><input type="text" name="banks[${i}][branch_name]" class="branch_name" readonly></div>
+                <div class="fl"><label>Bank Code</label><input type="text" name="banks[${i}][bank_code]" class="bank_code" readonly></div>
+                <div class="check-row">
+                    <input type="hidden" name="banks[${i}][is_primary]" value="0">
+                    <input type="checkbox" id="primary_${i}" name="banks[${i}][is_primary]" value="1" class="setPrimary">
+                    <label for="primary_${i}">Primary Account</label>
+                </div>
+            </div>
+        </div>`;
 
-        // ── Doc upload ──
-        function triggerUpload(id) {
-            document.getElementById(id).click();
-        }
-
-        function markUploaded(input) {
-            const tile = input.closest('.doc-upload-tile');
-            if (input.files && input.files[0]) {
-                tile.classList.add('uploaded');
-                tile.querySelector('.doc-upload-hint').textContent = '✓ ' + input.files[0].name;
-                tile.querySelector('.doc-upload-hint').style.color = 'var(--success)';
-                tile.querySelector('.doc-upload-hint').style.fontWeight = '600';
-            }
-        }
-
-        // ── Save ──
-        function saveChanges() {
-            const btn = document.querySelector('.save-bar .btn-primary');
-            btn.textContent = '⏳ Saving...';
-            btn.disabled = true;
-            setTimeout(() => {
-                btn.textContent = '✅ Saved!';
-                btn.style.background = 'var(--success)';
-                setTimeout(() => {
-                    btn.textContent = '💾 Save Changes';
-                    btn.style.background = '';
-                    btn.disabled = false;
-                    setMode('view');
-                }, 1200);
-            }, 1000);
+            document.getElementById('bankWrapper').insertAdjacentHTML('beforeend', html);
         }
     </script>
-
-</body>
-
-</html>
+@endpush

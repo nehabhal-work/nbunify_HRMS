@@ -57,7 +57,7 @@
 
 
                 <div class="ms-auto text-muted">
-                    {{ $companies->count() ?? 0 }} companies
+                    {{ optional($companies)->count() ?? 0 }} companies
                 </div>
             </div>
 
@@ -74,6 +74,7 @@
                             <th>Country</th>
                             <th>Head Office</th>
                             <th>Branches</th>
+                            <th>Status</th>
                             <th class="text-end">Actions</th>
                         </tr>
                     </thead>
@@ -105,8 +106,8 @@
 
                                 <!-- 🏷 INDUSTRY -->
                                 <td>
-                                    <span class="badge bg-light border">
-                                        {{ $company->company_type ?? '—' }}
+                                    <span class="">
+                                        {{ $company->company_type_label ?? '—' }}
                                     </span>
                                 </td>
 
@@ -118,6 +119,11 @@
 
                                 <!-- 🔢 BRANCH -->
                                 <td>{{ $company->branches_count ?? 0 }}</td>
+                                <td>
+                                    <span class="badge {{ $company->is_active ? 'bg-success' : 'bg-danger' }}">
+                                        {{ $company->is_active ? 'Active' : 'Inactive' }}
+                                    </span>
+                                </td>
 
 
 

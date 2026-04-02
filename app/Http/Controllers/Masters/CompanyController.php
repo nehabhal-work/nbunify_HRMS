@@ -119,8 +119,10 @@ class CompanyController extends Controller
         $country = $data['country'] ?? null;
         $states = $data['states'] ?? [];
         $cities = $data['cities'] ?? [];
+                $companyTypes = Company::COMPANY_TYPES;
+
         $bankDetails = $company->bankDetails ?? [];
-        return view('content.master.companies.edit', compact('company', 'country', 'states', 'cities', 'bankDetails'));
+        return view('content.master.companies.edit', compact('company', 'country', 'states', 'cities','companyTypes', 'bankDetails'));
     }
     /**
      * PUT/PATCH /companies/{company}
