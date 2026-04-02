@@ -12,7 +12,9 @@ use Illuminate\Support\Facades\Route;
 
 class CompanyController extends Controller
 {
-    public function __construct(protected CompanyService $companyService) {}
+    public function __construct(protected CompanyService $companyService)
+    {
+    }
 
     /**
      * GET /companies
@@ -119,10 +121,10 @@ class CompanyController extends Controller
         $country = $data['country'] ?? null;
         $states = $data['states'] ?? [];
         $cities = $data['cities'] ?? [];
-                $companyTypes = Company::COMPANY_TYPES;
+        $companyTypes = Company::COMPANY_TYPES;
 
         $bankDetails = $company->bankDetails ?? [];
-        return view('content.master.companies.edit', compact('company', 'country', 'states', 'cities','companyTypes', 'bankDetails'));
+        return view('content.master.companies.edit', compact('company', 'country', 'states', 'cities', 'companyTypes', 'bankDetails'));
     }
     /**
      * PUT/PATCH /companies/{company}

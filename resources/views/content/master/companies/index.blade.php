@@ -91,8 +91,8 @@
                                       
 
                                         <div>
-                                            <div class="fw-semibold">{{ $company->name }}</div>
-                                            <small class="text-muted">{{ $company->legal_name ?? '—' }}</small>
+                                            <div class="fw-semibold">{{ $company->name ?? '' }}</div>
+                                            <small class="text-muted">{{ $company->legal_name ?? '' }}</small>
                                         </div>
                                     </div>
                                 </td>
