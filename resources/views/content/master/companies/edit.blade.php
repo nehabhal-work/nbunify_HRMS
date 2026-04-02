@@ -3,232 +3,214 @@
 @section('content')
 
 <style>
-    .view-mode {
-        display: inline-block;
-        padding: 8px 0;
-        font-size: 15px;
-        color: #1f2937;
-    }
+    .view-mode { display: block; }
+    .edit-mode { display: none; }
 
-    .edit-mode {
-        display: none;
+    .view-box {
+        background: #f8fafc;
+        border: 1px solid #e5e7eb;
         border-radius: 8px;
+        padding: 9px 12px;
+        font-weight: 500;
+        color: #111827;
     }
 
-    .label-col {
-        color: #6b7280;
-        font-weight: 600;
-    }
+    .view-box.small { font-size: 13px; }
 
-    .card {
-        border-radius: 14px;
-    }
+    .doc-card { display: none; } /* hidden in view mode */
 </style>
 
-<form action="{{ route('master.companies.update', $company->id) }}" method="POST" enctype="multipart/form-data">
-    @csrf
-    @method('PUT')
+<div class="text-end mb-3">
+    <button type="button" id="editBtn" class="btn btn-outline-primary">✏️ Edit</button>
+    <button type="submit" form="companyForm" id="updateBtn" class="btn btn-success d-none">💾 Update</button>
+</div>
 
-    {{-- 🔹 BASIC INFORMATION --}}
-    <div class="card mb-4 shadow-sm">
-        <div class="card-header fw-semibold bg-light">Basic Information</div>
-        <div class="card-body">
+<form id="companyForm" action="{{ route('master.companies.update', $company->id) }}" method="POST" enctype="multipart/form-data">
+@csrf
+@method('PUT')
 
-            {{-- Company Name --}}
-            <div class="row mb-3">
-                <div class="col-md-3 label-col">Company Name</div>
-                <div class="col-md-9">
-                    <span class="view-mode">{{ $company->name }}</span>
-                    <input type="text" name="name" class="form-control edit-mode"
-                        value="{{ old('name', $company->name) }}">
-                </div>
+<div class="card mb-4">
+    <div class="card-header">Basic Information</div>
+    <div class="card-body row g-3">
+
+        {{-- Company Name --}}
+        <div class="col-md-4">
+            <label>Company Name</label>
+
+            <div class="view-mode">
+                <div class="view-box">{{ $company->name }}</div>
             </div>
 
-            {{-- Legal Name --}}
-            <div class="row mb-3">
-                <div class="col-md-3 label-col">Legal Name</div>
-                <div class="col-md-9">
-                    <span class="view-mode">{{ $company->legal_name ?? '-' }}</span>
-                    <input type="text" name="legal_name" class="form-control edit-mode"
-                        value="{{ old('legal_name', $company->legal_name) }}">
-                </div>
-            </div>
-
-            {{-- Email --}}
-            <div class="row mb-3">
-                <div class="col-md-3 label-col">Email</div>
-                <div class="col-md-9">
-                    <span class="view-mode">{{ $company->email ?? '-' }}</span>
-                    <input type="email" name="email" class="form-control edit-mode"
-                        value="{{ old('email', $company->email) }}">
-                </div>
-            </div>
-
-            {{-- Status --}}
-            <div class="row mb-3">
-                <div class="col-md-3 label-col">Status</div>
-                <div class="col-md-9">
-                    <span class="view-mode text-capitalize">{{ $company->status }}</span>
-
-                    <select name="status" class="form-select edit-mode">
-                        <option value="active" {{ $company->status=='active'?'selected':'' }}>Active</option>
-                        <option value="inactive" {{ $company->status=='inactive'?'selected':'' }}>Inactive</option>
-                    </select>
-                </div>
-            </div>
-
+            <input type="text" name="name" class="form-control edit-mode"
+                value="{{ old('name', $company->name) }}">
         </div>
-    </div>
 
-    {{-- 🔹 ADDRESS --}}
-    <div class="card mb-4 shadow-sm">
-        <div class="card-header fw-semibold bg-light">Address Details</div>
-        <div class="card-body">
+        {{-- Legal Name --}}
+        <div class="col-md-4">
+            <label>Legal Name</label>
 
-            <div class="row mb-3">
-                <div class="col-md-3 label-col">Registered Address</div>
-                <div class="col-md-9">
-                    <span class="view-mode">
-                        {{ $company->reg_address_line1 }},
-                        {{ $company->reg_city }},
-                        {{ $company->reg_state }} - {{ $company->reg_pincode }}
-                    </span>
-
-                    <input type="text" name="reg_address_line1" class="form-control edit-mode mb-2"
-                        value="{{ $company->reg_address_line1 }}">
-                    <input type="text" name="reg_city" class="form-control edit-mode mb-2"
-                        value="{{ $company->reg_city }}">
-                    <input type="text" name="reg_pincode" class="form-control edit-mode"
-                        value="{{ $company->reg_pincode }}">
-                </div>
+            <div class="view-mode">
+                <div class="view-box">{{ $company->legal_name ?? '-' }}</div>
             </div>
 
+            <input type="text" name="legal_name" class="form-control edit-mode"
+                value="{{ old('legal_name', $company->legal_name) }}">
         </div>
-    </div>
 
-    {{-- 🔹 REGISTRATION --}}
-    <div class="card mb-4 shadow-sm">
-        <div class="card-header fw-semibold bg-light">Registration Details</div>
-        <div class="card-body">
+        {{-- Email --}}
+        <div class="col-md-4">
+            <label>Email</label>
 
-            <div class="row mb-3">
-                <div class="col-md-3 label-col">PAN No</div>
-                <div class="col-md-9">
-                    <span class="view-mode">{{ $company->pan_no ?? '-' }}</span>
-                    <input type="text" name="pan_no" class="form-control edit-mode"
-                        value="{{ $company->pan_no }}">
-                </div>
+            <div class="view-mode">
+                <div class="view-box">{{ $company->email ?? '-' }}</div>
             </div>
 
-            <div class="row mb-3">
-                <div class="col-md-3 label-col">GSTIN</div>
-                <div class="col-md-9">
-                    <span class="view-mode">{{ $company->gstin ?? '-' }}</span>
-                    <input type="text" name="gstin" class="form-control edit-mode"
-                        value="{{ $company->gstin }}">
-                </div>
+            <input type="email" name="email" class="form-control edit-mode"
+                value="{{ old('email', $company->email) }}">
+        </div>
+
+        {{-- Status --}}
+        <div class="col-md-4">
+            <label>Status</label>
+
+            <div class="view-mode">
+                <div class="view-box">{{ ucfirst($company->status) }}</div>
             </div>
 
+            <select name="status" class="form-select edit-mode">
+                <option value="active" {{ $company->status=='active'?'selected':'' }}>Active</option>
+                <option value="inactive" {{ $company->status=='inactive'?'selected':'' }}>Inactive</option>
+            </select>
         </div>
+
     </div>
+</div>
 
-    {{-- 🔹 BANK DETAILS --}}
-    <div class="card mb-4 shadow-sm">
-        <div class="card-header fw-semibold bg-light">Bank Details</div>
-        <div class="card-body">
+{{-- ADDRESS --}}
+<div class="card mb-4">
+    <div class="card-header">Address</div>
+    <div class="card-body">
 
-            @foreach ($bankDetails as $i => $bank)
-                <div class="border rounded p-3 mb-3">
+        <label>Registered Address</label>
 
-                    <div class="view-mode">
-                        <strong>IFSC:</strong> {{ $bank->ifsc_code }} <br>
-                        <strong>Account:</strong> {{ $bank->account_number }} <br>
-                        <strong>Bank:</strong> {{ $bank->bank_name }} <br>
-                        <strong>Primary:</strong> {{ $bank->is_primary ? 'Yes' : 'No' }}
-                    </div>
-
-                    <div class="edit-mode">
-                        <input type="text" name="banks[{{ $i }}][ifsc_code]"
-                            class="form-control mb-2" value="{{ $bank->ifsc_code }}">
-
-                        <input type="text" name="banks[{{ $i }}][account_number]"
-                            class="form-control mb-2" value="{{ $bank->account_number }}">
-
-                        <input type="text" name="banks[{{ $i }}][bank_name]"
-                            class="form-control mb-2" value="{{ $bank->bank_name }}">
-
-                        <label>
-                            <input type="checkbox" name="banks[{{ $i }}][is_primary]" value="1"
-                                {{ $bank->is_primary ? 'checked' : '' }}>
-                            Primary
-                        </label>
-                    </div>
-
-                </div>
-            @endforeach
-
+        <div class="view-mode">
+            <div class="view-box small">
+                {{ $company->reg_address_line1 }},
+                {{ $company->reg_city }},
+                {{ $company->reg_state }} - {{ $company->reg_pincode }}
+            </div>
         </div>
+
+        <div class="edit-mode">
+            <input type="text" name="reg_address_line1" class="form-control mb-2"
+                value="{{ $company->reg_address_line1 }}">
+            <input type="text" name="reg_city" class="form-control mb-2"
+                value="{{ $company->reg_city }}">
+            <input type="text" name="reg_pincode" class="form-control"
+                value="{{ $company->reg_pincode }}">
+        </div>
+
     </div>
+</div>
 
-    {{-- 🔹 DOCUMENTS --}}
-    <div class="card mb-4 shadow-sm">
-        <div class="card-header fw-semibold bg-light">Documents</div>
-        <div class="card-body">
+{{-- BANK --}}
+<div class="card mb-4">
+    <div class="card-header">Bank Details</div>
+    <div class="card-body">
 
-            @php
-                $docs = [
-                    ['name'=>'attachment_pan','label'=>'PAN Card'],
-                    ['name'=>'attachment_gstin','label'=>'GST Certificate'],
-                    ['name'=>'logo','label'=>'Company Logo']
-                ];
-            @endphp
+        @foreach ($bankDetails as $i => $bank)
 
-            @foreach($docs as $doc)
-                <div class="row mb-3">
-                    <div class="col-md-3 label-col">{{ $doc['label'] }}</div>
+            <div class="mb-3">
 
-                    <div class="col-md-9">
-
-                        {{-- VIEW --}}
-                        <span class="view-mode">
-                            @if($company->{$doc['name']})
-                                <span class="text-success">✅ Uploaded</span>
-                            @else
-                                <span class="text-danger">❌ Not Uploaded</span>
-                            @endif
-                        </span>
-
-                        {{-- EDIT --}}
-                        <input type="file" name="{{ $doc['name'] }}" class="form-control edit-mode">
-
+                {{-- VIEW --}}
+                <div class="view-mode">
+                    <div class="view-box small">
+                        IFSC: {{ $bank->ifsc_code }} |
+                        Acc: {{ $bank->account_number }} |
+                        Bank: {{ $bank->bank_name }} |
+                        Primary: {{ $bank->is_primary ? 'Yes' : 'No' }}
                     </div>
                 </div>
-            @endforeach
 
-        </div>
-    </div>
+                {{-- EDIT --}}
+                <div class="edit-mode">
+                    <input type="text" name="banks[{{ $i }}][ifsc_code]" class="form-control mb-2"
+                        value="{{ $bank->ifsc_code }}">
 
-    {{-- 🔘 BUTTONS --}}
-    <div class="text-end">
-        <button type="button" id="editBtn" class="btn btn-outline-primary">✏️ Edit</button>
-        <button type="submit" id="saveBtn" class="btn btn-success d-none">💾 Update</button>
-        <a href="{{ route('master.companies.index') }}" class="btn btn-secondary">Cancel</a>
+                    <input type="text" name="banks[{{ $i }}][account_number]" class="form-control mb-2"
+                        value="{{ $bank->account_number }}">
+
+                    <input type="text" name="banks[{{ $i }}][bank_name]" class="form-control mb-2"
+                        value="{{ $bank->bank_name }}">
+
+                    <label>
+                        <input type="checkbox" name="banks[{{ $i }}][is_primary]" value="1"
+                            {{ $bank->is_primary ? 'checked' : '' }}>
+                        Primary
+                    </label>
+                </div>
+
+            </div>
+
+        @endforeach
+
     </div>
+</div>
+
+{{-- DOCUMENTS --}}
+<div class="card mb-4">
+    <div class="card-header">Documents</div>
+    <div class="card-body">
+
+        @php
+            $docs = [
+                ['name'=>'attachment_pan','label'=>'PAN'],
+                ['name'=>'attachment_gstin','label'=>'GST'],
+                ['name'=>'logo','label'=>'Logo']
+            ];
+        @endphp
+
+        @foreach($docs as $doc)
+
+            <div class="mb-3">
+
+                {{-- VIEW --}}
+                <div class="view-mode">
+                    <div class="view-box small">
+                        {{ $doc['label'] }} :
+                        @if($company->{$doc['name']})
+                            <span class="text-success">Uploaded</span>
+                        @else
+                            <span class="text-danger">Not Uploaded</span>
+                        @endif
+                    </div>
+                </div>
+
+                {{-- EDIT --}}
+                <input type="file" name="{{ $doc['name'] }}" class="form-control edit-mode">
+
+            </div>
+
+        @endforeach
+
+    </div>
+</div>
 
 </form>
 
 @endsection
 
-
 @push('scripts')
 <script>
-    document.getElementById('editBtn').addEventListener('click', function () {
+document.getElementById('editBtn').addEventListener('click', function () {
 
-        document.querySelectorAll('.view-mode').forEach(el => el.style.display = 'none');
-        document.querySelectorAll('.edit-mode').forEach(el => el.style.display = 'block');
+    document.querySelectorAll('.view-mode').forEach(el => el.style.display = 'none');
+    document.querySelectorAll('.edit-mode').forEach(el => el.style.display = 'block');
 
-        document.getElementById('editBtn').classList.add('d-none');
-        document.getElementById('saveBtn').classList.remove('d-none');
-    });
+    document.querySelectorAll('.doc-card').forEach(el => el.style.display = 'block');
+
+    this.classList.add('d-none');
+    document.getElementById('updateBtn').classList.remove('d-none');
+});
 </script>
-@endpush    
+@endpush
