@@ -139,8 +139,9 @@ class CompanyController extends Controller
      * DELETE /companies/{company}
      * Soft delete a company
      */
-    public function destroy(Company $company)
+    public function destroy($id)
     {
+        $company = Company::findOrFail($id);
         $this->companyService->delete($company);
 
         return view('content.master.companies.index')->with('success', 'Company deleted successfully.');
