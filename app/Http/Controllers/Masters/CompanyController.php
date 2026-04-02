@@ -23,7 +23,7 @@ class CompanyController extends Controller
     public function index(Request $request)
     {
 
-        $companies = $this->companyService->getFirst();
+        $companies = $this->companyService->getAll();
 
         return view('content.master.companies.index', compact('companies'));
         // return response()->json([
@@ -91,10 +91,10 @@ class CompanyController extends Controller
         //     'updated_by' => 1,
         // ];
 
-        // return $request;
+        return $request;
 
         // $company = $this->companyService->create($request);
-        $company = $this->companyService->create($request->validated());
+        return $company = $this->companyService->create($request->validated());
 
         return redirect()->route('master.companies.index')->with('success', 'Company created successfully.');
 

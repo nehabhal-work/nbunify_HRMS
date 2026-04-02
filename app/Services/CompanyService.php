@@ -30,9 +30,9 @@ class CompanyService
 
     // ─── List / Search ───────────────────────────────────────────────────────────
 
-    public function getFirst(): ?Company
+    public function getAll()
     {
-        return Company::query()->with(['createdBy', 'updatedBy'])->first();
+        return Company::with(['createdBy', 'updatedBy'])->get();
     }
 
     public function paginate(array $filters = [], int $perPage = 15): LengthAwarePaginator
@@ -117,6 +117,7 @@ class CompanyService
             ]);
 
             // 3️⃣ Save Multiple Banks
+            banks not getting save. why?
             if (!empty($banks)) {
                 foreach ($banks as $bank) {
 
