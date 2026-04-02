@@ -12,9 +12,7 @@ use Illuminate\Support\Facades\Route;
 
 class CompanyController extends Controller
 {
-    public function __construct(protected CompanyService $companyService)
-    {
-    }
+    public function __construct(protected CompanyService $companyService) {}
 
     /**
      * GET /companies
@@ -94,7 +92,7 @@ class CompanyController extends Controller
         // return $request;
 
         // $company = $this->companyService->create($request);
-        return $company = $this->companyService->create($request->validated());
+        $company = $this->companyService->create($request->validated());
 
         return redirect()->route('master.companies.index')->with('success', 'Company created successfully.');
 
