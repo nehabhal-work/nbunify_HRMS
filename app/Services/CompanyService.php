@@ -117,7 +117,6 @@ class CompanyService
             ]);
 
             // 3️⃣ Save Multiple Banks
-            banks not getting save. why?
             if (!empty($banks)) {
                 foreach ($banks as $bank) {
 
