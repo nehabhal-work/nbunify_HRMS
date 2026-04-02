@@ -57,7 +57,7 @@
 
 
                 <div class="ms-auto text-muted">
-                    {{ optional($companies)->count() ?? 0 }} companies
+                    {{-- {{ optional($companies)->count() ?? 0 }} companies --}}
                 </div>
             </div>
 
