@@ -11,55 +11,56 @@ class Company extends Model
 {
     use HasFactory, SoftDeletes;
     protected $table = 'companies';
-    protected $fillable = [
-        // Basic Info
-        'name',
-        'legal_name',
-        'email',
-        'mobile',
-        'company_type',
-        'website',
-        'logo',
+    protected $guarded = [];
+    // protected $fillable = [
+    //     // Basic Info
+    //     'name',
+    //     'legal_name',
+    //     'email',
+    //     'mobile',
+    //     'company_type',
+    //     'website',
+    //     'logo',
 
-        "reg_address_line1",
-        "reg_address_line2",
-        "reg_city",
-        "reg_state",
-        "reg_pincode",
-        "reg_country",
+    //     "reg_address_line1",
+    //     "reg_address_line2",
+    //     "reg_city",
+    //     "reg_state",
+    //     "reg_pincode",
+    //     "reg_country",
 
-        // Registration Numbers
-        'watermark_no',
-        'copyrights_no',
-        'cin_no',
-        'pan_no',
-        'tan_no',
-        'gstin',
-        'udyam_aadhar_no',
-        'partnership_registration_no',
-        'roc_no',
-        'msme_certification_no',
-        'ckyc',
-        'gumasta_no',
+    //     // Registration Numbers
+    //     'watermark_no',
+    //     'copyrights_no',
+    //     'cin_no',
+    //     'pan_no',
+    //     'tan_no',
+    //     'gstin',
+    //     'udyam_aadhar_no',
+    //     'partnership_registration_no',
+    //     'roc_no',
+    //     'msme_certification_no',
+    //     'ckyc',
+    //     'gumasta_no',
 
-        // Establishment Date
-        'est_date',
+    //     // Establishment Date
+    //     'est_date',
 
-        // Attachments
-        'attachment_pan',
-        'attachment_tan',
-        'attachment_gstin',
-        'attachment_ckyc',
-        'attachment_partnership_deed',
-        'attachment_udyam_aadhar',
-        'attachment_gumasta',
-        'attachment_msme',
+    //     // Attachments
+    //     'attachment_pan',
+    //     'attachment_tan',
+    //     'attachment_gstin',
+    //     'attachment_ckyc',
+    //     'attachment_partnership_deed',
+    //     'attachment_udyam_aadhar',
+    //     'attachment_gumasta',
+    //     'attachment_msme',
 
-        'is_active',
-        // Audit
-        'created_by',
-        'updated_by',
-    ];
+    //     'is_active',
+    //     // Audit
+    //     'created_by',
+    //     'updated_by',
+    // ];
 
     protected $casts = [
         'est_date' => 'date',
