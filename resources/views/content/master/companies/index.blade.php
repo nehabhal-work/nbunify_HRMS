@@ -88,7 +88,7 @@
                                 <!-- 🏢 COMPANY -->
                                 <td>
                                     <div class="d-flex align-items-center gap-2">
-                                      
+
 
                                         <div>
                                             <div class="fw-semibold">{{ $company->name ?? '' }}</div>
@@ -120,9 +120,7 @@
                                 <!-- 🔢 BRANCH -->
                                 <td>{{ $company->branches_count ?? 0 }}</td>
                                 <td>
-                                    <span class="badge {{ $company->is_active ? 'bg-success' : 'bg-danger' }}">
-                                        {{ $company->is_active ? 'Active' : 'Inactive' }}
-                                    </span>
+                                    {{ $company->is_active ?? 0 }}
                                 </td>
 
 
@@ -139,7 +137,7 @@
                                         @csrf
                                         @method('DELETE')
 
-                                      
+
                                         <button type="submit" class="btn btn-sm btn-outline-danger">
                                             <i class="bx bx-trash"></i>
                                         </button>
