@@ -81,12 +81,6 @@ class CompanyService
 
             // Remove address fields from company
             $companyData = collect($data)->except([
-                'reg_address_line1',
-                'reg_address_line2',
-                'reg_city',
-                'reg_state',
-                'reg_country',
-                'reg_pincode',
                 'op_address_line1',
                 'op_address_line2',
                 'op_city',
