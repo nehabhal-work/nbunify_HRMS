@@ -26,7 +26,34 @@ class CompanyRequest extends FormRequest
             'logo'          => ['nullable', 'image', 'mimes:jpeg,png,jpg,webp', 'max:2048'],
             'email'          => ['nullable', 'email', 'max:255'],
             'mobile'          => ['nullable', 'string', 'max:15'],
-            'is_active'      => ['nullable', 'string'],
+            'is_active'      => ['nullable', Rule::in(['active', 'inactive'])],
+
+            // Additional Info
+            "reg_address_line1" => ['nullable', 'string', 'max:255'],
+            "reg_address_line2" => ['nullable', 'string', 'max:255'],
+            "reg_city"         => ['nullable', 'string', 'max:100'],
+            "reg_state"       => ['nullable', 'string', 'max:100'],
+            "reg_pincode"     => ['nullable', 'string', 'max:10'],
+            "reg_country"     => ['nullable', 'string', 'max:100'],
+
+            // will goto head-office
+            "op_address_line1" => ['nullable', 'string', 'max:255'],
+            "op_address_line2" => ['nullable', 'string', 'max:255'],
+            "op_city"         => ['nullable', 'string', 'max:100'],
+            "op_state"       => ['nullable', 'string', 'max:100'],
+            "op_pincode"     => ['nullable', 'string', 'max:10'],
+            "op_country"     => ['nullable', 'string', 'max:100'],
+
+
+            // Bank Details
+            'banks' => ['nullable', 'array'],
+            'banks.*.bank_name' => ['nullable', 'string', 'max:255'],
+            'banks.*.branch_name' => ['nullable', 'string', 'max:255'],
+            'banks.*.ifsc_code' => ['nullable', 'string', 'max:20'],
+            'banks.*.account_number' => ['nullable', 'string', 'max:30'],
+            'banks.*.account_type' => ['nullable', 'string', 'max:50'],
+            'banks.*.bank_code' => ['nullable', 'string', 'max:50'],
+            'banks.*.is_primary' => ['nullable', 'in:0,1'],
 
             // Registration Numbers
             'watermark_no'               => ['nullable', 'string', 'max:100'],
@@ -76,6 +103,18 @@ class CompanyRequest extends FormRequest
             'logo'                        => 'Logo',
             'email'                        => 'Email',
             'mobile'                       => 'Mobile',
+            'reg_address_line1'            => 'Registered Address Line 1',
+            'reg_address_line2'            => 'Registered Address Line 2',
+            'reg_city'                     => 'Registered City',
+            'reg_state'                    => 'Registered State',
+            'reg_pincode'                  => 'Registered Pincode',
+            'reg_country'                  => 'Registered Country',
+            'op_address_line1'            => 'Operational Address Line 1',
+            'op_address_line2'            => 'Operational Address Line 2',
+            'op_city'                     => 'Operational City',
+            'op_state'                    => 'Operational State',
+            'op_pincode'                  => 'Operational Pincode',
+            'op_country'                  => 'Operational Country',
             'watermark_no'                => 'Watermark Number',
             'copyrights_no'               => 'Copyrights Number',
             'cin_no'                      => 'CIN Number',
@@ -98,5 +137,13 @@ class CompanyRequest extends FormRequest
             'attachment_gumasta'          => 'Gumasta Attachment',
             'attachment_msme'             => 'MSME Attachment',
         ];
+    }
+
+    protected function prepareForValidation()
+    {
+        $this->merge([
+            'pan_no' => strtoupper($this->pan_no),
+            'gstin' => strtoupper($this->gstin),
+        ]);
     }
 }

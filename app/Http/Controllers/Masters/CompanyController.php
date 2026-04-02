@@ -21,14 +21,9 @@ class CompanyController extends Controller
     public function index(Request $request)
     {
 
-        $companies = Company::get()->loadCount('branches');
-
+        $companies = Company::get();
         // return $companies;
         return view('content.master.companies.index', compact('companies'));
-        // return response()->json([
-        //     'success' => true,
-        //     'data'    => $companies,
-        // ]);
     }
 
     /**

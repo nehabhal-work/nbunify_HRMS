@@ -83,6 +83,18 @@
         </div>
     @endif
 
+    <div>
+        @if (session('success'))
+            <x-alert-sweet type="success" :message="session('success')" />
+        @endif
+
+        @if (session('error'))
+            <x-alert-sweet type="danger" :message="session('error')" />
+        @endif
+
+
+    </div>
+
     <h4 class="fw-bold py-3 mb-4">
         <span class="text-muted fw-light">Master /</span>
         <a href="{{ route('master.companies.index') }}">Company</a>
@@ -151,7 +163,6 @@
                                 <div class="col-md-2 mb-3">
                                     <label>Status</label>
                                     <select name="is_active" class="form-select @error('is_active') is-invalid @enderror">
-                                        <option value="">Select Status</option>
                                         <option value="active" {{ old('is_active') == 'active' ? 'selected' : '' }}>Active
                                         </option>
                                         <option value="inactive" {{ old('is_active') == 'inactive' ? 'selected' : '' }}>
@@ -530,7 +541,6 @@
                                     <label class="form-label">Account Type</label>
                                     <select name="banks[0][account_type]"
                                         class="form-select @error('banks.0.account_type') is-invalid @enderror">
-                                        <option value="">Select Type</option>
                                         <option value="savings"
                                             {{ old('banks.0.account_type') == 'savings' ? 'selected' : '' }}>Saving
                                             Account</option>

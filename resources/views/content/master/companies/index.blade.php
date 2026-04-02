@@ -63,7 +63,7 @@
 
             <!-- 📊 TABLE -->
             <div class="table-responsive">
-                <table class="table align-middle mb-0">
+                <table class="table align-middle mb-0 nbDataTable">
 
                     <thead class="table-light">
                         <tr>
@@ -81,7 +81,7 @@
 
                     <tbody>
 
-                        @forelse($companies as $company)
+                        @forelse ($companies??[] as $company)
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
 
@@ -145,14 +145,12 @@
                                 </td>
 
                             </tr>
-
                         @empty
                             <tr>
-                                <td colspan="8" class="text-center py-4 text-muted">
-                                    No companies found 🌙
-                                </td>
+                                <td colspan="9" class="text-center">No companies found.</td>
                             </tr>
                         @endforelse
+
 
                     </tbody>
 

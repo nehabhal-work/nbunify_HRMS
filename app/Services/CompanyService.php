@@ -89,6 +89,7 @@ class CompanyService
                 'op_pincode',
             ])->toArray();
 
+            // dd($companyData, $banks);
             // 1️⃣ Create Company
             $company = Company::create($companyData);
 
@@ -111,6 +112,7 @@ class CompanyService
             ]);
 
             // 3️⃣ Save Multiple Banks
+            // dd($banks);
             if (!empty($banks)) {
                 foreach ($banks as $bank) {
 

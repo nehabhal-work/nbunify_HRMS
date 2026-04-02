@@ -22,7 +22,6 @@ Route::post('/upload-temp', [App\Http\Controllers\TempUploadController::class, '
 
 Route::middleware(['auth', 'verified'])->prefix('master')->name('master.')->group(function () {
     Route::resource('companies', CompanyController::class);
-    Route::delete('companies/{company}', [CompanyController::class, 'destroy'])->name('companies.destroy')->middleware('permission:companies.delete');
     Route::resource('head-offices', HeadOfficeController::class);
     Route::resource('branches', BranchController::class);
     Route::resource('departments', DepartmentController::class);
