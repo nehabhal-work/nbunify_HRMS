@@ -182,7 +182,7 @@
 
                                     <input type="text" name="website"
                                         class="form-control @error('website') is-invalid @enderror"
-                                        value="{{ old('website', isset($company) ? ''$company->website : '') }}"
+                                        value="{{ old('website') }}"
                                         placeholder="example.com">
                                 </div>
 
