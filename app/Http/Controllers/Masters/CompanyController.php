@@ -117,7 +117,7 @@ class CompanyController extends Controller
         $companyTypes = Company::COMPANY_TYPES;
         // return $company;
 
-        return view('content.master.companies.edit', compact('company', 'companyTypes', 'bankDetails'));
+        return view('content.master.companies.edit', compact('company', 'companyTypes'));
     }
     /**
      * PUT/PATCH /companies/{company}

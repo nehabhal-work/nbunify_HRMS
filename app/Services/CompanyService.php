@@ -154,12 +154,107 @@ class CompanyService
 
     public function update(Company $company, array $data): Company
     {
-        $data = $this->handleFileUploads($data, $company);
-        $data['updated_by'] = Auth::id();
+        return DB::transaction(function () use ($company, $data) {
 
-        $company->update($data);
+            // ✅ Handle file uploads (keep old if not uploaded)
+            $data = $this->handleFileUploads($data, $company);
 
-        return $company->fresh();
+            // ✅ Audit
+            $data['updated_by'] = Auth::id();
+
+            // ✅ Fix website
+            if (!empty($data['website'])) {
+                $data['website'] = 'https://' . preg_replace('#^https?://#', '', $data['website']);
+            }
+
+            // ✅ Extract banks
+            $banks = $data['banks'] ?? [];
+            unset($data['banks']);
+
+            // ✅ Extract head offices (if using array)
+            $headOffices = $data['head_offices'] ?? [];
+
+            // ❌ Remove unwanted fields (same as create)
+            $companyData = collect($data)->except([
+                'op_address_line1',
+                'op_address_line2',
+                'op_city',
+                'op_state',
+                'op_country',
+                'op_pincode',
+                'head_offices',
+            ])->toArray();
+
+            // ✅ 1️⃣ Update Company
+            $company->update($companyData);
+
+            // ✅ 2️⃣ Update / Create Head Office
+            if (!empty($headOffices)) {
+
+                foreach ($headOffices as $office) {
+
+                    HeadOffice::updateOrCreate(
+                        ['id' => $office['id'] ?? null],
+                        [
+                            'company_id'     => $company->id,
+                            'name'           => $office['name'] ?? ($company->name . ' Head Office'),
+                            'code'           => $office['code'] ?? 'HO-1',
+                            'email'          => $office['email'] ?? $company->email,
+
+                            'address_line_1' => $office['address_line_1'] ?? null,
+                            'address_line_2' => $office['address_line_2'] ?? null,
+                            'city'           => $office['city'] ?? null,
+                            'state'          => $office['state'] ?? null,
+                            'country'        => $office['country'] ?? 'India',
+                            'pincode'        => $office['pincode'] ?? null,
+
+                            'updated_by'     => Auth::id(),
+                            'created_by'     => Auth::id(),
+                        ]
+                    );
+                }
+            }
+
+            // ✅ 3️⃣ Update / Create Banks
+            if (!empty($banks)) {
+
+                $existingIds = [];
+
+                foreach ($banks as $bank) {
+
+                    // 🚫 Skip empty row
+                    if (empty($bank['account_number']) && empty($bank['ifsc_code'])) {
+                        continue;
+                    }
+
+                    $record = CompanyBank::updateOrCreate(
+                        ['id' => $bank['id'] ?? null],
+                        [
+                            'company_id'     => $company->id,
+                            'bank_name'      => $bank['bank_name'] ?? null,
+                            'branch_name'    => $bank['branch_name'] ?? null,
+                            'ifsc_code'      => $bank['ifsc_code'] ?? null,
+                            'account_number' => $bank['account_number'] ?? null,
+                            'account_type'   => $bank['account_type'] ?? null,
+                            'bank_code'      => $bank['bank_code'] ?? null,
+                            'is_primary'     => $bank['is_primary'] ?? 0,
+
+                            'updated_by'     => Auth::id(),
+                            'created_by'     => Auth::id(),
+                        ]
+                    );
+
+                    $existingIds[] = $record->id;
+                }
+
+                // 🧹 Delete removed banks
+                CompanyBank::where('company_id', $company->id)
+                    ->whereNotIn('id', $existingIds)
+                    ->delete();
+            }
+
+            return $company->fresh(['headOffices', 'companyBank']);
+        });
     }
 
     // ─── Delete ──────────────────────────────────────────────────────────────────
