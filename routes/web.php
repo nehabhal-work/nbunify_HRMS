@@ -14,6 +14,7 @@ Route::get('/', function () {
     return redirect()->route('dashboard');
 })->middleware(['auth', 'verified'])->name('home');
 
+
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -26,8 +27,9 @@ Route::middleware(['auth', 'verified'])->prefix('master')->name('master.')->grou
     Route::resource('branches', BranchController::class);
     Route::resource('departments', DepartmentController::class);
 });
-
-
+Route::get('/employee', function () {
+    return view('content.master.employees.index');
+})->name('master.employees.index');
 
 Route::post('/logout', function () {
     auth()->logout();

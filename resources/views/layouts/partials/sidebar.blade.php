@@ -47,7 +47,12 @@
                     </a>
                 </li>
 
-
+                <li class="menu-item {{ request()->routeIs('master.employees.*') ? 'active' : '' }}">
+                    <a href="{{ route('master.employees.index') }}" class="menu-link">
+                        <i class="menu-icon bx bx-group"></i>
+                        <div class="text-truncate">Employees</div>
+                    </a>
+                </li>
 
                 {{--   <li class="menu-item {{ request()->routeIs('master.departments.*') ? 'active' : '' }}">
                     <a href="{{ route('master.departments.index') }}" class="menu-link">
