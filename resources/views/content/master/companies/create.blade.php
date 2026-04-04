@@ -267,7 +267,6 @@
                                         <label>State</label>
                                         <select name="reg_state"
                                             class="form-select @error('reg_state') is-invalid @enderror">
-                                            <option value="">Select state...</option>
                                             <option value="Maharashtra"
                                                 {{ old('reg_state') == 'Maharashtra' ? 'selected' : '' }}>Maharashtra
                                             </option>
@@ -328,7 +327,6 @@
                                         <label>State</label>
                                         <select name="op_state"
                                             class="form-select @error('op_state') is-invalid @enderror">
-                                            <option value="">Select state...</option>
                                             <option value="Maharashtra"
                                                 {{ old('op_state') == 'Maharashtra' ? 'selected' : '' }}>Maharashtra
                                             </option>

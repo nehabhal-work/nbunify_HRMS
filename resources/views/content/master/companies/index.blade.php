@@ -127,9 +127,9 @@
 
                                 <!-- ⚙ ACTION -->
                                 <td class="text-end">
-                                    <a href="{{ route('master.companies.edit', $company->id) }}"
-                                        class="btn btn-sm btn-light border">
-                                        <i class="bx bx-edit-alt me-1"></i>
+                                    <a href="{{ route('master.companies.show', $company->id) }}"
+                                        class="btn btn-sm btn-outline-info border">
+                                        <i class="bx bx-show-alt me-1"></i>
                                     </a>
 
                                     <form action="{{ route('master.companies.destroy', $company->id) }}" method="POST"

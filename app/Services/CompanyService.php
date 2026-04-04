@@ -35,6 +35,11 @@ class CompanyService
         return Company::with(['createdBy', 'updatedBy'])->get();
     }
 
+    public function getById(int $id): ?Company
+    {
+        $company = Company::with(['headOffices', 'companyBank'])->findOrFail($id);
+        return $company;
+    }
     public function paginate(array $filters = [], int $perPage = 15): LengthAwarePaginator
     {
         $query = Company::query()->with(['createdBy', 'updatedBy']);

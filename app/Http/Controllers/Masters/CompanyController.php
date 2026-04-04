@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Masters;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CompanyRequest;
 use App\Models\Company;
+use App\Models\CompanyBank;
 use App\Services\CompanyService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -32,12 +33,12 @@ class CompanyController extends Controller
      */
     public function create()
     {
-        $data = getCountries();
-        $country = $data['country'] ?? null;
-        $states = $data['states'] ?? [];
-        $cities = $data['cities'] ?? [];
+        // $data = getCountries();
+        // $country = $data['country'] ?? null;
+        // $states = $data['states'] ?? [];
+        // $cities = $data['cities'] ?? [];
         $companyTypes = Company::COMPANY_TYPES;
-        return view('content.master.companies.create', compact('country', 'states', 'cities', 'companyTypes'));
+        return view('content.master.companies.create', compact('companyTypes'));
     }
 
     // public function store(Request $request)
@@ -105,20 +106,18 @@ class CompanyController extends Controller
      */
     public function show(Company $company)
     {
-        $company = $company->load(['createdBy', 'updatedBy']);
-        return view('content.master.companies.view', compact('company'));
+        $company = $this->companyService->getById($company->id);
+        // return $company;
+        return view('content.master.companies.show', compact('company'));
     }
 
-    public function edit(Company $company)
+    public function edit($id)
     {
-        $data = getCountries();
-        $country = $data['country'] ?? null;
-        $states = $data['states'] ?? [];
-        $cities = $data['cities'] ?? [];
+        $company = $this->companyService->getById($id);
         $companyTypes = Company::COMPANY_TYPES;
+        // return $company;
 
-        $bankDetails = $company->bankDetails ?? [];
-        return view('content.master.companies.edit', compact('company', 'country', 'states', 'cities', 'companyTypes', 'bankDetails'));
+        return view('content.master.companies.edit', compact('company', 'companyTypes', 'bankDetails'));
     }
     /**
      * PUT/PATCH /companies/{company}
@@ -139,7 +138,7 @@ class CompanyController extends Controller
     {
         $company = Company::destroy($id);
 
-        return view('content.master.companies.index')->with('success', 'Company deleted successfully.');
+        return redirect()->route('master.companies.index')->with('success', 'Company deleted successfully.');
     }
 
     /**

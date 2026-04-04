@@ -83,6 +83,15 @@ class Company extends Model
 
     // ─── Relationships ───────────────────────────────────────────────────────────
 
+    public function companyBank(): HasMany
+    {
+        return $this->hasMany(CompanyBank::class, 'company_id');
+    }
+    public function headOffices(): HasMany
+    {
+        return $this->hasMany(HeadOffice::class, 'company_id');
+    }
+
     public function createdBy()
     {
         return $this->belongsTo(User::class, 'created_by');
